@@ -6,7 +6,7 @@ nuke: clean
 	git status
 
 rm-content:
-	-find -type f | egrep -v '^./(.git|.gitignore|Makefile|CNAME)$$' | xargs git rm
+	-find -type f | egrep -v '^./(.git|.gitignore|Makefile|CNAME|.*.swp)$$' | xargs git rm
 
 status:
 	git status
