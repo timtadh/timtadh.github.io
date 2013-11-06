@@ -3,6 +3,7 @@ clean:
 
 nuke: clean
 	git reset --hard
+	git status
 
 status:
 	git status
