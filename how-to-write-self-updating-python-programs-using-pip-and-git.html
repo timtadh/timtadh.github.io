@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>How To: Write Self Updating Python Programs Using Pip and Git</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Hackthology </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/consulting.html">Consulting</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/research.html">Research</a></li>
+                    <li><a href="/pages/teaching.html">Teaching</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/how-to-write-self-updating-python-programs-using-pip-and-git.html" rel="bookmark"
+           title="Permalink to How To: Write Self Updating Python Programs Using Pip and Git">How To: Write Self Updating Python Programs Using Pip and Git</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-05-23T00:00:00">
+                Mon 23 May 2011
+        </abbr>
+
+        <address class="vcard author">
+                By <a class="url fn" href="/author/tim-henderson.html">Tim Henderson</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+
+</footer><!-- /.post-info -->      <p>If you are a pip<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> and virtualenv user you already know how easy it is
+to install python packages. Unlike the bad old days when I started
+programming in Python, 9 years ago, it is now easy to add, remove and
+manage python modules. In fact we can leverage pip to create an <code>update</code>
+command for a python program, for example and ease of illustration, a
+shell utility.</p>
+<h3>Table of Contents</h3>
+<ol>
+<li>Desired Features</li>
+<li>Basic Idea</li>
+<li>Implementation</li>
+</ol>
+<h2>Desired Features</h2>
+<ul>
+<li>Uses a server controlled by the owner (instead of the Python Package
+  Index).</li>
+<li>Install an arbitrary version of the program.</li>
+<li>Defaults to updating to the newest version of the major release one
+  is tracking.</li>
+</ul>
+<p>I often want my programs to update themselves from a specific location.
+For instance an internal server or perhaps my github account.
+Fortunately pip already supports such nicities with the <code>-e</code> for the
+<code>install</code> command.</p>
+<p>Additionally, when running a generic update you often want to stay on
+the same major revision and simply get the bug fixes. However, it is
+important to provide the option to update to any arbitrary release
+including tracking the master branch.</p>
+<h2>Basic Idea</h2>
+<p>Use Pip and the <code>-e</code> option plus a base URL to automatically update your
+software. eg. Have you software run pip for the user.</p>
+<p>example command:</p>
+<div class="highlight"><pre><span class="nx">pip</span> <span class="nb">install</span> <span class="o">--</span><span class="nx">upgrade</span> <span class="o">--</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;$HOME/.src&quot;</span> <span class="na">-e</span> <span class="nx">git</span><span class="o">+&lt;</span><span class="nb">URL</span><span class="o">&gt;</span><span class="p">@</span><span class="o">&lt;</span><span class="nb">REV</span><span class="o">&gt;</span><span class="vi">#egg</span><span class="o">=</span><span class="nx">PACKAGE_NAME</span>
+</pre></div>
+
+
+<h4>Tracking Major Versions</h4>
+<p>To track major version updates some care must be taken in setting up the
+repository. I use branches instead of tags to track major releases. This
+allows me to push out bug fix updates for every one tracking that
+release. I tag minor releases to allow users to install a specific
+version.</p>
+<p>Branches</p>
+<ul>
+<li>master</li>
+<li>stable</li>
+<li>r0.1</li>
+<li>r0.2</li>
+<li>...</li>
+<li>rN</li>
+</ul>
+<p>Tags</p>
+<ul>
+<li>r0.1</li>
+<li>r0.1.1</li>
+<li>r0.1.x</li>
+<li>...</li>
+<li>rN</li>
+</ul>
+<h4>Pip Gotcha</h4>
+<p>When checking out branches using pip you have to supply
+<code>origin/branchname</code> ex:</p>
+<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">src</span><span class="o">=</span><span class="s">&quot;$HOME/.src&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="o">:</span><span class="c1">//github.com/user/repo.git@origin/branch#egg=PACKAGE_NAME</span>
+</pre></div>
+
+
+<p>While when checking out a commit you should not supply origin</p>
+<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">src</span><span class="o">=</span><span class="s">&quot;$HOME/.src&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="o">:</span><span class="c1">//github.com/user/repo.git@COMMIT_ID#egg=PACKAGE_NAME</span>
+</pre></div>
+
+
+<p>Why does pip work like this? Because of the commands it executes. For
+the command:</p>
+<div class="highlight"><pre><span class="nx">pip</span> <span class="nb">install</span> <span class="o">--</span><span class="nx">upgrade</span> <span class="o">--</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;$HOME/.src&quot;</span> <span class="na">-e</span> <span class="nx">git</span><span class="o">+</span><span class="nx">https</span><span class="p">:</span><span class="c1">//github.com/user/repo.git@&lt;VERSION&gt;#egg=PACKAGE_NAME</span>
+</pre></div>
+
+
+<p>pip runs</p>
+<div class="highlight"><pre><span class="nx">git</span> <span class="nx">fetch</span> <span class="na">-q</span> <span class="nx">git</span> <span class="nb">reset</span> <span class="o">--</span><span class="nx">hard</span> <span class="na">-q</span> <span class="o">&lt;</span><span class="nb">VERSION</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h4>Store the tracked version in the source</h4>
+<p>To ensure the update command installs the correct updates I put which
+release to checkout in the source code. This allows me to "release" a
+version by creating a branch and then changing the RELEASE constant to
+point the name of the branch.</p>
+<h2>Implementation</h2>
+<p>Note: This is example code only, you should modify for security and
+stability of your enviroment.</p>
+<p>Note: I didn't include virtualenv support in this code but it is trivial
+to add.</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span> <span class="k">as</span> <span class="n">run</span> 
+<span class="kn">from</span> <span class="nn">getopt</span> <span class="kn">import</span> <span class="n">getopt</span><span class="p">,</span> <span class="n">GetoptError</span> 
+<span class="n">RELEASE</span> <span class="o">=</span> <span class="s">&#39;master&#39;</span> <span class="c"># default release </span>
+<span class="n">SRC_DIR</span> <span class="o">=</span> <span class="s">&quot;$HOME/.src&quot;</span> <span class="c"># checkout directory </span>
+<span class="n">UPDATE_CMD</span> <span class="o">=</span> <span class="p">(</span> <span class="c"># base command </span>
+<span class="s">&#39;pip install --src=&quot;</span><span class="si">%s</span><span class="s">&quot; --upgrade -e &#39;</span> 
+<span class="s">&#39;git://github.com/timtadh/swork.git@</span><span class="si">%s</span><span class="s">#egg=swork&#39;</span> 
+<span class="p">)</span>
+
+<span class="nd">@command</span> 
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">args</span><span class="p">):</span> 
+    <span class="k">try</span><span class="p">:</span> 
+        <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&#39;sr:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;sudo&#39;</span><span class="p">,</span> <span class="s">&#39;src=&#39;</span><span class="p">,</span> <span class="s">&#39;release=&#39;</span><span class="p">,</span> <span class="s">&#39;commit=&#39;</span><span class="p">])</span> 
+    <span class="k">except</span> <span class="n">GetoptError</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> 
+        <span class="n">log</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> 
+        <span class="n">usage</span><span class="p">(</span><span class="n">error_codes</span><span class="p">[</span><span class="s">&#39;option&#39;</span><span class="p">])</span>
+
+    <span class="n">sudo</span> <span class="o">=</span> <span class="bp">False</span> 
+    <span class="n">src_dir</span> <span class="o">=</span> <span class="n">SRC_DIR</span> 
+    <span class="n">release</span> <span class="o">=</span> <span class="n">RELEASE</span> 
+    <span class="n">commit</span> <span class="o">=</span> <span class="bp">None</span> 
+    <span class="k">for</span> <span class="n">opt</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">opts</span><span class="p">:</span> 
+        <span class="k">if</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;-s&#39;</span><span class="p">,</span> <span class="s">&#39;--sudo&#39;</span><span class="p">):</span> 
+            <span class="n">sudo</span> <span class="o">=</span> <span class="bp">True</span> 
+        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;-r&#39;</span><span class="p">,</span> <span class="s">&#39;--release&#39;</span><span class="p">):</span> 
+            <span class="n">release</span> <span class="o">=</span> <span class="n">arg</span> 
+        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;--src&#39;</span><span class="p">,):</span> 
+            <span class="n">src_dir</span> <span class="o">=</span> <span class="n">arg</span> 
+        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;--commit&#39;</span><span class="p">,):</span> 
+            <span class="n">commit</span> <span class="o">=</span> <span class="n">arg</span>
+
+    <span class="k">if</span> <span class="n">release</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span> <span class="c">## Check if it is a version </span>
+        <span class="n">release</span> <span class="o">=</span> <span class="s">&#39;r&#39;</span> <span class="o">+</span> <span class="n">release</span> 
+    <span class="n">release</span> <span class="o">=</span> <span class="s">&#39;origin/&#39;</span> <span class="o">+</span> <span class="n">release</span> <span class="c">## assume it is a branch</span>
+
+    <span class="k">if</span> <span class="n">commit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="c">## if a commit is supplied use that </span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">UPDATE_CMD</span> <span class="o">%</span> <span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">commit</span><span class="p">)</span> 
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">UPDATE_CMD</span> <span class="o">%</span> <span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">release</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sudo</span><span class="p">:</span> 
+        <span class="n">run</span><span class="p">(</span><span class="s">&#39;sudo </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span> 
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><a href="http://www.pip-installer.org/en/latest/index.html">http://www.pip-installer.org/en/latest/index.html</a> "A Python package installer."&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="https://github.com/timtadh">github.com/timtadh</a></li>
+                            <li><a href="https://plus.google.com/109232399292705173597">Google+</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20145944-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+</html>
