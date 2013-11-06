@@ -5,6 +5,10 @@ nuke: clean
 	git reset --hard
 	git status
 
+reset:
+	find -type f | egrep -v '^./(.git|.gitignore|Makefile|CNAME)$$' | xargs git rm
+
+
 status:
 	git status
 
