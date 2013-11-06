@@ -6,8 +6,7 @@ nuke: clean
 	git status
 
 reset:
-	find -type f | egrep -v '^./(.git|.gitignore|Makefile|CNAME)$$' | xargs git rm
-
+	-find -type f | egrep -v '^./(.git|.gitignore|Makefile|CNAME)$$' | xargs git rm
 
 status:
 	git status
@@ -18,5 +17,5 @@ publish:
 	git commit -s
 	git push
 
-.PHONY: clean publish status nuke
+.PHONY: clean publish status nuke reset
 
