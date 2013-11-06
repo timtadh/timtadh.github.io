@@ -5,7 +5,7 @@ nuke: clean
 	git reset --hard
 	git status
 
-reset:
+rm-content:
 	-find -type f | egrep -v '^./(.git|.gitignore|Makefile|CNAME)$$' | xargs git rm
 
 status:
@@ -23,5 +23,5 @@ commit: add
 publish: commit
 	git push
 
-.PHONY: clean publish status nuke reset diff commit add
+.PHONY: clean publish status nuke rm-content diff commit add
 
