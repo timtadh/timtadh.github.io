@@ -11,11 +11,13 @@ reset:
 status:
 	git status
 
-publish:
+diff:
 	git diff --word-diff=color
+
+publish:
 	git add .
 	git commit -s
 	git push
 
-.PHONY: clean publish status nuke reset
+.PHONY: clean publish status nuke reset diff
 
