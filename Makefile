@@ -1,6 +1,9 @@
 clean:
 	git clean -fdx
 
+nuke: clean
+	git reset --hard
+
 status:
 	git status
 
@@ -10,5 +13,5 @@ publish:
 	git commit -s
 	git push
 
-.PHONY: clean publish status
+.PHONY: clean publish status nuke
 
