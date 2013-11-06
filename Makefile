@@ -14,10 +14,14 @@ status:
 diff:
 	git diff --word-diff=color
 
-publish:
+add:
 	git add .
+
+commit: add
 	git commit -s
+
+publish: commit
 	git push
 
-.PHONY: clean publish status nuke reset diff
+.PHONY: clean publish status nuke reset diff commit add
 
