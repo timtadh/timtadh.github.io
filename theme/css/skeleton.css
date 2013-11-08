@@ -84,7 +84,7 @@ html, body {
 
 
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 660px) {
     #page-main,
     #page-side {
         width: auto;
