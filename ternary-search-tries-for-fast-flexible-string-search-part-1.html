@@ -1,47 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
         <meta charset="utf-8" />
-        <title>Ternary Search Tries for Fast Flexible String Search : Part 1</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>Hackthology</title>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="/" /> 
 
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
-
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">Hackthology </a></h1>
-                <nav><ul>
-                    <li><a href="/pages/about.html">About</a></li>
-                    <li><a href="/pages/consulting.html">Consulting</a></li>
-                    <li><a href="/pages/projects.html">Projects</a></li>
-                    <li><a href="/pages/research.html">Research</a></li>
-                    <li><a href="/pages/teaching.html">Teaching</a></li>
-                    <li class="active"><a href="/category/blog.html">Blog</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/ternary-search-tries-for-fast-flexible-string-search-part-1.html" rel="bookmark"
-           title="Permalink to Ternary Search Tries for Fast Flexible String Search : Part 1">Ternary Search Tries for Fast Flexible String Search : Part 1</a></h1>
-    </header>
-
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2011-06-02T00:00:00">
-                Thu 02 June 2011
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="/author/tim-henderson.html">Tim Henderson</a>
-        </address>
-<p>In <a href="/category/blog.html">Blog</a>. </p>
-
-</footer><!-- /.post-info -->      <p>Searching a large corpus of strings is a problem many applications have
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="/index.html">Hackthology</a>
+        </h1>
+      </header>
+      
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <br/>
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="/ternary-search-tries-for-fast-flexible-string-search-part-1.html"
+             title="perm link Ternary Search Tries for Fast Flexible String Search : Part 1">
+             Ternary Search Tries for Fast Flexible String Search : Part 1
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+            <time datetime="2011-06-02T00:00:00">Thu 02 June 2011</time>
+            in <a href="/category/blog.html">Blog</a>
+            by <a href="/author/tim-henderson.html">Tim Henderson</a>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>Searching a large corpus of strings is a problem many applications have
 to solve, whether the application features autocomplete boxes or
 full-text search. Efficient methods for conducting such searches are not
 always readily apparent to the algorithm designer. In this series of
@@ -76,15 +80,7 @@ transform strings into numbers (which correspond to buckets in an
 array). Good hash functions have wide variance in hashing strings and
 will not hash a similar string or a sub string to the same bucket.</p>
 <h2>Introducing the Trie</h2>
-<div style="text-align:center">
-  <a href="/images/Trie1.png">
-    <img
-      alt="Example Binary Search Trie"
-      style="width:720px; "
-      src="/images/Trie1.png"/>
-  </a>
-</div>
-
+<p><img alt="Example Binary Search Trie" src="/images/Trie1.png" /></p>
 <p>Figure 1. <strong>An Example Binary Search Trie</strong></p>
 <p>In general a Trie is a special for of a tree. However, instead of
 comparing entire key at each node during traversal, it only compares
@@ -122,15 +118,7 @@ that modern processors typically work more efficiently when accessing
 bytes or words. Thus, a more efficient structure might consider multiple
 bits at once.</p>
 <h2>Multi-way Tries</h2>
-<div style="text-align:center">
-  <a href="/images/Trie2.png">
-    <img
-      alt="Example R-Way Trie"
-      style="width:720px; "
-      src="/images/Trie2.png"/>
-  </a>
-</div>
-
+<p><img alt="Example R-Way Trie" src="/images/Trie2.png" /></p>
 <p>Figure 2. <strong>An Example R-Way Trie</strong></p>
 <p>If one considers multiple bits at once one has to increase the fanout
 (number of children per node) of the tree. Consider figure 2, in which
@@ -151,15 +139,7 @@ work either because hash tables are slower than an array access and if
 the hash table becomes overly full it may actually use more space than
 the array. Thus, a different structure is needed.</p>
 <h2>Ternary Search Tries</h2>
-<div style="text-align:center">
-  <a href="/images/TST1.png">
-    <img
-      alt="Example Ternary Search Trie"
-      style="width:720px; "
-      src="/images/TST1.png"/>
-  </a>
-</div>
-
+<p><img alt="Example Ternary Search Trie" src="/images/TST1.png" /></p>
 <p>Figure 3. <strong>An Example Ternary Search Trie</strong> with strings [abc, abs,
 awe, and].</p>
 <p>The Ternary Search Trie helps avoid the unnecessary space needed by a
@@ -174,15 +154,7 @@ character.</p>
 <p>While a Multi-way Trie has about R*N/log~2~(R) pointers, a Ternary
 Search Trie has R + c*N pointers where c is a small constant, perhaps
 3. Consider the graph of their performance:</p>
-<div style="text-align:center">
-  <a href="/images/Multiway_vs_Trie.gif">
-    <img
-      alt="Multi-way Trie vs. Ternary Search Trie"
-      style="width:720px; "
-      src="/images/Multiway_vs_Trie.gif"/>
-  </a>
-</div>
-
+<p><img alt="Multi-way Trie vs. Ternary Search Trie" src="/images/Multiway_vs_Trie.gif" /></p>
 <p>Figure 4. <strong>Links in a Multi-way Trie vs. a Ternary Search Trie</strong></p>
 <p>When R is small, 2, 3, 4 Multi-way Tries and Ternary Tries have similar
 a similar number of pointers, but a low branching factor destroys the
@@ -197,15 +169,7 @@ may need to traverse up to 3 times that many links in the worst case.
 However, this pathological case is rare. In the average case the
 situation can be made much better through a few small improvements to
 the basic structure.</p>
-<div style="text-align:center">
-  <a href="/images/TST2.png">
-    <img
-      alt="Improved Ternary Search Trie"
-      style="width:720px; "
-      src="/images/TST2.png"/>
-  </a>
-</div>
-
+<p><img alt="An Improved Ternary Search Trie" src="/images/TST2.png" /></p>
 <p>Figure 5. <strong>An Improved Ternary Search Trie</strong>.</p>
 <p>The first improvement, illustrated below in Figure 5, involves
 collapsing the leaf nodes. Instead of allowing long chains of nodes at
@@ -245,38 +209,51 @@ search operations. Stay tuned.</p>
 </li>
 </ol>
 </div>
-    </div><!-- /.entry-content -->
+      </div>
+      </article> <!-- /#page-main -->
 
-  </article>
-</section>
-        <section id="extras" class="body">
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+        <aside id="page-side">
+          <!-- begin includes/sidebar.html -->
+          <nav>
+            <h3 class="first"><a href="/index.html">hackthology/</a></h3>
+            <h3>pages/</h3>
+            <ul>
+              <li><a href="/pages/about.html">about/</a></li>
+              <li><a href="/pages/consulting.html">consulting/</a></li>
+              <li><a href="/pages/projects.html">projects/</a></li>
+              <li><a href="/pages/research.html">research/</a></li>
+              <li><a href="/pages/teaching.html">teaching/</a></li>
+            </ul>
+          </nav>
 
-                            <li><a href="https://github.com/timtadh">github.com/timtadh</a></li>
-                            <li><a href="https://plus.google.com/109232399292705173597">Google+</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+          <nav>
+              <h3 class="active"><a href="/category/blog.html">blog/</a></h3>
+          </nav>
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+          <nav>
+            <h3>links/</h3>
+            <ul>
+              <li><a href="https://github.com/timtadh">github.com/timtadh/</a></li>
+              <li><a href="https://plus.google.com/109232399292705173597">google+/</a></li>
+            </ul>
+          </nav>
+          <!-- end includes/sidebar.html --></aside> <!-- /#page-side -->
+      </div>  <!-- /#page-body -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
+      <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a></p>
+      </footer>
+    </div> <!-- /#page -->
     <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-20145944-2']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+      })();
     </script>
-</body>
+  </body>
 </html>

@@ -1,47 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
         <meta charset="utf-8" />
-        <title>Lessons Learned While Implementing a B+Tree</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>Hackthology</title>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="/" /> 
 
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
-
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">Hackthology </a></h1>
-                <nav><ul>
-                    <li><a href="/pages/about.html">About</a></li>
-                    <li><a href="/pages/consulting.html">Consulting</a></li>
-                    <li><a href="/pages/projects.html">Projects</a></li>
-                    <li><a href="/pages/research.html">Research</a></li>
-                    <li><a href="/pages/teaching.html">Teaching</a></li>
-                    <li class="active"><a href="/category/blog.html">Blog</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="/lessons-learned-while-implementing-a-btree.html" rel="bookmark"
-           title="Permalink to Lessons Learned While Implementing a B+Tree">Lessons Learned While Implementing a B+Tree</a></h1>
-    </header>
-
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2010-04-10T00:00:00">
-                Sat 10 April 2010
-        </abbr>
-
-        <address class="vcard author">
-                By <a class="url fn" href="/author/tim-henderson.html">Tim Henderson</a>
-        </address>
-<p>In <a href="/category/blog.html">Blog</a>. </p>
-
-</footer><!-- /.post-info -->      <p>B+Trees are complex disk based trees used to index large amounts of
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="/index.html">Hackthology</a>
+        </h1>
+      </header>
+      
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <br/>
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="/lessons-learned-while-implementing-a-btree.html"
+             title="perm link Lessons Learned While Implementing a B+Tree">
+             Lessons Learned While Implementing a B+Tree
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+            <time datetime="2010-04-10T00:00:00">Sat 10 April 2010</time>
+            in <a href="/category/blog.html">Blog</a>
+            by <a href="/author/tim-henderson.html">Tim Henderson</a>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>B+Trees are complex disk based trees used to index large amounts of
 data. They are used in everything from file systems, to relation
 databases, to new style databases gaining popularity today. Sometimes a
 domain specific application needs to index a large amount of data, but
@@ -103,7 +107,6 @@ it means fewer disk reads to find the value associated with any one key.</p>
   <a href="/images/bptree1.png">
     <img
       alt="Example B+Tree"
-      style="width:720px; "
       src="/images/bptree1.png"/>
   </a>
 </div>
@@ -186,7 +189,6 @@ block in the tree.</p>
   <a href="/images/bptree2.png">
     <img
       alt="Example B+Tree with Duplicate Keys"
-      style="width:720px; "
       src="/images/bptree2.png"/>
   </a>
 </div>
@@ -255,38 +257,51 @@ ensure the index structure you create will perform well, and will never
 get into an incorrect state. Databases are not a black box, and they are
 not always the right answer. When required you can create you own
 system.</p>
-    </div><!-- /.entry-content -->
+      </div>
+      </article> <!-- /#page-main -->
 
-  </article>
-</section>
-        <section id="extras" class="body">
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+        <aside id="page-side">
+          <!-- begin includes/sidebar.html -->
+          <nav>
+            <h3 class="first"><a href="/index.html">hackthology/</a></h3>
+            <h3>pages/</h3>
+            <ul>
+              <li><a href="/pages/about.html">about/</a></li>
+              <li><a href="/pages/consulting.html">consulting/</a></li>
+              <li><a href="/pages/projects.html">projects/</a></li>
+              <li><a href="/pages/research.html">research/</a></li>
+              <li><a href="/pages/teaching.html">teaching/</a></li>
+            </ul>
+          </nav>
 
-                            <li><a href="https://github.com/timtadh">github.com/timtadh</a></li>
-                            <li><a href="https://plus.google.com/109232399292705173597">Google+</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+          <nav>
+              <h3 class="active"><a href="/category/blog.html">blog/</a></h3>
+          </nav>
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+          <nav>
+            <h3>links/</h3>
+            <ul>
+              <li><a href="https://github.com/timtadh">github.com/timtadh/</a></li>
+              <li><a href="https://plus.google.com/109232399292705173597">google+/</a></li>
+            </ul>
+          </nav>
+          <!-- end includes/sidebar.html --></aside> <!-- /#page-side -->
+      </div>  <!-- /#page-body -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
+      <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a></p>
+      </footer>
+    </div> <!-- /#page -->
     <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-20145944-2']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+      })();
     </script>
-</body>
+  </body>
 </html>

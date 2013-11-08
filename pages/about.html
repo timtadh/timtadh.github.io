@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>About</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
-
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
-
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">Hackthology </a></h1>
-                <nav><ul>
-                    <li class="active"><a href="/pages/about.html">About</a></li>
-                    <li><a href="/pages/consulting.html">Consulting</a></li>
-                    <li><a href="/pages/projects.html">Projects</a></li>
-                    <li><a href="/pages/research.html">Research</a></li>
-                    <li><a href="/pages/teaching.html">Teaching</a></li>
-                    <li><a href="/category/blog.html">Blog</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-    <h1 class="entry-title">About</h1>
-    
-    <p>My name is Tim Henderson. I am a PhD Candidate at Case Western Reserve
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>Hackthology</title>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="/" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="/index.html">Hackthology</a>
+        </h1>
+      </header>
+      
+      <div id="page-body">
+        <section id="page-main" role="main">
+      <h1 class="page">About</h1>
+      <p>My name is Tim Henderson. I am a PhD Candidate at Case Western Reserve
 University in Cleveland, Ohio where I am researching how to improve static
 program analysis by inferencing system specific static analysis rules. I help
 run CWRU Hacker Society and attend a number of programming clubs in the
@@ -34,35 +35,50 @@ Cleveland area. In my free time I run, hike, camp, read and occasionally paint.<
 my assistance on a project of mutual interest don't hesitate to email me.</p>
 <p>Tim Henderson<br>
 tim dot tadh at gmail</p>
-</section>
-        <section id="extras" class="body">
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
+      </section> <!-- /#page-main -->
 
-                            <li><a href="https://github.com/timtadh">github.com/timtadh</a></li>
-                            <li><a href="https://plus.google.com/109232399292705173597">Google+</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+        <aside id="page-side">
+          <!-- begin includes/sidebar.html -->
+          <nav>
+            <h3 class="first"><a href="/index.html">hackthology/</a></h3>
+            <h3>pages/</h3>
+            <ul>
+              <li><a href="/pages/about.html" class="active">about/</a></li>
+              <li><a href="/pages/consulting.html">consulting/</a></li>
+              <li><a href="/pages/projects.html">projects/</a></li>
+              <li><a href="/pages/research.html">research/</a></li>
+              <li><a href="/pages/teaching.html">teaching/</a></li>
+            </ul>
+          </nav>
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+          <nav>
+              <h3><a href="/category/blog.html">blog/</a></h3>
+          </nav>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+          <nav>
+            <h3>links/</h3>
+            <ul>
+              <li><a href="https://github.com/timtadh">github.com/timtadh/</a></li>
+              <li><a href="https://plus.google.com/109232399292705173597">google+/</a></li>
+            </ul>
+          </nav>
+          <!-- end includes/sidebar.html --></aside> <!-- /#page-side -->
+      </div>  <!-- /#page-body -->
 
+      <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a></p>
+      </footer>
+    </div> <!-- /#page -->
     <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-20145944-2']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+      })();
     </script>
-</body>
+  </body>
 </html>
