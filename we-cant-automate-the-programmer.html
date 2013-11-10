@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+        <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
-    <title>Hackthology — Categories</title>
+    <title>Hackthology</title>
     <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
@@ -16,6 +16,10 @@
     <link rel="alternate" type="application/atom+xml"
                            title="Hackthology — Flux Atom"
                            href="/" /> 
+
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="/theme/css/pygments.css" /> 
   </head>
   <body>
     <div id="page">
@@ -26,14 +30,40 @@
       </header>
       
       <div id="page-body">
-        <section id="page-main" role="main">
-    <section class="content">
-      <h1>Catégories</h1>
-      <ul id="category-list">
-      <li><a href="/category/blog.html">Blog</a> (11 articles)</li>
-      </ul>
-    </section>
-      </section> <!-- /#page-main -->
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="/we-cant-automate-the-programmer.html"
+             title="perm link We can't automate the programmer.">
+             We can't automate the programmer.
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+            <time datetime="2013-09-03T00:00:00">Tue 03 September 2013</time>
+            in <a href="/category/blog.html">Blog</a>
+            by <a href="/pages/about.html">Tim Henderson</a>        </div>
+      </header>
+      <div class="post-content"> 
+        <p><a href="https://news.ycombinator.com/item?id=6317778">HN Comment</a></p>
+<p>I find this comment thread on how programmers will "automate" our way out of
+jobs to be especially pertinent as I work on my proposal. A contention I have,
+as do many others, is the primary practical challenge standing between us and
+robust systems is complexity. There are several on this thread who believe we
+have essentially mastered complexity for a broad number important application
+areas.</p>
+<p>I think I could be convinced of this argument as long as those application areas
+are very narrow. As long as the creators of those applications are content with
+relatively standardized solutions. The moment there are A) functional
+requirements not covered by the standard case or B) differentiating requirements
+(such as aesthetics etc...) the general tool stops working. This is what makes
+complexity such a beast.  If you make a fully generic tool, you have created a
+programming language. Perhaps a very high level (even graphical language like
+LabView) but still a language. Such things require trained people to operate.</p>
+<p>We will never not need programmers.</p>
+      </div>
+      </article> <!-- /#page-main -->
 
         <aside id="page-side">
           <!-- begin includes/sidebar.html -->
@@ -50,7 +80,7 @@
           </nav>
 
           <nav>
-              <h3><a href="/category/blog.html">blog/</a></h3>
+              <h3 class="active"><a href="/category/blog.html">blog/</a></h3>
           </nav>
 
           <nav>
