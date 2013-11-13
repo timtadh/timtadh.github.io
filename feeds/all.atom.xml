@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2013-11-11T00:00:00-05:00</updated><entry><title>Cryptography and Complexity</title><link href="/cryptography-and-complexity.html" rel="alternate"></link><updated>2013-11-11T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:,2013-11-11:cryptography-and-complexity.html</id><summary type="html">&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2013-11-11T00:00:00-05:00</updated><entry><title>Cryptography and Complexity</title><link href="http://hackthology.com/cryptography-and-complexity.html" rel="alternate"></link><updated>2013-11-11T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-11:cryptography-and-complexity.html</id><summary type="html">&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
 correct or the bibliography you should read the
 &lt;a href="/images/crypto-complexity.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Cite as:&lt;/p&gt;
@@ -454,7 +454,7 @@ correct or the bibliography you should read the
 &lt;li id="fn25"&gt;&lt;p&gt;Theorem due to &lt;span class="citation"&gt;&lt;/span&gt; see Theorem 10.10&lt;a href="#fnref25"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;li id="fn26"&gt;&lt;p&gt;Definition due to &lt;span class="citation"&gt;&lt;/span&gt; see page 216.&lt;a href="#fnref26"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary></entry><entry><title>Programming Never Gets Easier</title><link href="/programming-never-gets-easier.html" rel="alternate"></link><updated>2013-11-10T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:,2013-11-10:programming-never-gets-easier.html</id><summary type="html">&lt;p&gt;Another comment on
+&lt;/div&gt;</summary></entry><entry><title>Programming Never Gets Easier</title><link href="http://hackthology.com/programming-never-gets-easier.html" rel="alternate"></link><updated>2013-11-10T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-10:programming-never-gets-easier.html</id><summary type="html">&lt;p&gt;Another comment on
 &lt;a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD340.html"&gt;E.W.Dijkstra Archive: The Humble Programmer (EWD 340)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Dijkstra, in the essay, felt that at the current moment in time (1972) the
 programmer was limited by the tools. That their thought processes were limited
@@ -482,12 +482,12 @@ the problems get harder and the tried and true solution of yesteryear seems
 quaint to the practicing programmer of today.&lt;/p&gt;
 &lt;p&gt;So, we cannot rest on our laurels. We must strive on and construct new tools
 which ease our current pains, even if inevitably new pains arise. For, in
-learning, there is suffering.&lt;/p&gt;</summary></entry><entry><title>New Site</title><link href="/new-site.html" rel="alternate"></link><updated>2013-11-06T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:,2013-11-06:new-site.html</id><summary type="html">&lt;p&gt;It has been 6 months maybe more since Posterous shut down and I have just now
+learning, there is suffering.&lt;/p&gt;</summary></entry><entry><title>New Site</title><link href="http://hackthology.com/new-site.html" rel="alternate"></link><updated>2013-11-06T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-06:new-site.html</id><summary type="html">&lt;p&gt;It has been 6 months maybe more since Posterous shut down and I have just now
 gotten around to recreating my site. I chose to do this on github pages with
 pelican. Hosting on github is easy and simple. If github every stops doing these
 pages I can easily self host. I have now ported most of my old posts thanks to
 &lt;code&gt;pandoc&lt;/code&gt;. The posts I left behind were mostly terrible so all in all I think the
-new site is a big improvement. I might even write some more posts.&lt;/p&gt;</summary></entry><entry><title>The Limits of Type Systems</title><link href="/the-limits-of-type-systems.html" rel="alternate"></link><updated>2013-09-03T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:,2013-09-03:the-limits-of-type-systems.html</id><summary type="html">&lt;p&gt;&lt;a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD340.html"&gt;E.W.Dijkstra Archive: The Humble Programmer (EWD 340)&lt;/a&gt;&lt;/p&gt;
+new site is a big improvement. I might even write some more posts.&lt;/p&gt;</summary></entry><entry><title>The Limits of Type Systems</title><link href="http://hackthology.com/the-limits-of-type-systems.html" rel="alternate"></link><updated>2013-09-03T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-09-03:the-limits-of-type-systems.html</id><summary type="html">&lt;p&gt;&lt;a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD340.html"&gt;E.W.Dijkstra Archive: The Humble Programmer (EWD 340)&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Argument three is based on the constructive approach to the problem of program
 correctness. Today a usual technique is to make a program and then to test it.
@@ -523,7 +523,7 @@ runtime safety. However, statically checked types can be overly burdensome if
 they require lots of book keeping without sufficiently powerful proofs.&lt;/p&gt;
 &lt;p&gt;Unfortunately, for a wide variety of statically checked programming languages
 the available proofs are uninteresting and the burden is high.  This is the
-challenge to the Dijkstra-ist.&lt;/p&gt;</summary></entry><entry><title>We can't automate the programmer.</title><link href="/we-cant-automate-the-programmer.html" rel="alternate"></link><updated>2013-09-03T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:,2013-09-03:we-cant-automate-the-programmer.html</id><summary type="html">&lt;p&gt;&lt;a href="https://news.ycombinator.com/item?id=6317778"&gt;HN Comment&lt;/a&gt;&lt;/p&gt;
+challenge to the Dijkstra-ist.&lt;/p&gt;</summary></entry><entry><title>We can't automate the programmer.</title><link href="http://hackthology.com/we-cant-automate-the-programmer.html" rel="alternate"></link><updated>2013-09-03T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-09-03:we-cant-automate-the-programmer.html</id><summary type="html">&lt;p&gt;&lt;a href="https://news.ycombinator.com/item?id=6317778"&gt;HN Comment&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;I find this comment thread on how programmers will "automate" our way out of
 jobs to be especially pertinent as I work on my proposal. A contention I have,
 as do many others, is the primary practical challenge standing between us and
@@ -538,7 +538,7 @@ requirements not covered by the standard case or B) differentiating requirements
 complexity such a beast.  If you make a fully generic tool, you have created a
 programming language. Perhaps a very high level (even graphical language like
 LabView) but still a language. Such things require trained people to operate.&lt;/p&gt;
-&lt;p&gt;We will never not need programmers.&lt;/p&gt;</summary></entry><entry><title>Always Pertinent - C a giant leap backwards.</title><link href="/always-pertinent-c-a-giant-leap-backwards.html" rel="alternate"></link><updated>2013-08-25T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:,2013-08-25:always-pertinent-c-a-giant-leap-backwards.html</id><summary type="html">&lt;blockquote&gt;
+&lt;p&gt;We will never not need programmers.&lt;/p&gt;</summary></entry><entry><title>Always Pertinent - C a giant leap backwards.</title><link href="http://hackthology.com/always-pertinent-c-a-giant-leap-backwards.html" rel="alternate"></link><updated>2013-08-25T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-08-25:always-pertinent-c-a-giant-leap-backwards.html</id><summary type="html">&lt;blockquote&gt;
 &lt;p&gt;From the point of view of software engineering, the rapid spread of C
 represented a great leap backward. It revealed that the community at large had
 hardly grasped the true meaning of the term 'high-level language' which became
@@ -546,7 +546,7 @@ an ill-understood buzzword. What, if anything, was to be 'high-level'? As this
 issue lies at the core of software engineering, we need to elaborate.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;from : Wirth, N. (2008). &lt;em&gt;A Brief History of Software Engineering&lt;/em&gt;. IEEE Annals
-of the History of Computing, 30(3), 32–39.  doi:10.1109/MAHC.2008.33&lt;/p&gt;</summary></entry><entry><title>Passmash - The Site Specific Password Munger</title><link href="/passmash-the-site-specific-password-munger.html" rel="alternate"></link><updated>2012-01-30T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:,2012-01-30:passmash-the-site-specific-password-munger.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/timtadh/passmash"&gt;Passmash&lt;/a&gt; is a new commandline
+of the History of Computing, 30(3), 32–39.  doi:10.1109/MAHC.2008.33&lt;/p&gt;</summary></entry><entry><title>Passmash - The Site Specific Password Munger</title><link href="http://hackthology.com/passmash-the-site-specific-password-munger.html" rel="alternate"></link><updated>2012-01-30T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2012-01-30:passmash-the-site-specific-password-munger.html</id><summary type="html">&lt;p&gt;&lt;a href="https://github.com/timtadh/passmash"&gt;Passmash&lt;/a&gt; is a new commandline
 password munger. It has been tested to work on Linux with X and on
 MacOS. It should also work on Windows.&lt;/p&gt;
 &lt;h2&gt;What is a Munger?&lt;/h2&gt;
@@ -615,7 +615,7 @@ an attacker who has&lt;/p&gt;
 &lt;a href="http://en.wikipedia.org/wiki/Entropy_%28information_theory%29"&gt;entropy&lt;/a&gt;
 then your other passwords generated with the same key should be
 reasonably secure against a brute force attack.&lt;/p&gt;
-&lt;h3&gt;&lt;a href="https://github.com/timtadh/passmash"&gt;Happy Munging!&lt;/a&gt;&lt;/h3&gt;</summary></entry><entry><title>Ternary Search Tries for Fast Flexible String Search : Part 1</title><link href="/ternary-search-tries-for-fast-flexible-string-search-part-1.html" rel="alternate"></link><updated>2011-06-02T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:,2011-06-02:ternary-search-tries-for-fast-flexible-string-search-part-1.html</id><summary type="html">&lt;p&gt;Searching a large corpus of strings is a problem many applications have
+&lt;h3&gt;&lt;a href="https://github.com/timtadh/passmash"&gt;Happy Munging!&lt;/a&gt;&lt;/h3&gt;</summary></entry><entry><title>Ternary Search Tries for Fast Flexible String Search : Part 1</title><link href="http://hackthology.com/ternary-search-tries-for-fast-flexible-string-search-part-1.html" rel="alternate"></link><updated>2011-06-02T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2011-06-02:ternary-search-tries-for-fast-flexible-string-search-part-1.html</id><summary type="html">&lt;p&gt;Searching a large corpus of strings is a problem many applications have
 to solve, whether the application features autocomplete boxes or
 full-text search. Efficient methods for conducting such searches are not
 always readily apparent to the algorithm designer. In this series of
@@ -778,7 +778,7 @@ search operations. Stay tuned.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Sedgewick&lt;/em&gt; Table 15.2 and related text.&amp;#160;&lt;a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary></entry><entry><title>How To: Write Self Updating Python Programs Using Pip and Git</title><link href="/how-to-write-self-updating-python-programs-using-pip-and-git.html" rel="alternate"></link><updated>2011-05-23T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:,2011-05-23:how-to-write-self-updating-python-programs-using-pip-and-git.html</id><summary type="html">&lt;p&gt;If you are a pip&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; and virtualenv user you already know how easy it is
+&lt;/div&gt;</summary></entry><entry><title>How To: Write Self Updating Python Programs Using Pip and Git</title><link href="http://hackthology.com/how-to-write-self-updating-python-programs-using-pip-and-git.html" rel="alternate"></link><updated>2011-05-23T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2011-05-23:how-to-write-self-updating-python-programs-using-pip-and-git.html</id><summary type="html">&lt;p&gt;If you are a pip&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; and virtualenv user you already know how easy it is
 to install python packages. Unlike the bad old days when I started
 programming in Python, 9 years ago, it is now easy to add, remove and
 manage python modules. In fact we can leverage pip to create an &lt;code&gt;update&lt;/code&gt;
@@ -924,7 +924,7 @@ to add.&lt;/p&gt;
 &lt;p&gt;&lt;a href="http://www.pip-installer.org/en/latest/index.html"&gt;http://www.pip-installer.org/en/latest/index.html&lt;/a&gt; "A Python package installer."&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary></entry><entry><title>Announcing swork - Simplify your Shell Configuration</title><link href="/announcing-swork-simplify-your-shell-configuration.html" rel="alternate"></link><updated>2011-05-18T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:,2011-05-18:announcing-swork-simplify-your-shell-configuration.html</id><summary type="html">&lt;p&gt;If you are like me, and if you are reading this you may very well be,
+&lt;/div&gt;</summary></entry><entry><title>Announcing swork - Simplify your Shell Configuration</title><link href="http://hackthology.com/announcing-swork-simplify-your-shell-configuration.html" rel="alternate"></link><updated>2011-05-18T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2011-05-18:announcing-swork-simplify-your-shell-configuration.html</id><summary type="html">&lt;p&gt;If you are like me, and if you are reading this you may very well be,
 you spend an inordinate amount of time juggling inane details, like
 shell environment variables, while programming. Now there is nothing
 wrong with setting, exporting, and then unsetting variables, mounting
@@ -985,14 +985,14 @@ allowing you to switch contexts with minimum fuss. It currently
 implements the minimum functionality to be useful, but is just waiting
 for your feature request!&lt;/p&gt;
 &lt;p&gt;check it out on github:
-&lt;a href="https://github.com/timtadh/swork"&gt;https://github.com/timtadh/swork&lt;/a&gt;&lt;/p&gt;</summary></entry><entry><title>Grammars, Ambiguity, and Expressibility</title><link href="/grammars-ambiguity-and-expressibility.html" rel="alternate"></link><updated>2011-02-17T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:,2011-02-17:grammars-ambiguity-and-expressibility.html</id><summary type="html">&lt;p&gt;Last night I gave a talk at CWRU Hacker Society about formal languages.
+&lt;a href="https://github.com/timtadh/swork"&gt;https://github.com/timtadh/swork&lt;/a&gt;&lt;/p&gt;</summary></entry><entry><title>Grammars, Ambiguity, and Expressibility</title><link href="http://hackthology.com/grammars-ambiguity-and-expressibility.html" rel="alternate"></link><updated>2011-02-17T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2011-02-17:grammars-ambiguity-and-expressibility.html</id><summary type="html">&lt;p&gt;Last night I gave a talk at CWRU Hacker Society about formal languages.
 This is the first talk in a series of lectures I will be giving on
 compilers. Unfortunately, unlike my regular expression talk I did not
 get a recording of the audio. I may do a write up of exactly what I
 talked about later. Until then enjoy my "slides."&lt;/p&gt;
 &lt;iframe
   src="http://crocodoc.com/04Z8BP?embedded=true" height="600" width="100%"&gt;
-&lt;/iframe&gt;</summary></entry><entry><title>Interpreting the Free Software Movement as Religion</title><link href="/interpreting-the-free-software-movement-as-religion.html" rel="alternate"></link><updated>2010-12-08T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:,2010-12-08:interpreting-the-free-software-movement-as-religion.html</id><summary type="html">&lt;p&gt;&lt;em&gt;A person should aspire to live an upright life openly with pride, and
+&lt;/iframe&gt;</summary></entry><entry><title>Interpreting the Free Software Movement as Religion</title><link href="http://hackthology.com/interpreting-the-free-software-movement-as-religion.html" rel="alternate"></link><updated>2010-12-08T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2010-12-08:interpreting-the-free-software-movement-as-religion.html</id><summary type="html">&lt;p&gt;&lt;em&gt;A person should aspire to live an upright life openly with pride, and
 this means saying “No” to proprietary software.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;- RMS&lt;/p&gt;
 &lt;h3&gt;Introduction&lt;/h3&gt;
@@ -1254,7 +1254,7 @@ the Free Software movement.&lt;/p&gt;
 &lt;p&gt;For an example of Stallman using such language see for instance &lt;em&gt;Free Software&lt;/em&gt; pg. 130&amp;#160;&lt;a class="footnote-backref" href="#fnref:18" rev="footnote" title="Jump back to footnote 18 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary></entry><entry><title>Lessons Learned While Implementing a B+Tree</title><link href="/lessons-learned-while-implementing-a-btree.html" rel="alternate"></link><updated>2010-04-10T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:,2010-04-10:lessons-learned-while-implementing-a-btree.html</id><summary type="html">&lt;p&gt;B+Trees are complex disk based trees used to index large amounts of
+&lt;/div&gt;</summary></entry><entry><title>Lessons Learned While Implementing a B+Tree</title><link href="http://hackthology.com/lessons-learned-while-implementing-a-btree.html" rel="alternate"></link><updated>2010-04-10T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2010-04-10:lessons-learned-while-implementing-a-btree.html</id><summary type="html">&lt;p&gt;B+Trees are complex disk based trees used to index large amounts of
 data. They are used in everything from file systems, to relation
 databases, to new style databases gaining popularity today. Sometimes a
 domain specific application needs to index a large amount of data, but
