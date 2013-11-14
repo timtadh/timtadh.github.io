@@ -30,32 +30,31 @@ html, body {
 
 #page-side {
     float: right;
-    width: 135px;
+    width: 180px;
     height: 100%;
-    padding-left: 0%;
+    text-align: left;
 }
 
 #page-main {
     float: left;
     height: 100%;
     width: 620px;
-    padding-left: calc(50% - (620px/2));
+    text-align: justify;
+    padding-left: calc(50% - (620px/2) - 20px);
     padding-right: 0%;
 }
 
-
-
-@media screen and (max-width: 1230px) {
-    #page-main {
-        padding-left: 0;
-    }
+div.top-nav {
+    visibility: hidden;
+    height: 0px;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1023px) {
     #page-main,
     #page-side {
         clear: both;
         float: none;
+        display: block;
     }
 
     #page-side {
@@ -79,6 +78,29 @@ html, body {
         -o-column-count: auto;
         -ms-column-count: auto;
     }
+
+    div.top-nav {
+        visibility: visible;
+        height: 100%;
+        clear:both;
+        max-width: 620px;
+        text-align:center;
+        margin-left: calc(50% - (620px/2));
+        margin-bottom: 2em;
+    }
+
+    div.top-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    div.top-nav ul li {
+        display: inline;
+        margin: 0;
+        padding: 0 .2em;
+    }
+
 }
 
 
@@ -93,4 +115,10 @@ html, body {
         padding: 0px;
         margin: 0px;
     }
+
+    div.top-nav {
+        visibility: hidden;
+        height: 0px;
+    }
+
 }

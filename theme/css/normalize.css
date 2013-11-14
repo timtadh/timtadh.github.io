@@ -123,33 +123,49 @@ a:hover {
  */
 
 h1 {
-    font-size: 2em;
+    font-size: 1.5em;
     margin: 0.67em 0;
 }
 
 h2 {
-    font-size: 1.5em;
+    font-size: 1.30em;
     margin: 0.83em 0;
 }
 
 h3 {
-    font-size: 1.17em;
+    font-size: 1.20em;
     margin: 1em 0;
 }
 
 h4 {
-    font-size: 1em;
-    margin: 1.33em 0;
+    font-size: 1.10em;
 }
 
 h5 {
-    font-size: 0.83em;
-    margin: 1.67em 0;
+    font-size: 1.05em;
 }
 
 h6 {
-    font-size: 0.75em;
-    margin: 2.33em 0;
+    font-size: 1em;
+}
+
+h4, h5, h6 {
+    margin: 0;
+    padding: 0 1em 0 0;
+    display: inline;
+}
+
+h4 + p, h5 + p, h6 + p{
+    display: inline;
+}
+
+h4 + p:after, h5 + p:after, h6 + p:after {
+    content: "";
+    white-space: pre;
+    display: block;
+    margin: 0;
+    padding: 0;
+    height: .25em;
 }
 
 /*
@@ -471,6 +487,17 @@ input[type="search"]::-webkit-search-decoration {
  */
 
 button::-moz-focus-inner,
+   ========================================================================== */
+
+/*
+ * Remove most spacing between table cells.
+ */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
 input::-moz-focus-inner {
     border: 0;
     padding: 0;
@@ -498,3 +525,4 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+

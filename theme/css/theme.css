@@ -54,10 +54,15 @@ article header h1 {
     font-size: 16px;
     padding: .1em 0;
     margin: 0;
+    text-align: left;
+}
+
+article div.meta, article header h1.full {
+    text-align:center
 }
 
 article header h1.full, h1.page {
-    font-size: 26px;
+    font-size: 28px;
     padding: 0;
     margin: 0;
     font-family: 'Lora', "Century Schoolbook L", "Georgia", "Nimbus Roman No9 L", "Norasi", "Rekha", serif;
@@ -65,7 +70,8 @@ article header h1.full, h1.page {
 }
 
 h1.page {
-    margin-top: .0em;
+    margin-top: 0em;
+    padding-top: 0em;
 }
 
 article header h1.full a {
@@ -81,11 +87,29 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Lora', "Century Schoolbook L", "Georgia", "Nimbus Roman No9 L", "Norasi", "Rekha", serif;
+}
+
+h1, h2, h3 {
     font-weight: normal;
+}
+
+blockquote {
+    margin: .1em 1em;
+    padding-left: .75em;
+    border-left: 2px solid gray;
+}
+
+@media screen and (max-width: 660px) {
+    blockquote {
+        margin: 0;
+    }
 }
 
 h3.first {
     margin-top: 0em;
+    padding-top: 0em;
+    top: 0px;
+    position: relative;
 }
 
 p.first {
@@ -122,8 +146,6 @@ nav, nav h3 {
 nav a {
     border:none;
 }
-
-
 
 #page-head {
     text-align: center;
