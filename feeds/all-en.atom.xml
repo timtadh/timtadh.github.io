@@ -263,7 +263,8 @@ and file systems. Linear Hashing was invented by Witold Litwin in 1980 and has
 been in widespread use since that time. I implemented this file-structure
 earlier this year. You can find &lt;a href="https://github.com/timtadh/file-structures/blob/master/linhash"&gt;my implementation on
 github&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;I also have an &lt;a href="http://hackthology.com/an-in-memory-go-implementation-of-linear-hashing.html"&gt;in memory version&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I also have an &lt;a href="http://hackthology.com/an-in-memory-go-implementation-of-linear-hashing.html"&gt;in memory version&lt;/a&gt;, you probably
+want to take a look at that after you have read the post.&lt;/p&gt;
 &lt;p&gt;Hopefully this essay gives you a taste for the essentials of Linear Hashing.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Linear Hash" src="/images/lin-hash.png" /&gt;&lt;/p&gt;
 &lt;h1&gt;Hashing, A Refresher&lt;/h1&gt;
@@ -667,7 +668,8 @@ Linear Hashing algorithm. The key take aways are:&lt;/p&gt;
 &lt;/ol&gt;
 &lt;p&gt;If you want to implement the algorithm I suggest reading the description in the
 Garcia-Molina book and taking a look at the original paper. You can also take a
-look at &lt;a href="https://github.com/timtadh/file-structures/blob/master/linhash"&gt;my implementation&lt;/a&gt;.&lt;/p&gt;
+look at &lt;a href="https://github.com/timtadh/file-structures/blob/master/linhash"&gt;my implementation&lt;/a&gt; or my other
+implementation, an &lt;a href="http://hackthology.com/an-in-memory-go-implementation-of-linear-hashing.html"&gt;in memory version&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="footnote"&gt;
 &lt;hr /&gt;
 &lt;ol&gt;
