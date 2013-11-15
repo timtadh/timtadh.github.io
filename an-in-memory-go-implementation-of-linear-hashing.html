@@ -204,7 +204,7 @@ this pattern for future Go iterators.</p>
                 <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
             <span class="p">}</span>
             <span class="nx">stack</span> <span class="p">=</span> <span class="nx">procnode</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">node</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">make_iterator</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="nx">that</span>
+            <span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">node</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">make_iterator</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="nx">make_iterator</span><span class="p">([]</span><span class="o">*</span><span class="nx">bst</span><span class="p">{</span><span class="nx">self</span><span class="p">})</span>
@@ -266,7 +266,7 @@ this pattern for future Go iterators.</p>
             <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span> <span class="p">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span> <span class="p">{</span>
                 <span class="nx">lmd</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">lmd</span><span class="p">()</span>
                 <span class="nx">lmd</span><span class="p">.</span><span class="nx">left</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span>
-                <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">nilthat</span>
+                <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">nil</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
                 <span class="nx">rmd</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">rmd</span><span class="p">()</span>
                 <span class="nx">rmd</span><span class="p">.</span><span class="nx">right</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span>
@@ -281,7 +281,7 @@ this pattern for future Go iterators.</p>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span><span class="nx">that</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
         <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
     <span class="p">}</span>
