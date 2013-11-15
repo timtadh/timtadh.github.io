@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hackthology</title><link>http://hackthology.com/</link><description></description><atom:link href="http://hackthology.com/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 15 Nov 2013 00:00:00 -0500</lastBuildDate><item><title>An in Memory Go Implementation of Linear Hashing</title><link>http://hackthology.com/an-in-memory-go-implementation-of-linear-hashing.html</link><description>&lt;p&gt;In the &lt;a href="http://hackthology.com/linear-hashing.html"&gt;last post&lt;/a&gt; I described how linear hashing
 works. If you haven't read it yet, you should go read it first. I can wait, this
-post presents a new implementation which is a lot simpiler than the disk based
-version refrenced in the last post.&lt;/p&gt;
+post presents a new implementation which is a lot simpler than the disk based
+version referenced in the last post.&lt;/p&gt;
 &lt;p&gt;In the demonstration version (that would be this one) I represent the buckets as
 binary search trees. If I had been a bit more ambitious I would have represented
 them as AVL trees or 2-3-4 trees.&lt;/p&gt;
