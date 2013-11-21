@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/blog.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2013-11-15T00:00:00-05:00</updated><entry><title>An in Memory Go Implementation of Linear Hashing</title><link href="http://hackthology.com/an-in-memory-go-implementation-of-linear-hashing.html" rel="alternate"></link><updated>2013-11-15T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-15:an-in-memory-go-implementation-of-linear-hashing.html</id><summary type="html">&lt;p&gt;In the &lt;a href="http://hackthology.com/linear-hashing.html"&gt;last post&lt;/a&gt; I described how linear hashing
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/blog.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2013-11-21T00:00:00-05:00</updated><entry><title>The Ruby For Loop</title><link href="http://hackthology.com/the-ruby-for-loop.html" rel="alternate"></link><updated>2013-11-21T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-21:the-ruby-for-loop.html</id><summary type="html">&lt;p&gt;I am taking some time to learn Ruby this fall from &lt;a href="www.worldcat.org/title/eloquent-ruby/oclc/676726142"&gt;Eloquent
+Ruby&lt;/a&gt;. The second chapter
+on choosing the right control structures has this paragraph (emphasis mine):&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Since the two versions of the “print my fonts” code are essentially
+equivalent,[1] why prefer one over the other? Mainly it is a question of
+eliminating one level of indirection. Ruby actually defines the for loop in
+terms of the each method: When you say for font in fonts, Ruby will actually
+conjure up a call to fonts.each. Given that the for statement is really a call
+to each in disguise, &lt;strong&gt;why not just pull the mask off and write what you
+mean?&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[1] Almost. The code block in the each version actually introduces a new
+scope. Any variables introduced into a code block are local to that block
+and go away at the end of the block. The more traditional for version of the
+loop does not introduce a new scope, so that variables introduced inside a
+for are also visible outside the loop.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Why not just pull the mask off?&lt;/h2&gt;
+&lt;p&gt;We should not avoid constructs that potentially clarify the meaning of our code
+because under the hood they become something else. By that argument one would
+always write x86 machine code, memnonic assemblers are not for &lt;em&gt;real&lt;/em&gt;
+programmers! Real programmers assemble the code in their heads!&lt;/p&gt;
+&lt;p&gt;I think that a for-each loop of the style of Ruby or Python or &lt;code&gt;____&lt;/code&gt; are a very
+clear idiom. It reads nicely, every programmer who has a background in a C
+family language will know instantly what you mean. I don't see any benefit in
+avoiding the for loop in Ruby any more than I can see benefit in avoiding in C
+when I could be using a goto and an if statement. Which reads better to you?
+(Say the words out loud!)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;fonts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;font&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="c1"&gt;# fonts each do font :-(&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;or&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;font&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;fonts&lt;/span&gt;
+&lt;span class="c1"&gt;# for font in fonts :-)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The for loop gets my vote.&lt;/p&gt;</summary></entry><entry><title>An in Memory Go Implementation of Linear Hashing</title><link href="http://hackthology.com/an-in-memory-go-implementation-of-linear-hashing.html" rel="alternate"></link><updated>2013-11-15T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-15:an-in-memory-go-implementation-of-linear-hashing.html</id><summary type="html">&lt;p&gt;In the &lt;a href="http://hackthology.com/linear-hashing.html"&gt;last post&lt;/a&gt; I described how linear hashing
 works. If you haven't read it yet, you should go read it first. I can wait, this
 post presents a new implementation which is a lot simpler than the disk based
 version referenced in the last post.&lt;/p&gt;
