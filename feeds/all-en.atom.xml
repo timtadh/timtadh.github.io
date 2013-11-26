@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/all-en.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2013-11-21T00:00:00-05:00</updated><entry><title>The Ruby For Loop</title><link href="http://hackthology.com/the-ruby-for-loop.html" rel="alternate"></link><updated>2013-11-21T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-21:the-ruby-for-loop.html</id><summary type="html">&lt;p&gt;I am taking some time to learn Ruby this fall from &lt;a href="www.worldcat.org/title/eloquent-ruby/oclc/676726142"&gt;Eloquent
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/all-en.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2013-11-25T00:00:00-05:00</updated><entry><title>Innovation isn't always the answer.</title><link href="http://hackthology.com/innovation-isnt-always-the-answer.html" rel="alternate"></link><updated>2013-11-25T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-25:innovation-isnt-always-the-answer.html</id><summary type="html">&lt;p&gt;From, &lt;a href="http://www.wired.com/wiredscience/2013/11/vaclav-smil-wired/"&gt;http://www.wired.com/wiredscience/2013/11/vaclav-smil-wired/&lt;/a&gt;, at the
+bottom.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;So the answers are not technological but political: better economic
+policies, better education, better trade policies.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Right. Today, as you know, everything is "innovation." We have problems, and
+people are looking for fairy-tale solutions—innovation like manna from heaven
+falling on the Israelites and saving them from the desert. It’s like, "Let's
+not reform the education system, the tax system. Let's not improve our
+dysfunctional government. Just wait for this innovation manna from a little
+group of people in Silicon Valley, preferably of Indian origin."&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;You people at WIRED - you're the guilty ones&lt;/em&gt;! You support these people, you
+write about them, you elevate them onto the cover! You really messed it up. I
+tell you, you pushed this on the American public, right? And people believe it
+now.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Dr. Smil is right about education. We cannot "innovate" our way out of poor
+educational policy - which is intimately tied up with many of our other
+policies. The Massive Online Open Course (MOOC) is the new textbook not the new
+classroom. The motivated student could always visit the library. These courses
+make material more accessible but the classroom is where the student is not
+where the material is. Not every person who needs help will be able to seek it.
+To help them you first have to find them, they will not find you.&lt;/p&gt;</summary></entry><entry><title>The Ruby For Loop</title><link href="http://hackthology.com/the-ruby-for-loop.html" rel="alternate"></link><updated>2013-11-21T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2013-11-21:the-ruby-for-loop.html</id><summary type="html">&lt;p&gt;I am taking some time to learn Ruby this fall from &lt;a href="www.worldcat.org/title/eloquent-ruby/oclc/676726142"&gt;Eloquent
 Ruby&lt;/a&gt;. The second chapter
 on choosing the right control structures has this paragraph (emphasis mine):&lt;/p&gt;
 &lt;blockquote&gt;
