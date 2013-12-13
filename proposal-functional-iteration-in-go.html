@@ -88,7 +88,7 @@ solution I like. This new solution uses a functional programming style.</p>
 <p>An iterator is function. Calling the function yields the next item in the
 collection and a continuation function pointer. When the continuation function
 pointer becomes nil, there are no more items left in the collection. Here's an
-example of how to use from a test case in my
+example of how to use a functional iterator from a test case in my
 <a href="https://github.com/timtadh/data-structures/blob/ab3c41d91c7b569caa0e989c7787de16cca7d10b/tree/avltree_test.go#L206">data-structures repository</a>:</p>
 <div class="highlight"><pre><span class="kd">var</span> <span class="nx">data</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span>
     <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span>
