@@ -59,16 +59,16 @@ post-order traversal:&lt;/p&gt;
     &lt;span class="nx"&gt;PostOrder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;node&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Right&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="nx"&gt;out&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="nx"&gt;out&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt;&lt;span class="nx"&gt;node&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Value&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;// using it&lt;/span&gt;
+&lt;span class="nx"&gt;iter&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="nb"&gt;make&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;chan&lt;/span&gt; &lt;span class="kd"&gt;interface&lt;/span&gt;&lt;span class="p"&gt;{})&lt;/span&gt;
+&lt;span class="k"&gt;go&lt;/span&gt; &lt;span class="nx"&gt;PostOrder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;root&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;iter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;node&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="k"&gt;range&lt;/span&gt; &lt;span class="nx"&gt;iter&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c1"&gt;// do something with node&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;n
-    // using it
-    iter := make(chan interface{})
-    go PostOrder(root, iter)
-    for node := range iter {
-        // do something with node
-    }&lt;/p&gt;
 &lt;p&gt;However, what happens if the consumer of the iterator needs to bail out early?
 Like so:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;iter&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="nb"&gt;make&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;chan&lt;/span&gt; &lt;span class="kd"&gt;interface&lt;/span&gt;&lt;span class="p"&gt;{})&lt;/span&gt;

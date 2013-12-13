@@ -119,16 +119,16 @@ post-order traversal:</p>
     <span class="nx">PostOrder</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">Right</span><span class="p">(),</span> <span class="nx">out</span><span class="p">)</span>
     <span class="nx">out</span><span class="o">&lt;-</span><span class="nx">node</span><span class="p">.</span><span class="nx">Value</span><span class="p">()</span>
 <span class="p">}</span>
+
+<span class="c1">// using it</span>
+<span class="nx">iter</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
+<span class="k">go</span> <span class="nx">PostOrder</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">iter</span><span class="p">)</span>
+<span class="k">for</span> <span class="nx">node</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">iter</span> <span class="p">{</span>
+    <span class="c1">// do something with node</span>
+<span class="p">}</span>
 </pre></div>
 
 
-<p>n
-    // using it
-    iter := make(chan interface{})
-    go PostOrder(root, iter)
-    for node := range iter {
-        // do something with node
-    }</p>
 <p>However, what happens if the consumer of the iterator needs to bail out early?
 Like so:</p>
 <div class="highlight"><pre><span class="nx">iter</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
