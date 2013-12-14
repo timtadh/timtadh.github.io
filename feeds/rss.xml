@@ -246,8 +246,7 @@ the parent gets returned to the consumer and the stack shrinks.&lt;/p&gt;
 Go. They are easy to use and do not leak resources. There only draw back in
 comparison to other approaches is greater difficulty in constructing the
 iterators. In order solve this libraries of data-structures and iterator
-generators should be constructed. I have begun such a library in my
-&lt;a href="https://github.com/timtadh/data-structures"&gt;data-structures repository&lt;/a&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Fri, 13 Dec 2013 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2013-12-13:functional-iteration-in-go.html</guid></item><item><title>How to Compile MySQL's "ON DUPLICATE KEY UPDATE" in SQL Alchemy</title><link>http://hackthology.com/how-to-compile-mysqls-on-duplicate-key-update-in-sql-alchemy.html</link><description>&lt;p&gt;This snippet contains a well tested way to compile an "Upsert" statement for
+generators should be constructed.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Fri, 13 Dec 2013 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2013-12-13:functional-iteration-in-go.html</guid></item><item><title>How to Compile MySQL's "ON DUPLICATE KEY UPDATE" in SQL Alchemy</title><link>http://hackthology.com/how-to-compile-mysqls-on-duplicate-key-update-in-sql-alchemy.html</link><description>&lt;p&gt;This snippet contains a well tested way to compile an "Upsert" statement for
 MySQL in SQL Alchemy. I have found it useful for several project and I am making
 it available via this gist for others to enjoy and improve. Unlike some other
 examples out there this one supports doing a bulk insert.&lt;/p&gt;
