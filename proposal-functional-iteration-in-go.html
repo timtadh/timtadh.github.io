@@ -221,13 +221,49 @@ just like writing a tail-recursive function in Scheme or Lisp one must write the
 iterator such that no actions need to be taken after the data is returned to the
 user. This sometimes gets tricky, for instance in post-order iteration.</p>
 <h3>Post Order Iteration</h3>
-<div class="highlight"><pre><span class="kd">func</span> <span class="nx">TraverseTreePostOrder</span><span class="p">(</span><span class="nx">node</span> <span class="nx">types</span><span class="p">.</span><span class="nx">TreeNode</span><span class="p">)</span> <span class="nx">types</span><span class="p">.</span><span class="nx">TreeNodeIterator</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+
+<span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">label</span> <span class="kt">int</span>
+    <span class="nx">left</span> <span class="o">*</span><span class="nx">Node</span>
+    <span class="nx">right</span> <span class="o">*</span><span class="nx">Node</span>
+<span class="p">}</span>
+<span class="kd">type</span> <span class="nx">IntIterator</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">label</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">next</span> <span class="nx">IntIterator</span><span class="p">)</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">make_kid_slice</span><span class="p">()</span> <span class="p">[]</span><span class="o">*</span><span class="nx">Node</span> <span class="p">{</span>
+    <span class="nx">nodes</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">Node</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">self</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="nx">nodes</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">nodes</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="nx">nodes</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">nodes</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">nodes</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">GetChild</span><span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">)</span> <span class="o">*</span><span class="nx">Node</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">make_kid_slice</span><span class="p">()[</span><span class="nx">i</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">ChildCount</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">make_kid_slice</span><span class="p">())</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;&lt;%v %v %v&gt;&quot;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">PostOrder</span><span class="p">()</span> <span class="nx">IntIterator</span> <span class="p">{</span>
     <span class="kd">type</span> <span class="nx">entry</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">tn</span> <span class="nx">types</span><span class="p">.</span><span class="nx">TreeNode</span>
+        <span class="nx">tn</span> <span class="o">*</span><span class="nx">Node</span>
         <span class="nx">i</span> <span class="kt">int</span>
     <span class="p">}</span>
 
-    <span class="nx">pop</span> <span class="o">:=</span> <span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="p">[]</span><span class="nx">entry</span><span class="p">)</span> <span class="p">([]</span><span class="nx">entry</span><span class="p">,</span> <span class="nx">types</span><span class="p">.</span><span class="nx">TreeNode</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">pop</span> <span class="o">:=</span> <span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="p">[]</span><span class="nx">entry</span><span class="p">)</span> <span class="p">([]</span><span class="nx">entry</span><span class="p">,</span> <span class="o">*</span><span class="nx">Node</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">stack</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="mi">0</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -236,31 +272,44 @@ user. This sometimes gets tricky, for instance in post-order iteration.</p>
         <span class="p">}</span>
     <span class="p">}</span>
 
+    <span class="nx">stack</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nb">make</span><span class="p">([]</span><span class="nx">entry</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">entry</span><span class="p">{</span><span class="nx">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">})</span>
 
-    <span class="nx">stack</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nb">make</span><span class="p">([]</span><span class="nx">entry</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">entry</span><span class="p">{</span><span class="nx">tn_expose_nil</span><span class="p">(</span><span class="nx">node</span><span class="p">),</span> <span class="mi">0</span><span class="p">})</span>
-
-    <span class="kd">var</span> <span class="nx">tn_iterator</span> <span class="nx">types</span><span class="p">.</span><span class="nx">TreeNodeIterator</span>
-    <span class="nx">tn_iterator</span> <span class="p">=</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">tn</span> <span class="nx">types</span><span class="p">.</span><span class="nx">TreeNode</span><span class="p">,</span> <span class="nx">next</span> <span class="nx">types</span><span class="p">.</span><span class="nx">TreeNodeIterator</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">iterator</span> <span class="nx">IntIterator</span>
+    <span class="nx">iterator</span> <span class="p">=</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">label</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">next</span> <span class="nx">IntIterator</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">i</span> <span class="kt">int</span>
+        <span class="kd">var</span> <span class="nx">tn</span> <span class="o">*</span><span class="nx">Node</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">nil</span>
         <span class="p">}</span>
 
         <span class="nx">stack</span><span class="p">,</span> <span class="nx">tn</span><span class="p">,</span> <span class="nx">i</span> <span class="p">=</span> <span class="nx">pop</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">tn</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">nil</span>
+        <span class="p">}</span>
         <span class="k">for</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">tn</span><span class="p">.</span><span class="nx">ChildCount</span><span class="p">()</span> <span class="p">{</span>
             <span class="nx">kid</span> <span class="o">:=</span> <span class="nx">tn</span><span class="p">.</span><span class="nx">GetChild</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
             <span class="nx">stack</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span> <span class="nx">entry</span><span class="p">{</span><span class="nx">tn</span><span class="p">,</span> <span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">})</span>
             <span class="nx">tn</span> <span class="p">=</span> <span class="nx">kid</span>
             <span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">tn</span><span class="p">,</span> <span class="nx">tn_iterator</span>
+        <span class="k">return</span> <span class="nx">tn</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span> <span class="nx">iterator</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">tn_iterator</span>
+    <span class="k">return</span> <span class="nx">iterator</span>
+
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">root</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}},</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">7</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">8</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}}}}</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">root</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">next</span> <span class="o">:=</span> <span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()();</span> <span class="nx">next</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">;</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 
 
+<p>(try it out yourself on the playground <a href="http://play.golang.org/p/MSxGKSnxwT">http://play.golang.org/p/MSxGKSnxwT</a>)</p>
 <p>This time, the iterator must keep a stack of items in order to function. The
 top entry contains the next item to process and location in its child list next
 to process. The function pops a node, <code>tn</code>, and child index, <code>i</code>, off of the
