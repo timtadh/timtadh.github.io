@@ -111,33 +111,56 @@ example of how to use a functional iterator from a test case in my
 interface while avoiding the problems with using channels to implement
 iteration. Using channels make iterators quite easy to write, consider this
 post-order traversal:</p>
-<div class="highlight"><pre><span class="kd">func</span> <span class="nx">PostOrder</span><span class="p">(</span><span class="nx">node</span> <span class="nx">Node</span><span class="p">,</span> <span class="nx">out</span> <span class="kd">chan</span><span class="o">&lt;-</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">node</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
-    <span class="nx">PostOrder</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">Left</span><span class="p">(),</span> <span class="nx">out</span><span class="p">)</span>
-    <span class="nx">PostOrder</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">Right</span><span class="p">(),</span> <span class="nx">out</span><span class="p">)</span>
-    <span class="nx">out</span><span class="o">&lt;-</span><span class="nx">node</span><span class="p">.</span><span class="nx">Value</span><span class="p">()</span>
+<div class="highlight"><pre><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+
+<span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">label</span> <span class="kt">int</span>
+    <span class="nx">left</span> <span class="o">*</span><span class="nx">Node</span>
+    <span class="nx">right</span> <span class="o">*</span><span class="nx">Node</span>
 <span class="p">}</span>
 
-<span class="c1">// using it</span>
-<span class="nx">iter</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
-<span class="k">go</span> <span class="nx">PostOrder</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">iter</span><span class="p">)</span>
-<span class="k">for</span> <span class="nx">node</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">iter</span> <span class="p">{</span>
-    <span class="c1">// do something with node</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;&lt;%v %v %v&gt;&quot;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">PostOrder</span><span class="p">()</span> <span class="p">(</span><span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">yield</span> <span class="kd">chan</span><span class="o">&lt;-</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">iter</span> <span class="kd">func</span><span class="p">(</span><span class="nx">node</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span>
+        <span class="nx">iter</span> <span class="p">=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">node</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="nx">node</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+            <span class="nx">iter</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">left</span><span class="p">)</span>
+            <span class="nx">iter</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+            <span class="nx">yield</span><span class="o">&lt;-</span><span class="nx">node</span><span class="p">.</span><span class="nx">label</span>
+        <span class="p">}</span>
+        <span class="nx">iter</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span>
+        <span class="nb">close</span><span class="p">(</span><span class="nx">yield</span><span class="p">)</span>
+    <span class="p">}(</span><span class="nx">ch</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">ch</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">root</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}},</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">7</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">8</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}}}}</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">root</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 
 
+<p>(try it on the playground <a href="http://play.golang.org/p/cU0jT8DdgT">http://play.golang.org/p/cU0jT8DdgT</a>)</p>
 <p>However, what happens if the consumer of the iterator needs to bail out early?
 Like so:</p>
-<div class="highlight"><pre><span class="nx">iter</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
-<span class="k">go</span> <span class="nx">PostOrder</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="nx">iter</span><span class="p">)</span>
-<span class="k">for</span> <span class="nx">node</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">iter</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">IsBad</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span>
+<div class="highlight"><pre><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="k">break</span>
     <span class="p">}</span>
-    <span class="c1">// do something with node</span>
 <span class="p">}</span>
 </pre></div>
 
