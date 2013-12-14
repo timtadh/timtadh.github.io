@@ -25,7 +25,7 @@ solution I like. This new solution uses a functional programming style.&lt;/p&gt
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;An iterator is function. Calling the function yields the next item in the
+&lt;p&gt;This iterator is a function. Calling the function yields the next item in the
 collection and a continuation function pointer. When the continuation function
 pointer becomes nil, there are no more items left in the collection. Here's an
 example of how to use a functional iterator from a test case in my
