@@ -255,5 +255,8 @@ figure * { border: none; margin: auto; padding: auto; }
     #page-head h1 {
         font-size: 2.5em;
     }
+    pre {
+        font-size: 8px !important;
+    }
 }
 
