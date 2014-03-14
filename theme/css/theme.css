@@ -241,7 +241,7 @@ span.line-number {
 
 figure * { border: none; margin: auto; padding: auto; }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 660px) {
     body {
         font-size: 15px;
     }
@@ -251,7 +251,6 @@ figure * { border: none; margin: auto; padding: auto; }
     body {
         font-size: 12px;
     }
-
     #page-head h1 {
         font-size: 2.5em;
     }
