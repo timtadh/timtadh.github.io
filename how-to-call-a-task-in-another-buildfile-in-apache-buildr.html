@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>Hackthology</title>
+    <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="http://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="http://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="http://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="http://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="http://hackthology.com/feeds/rss.xml" /> 
+
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="http://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <div class="top-nav">
+          <ul>
+            <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+            <li><a href="http://hackthology.com/pages/consulting.html">consulting</a></li>
+            <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+            <li><a href="http://hackthology.com/pages/research.html">research</a></li>
+            <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+          </ul>
+        </div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/how-to-call-a-task-in-another-buildfile-in-apache-buildr.html"
+             title="perm link How to Call a Task in another Buildfile in Apache Buildr">
+             How to Call a Task in another Buildfile in Apache Buildr
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
+            <br/> <time datetime="2014-03-14T00:00:00">Fri 14 March 2014</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <h1>asdf</h1>
+<p><a href="http://buildr.apache.org">Apache Buildr</a> is a nice build system for Java and
+other JVM langauges. It is based on Ruby's Rake system and make it quite easy to
+setup multi-project builds. However, what if you want to re-use a Buildfile from
+a sub-project in a parent project? By default there is no real support for this.
+The intreprepid hacker can fix that problem by loading the sub-projects
+Buildfile like this:</p>
+<div class="highlight"><pre><span class="p">.</span><span class="n">ruby</span><span class="o">::</span>
+
+<span class="k">if</span> <span class="n">File</span><span class="o">::</span><span class="n">exists</span><span class="o">?</span><span class="p">(</span><span class="err">&#39;</span><span class="n">sub</span><span class="o">-</span><span class="n">project</span><span class="o">/</span><span class="n">Buildfile</span><span class="err">&#39;</span><span class="p">)</span>
+  <span class="n">pwd</span> <span class="o">=</span> <span class="n">Dir</span><span class="p">.</span><span class="n">pwd</span>
+  <span class="n">Dir</span><span class="p">.</span><span class="n">chdir</span> <span class="n">File</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">sub</span><span class="o">-</span><span class="n">project</span><span class="err">&#39;</span><span class="p">)</span>
+  <span class="n">load</span> <span class="s">&quot;./Buildfile&quot;</span>
+  <span class="n">puts</span> <span class="n">project</span><span class="p">(</span><span class="err">&#39;</span><span class="n">sub</span><span class="o">-</span><span class="n">project</span><span class="err">&#39;</span><span class="p">).</span><span class="n">base_dir</span>  <span class="err">##</span> <span class="n">HACK</span><span class="o">:</span> <span class="n">pins</span> <span class="n">the</span> <span class="n">project</span> <span class="n">to</span> <span class="n">the</span>
+                                        <span class="err">##</span> <span class="n">proper</span> <span class="n">directory</span><span class="o">!</span>
+  <span class="n">Dir</span><span class="p">.</span><span class="n">chdir</span> <span class="n">pwd</span>
+<span class="n">end</span>
+</pre></div>
+
+
+<p>If you don't access base_dir before you reset the current working director then
+it will eventually get set to the wrong directory causing build failures.</p>
+<p>After you have loaded the Buildfile you can run:</p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">pwd</span>
+<span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span>
+<span class="err">$</span> <span class="n">buildr</span> <span class="n">help</span><span class="o">:</span><span class="n">projects</span>
+<span class="p">(</span><span class="n">in</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span><span class="p">,</span> <span class="n">development</span><span class="p">)</span>
+<span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">sub</span><span class="o">-</span><span class="n">project</span>
+  <span class="n">main</span><span class="o">-</span><span class="n">project</span>
+  <span class="n">sub</span><span class="o">-</span><span class="n">project</span>
+  <span class="n">other</span><span class="o">-</span><span class="n">project</span>
+  <span class="n">another</span><span class="o">-</span><span class="n">project</span>
+</pre></div>
+
+
+<p>All of the tasks from you sub-project should now work as expected from the
+parent project. Happy Buildring!</p>
+      </div>
+      </article> <!-- /#page-main -->
+
+        <aside id="page-side">
+          <!-- begin includes/sidebar.html -->
+          <nav>
+            <h3 class="first"><a href="http://hackthology.com/index.html">hackthology/</a></h3>
+            <h3>pages/</h3>
+            <ul>
+              <li><a href="http://hackthology.com/pages/about.html">about/</a></li>
+              <li><a href="http://hackthology.com/pages/consulting.html">consulting/</a></li>
+              <li><a href="http://hackthology.com/pages/projects.html">projects/</a></li>
+              <li><a href="http://hackthology.com/pages/research.html">research/</a></li>
+              <li><a href="http://hackthology.com/pages/teaching.html">teaching/</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+              <h3 class="active"><a href="http://hackthology.com/category/blog.html">blog/</a></h3>
+          </nav>
+
+          <nav>
+            <h3>links/</h3>
+            <ul>
+              <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed/</a></li>
+              <li><a href="https://github.com/timtadh">github.com/timtadh/</a></li>
+              <li><a href="https://twitter.com/timtadh">twitter.com/timtadh/</a></li>
+              <li><a href="https://plus.google.com/109232399292705173597">google+/</a></li>
+            </ul>
+          </nav>
+          <!-- end includes/sidebar.html --></aside> <!-- /#page-side -->
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a></p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
