@@ -249,14 +249,17 @@ figure * { border: none; margin: auto; padding: auto; }
 
 @media screen and (max-width: 540px) {
     body {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     #page-head h1 {
         font-size: 2.5em;
     }
     pre {
-        font-size: 6px !important;
+        font-size: 7px !important;
+    }
+    article header h1.full, h1.page {
+        font-size: 18px;
     }
 }
 
