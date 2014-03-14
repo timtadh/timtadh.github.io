@@ -55,7 +55,7 @@ div.top-nav ul li, div.bottom-nav ul li {
     padding: 0 .2em;
 }
 
-@media screen and (min-width: 660px) {
+@media screen and (min-width: 540px) {
 
     #page {
         max-width: 620px;
