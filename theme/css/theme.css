@@ -260,5 +260,9 @@ figure * { border: none; margin: auto; padding: auto; }
     article header h1.full, h1.page {
         font-size: 18px;
     }
+
+    article header h1 {
+        font-size: 12px;
+    }
 }
 
