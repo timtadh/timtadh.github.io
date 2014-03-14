@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2014-03-14T00:00:00-04:00</updated><entry><title>How to Call a Task in another Buildfile in Apache Buildr</title><link href="http://hackthology.com/how-to-call-a-task-in-another-buildfile-in-apache-buildr.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-03-14:how-to-call-a-task-in-another-buildfile-in-apache-buildr.html</id><summary type="html">&lt;h1&gt;asdf&lt;/h1&gt;
-&lt;p&gt;&lt;a href="http://buildr.apache.org"&gt;Apache Buildr&lt;/a&gt; is a nice build system for Java and
-other JVM langauges. It is based on Ruby's Rake system and make it quite easy to
-setup multi-project builds. However, what if you want to re-use a Buildfile from
-a sub-project in a parent project? By default there is no real support for this.
-The intreprepid hacker can fix that problem by loading the sub-projects
-Buildfile like this:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ruby&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;
-
-&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;File&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="o"&gt;?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Buildfile&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="n"&gt;pwd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Dir&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;
-  &lt;span class="n"&gt;Dir&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chdir&lt;/span&gt; &lt;span class="n"&gt;File&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-  &lt;span class="n"&gt;load&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;./Buildfile&amp;quot;&lt;/span&gt;
-  &lt;span class="n"&gt;puts&lt;/span&gt; &lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;base_dir&lt;/span&gt;  &lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="n"&gt;HACK&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pins&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;project&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt;
-                                        &lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="n"&gt;proper&lt;/span&gt; &lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
-  &lt;span class="n"&gt;Dir&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chdir&lt;/span&gt; &lt;span class="n"&gt;pwd&lt;/span&gt;
-&lt;span class="n"&gt;end&lt;/span&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2014-03-14T00:00:00-04:00</updated><entry><title>How to Re-Use a Sub-Project's Buildfile in Apache Buildr</title><link href="http://hackthology.com/how-to-re-use-a-sub-projects-buildfile-in-apache-buildr.html" rel="alternate"></link><updated>2014-03-14T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-03-14:how-to-re-use-a-sub-projects-buildfile-in-apache-buildr.html</id><summary type="html">&lt;p&gt;&lt;a href="http://buildr.apache.org"&gt;Apache Buildr&lt;/a&gt; is a nice build system for Java and
+other JVM langauges. It is based on Ruby's Rake system and makes it easy to
+setup a multi-project build. However, by default, there is no support for
+re-using a &lt;code&gt;Buildfile&lt;/code&gt; from another project.  The intreprepid hacker can fix that
+problem by loading the sub-project's &lt;code&gt;Buildfile&lt;/code&gt; like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ss"&gt;File&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="ss"&gt;:exists?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sub-project/Buildfile&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;pwd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Dir&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;
+  &lt;span class="no"&gt;Dir&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chdir&lt;/span&gt; &lt;span class="ss"&gt;File&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="ss"&gt;:join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;sub-project&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="nb"&gt;load&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;./Buildfile&amp;quot;&lt;/span&gt;
+  &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sub-project&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;base_dir&lt;/span&gt;  &lt;span class="c1"&gt;## HACK: pins the project to the&lt;/span&gt;
+                                        &lt;span class="c1"&gt;## proper directory!&lt;/span&gt;
+  &lt;span class="no"&gt;Dir&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chdir&lt;/span&gt; &lt;span class="n"&gt;pwd&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;If you don't access base_dir before you reset the current working director then
-it will eventually get set to the wrong directory causing build failures.&lt;/p&gt;
-&lt;p&gt;After you have loaded the Buildfile you can run:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;pwd&lt;/span&gt;
-&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;
-&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;buildr&lt;/span&gt; &lt;span class="n"&gt;help&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;projects&lt;/span&gt;
-&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;development&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;
-  &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;
-  &lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;
-  &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;
-  &lt;span class="n"&gt;another&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;
+&lt;p&gt;If you don't access &lt;code&gt;base_dir&lt;/code&gt; before you reset the current working directory
+then it will eventually get set to the wrong directory causing build failures.&lt;/p&gt;
+&lt;p&gt;After you have loaded the &lt;code&gt;Buildfile&lt;/code&gt; you can run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;
+/path/to/project
+&lt;span class="nv"&gt;$ &lt;/span&gt;buildr &lt;span class="nb"&gt;help&lt;/span&gt;:projects
+&lt;span class="o"&gt;(&lt;/span&gt;in /path/to/project, development&lt;span class="o"&gt;)&lt;/span&gt;
+/path/to/project/sub-project
+  main-project
+  sub-project
+  other-project
+  another-project
 &lt;/pre&gt;&lt;/div&gt;
 
 
