@@ -22,6 +22,7 @@ h4, h5, h6,
     font-family: 'Lora', "Century Schoolbook L", "Georgia", "Nimbus Roman No9 L", "Norasi", "Rekha", serif;
     line-height: 1.5em;
     margin-top: 1em;
+    text-align: left;
 }
 
 hr {
