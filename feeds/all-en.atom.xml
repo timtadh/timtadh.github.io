@@ -19,7 +19,7 @@ the software and can lead to changes in functional requirements.&lt;/p&gt;
 &lt;p&gt;In order to verify the correct functioning of software, engineers check the
 software to ensure it satisfies the specification. A specification states how
 the software should function. Unfortunately, a complete and accurate
-specification never exists. Engineer carefully determine what to check and based
+specification never exists. Engineers carefully determine what to check and based
 on their estimations on the accuracy and completeness of a specification.&lt;/p&gt;
 &lt;p&gt;The modern engineer has many techniques that can be used to verify software.
 Broadly they fit into two categories: testing and program analysis. Program
@@ -85,9 +85,10 @@ for private methods in such a way that they can be excluded from test suite
 runs.&lt;/p&gt;
 &lt;h3&gt;Tests on private methods make the test suite brittle&lt;/h3&gt;
 &lt;p&gt;Here the tester needs to use their best judgement on whether the specification
-on some area is in too much flux to formalize a test. They should also use there
+on some area is in too much flux to formalize a test. They should also use their
 judgement on what to check. If the output format is likely to change rather than
-checking it precises can it be checked to ensure it meets certain properties?&lt;/p&gt;
+checking the output exactly matches some expected output one should check that
+the output has certain properties.&lt;/p&gt;
 &lt;h4&gt;negative example&lt;/h4&gt;
 &lt;p&gt;This test is very brittle. Slight changes to the code can easily break by
 re-ordering fields or adding and removing them.&lt;/p&gt;
