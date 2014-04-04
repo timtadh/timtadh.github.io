@@ -1699,7 +1699,7 @@ quaint to the practicing programmer of today.&lt;/p&gt;
 which ease our current pains, even if inevitably new pains arise. For, in
 learning, there is suffering.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Sun, 10 Nov 2013 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2013-11-10:programming-never-gets-easier.html</guid></item><item><title>New Site</title><link>http://hackthology.com/new-site.html</link><description>&lt;p&gt;It has been 6 months maybe more since Posterous shut down and I have just now
 gotten around to recreating my site. I chose to do this on github pages with
-pelican. Hosting on github is easy and simple. If github every stops doing these
+pelican. Hosting on github is easy and simple. If github ever stops doing these
 pages I can easily self host. I have now ported most of my old posts thanks to
 &lt;code&gt;pandoc&lt;/code&gt;. The posts I left behind were mostly terrible so all in all I think the
 new site is a big improvement. I might even write some more posts.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Wed, 06 Nov 2013 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2013-11-06:new-site.html</guid></item><item><title>The Limits of Type Systems</title><link>http://hackthology.com/the-limits-of-type-systems.html</link><description>&lt;p&gt;&lt;a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD03xx/EWD340.html"&gt;E.W.Dijkstra Archive: The Humble Programmer (EWD 340)&lt;/a&gt;&lt;/p&gt;
