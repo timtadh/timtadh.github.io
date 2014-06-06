@@ -2,9 +2,12 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2014-06-06T00:00:00-04:00</updated><entry><title>Always Go To Editable Command Mode in Vim</title><link href="http://hackthology.com/always-go-to-editable-command-mode-in-vim.html" rel="alternate"></link><updated>2014-06-06T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-06-06:always-go-to-editable-command-mode-in-vim.html</id><summary type="html">&lt;p&gt;A useful trick in vim is an editable command mode with previous commands in the
 buffer. To get to this mode go to normal mode (ie. hit ESC) and then type &lt;code&gt;q:&lt;/code&gt;
 this places you in editable command mode. If you always want to go to that mode
-you can remap &lt;code&gt;:&lt;/code&gt;&lt;/p&gt;
+you can remap &lt;code&gt;:&lt;/code&gt; with the following command:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;nmap : &lt;span class="k"&gt;q&lt;/span&gt;:&lt;span class="k"&gt;i&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Private Methods and Functions Should be Tested</title><link href="http://hackthology.com/private-methods-and-functions-should-be-tested.html" rel="alternate"></link><updated>2014-03-20T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-03-20:private-methods-and-functions-should-be-tested.html</id><summary type="html">&lt;p&gt;Recently I became engaged in a debate around whether or not private methods
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Happy Hacking!&lt;/p&gt;</summary></entry><entry><title>Private Methods and Functions Should be Tested</title><link href="http://hackthology.com/private-methods-and-functions-should-be-tested.html" rel="alternate"></link><updated>2014-03-20T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-03-20:private-methods-and-functions-should-be-tested.html</id><summary type="html">&lt;p&gt;Recently I became engaged in a debate around whether or not private methods
 should usually have unit tests. Rather than writing up a quick off hand reply to
 the question I decided to write up a detailed stance on the matter.&lt;/p&gt;
 &lt;h1&gt;Testing Theory&lt;/h1&gt;
