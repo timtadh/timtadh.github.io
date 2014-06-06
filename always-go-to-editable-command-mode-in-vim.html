@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+        <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
-    <title>Hackthology — Categories</title>
+    <title> Always Go To Editable Command Mode in Vim </title>
     <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
@@ -19,6 +19,10 @@
     <link rel ="alternate" type="application/rss+xml"
                            title="Hackthology — Flux RSS"
                            href="http://hackthology.com/feeds/rss.xml" /> 
+
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
   </head>
   <body>
     <div id="page">
@@ -44,14 +48,30 @@
       
       <div id="page-body">
 
-        <section id="page-main" role="main">
-    <section class="content">
-      <h1>Catégories</h1>
-      <ul id="category-list">
-      <li><a href="http://hackthology.com/category/blog.html">Blog</a> (23 articles)</li>
-      </ul>
-    </section>
-      </section> <!-- /#page-main -->
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/always-go-to-editable-command-mode-in-vim.html"
+             title="perm link Always Go To Editable Command Mode in Vim">
+             Always Go To Editable Command Mode in Vim
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
+            <br/> <time datetime="2014-06-06T00:00:00">Fri 06 June 2014</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>A useful trick in vim is an editable command mode with previous commands in the
+buffer. To get to this mode go to normal mode (ie. hit ESC) and then type <code>q:</code>
+this places you in editable command mode. If you always want to go to that mode
+you can remap <code>:</code></p>
+<div class="highlight"><pre>nmap : <span class="k">q</span>:<span class="k">i</span>
+</pre></div>
+      </div>
+      </article> <!-- /#page-main -->
 
       </div>  <!-- /#page-body -->
 
