@@ -69,9 +69,11 @@ works. If you haven't read it yet, you should go read it first. I can wait, this
 post presents a new implementation which is a lot simpler than the disk based
 version referenced in the last post.</p>
 <p>In the demonstration version (that would be this one) I represent the buckets as
-binary search trees. If I had been a bit more ambitious I would have represented
-them as AVL trees or 2-3-4 trees.</p>
-<p>Find the all the code in my <a href="https://github.com/timtadh/goplay/blob/master/hashtable/linhash.go">goplay repository</a></p>
+binary search trees. Find the exact code for this article in my <a href="https://github.com/timtadh/goplay/blob/master/hashtable/linhash.go">goplay
+repository</a>. An updated
+and slightly improved version is available in my <a href="http://github.com/timtadh/data-structures">data-structures
+repository</a> along with several other
+interesting algorithms.</p>
 <h2>Profiling Results</h2>
 <div class="highlight"><pre>              <span class="n">iterations</span><span class="p">,</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">operation</span>
 <span class="n">BenchmarkGoMap</span>    <span class="mi">100000</span><span class="p">,</span>      <span class="mi">26292</span> <span class="n">ns</span><span class="o">/</span><span class="n">op</span> <span class="o">--</span> <span class="n">native</span> <span class="n">map</span>
