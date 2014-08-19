@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> Scala Notes </title>
+    <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="http://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="http://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="http://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="http://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="http://hackthology.com/feeds/rss.xml" /> 
+
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="http://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <div class="top-nav">
+<ul>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/consulting.html">consulting</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/research.html">research</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/scala-notes.html"
+             title="perm link Scala Notes">
+             Scala Notes
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
+            <br/> <time datetime="2014-08-18T00:00:00">Mon 18 August 2014</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>My notes as I relearn Scala. I am reading through <a href="http://www.worldcat.org/title/programming-in-scala/oclc/731510960">Programming in Scala (2nd
+ed.)</a></p>
+<h1>Quibble with the Functional List</h1>
+<blockquote>
+<p>> <em>from page 43</em></p>
+<h3>Why not append to lists?</h3>
+<p>Class <code>List</code> does offer an append operation -- it's written <code>:+</code> and is
+explained in Chapter 24 -- but this operation is rarely used, because the time
+it takes to append to a list grows linearly with the size of the list, whereas
+prepending with <code>::</code> take constant time. Your options if you want to build a
+list efficiently by append elements is to prepend them, then when you're done
+call <code>reverse</code>; or use a <code>ListBuffer</code> a mutable list that does offer an
+<code>append</code> operation, and when you're done call <code>toList</code>. <code>ListBuffer</code> will be
+described in Section 22.2.</p>
+</blockquote>
+<p>I have always found the functional linked list to be a bit of an anachronism
+when appearing as core concept in a modern language. It is a limited data
+structure in terms of functionality, especially when compared to it
+non-functional mutable counter part (the doubly linked list with pointers to the
+head and the tail). The mutable doubly linked list can prepend, append, and swap
+elements in constant time. This makes it a highly useful data structure for a
+variety of tasks, including the wonderful Least Recently Used (LRU) cache
+replacement algorithm. In comparison, the traditional functional list of <code>cons</code>
+cells really only supports constant time prepend.</p>
+<p>Scala should provide a immutable list implementation with all of the features
+one can expect of an ArrayList, such as the one found in Python or Ruby. Like
+the Python or Ruby list Scala can simply refer to the list as <code>list</code> and
+provide details about the algorithms used to achieve the functionality as
+documentation. In fact a quick Google reveals Scala has such a structure and it
+calls it a <code>Vector</code>. Why not simply call the <code>Vector</code> a <code>list</code>? Or at least
+introduce <code>Vector</code>s as the primary list like structure to use.</p>
+<p>Using the <code>List</code> class as the example general purpose container type is just
+asking for trouble. Beginners would be better served by being introduced to
+<code>Vector</code> or a similar structure right away.</p>
+<p>Other than this quibble about the book, I think the Scala <a href="https://github.com/scala/scala/tree/v2.11.2/src/library/scala/collection/">collections
+library</a>
+is great. A wide variety of data-structures with solid implementations.</p>
+<h1>Values vs. Variables</h1>
+<blockquote>
+<p>> <em>from page 62</em></p>
+<p><sup>1</sup> The reason parameters are <code>vals</code> is that <code>vals</code> are easier to
+reason about. You needn't look further to determine if a <code>val</code> is reassigned,
+as you must do with a <code>var</code>.</p>
+</blockquote>
+<p>Perfectly true, but why should I care? The compiler will have no trouble
+determining whether or not a <code>var</code> is re-assigned. In fact if this was an
+imperative language the first step of the optimizer would likely be to convert
+the code into Single Static Assignment (SSA) form. Once in (SSA) form every
+variable has exactly one definition and code re-arrangement optimizations can
+proceed without difficulty.</p>
+<p>So using <code>vals</code> instead of <code>vars</code> must be for <em>(in)</em>convenience of the
+programmer. Scala does recommend using <code>val</code> over <code>var</code> when possible. So the
+choice is consistent with the philosophy of the language.</p>
+<p>My question is why prioritize the immutable against the mutable? The benefits of
+this choice are not clearly explained. It is true that it is easier to write
+certain proofs if you don't have to deal with changing data on the heap however
+today we have the (mathematical) tools to deal with that situation.  There are
+real benefits of mutable data-structures and algorithms, state mutation can be
+very efficient. For instance, the <a href="http://en.wikipedia.org/wiki/Disjoint-set_data_structure">Union-Find
+algorithm</a> has a
+straight forward and optimal imperative implementation. It is significantly
+harder to achieve an optimal immutable version as demonstrated by <a href="https://www.lri.fr/~filliatr/ftp/publis/puf-wml07.pdf">this paper
+from 2007</a>.</p>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/consulting.html">consulting</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/research.html">research</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+</ul></div>
+        <p>Copyright 2014 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
