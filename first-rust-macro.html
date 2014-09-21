@@ -78,7 +78,7 @@ that seems to be:</p>
 
 <p>So I decided to fix that with the following macro:</p>
 <div class="highlight"><pre><span class="n">macro_rules</span><span class="o">!</span> <span class="k">log</span><span class="p">((</span><span class="n">$fmt</span><span class="o">:</span><span class="n">expr$</span><span class="p">(,</span> <span class="n">$msg</span><span class="o">:</span><span class="n">expr</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="p">(</span><span class="n">writeln</span><span class="o">!</span><span class="p">[</span><span class="n">io</span><span class="o">::</span><span class="n">stderr</span><span class="p">(),</span> <span class="n">$fmt</span><span class="p">,</span> <span class="n">$</span><span class="p">(</span><span class="n">$msg</span><span class="p">)</span><span class="o">*</span><span class="p">]).</span><span class="n">ok</span><span class="p">().</span><span class="n">expect</span><span class="p">(</span><span class="s">&quot;log failed&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">writeln</span><span class="o">!</span><span class="p">[</span><span class="n">io</span><span class="o">::</span><span class="n">stderr</span><span class="p">(),</span> <span class="n">$fmt</span> <span class="n">$</span><span class="p">(,</span> <span class="n">$msg</span><span class="p">)</span><span class="o">*</span><span class="p">]).</span><span class="n">ok</span><span class="p">().</span><span class="n">expect</span><span class="p">(</span><span class="s">&quot;log failed&quot;</span><span class="p">)</span>
 <span class="p">})</span>
 </pre></div>
 
