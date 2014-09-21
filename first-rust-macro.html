@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+        <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
-    <title>Hackthology — Categories</title>
+    <title> First Rust Macro </title>
     <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
@@ -19,6 +19,10 @@
     <link rel ="alternate" type="application/rss+xml"
                            title="Hackthology — Flux RSS"
                            href="http://hackthology.com/feeds/rss.xml" /> 
+
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
   </head>
   <body>
     <div id="page">
@@ -44,14 +48,51 @@
       
       <div id="page-body">
 
-        <section id="page-main" role="main">
-    <section class="content">
-      <h1>Catégories</h1>
-      <ul id="category-list">
-      <li><a href="http://hackthology.com/category/blog.html">Blog</a> (25 articles)</li>
-      </ul>
-    </section>
-      </section> <!-- /#page-main -->
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/first-rust-macro.html"
+             title="perm link First Rust Macro">
+             First Rust Macro
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
+            <br/> <time datetime="2014-09-20T00:00:00">Sat 20 September 2014</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>I started learning <a href="http://www.rust-lang.org/">Rust</a> yesterday. Today as I was
+writing input handling code I wanted to print to the standard err. The way to do
+that seems to be:</p>
+<div class="highlight"><pre><span class="p">(</span><span class="n">writeln</span><span class="o">!</span><span class="p">[</span><span class="n">io</span><span class="o">::</span><span class="n">stderr</span><span class="p">(),</span> <span class="s">&quot;{}&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">]).</span><span class="n">ok</span><span class="p">().</span><span class="n">expect</span><span class="p">(</span><span class="s">&quot;write to stderr failed&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<p>That seems a bit verbose to me versus printing to the standard out, which is:</p>
+<div class="highlight"><pre><span class="n">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+</pre></div>
+
+
+<p>So I decided to fix that with the following macro:</p>
+<div class="highlight"><pre><span class="n">macro_rules</span><span class="o">!</span> <span class="k">log</span><span class="p">((</span><span class="n">$fmt</span><span class="o">:</span><span class="n">expr$</span><span class="p">(,</span> <span class="n">$msg</span><span class="o">:</span><span class="n">expr</span><span class="p">)</span><span class="o">*</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="p">(</span><span class="n">writeln</span><span class="o">!</span><span class="p">[</span><span class="n">io</span><span class="o">::</span><span class="n">stderr</span><span class="p">(),</span> <span class="n">$fmt</span><span class="p">,</span> <span class="n">$</span><span class="p">(</span><span class="n">$msg</span><span class="p">)</span><span class="o">*</span><span class="p">]).</span><span class="n">ok</span><span class="p">().</span><span class="n">expect</span><span class="p">(</span><span class="s">&quot;log failed&quot;</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+
+<p>Which you can use like so:</p>
+<div class="highlight"><pre><span class="k">log</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Or</p>
+<div class="highlight"><pre><span class="k">log</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;expected {} got {}&quot;</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">)</span>
+</pre></div>
+      </div>
+      </article> <!-- /#page-main -->
 
       </div>  <!-- /#page-body -->
 

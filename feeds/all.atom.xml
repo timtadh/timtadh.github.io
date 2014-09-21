@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2014-08-18T00:00:00-04:00</updated><entry><title>Scala Notes</title><link href="http://hackthology.com/scala-notes.html" rel="alternate"></link><updated>2014-08-18T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-08-18:scala-notes.html</id><summary type="html">&lt;p&gt;My notes as I relearn Scala. I am reading through &lt;a href="http://www.worldcat.org/title/programming-in-scala/oclc/731510960"&gt;Programming in Scala (2nd
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2014-09-20T00:00:00-04:00</updated><entry><title>First Rust Macro</title><link href="http://hackthology.com/first-rust-macro.html" rel="alternate"></link><updated>2014-09-20T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-09-20:first-rust-macro.html</id><summary type="html">&lt;p&gt;I started learning &lt;a href="http://www.rust-lang.org/"&gt;Rust&lt;/a&gt; yesterday. Today as I was
+writing input handling code I wanted to print to the standard err. The way to do
+that seems to be:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;writeln&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That seems a bit verbose to me versus printing to the standard out, which is:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;println&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So I decided to fix that with the following macro:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;macro_rules&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt; &lt;span class="k"&gt;log&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;$fmt&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;expr$&lt;/span&gt;&lt;span class="p"&gt;(,&lt;/span&gt; &lt;span class="n"&gt;$msg&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;expr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;writeln&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;$fmt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;$msg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;log failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Which you can use like so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;log&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Or&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;log&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;expected {} got {}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;expected&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;actual&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Scala Notes</title><link href="http://hackthology.com/scala-notes.html" rel="alternate"></link><updated>2014-08-18T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-08-18:scala-notes.html</id><summary type="html">&lt;p&gt;My notes as I relearn Scala. I am reading through &lt;a href="http://www.worldcat.org/title/programming-in-scala/oclc/731510960"&gt;Programming in Scala (2nd
 ed.)&lt;/a&gt;&lt;/p&gt;
 &lt;h1&gt;Quibble with the Functional List&lt;/h1&gt;
 &lt;blockquote&gt;
