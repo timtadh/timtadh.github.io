@@ -91,7 +91,10 @@ from 2007&lt;/a&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.or
 buffer. To get to this mode go to normal mode (ie. hit ESC) and then type &lt;code&gt;q:&lt;/code&gt;
 this places you in editable command mode. If you always want to go to that mode
 you can remap &lt;code&gt;:&lt;/code&gt; with the following command:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nmap : &lt;span class="k"&gt;q&lt;/span&gt;:&lt;span class="k"&gt;i&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;&amp;quot; Always go to history mode&lt;/span&gt;
+&lt;span class="nb"&gt;nnoremap&lt;/span&gt; : &lt;span class="k"&gt;q&lt;/span&gt;:&lt;span class="k"&gt;i&lt;/span&gt;
+&lt;span class="nb"&gt;nnoremap&lt;/span&gt; &lt;span class="sr"&gt;/ q/&lt;/span&gt;&lt;span class="k"&gt;i&lt;/span&gt;
+&lt;span class="nb"&gt;nnoremap&lt;/span&gt; ? &lt;span class="k"&gt;q&lt;/span&gt;?&lt;span class="k"&gt;i&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 

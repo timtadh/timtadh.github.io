@@ -68,7 +68,10 @@
 buffer. To get to this mode go to normal mode (ie. hit ESC) and then type <code>q:</code>
 this places you in editable command mode. If you always want to go to that mode
 you can remap <code>:</code> with the following command:</p>
-<div class="highlight"><pre><span></span>nmap : <span class="k">q</span>:<span class="k">i</span>
+<div class="highlight"><pre><span></span><span class="c">&quot; Always go to history mode</span>
+<span class="nb">nnoremap</span> : <span class="k">q</span>:<span class="k">i</span>
+<span class="nb">nnoremap</span> <span class="sr">/ q/</span><span class="k">i</span>
+<span class="nb">nnoremap</span> ? <span class="k">q</span>?<span class="k">i</span>
 </pre></div>
 
 
