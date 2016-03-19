@@ -61,7 +61,7 @@
 <!-- includes/article_meta.html -->
           <div class="meta">
             by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
-            <br/> <time datetime="2014-03-20T00:00:00">Thu 20 March 2014</time></div>        </div>
+            <br/> <time datetime="2014-03-20T00:00:00-04:00">Thu 20 March 2014</time></div>        </div>
       </header>
       <div class="post-content"> 
         <p>Recently I became engaged in a debate around whether or not private methods
@@ -157,7 +157,7 @@ the output has certain properties.</p>
 <h4>negative example</h4>
 <p>This test is very brittle. Slight changes to the code can easily break by
 re-ordering fields or adding and removing them.</p>
-<div class="highlight"><pre><span class="n">String</span> <span class="n">E</span> <span class="o">=</span> <span class="s">&quot;edge {\&quot;src\&quot;:0,\&quot;targ\&quot;:1,\&quot;label\&quot;:\&quot;cfg\&quot;,\&quot;src_label\&quot;:\&quot;a\&quot;,\&quot;targ_label\&quot;:\&quot;b\&quot;}&quot;</span><span class="o">;</span>
+<div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">E</span> <span class="o">=</span> <span class="s">&quot;edge {\&quot;src\&quot;:0,\&quot;targ\&quot;:1,\&quot;label\&quot;:\&quot;cfg\&quot;,\&quot;src_label\&quot;:\&quot;a\&quot;,\&quot;targ_label\&quot;:\&quot;b\&quot;}&quot;</span><span class="o">;</span>
 
 <span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">Edge</span><span class="o">()</span> <span class="o">{</span>
@@ -175,7 +175,7 @@ re-ordering fields or adding and removing them.</p>
 <p>This test is better because it looks for just the properties of the
 serialization which are important (the source, target, and edge label are set
 correctly).</p>
-<div class="highlight"><pre><span class="nd">@Test</span>
+<div class="highlight"><pre><span></span><span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">Edge</span><span class="o">()</span> <span class="o">{</span>
     <span class="n">Graph</span> <span class="n">g</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Graph</span><span class="o">();</span>
     <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="na">addNode</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="s">&quot;x.y&quot;</span><span class="o">,</span> <span class="s">&quot;c&quot;</span><span class="o">,</span> <span class="s">&quot;m&quot;</span><span class="o">,</span> <span class="s">&quot;t&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>

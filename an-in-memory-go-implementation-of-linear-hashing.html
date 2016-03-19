@@ -61,7 +61,7 @@
 <!-- includes/article_meta.html -->
           <div class="meta">
             by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
-            <br/> <time datetime="2013-11-15T00:00:00">Fri 15 November 2013</time></div>        </div>
+            <br/> <time datetime="2013-11-15T00:00:00-05:00">Fri 15 November 2013</time></div>        </div>
       </header>
       <div class="post-content"> 
         <p>In the <a href="http://hackthology.com/linear-hashing.html">last post</a> I described how linear hashing
@@ -75,16 +75,16 @@ and slightly improved version is available in my <a href="http://github.com/timt
 repository</a> along with several other
 interesting algorithms.</p>
 <h2>Profiling Results</h2>
-<div class="highlight"><pre>              <span class="n">iterations</span><span class="p">,</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">operation</span>
-<span class="n">BenchmarkGoMap</span>    <span class="mi">100000</span><span class="p">,</span>      <span class="mi">26292</span> <span class="n">ns</span><span class="o">/</span><span class="n">op</span> <span class="o">--</span> <span class="n">native</span> <span class="n">map</span>
-<span class="n">BenchmarkHash</span>      <span class="mi">20000</span><span class="p">,</span>      <span class="mi">79526</span> <span class="n">ns</span><span class="o">/</span><span class="n">op</span> <span class="o">--</span> <span class="n">classical</span> <span class="n">separate</span> <span class="n">chaining</span>
-<span class="n">BenchmarkMLHash</span>    <span class="mi">20000</span><span class="p">,</span>      <span class="mi">80820</span> <span class="n">ns</span><span class="o">/</span><span class="n">op</span> <span class="o">--</span> <span class="n">in</span> <span class="n">memory</span> <span class="n">LH</span>
-<span class="n">BenchmarkLHash</span>       <span class="mi">500</span><span class="p">,</span>    <span class="mi">5733882</span> <span class="n">ns</span><span class="o">/</span><span class="n">op</span> <span class="o">--</span> <span class="n">disk</span> <span class="n">based</span> <span class="n">LH</span><span class="p">,</span> <span class="n">LRU</span> <span class="n">cached</span> <span class="n">in</span> <span class="n">memory</span>
+<div class="highlight"><pre><span></span>              iterations, ns per operation
+BenchmarkGoMap    100000,      26292 ns/op -- native map
+BenchmarkHash      20000,      79526 ns/op -- classical separate chaining
+BenchmarkMLHash    20000,      80820 ns/op -- in memory LH
+BenchmarkLHash       500,    5733882 ns/op -- disk based LH, LRU cached in memory
 </pre></div>
 
 
 <h2>Structs</h2>
-<div class="highlight"><pre><span class="kd">type</span> <span class="nx">bst</span> <span class="kd">struct</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">bst</span> <span class="kd">struct</span> <span class="p">{</span>
     <span class="nx">hash</span> <span class="kt">int</span>
     <span class="nx">key</span> <span class="nx">Hashable</span>
     <span class="nx">value</span> <span class="kd">interface</span><span class="p">{}</span>
@@ -102,7 +102,7 @@ interesting algorithms.</p>
 
 
 <h2>Bucket</h2>
-<div class="highlight"><pre><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="kt">uint</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="kt">uint</span> <span class="p">{</span>
     <span class="nx">m</span> <span class="o">:=</span> <span class="nb">uint</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">Hash</span><span class="p">()</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">if</span> <span class="nx">m</span> <span class="p">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">n</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">m</span>
@@ -114,7 +114,7 @@ interesting algorithms.</p>
 
 
 <h2>Has, Put, Get and Remove</h2>
-<div class="highlight"><pre><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">Put</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">Put</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">updated</span> <span class="kt">bool</span>
     <span class="nx">bkt_idx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
     <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">],</span> <span class="nx">updated</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
@@ -149,7 +149,7 @@ interesting algorithms.</p>
 
 
 <h2>Split</h2>
-<div class="highlight"><pre><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">split</span><span class="p">()</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">split</span><span class="p">()</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">bkt_idx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">n</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
     <span class="nx">old_bkt</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">]</span>
     <span class="kd">var</span> <span class="nx">bkt_a</span><span class="p">,</span> <span class="nx">bkt_b</span> <span class="o">*</span><span class="nx">bst</span>
@@ -180,7 +180,7 @@ pair and a function which provides the next item. You iterate by calling <code>n
 over and over again until the function pointer is nil. I hadn't written an
 iterator like this before but I like the way it works so I will probably re-use
 this pattern for future Go iterators.</p>
-<div class="highlight"><pre><span class="kd">type</span> <span class="nx">BSTIterator</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">next</span> <span class="nx">BSTIterator</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">BSTIterator</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">next</span> <span class="nx">BSTIterator</span><span class="p">)</span>
 <span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Iterate</span><span class="p">()</span> <span class="nx">BSTIterator</span> <span class="p">{</span>
     <span class="nx">pop</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">stack</span> <span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="p">([]</span><span class="o">*</span><span class="nx">bst</span><span class="p">,</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
@@ -220,7 +220,7 @@ this pattern for future Go iterators.</p>
 
 
 <h3>Standard Has, Get, Put, Remove, Size</h3>
-<div class="highlight"><pre><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Has</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="p">(</span><span class="nx">has</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Has</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="p">(</span><span class="nx">has</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="nx">self</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
         <span class="k">return</span> <span class="kc">false</span>
     <span class="p">}</span>
@@ -307,23 +307,23 @@ this pattern for future Go iterators.</p>
 <h3>The _md, lmr, rmd</h3>
 <p>These implement "left most descendent" and "right most descendent". Used by
 remove to hook up the nodes correctly.</p>
-<div class="highlight"><pre><span class="n">func</span> <span class="p">(</span><span class="n">self</span> <span class="o">*</span><span class="n">bst</span><span class="p">)</span> <span class="n">_md</span><span class="p">(</span><span class="n">side</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="n">self</span> <span class="o">==</span> <span class="n">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">nil</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">side</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="o">!=</span> <span class="n">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">side</span><span class="p">(</span><span class="n">self</span><span class="p">).</span><span class="n">_md</span><span class="p">(</span><span class="n">side</span><span class="p">)</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">self</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight"><pre><span></span>func (self *bst) _md(side func(*bst)*bst) (*bst) {
+    if self == nil {
+        return nil
+    } else if side(self) != nil {
+        return side(self)._md(side)
+    } else {
+        return self
+    }
+}
 
-<span class="n">func</span> <span class="p">(</span><span class="n">self</span> <span class="o">*</span><span class="n">bst</span><span class="p">)</span> <span class="n">lmd</span><span class="p">()</span> <span class="p">(</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_md</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">node</span> <span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="o">*</span><span class="n">bst</span> <span class="p">{</span> <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="p">})</span>
-<span class="p">}</span>
+func (self *bst) lmd() (*bst) {
+    return self._md(func(node *bst)*bst { return node.left })
+}
 
-<span class="n">func</span> <span class="p">(</span><span class="n">self</span> <span class="o">*</span><span class="n">bst</span><span class="p">)</span> <span class="n">rmd</span><span class="p">()</span> <span class="p">(</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_md</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">node</span> <span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="o">*</span><span class="n">bst</span> <span class="p">{</span> <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="p">})</span>
-<span class="p">}</span>
+func (self *bst) rmd() (*bst) {
+    return self._md(func(node *bst)*bst { return node.right })
+}
 </pre></div>
       </div>
       </article> <!-- /#page-main -->

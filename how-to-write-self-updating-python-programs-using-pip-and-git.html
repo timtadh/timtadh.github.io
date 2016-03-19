@@ -61,7 +61,7 @@
 <!-- includes/article_meta.html -->
           <div class="meta">
             by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
-            <br/> <time datetime="2011-05-23T00:00:00">Mon 23 May 2011</time></div>        </div>
+            <br/> <time datetime="2011-05-23T00:00:00-04:00">Mon 23 May 2011</time></div>        </div>
       </header>
       <div class="post-content"> 
         <p>If you are a pip<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> and virtualenv user you already know how easy it is
@@ -96,7 +96,7 @@ including tracking the master branch.</p>
 <p>Use Pip and the <code>-e</code> option plus a base URL to automatically update your
 software. eg. Have you software run pip for the user.</p>
 <p>example command:</p>
-<div class="highlight"><pre><span class="nx">pip</span> <span class="nb">install</span> <span class="o">--</span><span class="nx">upgrade</span> <span class="o">--</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;$HOME/.src&quot;</span> <span class="na">-e</span> <span class="nx">git</span><span class="o">+&lt;</span><span class="nb">URL</span><span class="o">&gt;</span><span class="p">@</span><span class="o">&lt;</span><span class="nb">REV</span><span class="o">&gt;</span><span class="vi">#egg</span><span class="o">=</span><span class="nx">PACKAGE_NAME</span>
+<div class="highlight"><pre><span></span><span class="x">pip install --upgrade --src=&quot;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.src&quot; -e git+&lt;URL&gt;@&lt;REV&gt;</span><span class="cp">#</span><span class="nf">egg</span><span class="x">=PACKAGE_NAME</span>
 </pre></div>
 
 
@@ -126,23 +126,23 @@ version.</p>
 <h4>Pip Gotcha</h4>
 <p>When checking out branches using pip you have to supply
 <code>origin/branchname</code> ex:</p>
-<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">src</span><span class="o">=</span><span class="s">&quot;$HOME/.src&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="o">:</span><span class="c1">//github.com/user/repo.git@origin/branch#egg=PACKAGE_NAME</span>
+<div class="highlight"><pre><span></span><span class="x">pip install --upgrade --src=&quot;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.src&quot; -e git+https://github.com/user/repo.git@origin/branch</span><span class="cp">#</span><span class="nf">egg</span><span class="x">=PACKAGE_NAME</span>
 </pre></div>
 
 
 <p>While when checking out a commit you should not supply origin</p>
-<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">src</span><span class="o">=</span><span class="s">&quot;$HOME/.src&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="o">:</span><span class="c1">//github.com/user/repo.git@COMMIT_ID#egg=PACKAGE_NAME</span>
+<div class="highlight"><pre><span></span><span class="x">pip install --upgrade --src=&quot;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.src&quot; -e git+https://github.com/user/repo.git@COMMIT_ID</span><span class="cp">#</span><span class="nf">egg</span><span class="x">=PACKAGE_NAME</span>
 </pre></div>
 
 
 <p>Why does pip work like this? Because of the commands it executes. For
 the command:</p>
-<div class="highlight"><pre><span class="nx">pip</span> <span class="nb">install</span> <span class="o">--</span><span class="nx">upgrade</span> <span class="o">--</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;$HOME/.src&quot;</span> <span class="na">-e</span> <span class="nx">git</span><span class="o">+</span><span class="nx">https</span><span class="p">:</span><span class="c1">//github.com/user/repo.git@&lt;VERSION&gt;#egg=PACKAGE_NAME</span>
+<div class="highlight"><pre><span></span><span class="x">pip install --upgrade --src=&quot;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.src&quot; -e git+https://github.com/user/repo.git@&lt;VERSION&gt;</span><span class="cp">#</span><span class="nf">egg</span><span class="x">=PACKAGE_NAME</span>
 </pre></div>
 
 
 <p>pip runs</p>
-<div class="highlight"><pre><span class="nx">git</span> <span class="nx">fetch</span> <span class="na">-q</span> <span class="nx">git</span> <span class="nb">reset</span> <span class="o">--</span><span class="nx">hard</span> <span class="na">-q</span> <span class="o">&lt;</span><span class="nb">VERSION</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span>git fetch -q git reset --hard -q &lt;VERSION&gt;
 </pre></div>
 
 
@@ -156,48 +156,48 @@ point the name of the branch.</p>
 stability of your enviroment.</p>
 <p>Note: I didn't include virtualenv support in this code but it is trivial
 to add.</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span> <span class="k">as</span> <span class="n">run</span> 
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span> <span class="k">as</span> <span class="n">run</span> 
 <span class="kn">from</span> <span class="nn">getopt</span> <span class="kn">import</span> <span class="n">getopt</span><span class="p">,</span> <span class="n">GetoptError</span> 
-<span class="n">RELEASE</span> <span class="o">=</span> <span class="s">&#39;master&#39;</span> <span class="c"># default release </span>
-<span class="n">SRC_DIR</span> <span class="o">=</span> <span class="s">&quot;$HOME/.src&quot;</span> <span class="c"># checkout directory </span>
-<span class="n">UPDATE_CMD</span> <span class="o">=</span> <span class="p">(</span> <span class="c"># base command </span>
-<span class="s">&#39;pip install --src=&quot;</span><span class="si">%s</span><span class="s">&quot; --upgrade -e &#39;</span> 
-<span class="s">&#39;git://github.com/timtadh/swork.git@</span><span class="si">%s</span><span class="s">#egg=swork&#39;</span> 
+<span class="n">RELEASE</span> <span class="o">=</span> <span class="s1">&#39;master&#39;</span> <span class="c1"># default release </span>
+<span class="n">SRC_DIR</span> <span class="o">=</span> <span class="s2">&quot;$HOME/.src&quot;</span> <span class="c1"># checkout directory </span>
+<span class="n">UPDATE_CMD</span> <span class="o">=</span> <span class="p">(</span> <span class="c1"># base command </span>
+<span class="s1">&#39;pip install --src=&quot;</span><span class="si">%s</span><span class="s1">&quot; --upgrade -e &#39;</span> 
+<span class="s1">&#39;git://github.com/timtadh/swork.git@</span><span class="si">%s</span><span class="s1">#egg=swork&#39;</span> 
 <span class="p">)</span>
 
 <span class="nd">@command</span> 
 <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">args</span><span class="p">):</span> 
     <span class="k">try</span><span class="p">:</span> 
-        <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&#39;sr:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;sudo&#39;</span><span class="p">,</span> <span class="s">&#39;src=&#39;</span><span class="p">,</span> <span class="s">&#39;release=&#39;</span><span class="p">,</span> <span class="s">&#39;commit=&#39;</span><span class="p">])</span> 
+        <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s1">&#39;sr:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sudo&#39;</span><span class="p">,</span> <span class="s1">&#39;src=&#39;</span><span class="p">,</span> <span class="s1">&#39;release=&#39;</span><span class="p">,</span> <span class="s1">&#39;commit=&#39;</span><span class="p">])</span> 
     <span class="k">except</span> <span class="n">GetoptError</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> 
         <span class="n">log</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> 
-        <span class="n">usage</span><span class="p">(</span><span class="n">error_codes</span><span class="p">[</span><span class="s">&#39;option&#39;</span><span class="p">])</span>
+        <span class="n">usage</span><span class="p">(</span><span class="n">error_codes</span><span class="p">[</span><span class="s1">&#39;option&#39;</span><span class="p">])</span>
 
     <span class="n">sudo</span> <span class="o">=</span> <span class="bp">False</span> 
     <span class="n">src_dir</span> <span class="o">=</span> <span class="n">SRC_DIR</span> 
     <span class="n">release</span> <span class="o">=</span> <span class="n">RELEASE</span> 
     <span class="n">commit</span> <span class="o">=</span> <span class="bp">None</span> 
     <span class="k">for</span> <span class="n">opt</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">opts</span><span class="p">:</span> 
-        <span class="k">if</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;-s&#39;</span><span class="p">,</span> <span class="s">&#39;--sudo&#39;</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;--sudo&#39;</span><span class="p">):</span> 
             <span class="n">sudo</span> <span class="o">=</span> <span class="bp">True</span> 
-        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;-r&#39;</span><span class="p">,</span> <span class="s">&#39;--release&#39;</span><span class="p">):</span> 
+        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="s1">&#39;--release&#39;</span><span class="p">):</span> 
             <span class="n">release</span> <span class="o">=</span> <span class="n">arg</span> 
-        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;--src&#39;</span><span class="p">,):</span> 
+        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;--src&#39;</span><span class="p">,):</span> 
             <span class="n">src_dir</span> <span class="o">=</span> <span class="n">arg</span> 
-        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;--commit&#39;</span><span class="p">,):</span> 
+        <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;--commit&#39;</span><span class="p">,):</span> 
             <span class="n">commit</span> <span class="o">=</span> <span class="n">arg</span>
 
-    <span class="k">if</span> <span class="n">release</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span> <span class="c">## Check if it is a version </span>
-        <span class="n">release</span> <span class="o">=</span> <span class="s">&#39;r&#39;</span> <span class="o">+</span> <span class="n">release</span> 
-    <span class="n">release</span> <span class="o">=</span> <span class="s">&#39;origin/&#39;</span> <span class="o">+</span> <span class="n">release</span> <span class="c">## assume it is a branch</span>
+    <span class="k">if</span> <span class="n">release</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span> <span class="c1">## Check if it is a version </span>
+        <span class="n">release</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span> <span class="o">+</span> <span class="n">release</span> 
+    <span class="n">release</span> <span class="o">=</span> <span class="s1">&#39;origin/&#39;</span> <span class="o">+</span> <span class="n">release</span> <span class="c1">## assume it is a branch</span>
 
-    <span class="k">if</span> <span class="n">commit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="c">## if a commit is supplied use that </span>
+    <span class="k">if</span> <span class="n">commit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="c1">## if a commit is supplied use that </span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">UPDATE_CMD</span> <span class="o">%</span> <span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">commit</span><span class="p">)</span> 
     <span class="k">else</span><span class="p">:</span> 
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">UPDATE_CMD</span> <span class="o">%</span> <span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">release</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">sudo</span><span class="p">:</span> 
-        <span class="n">run</span><span class="p">(</span><span class="s">&#39;sudo </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span> 
+        <span class="n">run</span><span class="p">(</span><span class="s1">&#39;sudo </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span> 
     <span class="k">else</span><span class="p">:</span> 
         <span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 </pre></div>

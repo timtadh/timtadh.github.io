@@ -61,13 +61,13 @@
 <!-- includes/article_meta.html -->
           <div class="meta">
             by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
-            <br/> <time datetime="2013-12-13T00:00:00">Fri 13 December 2013</time></div>        </div>
+            <br/> <time datetime="2013-12-13T00:00:00-05:00">Fri 13 December 2013</time></div>        </div>
       </header>
       <div class="post-content"> 
         <p>Go provides a built in way to iterate easily over built-in collection types:
 <code>maps</code>, <code>slices</code> and <code>chans</code>. Iterating with these types is much like iterating
 using for-each type loops in languages like Python, Ruby and Java.</p>
-<div class="highlight"><pre><span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="kd">map</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="kd">map</span> <span class="p">{</span>
     <span class="c1">// key, value</span>
 <span class="p">}</span>
 
@@ -86,7 +86,7 @@ collections using range. I have been experimenting with how to solve this
 problem since the initial public release of Go and I have finally settled on a
 solution I like. This new solution uses a functional programming style.</p>
 <h2>Functional Iterators</h2>
-<div class="highlight"><pre><span class="kd">type</span> <span class="nx">Iterator</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">item</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">next</span> <span class="nx">Iterator</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Iterator</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">item</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">next</span> <span class="nx">Iterator</span><span class="p">)</span>
 </pre></div>
 
 
@@ -95,7 +95,7 @@ collection and a continuation function pointer. When the continuation function
 pointer becomes nil, there are no more items left in the collection. Here's an
 example of how to use a functional iterator from a test case in my
 <a href="https://github.com/timtadh/data-structures/blob/ab3c41d91c7b569caa0e989c7787de16cca7d10b/tree/avltree_test.go#L206">data-structures repository</a>:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">data</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">data</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span>
     <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span>
 <span class="p">}</span>
 
@@ -116,7 +116,7 @@ example of how to use a functional iterator from a test case in my
 interface while avoiding the problems with using channels to implement
 iteration. Using channels make iterators quite easy to write, consider this
 post-order traversal:</p>
-<div class="highlight"><pre><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
 
@@ -161,7 +161,7 @@ post-order traversal:</p>
 <p>(try it on the playground <a href="http://play.golang.org/p/kUGDQvWhkb">http://play.golang.org/p/kUGDQvWhkb</a>)</p>
 <p>However, what happens if the consumer of the iterator needs to bail out early?
 Like so:</p>
-<div class="highlight"><pre><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()</span> <span class="p">{</span>
     <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
     <span class="k">if</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
         <span class="k">break</span>
@@ -186,7 +186,7 @@ reference. However, functional iterators are a bit tricky to write. Let's look
 at a few from the <a href="https://github.com/timtadh/data-structures">data-structures
 repository</a>.</p>
 <h3>Hash Table Iteration.</h3>
-<div class="highlight"><pre><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Hash</span><span class="p">)</span> <span class="nx">Iterate</span><span class="p">()</span> <span class="nx">KVIterator</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Hash</span><span class="p">)</span> <span class="nx">Iterate</span><span class="p">()</span> <span class="nx">KVIterator</span> <span class="p">{</span>
     <span class="nx">table</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span>
     <span class="nx">i</span> <span class="o">:=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="kd">var</span> <span class="nx">e</span> <span class="o">*</span><span class="nx">entry</span>
@@ -226,7 +226,7 @@ just like writing a tail-recursive function in Scheme or Lisp one must write the
 iterator such that no actions need to be taken after the data is returned to the
 user. This sometimes gets tricky, for instance in post-order iteration.</p>
 <h3>Post Order Iteration</h3>
-<div class="highlight"><pre><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
 

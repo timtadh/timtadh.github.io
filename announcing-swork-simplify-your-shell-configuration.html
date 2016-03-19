@@ -61,7 +61,7 @@
 <!-- includes/article_meta.html -->
           <div class="meta">
             by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
-            <br/> <time datetime="2011-05-18T00:00:00">Wed 18 May 2011</time></div>        </div>
+            <br/> <time datetime="2011-05-18T00:00:00-04:00">Wed 18 May 2011</time></div>        </div>
       </header>
       <div class="post-content"> 
         <p>If you are like me, and if you are reading this you may very well be,
@@ -81,7 +81,7 @@ seems to include this detail, and I am tired of it. It is boring, it is
 simple, and it is abstract-able. So I have abstracted. swork frees you
 from needing to write this code. When you want to go back the original
 state of the shell, you simply type:</p>
-<div class="highlight"><pre><span class="err">$</span> <span class="n">swork</span> <span class="n">restore</span>
+<div class="highlight"><pre><span></span>$ swork restore
 </pre></div>
 
 
@@ -94,17 +94,17 @@ you still have to write the scripts to run. Fortunately, this is very
 easy. You simply write a bash script (or any executable) then you add it
 to the \~/.sworkrc (located conveniently in your home directory).</p>
 <h3>Example setenv file:</h3>
-<div class="highlight"><pre><span class="c">#!/usr/bin/env bash</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 
-<span class="nb">source </span>env/bin/activate <span class="c"># activate a virtualenv</span>
-<span class="nb">export </span><span class="nv">SOMEVAR</span><span class="o">=</span><span class="s2">&quot;new value&quot;</span>
-<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;some/new/stuff&quot;</span>:<span class="nv">$PATH</span>
-<span class="nb">export </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;more/new/stuff&quot;</span>:<span class="nv">$PYTHONPATH</span>
+<span class="nb">source</span> env/bin/activate <span class="c1"># activate a virtualenv</span>
+<span class="nb">export</span> <span class="nv">SOMEVAR</span><span class="o">=</span><span class="s2">&quot;new value&quot;</span>
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;some/new/stuff&quot;</span>:<span class="nv">$PATH</span>
+<span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s2">&quot;more/new/stuff&quot;</span>:<span class="nv">$PYTHONPATH</span>
 </pre></div>
 
 
 <h3>example .sworkrc file:</h3>
-<div class="highlight"><pre><span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;project1&quot;</span> <span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;root&quot;</span><span class="p">:</span><span class="s2">&quot;/path/to/project1/root&quot;</span><span class="p">,</span>
         <span class="nt">&quot;start_cmd&quot;</span><span class="p">:</span><span class="s2">&quot;source /path/to/project1/root/then/setenv&quot;</span>
