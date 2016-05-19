@@ -493,8 +493,9 @@ is an error it tries to find a catch function to handle it (using the <code>isa<
 helper function to identify the catcher). Then whether or not a catch function
 was found, all <code>finally</code> functions are run in order of declaration. The final
 trick is the <code>catch</code> functions are run inside of a <code>Try</code> block and <code>exec</code>
-directly in case they re-throw exceptions. That is it! Check out the <a href="https://github.com/timtadh/data-structures/exc">source
-code</a> for more details.</p>
+directly in case they re-throw exceptions. That is it! Check out the <a href="https://github.com/timtadh/data-structures/tree/master/exc">source
+code</a> for more
+details.</p>
 <h2>Conclusion</h2>
 <p>There are good reasons why Go does not include exceptions at the language level.
 However, at times their absence can become annoying. So I created this little

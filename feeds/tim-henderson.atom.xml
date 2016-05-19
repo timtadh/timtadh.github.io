@@ -428,8 +428,9 @@ is an error it tries to find a catch function to handle it (using the &lt;code&g
 helper function to identify the catcher). Then whether or not a catch function
 was found, all &lt;code&gt;finally&lt;/code&gt; functions are run in order of declaration. The final
 trick is the &lt;code&gt;catch&lt;/code&gt; functions are run inside of a &lt;code&gt;Try&lt;/code&gt; block and &lt;code&gt;exec&lt;/code&gt;
-directly in case they re-throw exceptions. That is it! Check out the &lt;a href="https://github.com/timtadh/data-structures/exc"&gt;source
-code&lt;/a&gt; for more details.&lt;/p&gt;
+directly in case they re-throw exceptions. That is it! Check out the &lt;a href="https://github.com/timtadh/data-structures/tree/master/exc"&gt;source
+code&lt;/a&gt; for more
+details.&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;There are good reasons why Go does not include exceptions at the language level.
 However, at times their absence can become annoying. So I created this little
