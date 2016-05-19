@@ -237,6 +237,264 @@ the <code>exc.Exception</code> struct by embedding it as the first member.</p>
 
 <p>This should work with heirarchies of exceptions allowing your code to declare
 specific exceptions for specific errors.</p>
+<h3>How does it work?</h3>
+<p>Go provides <code>panic</code> and <code>recover</code> as <a href="https://golang.org/ref/spec#Handling_panics">built-in
+functions</a>. <code>panic(.)</code> allows you
+to cause the program to halt and the stack to "unwind". This means stack frame
+by stack frame the each function is halted and any deferred functions are run.
+Let's look at an example:</p>
+<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&quot;fmt&quot;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
+    <span class="nx">b</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
+    <span class="nx">c</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
+    <span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><strong>Output</strong>:</p>
+<div class="highlight"><pre><span></span>a
+b
+c
+defer c
+defer b
+defer a
+panic: c panic
+
+goroutine 1 [running]:
+panic(0x128360, 0x1040a140)
+    /usr/local/go/src/runtime/panic.go:481 +0x700
+main.c()
+    /tmp/sandbox797297488/main.go:28 +0x180
+main.b()
+    /tmp/sandbox797297488/main.go:20 +0x140
+main.a()
+    /tmp/sandbox797297488/main.go:12 +0x140
+main.main()
+    /tmp/sandbox797297488/main.go:32 +0x20
+</pre></div>
+
+
+<p>(try it on the playground <a href="https://play.golang.org/p/0Vp4jq0978">https://play.golang.org/p/0Vp4jq0978</a>)</p>
+<p>So panic by default kills your program but gives you a nice stack trace. It also
+runs your <code>defer</code>ed functions which allows some cleanup to happen. Recognizing
+this was rather limited and their are times even in Go when it is nice to
+recover from what is usually a fatal error (like in webservers) Go also provides
+<code>recover</code>.</p>
+<p>The <code>recover</code> function can be thought of as a limited panic catching function.
+It can only meaingfully be used inside of defer functions. When a <code>recover</code> is
+found it will stop the panic (that is stop unwinding the stack) and allow the
+function the <code>defer</code>ed <code>recover</code> is in to exit normally. Let's look at another
+example:</p>
+<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&quot;fmt&quot;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
+    <span class="nx">b</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end a&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
+        <span class="nb">recover</span><span class="p">()</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
+    <span class="nx">c</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end b&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
+    <span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end c&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;start&quot;</span><span class="p">)</span>
+    <span class="nx">a</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><strong>Output</strong>:</p>
+<div class="highlight"><pre><span></span>start
+a
+b
+c
+defer c
+defer b
+end a
+defer a
+end
+</pre></div>
+
+
+<p>(Try it on the playground: <a href="https://play.golang.org/p/WTzKywhey2">https://play.golang.org/p/WTzKywhey2</a>)</p>
+<p>This time, instead of the program crashing it exited normally. Functions, <code>a</code>
+and <code>main</code>, who invocations occurred before <code>b</code> which invoked <code>recover</code> exited
+normally. However, using recover like this will stop all errors and not explain
+what the problem is. Luckily, recover reports whether or not a panic was
+recovered and what the argument to the panic was. Here is an example:</p>
+<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&quot;fmt&quot;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nb">recover</span><span class="p">();</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;recovered&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end defer of a&quot;</span><span class="p">)</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
+    <span class="nx">b</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end a&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nb">recover</span><span class="p">();</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;recovered&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end defer of b&quot;</span><span class="p">)</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
+    <span class="nx">c</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end b&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
+    <span class="p">}()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
+    <span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end c&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;start&quot;</span><span class="p">)</span>
+    <span class="nx">a</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><strong>Output</strong>:</p>
+<div class="highlight"><pre><span></span>start
+a
+b
+c
+defer c
+defer b
+recovered c panic
+end defer of b
+end a
+defer a
+end defer of a
+end
+</pre></div>
+
+
+<p>(Try it on the playground: <a href="https://play.golang.org/p/agxBcqgCb8">https://play.golang.org/p/agxBcqgCb8</a>)</p>
+<p>This time the value passed into panic was returned by the call to <code>recover</code> in
+<code>b</code>. In <code>a</code> which contains the same code as <code>b</code> to recover the panic nothing is
+returned by <code>recover</code>.</p>
+<h4>Implementation</h4>
+<p>To implement exceptions, <code>panic</code> is used to throw the <code>Throwable</code> objects. Then
+a special function <code>exec</code> is created to execute the <code>try</code> functions:</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Block</span><span class="p">)</span> <span class="nx">exec</span><span class="p">()</span> <span class="p">(</span><span class="nx">err</span> <span class="nx">Throwable</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nb">recover</span><span class="p">();</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="k">switch</span> <span class="nx">exc</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.(</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="nx">Throwable</span><span class="p">:</span>
+                <span class="nx">err</span> <span class="p">=</span> <span class="nx">exc</span>
+            <span class="k">default</span><span class="p">:</span>
+                <span class="nb">panic</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}()</span>
+    <span class="nx">b</span><span class="p">.</span><span class="nx">try</span><span class="p">()</span>
+    <span class="k">return</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>This function simply calls the function passed into <code>Try()</code>. However, <code>exec</code> also
+registers a <code>defer</code> which changes the returned value of <code>exec</code> if a <code>Throwable</code>
+is discovered. Thus, we can throw exceptions with <code>panic</code> (no changes
+necessary!) and catch them with <code>recover</code>. The final piece is implementing the
+semantics of try, catch, finally. This is accomplished by a function called
+<code>run</code>:</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Block</span><span class="p">)</span> <span class="nx">run</span><span class="p">()</span> <span class="p">(</span><span class="nx">Throwable</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">err</span> <span class="o">:=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">exec</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">t</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">TypeOf</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">b</span><span class="p">.</span><span class="nx">catches</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="nx">isa</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">err</span> <span class="p">=</span> <span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">(){</span><span class="nx">c</span><span class="p">.</span><span class="nx">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)}).</span><span class="nx">exec</span><span class="p">()</span>
+                <span class="k">break</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">finally</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">b</span><span class="p">.</span><span class="nx">finallies</span> <span class="p">{</span>
+        <span class="nx">finally</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">err</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The <code>run</code> function first executes the <code>try</code> and gets the error if any. If there
+is an error it tries to find a catch function to handle it (using the <code>isa</code>
+helper function to identify the catcher). Then whether or not a catch function
+was found, all <code>finally</code> functions are run in order of declaration. The final
+trick is the <code>catch</code> functions are run inside of a <code>Try</code> block and <code>exec</code>
+directly in case they re-throw exceptions. That is it! Check out the <a href="https://github.com/timtadh/data-structures/exc">source
+code</a> for more details.</p>
 <h2>Conclusion</h2>
 <p>There are good reasons why Go does not include exceptions at the language level.
 However, at times their absence can become annoying. So I created this little
