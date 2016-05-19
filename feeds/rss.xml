@@ -34,13 +34,12 @@ the explicit handling of errors. For instance, consider the following code:&lt;/
 
 
 &lt;h3&gt;Adding Exceptions with a Library&lt;/h3&gt;
-&lt;p&gt;I created a &lt;a href="https://github.com/timtadh/data-structures/exc"&gt;library&lt;/a&gt; which
-adds support for exceptions to the go programming langauge.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://godoc.org/github.com/timtadh/data-structures/exc"&gt;&lt;img src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" alt="GoDoc"&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;This library allow you to write go with exceptions and try-catch-finally
-blocks. It is not appropriate for all situations but can simplify some
-application code. Libraries and external APIs should continue to conform to
-the Go standard of returning error values.&lt;/p&gt;
+&lt;p&gt;I created a &lt;a href="https://github.com/timtadh/data-structures/exc"&gt;library&lt;/a&gt; which adds
+support for exceptions to the go programming language.  This library allow you
+to write go with exceptions and try-catch-finally blocks. It is not appropriate
+for all situations but can simplify some application code. Libraries and
+external APIs should continue to conform to the Go standard of returning error
+values.&lt;/p&gt;
 &lt;p&gt;Here is an example of the &lt;code&gt;DoStuff&lt;/code&gt; function where foo, bar and baz all throw
 exceptions instead of returning errors. (We will look at the case where they
 return errors that you want to turn into exceptions next). We want DoStuff to
@@ -73,7 +72,7 @@ reraise it:&lt;/p&gt;
 
 &lt;p&gt;Rethrow will chain the Throwable &lt;code&gt;t&lt;/code&gt; with the new &lt;code&gt;*Error&lt;/code&gt; created such that
 if/when the exception reaches the top level you know exactly how it was
-created and where it was rethrown.&lt;/p&gt;
+created and where it was re-thrown.&lt;/p&gt;
 &lt;h4&gt;Throwing Errors&lt;/h4&gt;
 &lt;p&gt;Ok, what about interacting with regular Go APIs which return errors? How can
 we turn those errors into exceptions? The easy was is to use the
@@ -100,18 +99,18 @@ we turn those errors into exceptions? The easy was is to use the
 &lt;p&gt;This package also supports: catching user defined exceptions, catching
 multiple exception types, &lt;code&gt;Close&lt;/code&gt; which works like the "try with resources"
 construct in Java 7+, (multiple) finally blocks, and a choice between
-propogating exceptions with &lt;code&gt;Unwind&lt;/code&gt; or retrieving the error/exception with
+propagating exceptions with &lt;code&gt;Unwind&lt;/code&gt; or retrieving the error/exception with
 &lt;code&gt;Error&lt;/code&gt; and &lt;code&gt;Exception&lt;/code&gt; functions.&lt;/p&gt;
 &lt;p&gt;One Gotcha! The &lt;code&gt;Try()&lt;/code&gt; function creates a &lt;code&gt;*Block&lt;/code&gt; struct. To execute the
 block you must either call: &lt;code&gt;Unwind&lt;/code&gt;, &lt;code&gt;Error&lt;/code&gt;, or &lt;code&gt;Exception&lt;/code&gt;. &lt;code&gt;Unwind&lt;/code&gt;
 executes the block, if there is an exception coming out of the block it
-continues to cause the program stack unwind. &lt;code&gt;Error&lt;/code&gt; and &lt;code&gt;Exception&lt;/code&gt; excute
+continues to cause the program stack unwind. &lt;code&gt;Error&lt;/code&gt; and &lt;code&gt;Exception&lt;/code&gt; execute
 the block, but return the exception as a value to deal with in the usual Go
 way.&lt;/p&gt;
 &lt;h4&gt;Finally Blocks&lt;/h4&gt;
 &lt;p&gt;Finally blocks are a great feature of exceptions. They allow you to have a block
 of code run unconditionally after a try and catch block even if there was an
-unhandled exception or re-raised exception. In this example I use a finally
+un-handled exception or re-raised exception. In this example I use a finally
 block to log the timing information of the DoStuff function.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;DoStuff&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="kd"&gt;interface&lt;/span&gt;&lt;span class="p"&gt;{})&lt;/span&gt; &lt;span class="kt"&gt;error&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="nx"&gt;start&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="nx"&gt;time&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Now&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -444,8 +443,7 @@ adding a returned error throughout the library.&lt;/p&gt;
 mail! I know that exceptions are controversal in the Go community. This library
 tries to demonstrate how close &lt;code&gt;panic&lt;/code&gt; and &lt;code&gt;recover&lt;/code&gt; are to exceptions and how
 to emulate exceptions using &lt;code&gt;panic&lt;/code&gt; and &lt;code&gt;recover&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Now go read the docs:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://godoc.org/github.com/timtadh/data-structures/exc"&gt;&lt;img src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" alt="GoDoc"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Thu, 19 May 2016 00:00:00 -0400</pubDate><guid>tag:hackthology.com,2016-05-19:exceptions-for-go-as-a-library.html</guid></item><item><title>First Rust Macro</title><link>http://hackthology.com/first-rust-macro.html</link><description>&lt;p&gt;I started learning &lt;a href="http://www.rust-lang.org/"&gt;Rust&lt;/a&gt; yesterday. Today as I was
+&lt;p&gt;Now go &lt;a href="https://godoc.org/github.com/timtadh/data-structures/exc"&gt;read the docs&lt;/a&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Thu, 19 May 2016 00:00:00 -0400</pubDate><guid>tag:hackthology.com,2016-05-19:exceptions-for-go-as-a-library.html</guid></item><item><title>First Rust Macro</title><link>http://hackthology.com/first-rust-macro.html</link><description>&lt;p&gt;I started learning &lt;a href="http://www.rust-lang.org/"&gt;Rust&lt;/a&gt; yesterday. Today as I was
 writing input handling code I wanted to print to the standard err. The way to do
 that seems to be:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;writeln&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;

@@ -99,13 +99,12 @@ the explicit handling of errors. For instance, consider the following code:</p>
 
 
 <h3>Adding Exceptions with a Library</h3>
-<p>I created a <a href="https://github.com/timtadh/data-structures/exc">library</a> which
-adds support for exceptions to the go programming langauge.</p>
-<p><a href="https://godoc.org/github.com/timtadh/data-structures/exc"><img src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" alt="GoDoc"></a></p>
-<p>This library allow you to write go with exceptions and try-catch-finally
-blocks. It is not appropriate for all situations but can simplify some
-application code. Libraries and external APIs should continue to conform to
-the Go standard of returning error values.</p>
+<p>I created a <a href="https://github.com/timtadh/data-structures/exc">library</a> which adds
+support for exceptions to the go programming language.  This library allow you
+to write go with exceptions and try-catch-finally blocks. It is not appropriate
+for all situations but can simplify some application code. Libraries and
+external APIs should continue to conform to the Go standard of returning error
+values.</p>
 <p>Here is an example of the <code>DoStuff</code> function where foo, bar and baz all throw
 exceptions instead of returning errors. (We will look at the case where they
 return errors that you want to turn into exceptions next). We want DoStuff to
@@ -138,7 +137,7 @@ reraise it:</p>
 
 <p>Rethrow will chain the Throwable <code>t</code> with the new <code>*Error</code> created such that
 if/when the exception reaches the top level you know exactly how it was
-created and where it was rethrown.</p>
+created and where it was re-thrown.</p>
 <h4>Throwing Errors</h4>
 <p>Ok, what about interacting with regular Go APIs which return errors? How can
 we turn those errors into exceptions? The easy was is to use the
@@ -165,18 +164,18 @@ we turn those errors into exceptions? The easy was is to use the
 <p>This package also supports: catching user defined exceptions, catching
 multiple exception types, <code>Close</code> which works like the "try with resources"
 construct in Java 7+, (multiple) finally blocks, and a choice between
-propogating exceptions with <code>Unwind</code> or retrieving the error/exception with
+propagating exceptions with <code>Unwind</code> or retrieving the error/exception with
 <code>Error</code> and <code>Exception</code> functions.</p>
 <p>One Gotcha! The <code>Try()</code> function creates a <code>*Block</code> struct. To execute the
 block you must either call: <code>Unwind</code>, <code>Error</code>, or <code>Exception</code>. <code>Unwind</code>
 executes the block, if there is an exception coming out of the block it
-continues to cause the program stack unwind. <code>Error</code> and <code>Exception</code> excute
+continues to cause the program stack unwind. <code>Error</code> and <code>Exception</code> execute
 the block, but return the exception as a value to deal with in the usual Go
 way.</p>
 <h4>Finally Blocks</h4>
 <p>Finally blocks are a great feature of exceptions. They allow you to have a block
 of code run unconditionally after a try and catch block even if there was an
-unhandled exception or re-raised exception. In this example I use a finally
+un-handled exception or re-raised exception. In this example I use a finally
 block to log the timing information of the DoStuff function.</p>
 <div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span>
     <span class="nx">start</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">()</span>
@@ -509,8 +508,7 @@ adding a returned error throughout the library.</p>
 mail! I know that exceptions are controversal in the Go community. This library
 tries to demonstrate how close <code>panic</code> and <code>recover</code> are to exceptions and how
 to emulate exceptions using <code>panic</code> and <code>recover</code>.</p>
-<p>Now go read the docs:</p>
-<p><a href="https://godoc.org/github.com/timtadh/data-structures/exc"><img src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" alt="GoDoc"></a></p>
+<p>Now go <a href="https://godoc.org/github.com/timtadh/data-structures/exc">read the docs</a>.</p>
       </div>
       </article> <!-- /#page-main -->
 
