@@ -36,7 +36,7 @@ the explicit handling of errors. For instance, consider the following code:&lt;/
 &lt;h3&gt;Adding Exceptions with a Library&lt;/h3&gt;
 &lt;p&gt;I created a &lt;a href="https://github.com/timtadh/data-structures/exc"&gt;library&lt;/a&gt; which
 adds support for exceptions to the go programming langauge.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://godoc.org/github.com/timtadh/data-structures/exc"&gt;&lt;img alt="GoDoc" src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://godoc.org/github.com/timtadh/data-structures/exc"&gt;&lt;img src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" alt="GoDoc"&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;This library allow you to write go with exceptions and try-catch-finally
 blocks. It is not appropriate for all situations but can simplify some
 application code. Libraries and external APIs should continue to conform to
@@ -173,20 +173,20 @@ the &lt;code&gt;exc.Exception&lt;/code&gt; struct by embedding it as the first m
 &lt;p&gt;This should work with heirarchies of exceptions allowing your code to declare
 specific exceptions for specific errors.&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;There are good reasons why Go does not include exceptions at the langauge level.
+&lt;p&gt;There are good reasons why Go does not include exceptions at the language level.
 However, at times their absence can become annoying. So I created this little
 library that adds them to Go. You probably shouldn't make public APIs based on
 it, but it may help you write certain internal code more clearly. One clear use
 case is during a refactor adding &lt;code&gt;Throw&lt;/code&gt; call in a deep internal function which
 should have always returned an error. Then at the entry points to the API simply
 wrap up in a &lt;code&gt;Try().Catch().Error()&lt;/code&gt; which would accomplish the same thing as
-adding an returned error throughout the library.&lt;/p&gt;
+adding a returned error throughout the library.&lt;/p&gt;
 &lt;p&gt;I hope you enjoy this little experiment of mine and don't send me too much hate
 mail! I know that exceptions are controversal in the Go community. This library
 tries to demonstrate how close &lt;code&gt;panic&lt;/code&gt; and &lt;code&gt;recover&lt;/code&gt; are to exceptions and how
 to emulate exceptions using &lt;code&gt;panic&lt;/code&gt; and &lt;code&gt;recover&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Now go read the docs:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://godoc.org/github.com/timtadh/data-structures/exc"&gt;&lt;img alt="GoDoc" src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" /&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Thu, 19 May 2016 00:00:00 -0400</pubDate><guid>tag:hackthology.com,2016-05-19:exceptions-for-go-as-a-library.html</guid></item><item><title>First Rust Macro</title><link>http://hackthology.com/first-rust-macro.html</link><description>&lt;p&gt;I started learning &lt;a href="http://www.rust-lang.org/"&gt;Rust&lt;/a&gt; yesterday. Today as I was
+&lt;p&gt;&lt;a href="https://godoc.org/github.com/timtadh/data-structures/exc"&gt;&lt;img src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" alt="GoDoc"&gt;&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Thu, 19 May 2016 00:00:00 -0400</pubDate><guid>tag:hackthology.com,2016-05-19:exceptions-for-go-as-a-library.html</guid></item><item><title>First Rust Macro</title><link>http://hackthology.com/first-rust-macro.html</link><description>&lt;p&gt;I started learning &lt;a href="http://www.rust-lang.org/"&gt;Rust&lt;/a&gt; yesterday. Today as I was
 writing input handling code I wanted to print to the standard err. The way to do
 that seems to be:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;writeln&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;

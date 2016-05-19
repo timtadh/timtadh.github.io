@@ -101,7 +101,7 @@ the explicit handling of errors. For instance, consider the following code:</p>
 <h3>Adding Exceptions with a Library</h3>
 <p>I created a <a href="https://github.com/timtadh/data-structures/exc">library</a> which
 adds support for exceptions to the go programming langauge.</p>
-<p><a href="https://godoc.org/github.com/timtadh/data-structures/exc"><img alt="GoDoc" src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" /></a></p>
+<p><a href="https://godoc.org/github.com/timtadh/data-structures/exc"><img src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" alt="GoDoc"></a></p>
 <p>This library allow you to write go with exceptions and try-catch-finally
 blocks. It is not appropriate for all situations but can simplify some
 application code. Libraries and external APIs should continue to conform to
@@ -238,20 +238,20 @@ the <code>exc.Exception</code> struct by embedding it as the first member.</p>
 <p>This should work with heirarchies of exceptions allowing your code to declare
 specific exceptions for specific errors.</p>
 <h2>Conclusion</h2>
-<p>There are good reasons why Go does not include exceptions at the langauge level.
+<p>There are good reasons why Go does not include exceptions at the language level.
 However, at times their absence can become annoying. So I created this little
 library that adds them to Go. You probably shouldn't make public APIs based on
 it, but it may help you write certain internal code more clearly. One clear use
 case is during a refactor adding <code>Throw</code> call in a deep internal function which
 should have always returned an error. Then at the entry points to the API simply
 wrap up in a <code>Try().Catch().Error()</code> which would accomplish the same thing as
-adding an returned error throughout the library.</p>
+adding a returned error throughout the library.</p>
 <p>I hope you enjoy this little experiment of mine and don't send me too much hate
 mail! I know that exceptions are controversal in the Go community. This library
 tries to demonstrate how close <code>panic</code> and <code>recover</code> are to exceptions and how
 to emulate exceptions using <code>panic</code> and <code>recover</code>.</p>
 <p>Now go read the docs:</p>
-<p><a href="https://godoc.org/github.com/timtadh/data-structures/exc"><img alt="GoDoc" src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" /></a></p>
+<p><a href="https://godoc.org/github.com/timtadh/data-structures/exc"><img src="https://godoc.org/github.com/timtadh/data-structures/exc?status.svg" alt="GoDoc"></a></p>
       </div>
       </article> <!-- /#page-main -->
 
