@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> Object Oriented Inheritance in Go </title>
+    <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="http://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="http://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="http://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="http://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="http://hackthology.com/feeds/rss.xml" /> 
+
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="http://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <div class="top-nav">
+<ul>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/consulting.html">consulting</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/research.html">research</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/object-oriented-inheritance-in-go.html"
+             title="perm link Object Oriented Inheritance in Go">
+             Object Oriented Inheritance in Go
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
+            <br/> <time datetime="2016-05-20T00:00:00-04:00">Fri 20 May 2016</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>The Go (golang) programming language is not a traditional object oriented
+language like Smalltalk or Java. A key feature supporting traditional object
+oriented design is inheritance.  Inheritance supports sharing of code and data
+between related objects. It used to be that inheritance was the dominant design
+for sharing code and data but today another (older) technique called composition
+has seen a resurgence.</p>
+<p>Before we jump into how to use inheritance in Go (which has some interesting
+edge cases) let's see how it is used in Java.</p>
+<h3>Inheritance vs. Composition in Java</h3>
+<p>Let's look at an example from one of my favorite topics: compilers! A compiler
+is made up of a pipeline of transformations that take "plain text" and transform
+it either to machine code, assembly language, bytecode, or another programming
+language. The first stage of the pipeline the <em>lexer</em> performs what is called
+<em>lexical analysis</em> of the programming language. It traditionally splits the text
+up into the different components as: keywords, identifiers, punctuation,
+numbers, etc... Each component is tagged with the class of component it is. So
+for this fragment of Java:</p>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{}</span>
+</pre></div>
+
+
+<p>The "components" (called <em>tokens</em>) would be:</p>
+<div class="highlight"><pre><span></span>&lt;public keyword&gt;, &quot;public&quot;
+&lt;class keyword&gt;, &quot;class&quot;
+&lt;idenitifier&gt;, &quot;Main&quot;
+&lt;left-bracket&gt;, &quot;{&quot;
+&lt;right-bracket&gt;, &quot;}&quot;
+</pre></div>
+
+
+<p>The tokens have two parts:</p>
+<ol>
+<li>The <em>token type</em></li>
+<li>The <em>lexeme</em>, or the string the token was extracted from</li>
+</ol>
+<p>This leads to the following Java design</p>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">TokenType</span> <span class="o">{</span>
+    <span class="n">KEYWORD</span><span class="o">,</span> <span class="n">IDENTIFIER</span><span class="o">,</span> <span class="n">LBRACKET</span><span class="o">,</span> <span class="n">RBRACKET</span><span class="o">,</span> <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Token</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">TokenToken</span> <span class="n">type</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="n">lexeme</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>For some tokens, such as numeric constants, it convenient to specialize the
+<code>Token</code> object to contain some extra information. In the case of numeric
+constants the numerical value of the lexeme is convenient in to store directly in
+the <code>Token</code>. The traditional way to accomplish this is to have the numeric
+tokens <em>inherit</em> from the <code>Token</code> class.</p>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntegerConstant</span> <span class="kd">extends</span> <span class="n">Token</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="n">value</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>Another way this can be achieved is to use composition where the <code>IntegerConstant</code>
+instead of extending the <code>Token</code> class contains a reference to the token.</p>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntegerConstant</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Token</span> <span class="n">type</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="n">value</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>It turns out, in this particular case, inheritance is the better choice. The
+reason is the <code>Lexer</code> which produces the tokens needs to return a common type.
+Consider the interface of the Lexer:</p>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Lexer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">Lexer</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">EOF</span><span class="o">()</span>
+    <span class="kd">public</span> <span class="n">Token</span> <span class="nf">peek</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Error</span>
+    <span class="kd">public</span> <span class="n">Token</span> <span class="nf">next</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Error</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>Since in the first design (which uses inheritance) a <code>IntegerConstant</code> <em>is a</em>
+<code>Token</code> it can be used in the Lexer. Now, this isn't the only design that can be
+used and maybe isn't even the best design but it is valid. Let's take a look at
+how it translates to into Go.</p>
+<h3>Inheritance and Composition in Go</h3>
+<p>Composition is very natural in Go (as it is in most languages). To compose two
+structures simply provide a pointer or embedding to the collaborating structure.</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">TokenType</span> <span class="kt">uint16</span>
+
+<span class="kd">const</span> <span class="p">(</span>
+    <span class="nx">KEYWORD</span> <span class="nx">TokenType</span> <span class="p">=</span> <span class="kc">iota</span>
+    <span class="nx">IDENTIFIER</span>
+    <span class="nx">LBRACKET</span>
+    <span class="nx">RBRACKET</span>
+    <span class="nx">INT</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">Token</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Type</span>   <span class="nx">TokenType</span>
+  <span class="nx">Lexeme</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Token</span> <span class="o">*</span><span class="nx">Token</span>
+  <span class="nx">Value</span> <span class="kt">uint64</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>This would be the usual way to share code and data in Go. However, if you feel
+the need for inheritance then how can we use it? </p>
+<h4>Why would you want to use inheritance in go?</h4>
+<p>One of the obvious alternative designs for the <code>Token</code> is to make it and
+interface. This works equally well in both Java and Go:</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Token</span> <span class="kd">interface</span> <span class="p">{</span>
+  <span class="nx">Type</span><span class="p">()</span>   <span class="nx">TokenType</span>
+  <span class="nx">Lexeme</span><span class="p">()</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Match</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">toktype</span> <span class="nx">TokenType</span>
+  <span class="nx">lexeme</span>  <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">token</span> <span class="nx">Token</span>
+  <span class="nx">value</span> <span class="kt">uint64</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Match</span><span class="p">)</span> <span class="nx">Type</span><span class="p">()</span> <span class="nx">TokenType</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">m</span><span class="p">.</span><span class="nx">toktype</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Match</span><span class="p">)</span> <span class="nx">Lexeme</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">m</span><span class="p">.</span><span class="nx">lexeme</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span> <span class="nx">Type</span><span class="p">()</span> <span class="nx">TokenType</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">i</span><span class="p">.</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span> <span class="nx">Lexeme</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">i</span><span class="p">.</span><span class="nx">token</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span> <span class="nx">Value</span><span class="p">()</span> <span class="kt">uint64</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">i</span><span class="p">.</span><span class="nx">value</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The Lexer can then easily return return the <code>Token</code> interface which both <code>*Match</code>
+and <code>*IntegerConstant</code> satisfy.</p>
+<h4>Simplifying with inheritance</h4>
+<p>One of the problems with the previous design is the manual work in
+<code>*IntegerConstant</code> calling <code>i.token.Type()</code> and <code>i.token.Lexeme()</code>. It turns out
+we can use Go's built in support for inheritance to avoid this work.</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Token</span>
+  <span class="nx">value</span> <span class="kt">uint64</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span> <span class="nx">Value</span><span class="p">()</span> <span class="kt">uint64</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">i</span><span class="p">.</span><span class="nx">value</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>By not giving the <code>Token</code> field a name in <code>IntegerConstant</code>, it "inherits" the
+methods (and fields if <code>Token</code> was a <code>struct</code>) from <code>Token</code>. This pretty cool!
+We can write code like this:</p>
+<div class="highlight"><pre><span></span><span class="nx">t</span> <span class="o">:=</span> <span class="nx">IntegerConstant</span><span class="p">{</span><span class="o">&amp;</span><span class="nx">Match</span><span class="p">{</span><span class="nx">KEYWORD</span><span class="p">,</span> <span class="s">&quot;wizard&quot;</span><span class="p">},</span> <span class="mi">2</span><span class="p">}</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">Type</span><span class="p">(),</span> <span class="nx">t</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">(),</span> <span class="nx">t</span><span class="p">.</span><span class="nx">Value</span><span class="p">())</span>
+<span class="nx">x</span> <span class="o">:=</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">Type</span><span class="p">(),</span> <span class="nx">x</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">())</span>
+</pre></div>
+
+
+<p>(try it in the playground <a href="https://play.golang.org/p/PJW7VShpE0">https://play.golang.org/p/PJW7VShpE0</a>)</p>
+<p>So wow! Not only did we not have implement <code>Type()</code> and <code>Value()</code> but
+<code>*IntegerConstant</code> also implements the <code>Token</code> interface. Pretty nice.</p>
+<h4>Inheriting from <code>structs</code></h4>
+<p>There are three ways to do inheritance in Go. You have already seen one,
+inheriting from an <code>interface</code> by putting it as the first member without a field
+name. It turns out your can do the same thing with <code>struct</code>s and you have two
+choices</p>
+<ol>
+<li>
+<p>Inherit by embedding</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Match</span>
+  <span class="nx">value</span> <span class="kt">uint64</span>
+<span class="p">}</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Inherit with a pointer</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="o">*</span><span class="nx">Match</span>
+  <span class="nx">value</span> <span class="kt">uint64</span>
+<span class="p">}</span>
+</pre></div>
+
+
+</li>
+</ol>
+<p>On gotcha of all of these options, you can't have a Field and a method with the
+same name. So if you are inheriting from a <code>struct</code> called <code>Foo</code> which
+precludes you from having a method called <code>Foo</code> and prevents you from
+implementing a "Fooer" interface: <code>type Fooer interface { Foo() }</code>.</p>
+<h3>Sharing Data, Code or Both</h3>
+<p>In Go the line between inheritance and composition is pretty blurry in
+comparison with Java. There is no <code>extends</code> keyword. Syntactically, inheritance
+looks almost identical to composition. The only difference between composition
+and inheritance in Go, is a <code>struct</code> which inherits from another <code>struct</code> can
+directly access the methods and fields of the parent <code>struct</code>.</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Pet</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">name</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Dog</span> <span class="kd">struct</span> <span class="p">{</span>
+  <span class="nx">Pet</span>
+  <span class="nx">Breed</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Name</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">Dog</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">Speak</span><span class="p">(),</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">d</span> <span class="o">:=</span> <span class="nx">Dog</span><span class="p">{</span><span class="nx">Pet</span><span class="p">:</span> <span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&quot;spot&quot;</span><span class="p">},</span> <span class="nx">Breed</span><span class="p">:</span> <span class="s">&quot;pointer&quot;</span><span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>(try in the playground <a href="https://play.golang.org/p/Pmkd27Nqqy">https://play.golang.org/p/Pmkd27Nqqy</a>)</p>
+<p><strong>Output</strong>:</p>
+<div class="highlight"><pre><span></span>spot
+my name is spot and I am a pointer
+</pre></div>
+
+
+<h3>Conclusion</h3>
+<p>So it turns out, while it isn't a headline feature of Go, its ability for
+<code>struct</code>s to inherit from <code>struct</code> pointers, <code>struct</code>s, and <code>interface</code>s is
+powerful and flexible. It allows innovative designs that can solve real
+problems.</p>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/consulting.html">consulting</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/research.html">research</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+</ul></div>
+        <p>Copyright 2014 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
