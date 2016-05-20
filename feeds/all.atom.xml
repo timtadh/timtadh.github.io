@@ -258,7 +258,9 @@ my name is spot and I am a pointer
 &lt;p&gt;So it turns out, while it isn't a headline feature of Go, its ability for
 &lt;code&gt;struct&lt;/code&gt;s to inherit from &lt;code&gt;struct&lt;/code&gt; pointers, &lt;code&gt;struct&lt;/code&gt;s, and &lt;code&gt;interface&lt;/code&gt;s is
 powerful and flexible. It allows innovative designs that can solve real
-problems.&lt;/p&gt;</summary></entry><entry><title>Exceptions for Go as a Library</title><link href="http://hackthology.com/exceptions-for-go-as-a-library.html" rel="alternate"></link><updated>2016-05-19T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-05-19:exceptions-for-go-as-a-library.html</id><summary type="html">&lt;p&gt;Go (golang) lacks support for exceptions found in many other languages. There
+problems. For more details checkout the
+&lt;a href="https://golang.org/doc/effective_go.html#embedding"&gt;Embedding&lt;/a&gt; section of
+&lt;a href="https://golang.org/doc/effective_go.html"&gt;Effective Go&lt;/a&gt;.&lt;/p&gt;</summary></entry><entry><title>Exceptions for Go as a Library</title><link href="http://hackthology.com/exceptions-for-go-as-a-library.html" rel="alternate"></link><updated>2016-05-19T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-05-19:exceptions-for-go-as-a-library.html</id><summary type="html">&lt;p&gt;Go (golang) lacks support for exceptions found in many other languages. There
 are good reasons for Go to not include exceptions. For instance, by making
 error handling explicit the programmer is forced to think concretely about
 the correct action to take. Fined grained control over the handling of errors
