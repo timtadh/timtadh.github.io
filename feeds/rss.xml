@@ -212,7 +212,7 @@ choices&lt;/p&gt;
 &lt;/ol&gt;
 &lt;p&gt;In all cases, the difference from a regular field is the lack of an explicit
 name. However, the field still has a name. It is the name of the embedded type.
-so in the case of &lt;code&gt;IntegerConstant&lt;/code&gt; the &lt;code&gt;Match&lt;/code&gt; field is named &lt;code&gt;Match&lt;/code&gt;. This is
+So in the case of &lt;code&gt;IntegerConstant&lt;/code&gt; the &lt;code&gt;Match&lt;/code&gt; field is named &lt;code&gt;Match&lt;/code&gt;. This is
 true whether one embeds a pointer to a struct or a struct by value.&lt;/p&gt;
 &lt;p&gt;On gotcha of all of these options, you can't have a Field and a method with the
 same name. So if you are inheriting from a &lt;code&gt;struct&lt;/code&gt; called &lt;code&gt;Foo&lt;/code&gt; which
