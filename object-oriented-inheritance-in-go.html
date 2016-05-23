@@ -281,8 +281,8 @@ In the case of <code>IntegerConstant</code> the <code>Match</code> field is name
 true whether one embeds a pointer to a struct or a struct by value.</p>
 <p>On gotcha of all of these options, you can't have a Field and a method with the
 same name. A <code>struct</code> <code>Bar</code> is embedding a <code>struct</code> <code>Foo</code> precludes <code>Bar</code> from
-having a method called <code>Foo</code>. It also prevents <code>Bar</code> from implementing a "Fooer"
-interface: <code>type Fooer interface { Foo() }</code>.</p>
+having a method called <code>Foo</code>. It also prevents <code>Bar</code> from implementing <code>type
+Fooer interface { Foo() }</code>.</p>
 <h3>Sharing Data, Code or Both</h3>
 <p>In Go the line between inheritance and composition is pretty blurry in
 comparison with Java. There is no <code>extends</code> keyword. Syntactically, inheritance

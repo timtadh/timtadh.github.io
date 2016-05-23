@@ -216,8 +216,8 @@ In the case of &lt;code&gt;IntegerConstant&lt;/code&gt; the &lt;code&gt;Match&lt
 true whether one embeds a pointer to a struct or a struct by value.&lt;/p&gt;
 &lt;p&gt;On gotcha of all of these options, you can't have a Field and a method with the
 same name. A &lt;code&gt;struct&lt;/code&gt; &lt;code&gt;Bar&lt;/code&gt; is embedding a &lt;code&gt;struct&lt;/code&gt; &lt;code&gt;Foo&lt;/code&gt; precludes &lt;code&gt;Bar&lt;/code&gt; from
-having a method called &lt;code&gt;Foo&lt;/code&gt;. It also prevents &lt;code&gt;Bar&lt;/code&gt; from implementing a "Fooer"
-interface: &lt;code&gt;type Fooer interface { Foo() }&lt;/code&gt;.&lt;/p&gt;
+having a method called &lt;code&gt;Foo&lt;/code&gt;. It also prevents &lt;code&gt;Bar&lt;/code&gt; from implementing &lt;code&gt;type
+Fooer interface { Foo() }&lt;/code&gt;.&lt;/p&gt;
 &lt;h3&gt;Sharing Data, Code or Both&lt;/h3&gt;
 &lt;p&gt;In Go the line between inheritance and composition is pretty blurry in
 comparison with Java. There is no &lt;code&gt;extends&lt;/code&gt; keyword. Syntactically, inheritance
