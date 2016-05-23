@@ -112,7 +112,7 @@ structures simply provide a pointer or embedding to the collaborating structure.
 &lt;p&gt;This would be the usual way to share code and data in Go. However, if you feel
 the need for inheritance then how can we use it?&lt;/p&gt;
 &lt;h4&gt;Why would you want to use inheritance in go?&lt;/h4&gt;
-&lt;p&gt;One of the obvious alternative designs for the &lt;code&gt;Token&lt;/code&gt; is to make it and
+&lt;p&gt;One of the obvious alternative designs for the &lt;code&gt;Token&lt;/code&gt; is to make it an
 interface. This works equally well in both Java and Go:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="nx"&gt;Token&lt;/span&gt; &lt;span class="kd"&gt;interface&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="nx"&gt;Type&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;   &lt;span class="nx"&gt;TokenType&lt;/span&gt;
@@ -210,7 +210,10 @@ choices&lt;/p&gt;
 
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;In all cases, the difference from a regular field is &lt;/p&gt;
+&lt;p&gt;In all cases, the difference from a regular field is the lack of an explicit
+name. However, the field still has a name. It is the name of the embedded type.
+so in the case of &lt;code&gt;IntegerConstant&lt;/code&gt; the &lt;code&gt;Match&lt;/code&gt; field is named &lt;code&gt;Match&lt;/code&gt;. This is
+true whether one embeds a pointer to a struct or a struct by value.&lt;/p&gt;
 &lt;p&gt;On gotcha of all of these options, you can't have a Field and a method with the
 same name. So if you are inheriting from a &lt;code&gt;struct&lt;/code&gt; called &lt;code&gt;Foo&lt;/code&gt; which
 precludes you from having a method called &lt;code&gt;Foo&lt;/code&gt; and prevents you from

@@ -177,7 +177,7 @@ structures simply provide a pointer or embedding to the collaborating structure.
 <p>This would be the usual way to share code and data in Go. However, if you feel
 the need for inheritance then how can we use it?</p>
 <h4>Why would you want to use inheritance in go?</h4>
-<p>One of the obvious alternative designs for the <code>Token</code> is to make it and
+<p>One of the obvious alternative designs for the <code>Token</code> is to make it an
 interface. This works equally well in both Java and Go:</p>
 <div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Token</span> <span class="kd">interface</span> <span class="p">{</span>
   <span class="nx">Type</span><span class="p">()</span>   <span class="nx">TokenType</span>
@@ -275,7 +275,10 @@ choices</p>
 
 </li>
 </ol>
-<p>In all cases, the difference from a regular field is </p>
+<p>In all cases, the difference from a regular field is the lack of an explicit
+name. However, the field still has a name. It is the name of the embedded type.
+so in the case of <code>IntegerConstant</code> the <code>Match</code> field is named <code>Match</code>. This is
+true whether one embeds a pointer to a struct or a struct by value.</p>
 <p>On gotcha of all of these options, you can't have a Field and a method with the
 same name. So if you are inheriting from a <code>struct</code> called <code>Foo</code> which
 precludes you from having a method called <code>Foo</code> and prevents you from
