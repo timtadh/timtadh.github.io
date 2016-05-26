@@ -97,7 +97,7 @@ RCURLY  | &amp;quot;}&amp;quot;
 
 
 &lt;p&gt;Note, that like when the English sentence was analyzed spaces, newlines, tabs
-and other extraneous characters where dropped. Only the syntactically important
+and other extraneous characters were dropped. Only the syntactically important
 characters are output.&lt;/p&gt;
 &lt;p&gt;Each token has two parts: the &lt;em&gt;type&lt;/em&gt; and the &lt;em&gt;lexeme&lt;/em&gt;. The type indicates the
 role the token plays. The lexeme is the string the token was extracted from.&lt;/p&gt;
