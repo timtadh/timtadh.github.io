@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> Writing a Lexer in Go with LexMachine </title>
+    <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="http://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="http://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="http://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="http://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="http://hackthology.com/feeds/rss.xml" /> 
+
+    <meta name="author"   content="Tim Henderson" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="http://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <div class="top-nav">
+<ul>
+    <li><a href="http://hackthology.com/index.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/consulting.html">consulting</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/research.html">research</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/writing-a-lexer-in-go-with-lexmachine.html"
+             title="perm link Writing a Lexer in Go with LexMachine">
+             Writing a Lexer in Go with LexMachine
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by <a href="http://hackthology.com/pages/about.html">Tim Henderson</a>
+            <br/> <time datetime="2016-05-25T00:00:00-04:00">Wed 25 May 2016</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>This article is about <a href="https://github.com/timtadh/lexmachine">lexmachine</a>, a
+library I wrote to help you write great lexers in Go.</p>
+<p>A <strong>lexer</strong> is a software component that analyzes a string and breaks it up into its
+component parts. Each part is tagged with what type of thing it is. This is
+called <em>lexical analysis</em>. For natural languages (such as English) lexical
+analysis can be difficult to do automatically but is usually easy for a human to
+do. Let's look at an example of lexically analyzing the following English
+sentence often used in typing practice (because it uses every letter in the
+alphabet).</p>
+<blockquote>
+<p>The quick brown fox jumped over the lazy dog.</p>
+</blockquote>
+<p>The sentence breaks down into individual word each of which has a part of speech</p>
+<div class="highlight"><pre><span></span>&lt;article&gt;, &quot;The&quot;
+&lt;adjective&gt;, &quot;quick&quot;
+&lt;adjective&gt;, &quot;brown&quot;
+&lt;noun&gt;, &quot;fox&quot;
+&lt;verb&gt;, &quot;jumped&quot;
+&lt;adverb&gt;, &quot;over&quot;
+&lt;article&gt;, &quot;the&quot;
+&lt;adjective&gt;, &quot;lazy&quot;
+&lt;noun&gt;, &quot;dog&quot;
+</pre></div>
+
+
+<p>Note, the word "over" can actually be either a preposition or an adverb. In this
+case the context of the sentence (it modifies the verb) makes it an adverb. Many
+words in natural languages have this property where the context of the overall
+sentence or paragraph determines the role they play in the sentence.</p>
+<p>Luckily, the situation is much simpler for computer languages. Most <em>compilers</em>,
+which are programs translate computer languages into other computer languages,
+start by lexically analyzing their input. They can also be used in a number of
+other scenarios where a program needs to understand data in textual forms.</p>
+<p>In this article, I am going to write and explain a lexer for the
+<a href="http://www.graphviz.org">graphviz</a> <a href="http://www.graphviz.org/doc/info/lang.html">dot
+language</a>. <code>graphviz</code> is a tool to
+visualize <a href="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)">graphs</a>.
+<code>graphviz</code> takes a string such as:</p>
+<div class="highlight"><pre><span></span>digraph {
+  rankdir=LR;
+  a [label=&quot;a&quot; shape=box];
+  c [<span class="nt">&lt;label&gt;</span>=<span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt;];
+  b [label=&quot;bb&quot;];
+  a -&gt; c;
+  c -&gt; b;
+  d -&gt; c;
+  b -&gt; a;L
+  b -&gt; e;
+  e -&gt; f;
+}
+</pre></div>
+
+
+<p>And produces :</p>
+<p><a href="/images/dot-example.png"><img alt="Dot Example" src="/images/dot-example.png" /></a></p>
+<h2>Lexing Graphviz's <code>dot</code> language</h2>
+<p>Before one can "lex" (short for lexically analyze) a language one needs to know
+what it is made up of. English is made up of punctuation marks, nouns, verbs and
+that sort of thing. Computer languages also have punctuation but also have
+keywords, strings, numbers, comments and so forth.</p>
+<p>When a lexer splits up a string into parts the parts are called <em>tokens</em>. The
+process of splitting up is also called <em>tokenizing</em>. Let's take a look at how
+the previous example would get tokenized:</p>
+<div class="highlight"><pre><span></span>Type    | Lexeme
+-------------------
+DIGRAPH | &quot;digraph&quot;
+LCURLY  | &quot;{&quot;
+ID      | &quot;rankdir&quot;
+EQUAL   | &quot;=&quot;
+ID      | &quot;LR&quot;
+SEMI    | &quot;;&quot;
+ID      | &quot;a&quot;
+LSQUARE | &quot;[&quot;
+ID      | &quot;label&quot;
+EQUAL   | &quot;=&quot;
+ID      | &quot;a&quot;
+ID      | &quot;shape&quot;
+EQUAL   | &quot;=&quot;
+ID      | &quot;box&quot;
+RSQUARE | &quot;]&quot;
+SEMI    | &quot;;&quot;
+ID      | &quot;c&quot;
+LSQUARE | &quot;[&quot;
+ID      | &quot;label&quot;
+ID      | &quot;label&quot;
+EQUAL   | &quot;=&quot;
+ID      | &quot;<span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&quot;
+RSQUARE | &quot;]&quot;
+SEMI    | &quot;;&quot;
+ID      | &quot;b&quot;
+.
+.
+.
+RCURLY  | &quot;}&quot;
+</pre></div>
+
+
+<p>Note, that like when the English sentence was analyzed spaces, newlines, tabs
+and other extraneous characters where dropped. Only the syntactically important
+characters are output.</p>
+<p>Each token has two parts: the <em>type</em> and the <em>lexeme</em>. The type indicates the
+role the token plays. The lexeme is the string the token was extracted from.</p>
+<h3>Specifying Tokens</h3>
+<p>To specify how a string should be tokenized a formalism called <em>regular
+expressions</em> is used. If you don't already know about regular expressions you
+could start with <a href="https://en.wikipedia.org/wiki/Regular_expression">Wikipedia
+page</a>. For a more advanced
+introduction see Russ Cox's <a href="https://swtch.com/~rsc/regexp/">articles</a> or Alex
+Aiken's <a href="https://www.youtube.com/watch?v=SRhkfvqeA1M">video lectures</a> on the
+subject.</p>
+<p>To review, a regular expression is a way of specifying a "pattern" which
+matches certain strings. For instance, <code>a+b*a</code> matches <code>aaa</code> and <code>abbbba</code> but
+not <code>aab</code>. To see why, note that the pattern says a string must start with 1 or
+more <code>a</code> characters. So all three strings <code>aaa</code>, <code>abbbba</code> and <code>aab</code> satisfy the
+first requirement. Next, the pattern says a string can have 0 or more <code>b</code>
+characters. The first string, <code>aaa</code> has none (and that is ok). The second
+string, <code>abbbba</code> has 4 <code>b</code> characters. The third string, <code>aab</code> has 1 <code>b</code>. So all
+three strings satisfy the second requirement. Finally the pattern says a string
+must end in an <code>a</code>. The first and the second string both end in <code>a</code>. However,
+the third string, <code>aab</code>, do not. Therefore, the first and second strings match
+the pattern but the third string does not.</p>
+<h4>The Token's for the <code>dot</code> Language</h4>
+<p>The <code>dot</code> language has keywords, punctuation, comments, and a rather unusual
+definition for identifier (called <code>ID</code>). In the listing below, the token type is
+on the left side and the regular expression or literal (in quotation marks) is
+on the right.</p>
+<div class="highlight"><pre><span></span>NODE = &quot;node&quot;
+EDGE = &quot;edge&quot;
+GRAPH = &quot;graph&quot;
+DIGRAPH = &quot;digraph&quot;
+SUBGRAPH = &quot;subgraph&quot;
+STRICT = &quot;strict&quot;
+LSQUARE = &quot;[&quot;
+RSQUARE = &quot;]&quot;
+LCURLY = &quot;{&quot;
+RCURLY = &quot;}&quot;
+EQUAL = &quot;=&quot;
+COMMA = &quot;,&quot;
+SEMI = &quot;;&quot;
+COLON = &quot;:&quot;
+ARROW = &quot;-&gt;&quot;
+DDASH = &quot;--&quot;
+COMMENT = (/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*$)
+ID = ([a-zA-Z_][a-zA-Z0-9_]*)|(&quot;([^\&quot;]|(\\.))*&quot;)|ID-HTML
+</pre></div>
+
+
+<p>Every token type but <code>ID</code> and <code>COMMENT</code> a literals: either a keyword or a
+punctuation mark. A comment is defined by a complicated regular expression which
+defines "c-style" range comments or line comments. Since the comment expression
+is defined by a regular expression no nesting is allowed.</p>
+<p>The <code>ID</code> token is more complicated. It consists of three parts:</p>
+<ol>
+<li>
+<p>The usual form as a name <code>[a-zA-Z_][a-zA-Z0-9_]*</code></p>
+</li>
+<li>
+<p>A string, <code>"([^\"]|(\\.))*"</code>. Thus <code>"\\\""</code> and <code>"asdf\""</code> are valid but
+   <code>"\\""</code> is not.</p>
+</li>
+<li>
+<p>A HTML string, which is non-regular (specified here in BNF):</p>
+<div class="highlight"><pre><span></span>CHAR = [^&lt;&gt;]
+ID-HTML = IdHTML
+
+IdHTML : Tag ;
+Tag : &lt; Body &gt; ;
+Body : CHAR Body ;
+     | Tag Body
+     | e                    // denotes epsilon, the empty string
+     ;
+</pre></div>
+
+
+<p>Thus <code>&lt;&lt;xyz&lt;xy&gt;xyz&gt;&lt;asdf&gt;&gt;</code> is valid but <code>&lt;&lt;&gt;</code> is not</p>
+</li>
+</ol>
+<p>The reason the HTML string is not-regular (and therefore cannot be matched by
+regular expressions) is the angle brackets, <code>&lt;</code> and <code>&gt;</code>, have to be properly
+matched. That is, every opening bracket <code>&lt;</code> must be matched with a closing
+bracket <code>&gt;</code>. This is not possible to specify regular expressions because they
+cannot "count." For a formal explanation see the <a href="https://en.wikipedia.org/wiki/Pumping_lemma_for_regular_languages">Pumping
+Lemma</a>.</p>
+<h4>Consequences of Non-Regular Tokens</h4>
+<p>If all tokens were regular (that is specifiable by a regular expression) then
+the full implementation of the lexer could be generated from the regular
+expressions for each of the tokens. Since the <code>dot</code> language contains at least
+one token which is non-regular special consideration needs to be taken.</p>
+<p>This turns out to be a fairly common situation in lexer implementation. For
+instance, if you want to support c-style comments such as <code>/* comment */</code> which
+support properly nested comments <code>/* asdf /* asdf */ asdf*/</code> then the comment
+token will not longer be regular. Furthermore, many languages (such as C)
+require collaboration between the parser and lexer to properly identify whether
+symbols should be variable names or type names. This can also introduce a degree
+of non-regularity.</p>
+<p>Thus, to properly lexically analyze such languages our framework must have an
+"escape hatch" that allows the analysis of non-regular tokens on demand while
+still leveraging <a href="https://swtch.com/~rsc/regexp/">theory</a> for most of the work.</p>
+<h2>The LexMachine</h2>
+<p>To create a lexer for the <code>dot</code> language I am going to use
+<a href="https://github.com/timtadh/lexmachine"><code>lexmachine</code></a> a library I wrote for
+creating lexers. <code>lexmachine</code> handles all the tricky bits of converting regular
+expressions into <em>Non-Deterministic Finite Automata</em> (NFA) and using the the NFA
+to tokenize strings. It also provides the aformentioned "escape hatch" to deal
+with non-regular Token specifications.</p>
+<p>Let's get started!</p>
+<h3>The Implementation</h3>
+<p>As a reminder, the implementation is written in <a href="https://golang.org">Go</a>. In
+your workspace, create a new package called dot:</p>
+<div class="highlight"><pre><span></span>$ mkdir dot
+$ <span class="nb">cd</span> dot
+</pre></div>
+
+
+<p>Now create a file for the lexer:</p>
+<div class="highlight"><pre><span></span>$ touch lexer.go
+</pre></div>
+
+
+<p>All of the code for the lexer is going in lexer.go.</p>
+<h4>Preamble</h4>
+<p>To begin, put in the package directive and import the <code>lexmachine</code> and
+<code>machines</code> packages. I also import the standard library packages <code>fmt</code> and
+<code>strings</code>.</p>
+<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">dot</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&quot;fmt&quot;</span>
+    <span class="s">&quot;strings&quot;</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="nx">lex</span> <span class="s">&quot;github.com/timtadh/lexmachine&quot;</span>
+    <span class="s">&quot;github.com/timtadh/lexmachine/machines&quot;</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Note how I group the imports. In general, have three groups of imports. The first
+group is for standard library packages, the second for third party, and the
+third group is for other packages in your code.</p>
+<h4>Defining the Tokens</h4>
+<p>Next, I create global variables and initialize them. The contain the literal
+tokens, the keywords, the token names, and a mapping from the names of the
+tokens to their type ids. Finally, there is a variable <code>Lexer *lex.Lexer</code> which
+will hold our <code>Lexer</code> object once constructed.</p>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Literals</span> <span class="p">[]</span><span class="kt">string</span> <span class="c1">// The tokens representing literal strings</span>
+<span class="kd">var</span> <span class="nx">Keywords</span> <span class="p">[]</span><span class="kt">string</span> <span class="c1">// The keyword tokens</span>
+<span class="kd">var</span> <span class="nx">Tokens</span> <span class="p">[]</span><span class="kt">string</span> <span class="c1">// All of the tokens (including literals and keywords)</span>
+<span class="kd">var</span> <span class="nx">TokenIds</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span> <span class="c1">// A map from the token names to their int ids</span>
+<span class="kd">var</span> <span class="nx">Lexer</span> <span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Lexer</span> <span class="c1">// The lexer object. Use this to construct a Scanner</span>
+</pre></div>
+
+
+<p>To initialize the lists of tokens we are going to need a function. The reason is
+although, <code>Literals</code> and <code>Keywords</code> could be defined in place the rest of the
+variables cannot be.</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">initTokens</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Literals</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+        <span class="s">&quot;[&quot;</span><span class="p">,</span>
+        <span class="s">&quot;]&quot;</span><span class="p">,</span>
+        <span class="s">&quot;{&quot;</span><span class="p">,</span>
+        <span class="s">&quot;}&quot;</span><span class="p">,</span>
+        <span class="s">&quot;=&quot;</span><span class="p">,</span>
+        <span class="s">&quot;,&quot;</span><span class="p">,</span>
+        <span class="s">&quot;;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;:&quot;</span><span class="p">,</span>
+        <span class="s">&quot;-&gt;&quot;</span><span class="p">,</span>
+        <span class="s">&quot;--&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="nx">Keywords</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+        <span class="s">&quot;NODE&quot;</span><span class="p">,</span>
+        <span class="s">&quot;EDGE&quot;</span><span class="p">,</span>
+        <span class="s">&quot;GRAPH&quot;</span><span class="p">,</span>
+        <span class="s">&quot;DIGRAPH&quot;</span><span class="p">,</span>
+        <span class="s">&quot;SUBGRAPH&quot;</span><span class="p">,</span>
+        <span class="s">&quot;STRICT&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="nx">Tokens</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+        <span class="s">&quot;COMMENT&quot;</span><span class="p">,</span>
+        <span class="s">&quot;ID&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="nx">Tokens</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">Tokens</span><span class="p">,</span> <span class="nx">Keywords</span><span class="o">...</span><span class="p">)</span>
+    <span class="nx">Tokens</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">Tokens</span><span class="p">,</span> <span class="nx">Literals</span><span class="o">...</span><span class="p">)</span>
+    <span class="nx">TokenIds</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">tok</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Tokens</span> <span class="p">{</span>
+        <span class="nx">TokenIds</span><span class="p">[</span><span class="nx">tok</span><span class="p">]</span> <span class="p">=</span> <span class="nx">i</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Right now, the <code>initTokens()</code> function is not being called. Later, I will show
+you how to call it on package initialization inside of an <code>init</code> function.</p>
+<h4>Defining the Lexer</h4>
+<p>Creating a new lexer object is straight forward.</p>
+<div class="highlight"><pre><span></span><span class="nx">lexer</span> <span class="o">:=</span> <span class="nx">lex</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
+</pre></div>
+
+
+<p>The Lexer object has three methods:</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span> <span class="nx">Add</span><span class="p">(</span><span class="nx">regex</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">action</span> <span class="nx">Action</span><span class="p">)</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span> <span class="nx">Compile</span><span class="p">()</span> <span class="kt">error</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span> <span class="nx">Scanner</span><span class="p">(</span><span class="nx">text</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Scanner</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The <code>Add</code> method is what we are interested in right now. It adds a new token to
+the lexer. The token is defined by a pattern expressed as a regular expression
+and an Action function. When the pattern is matched the <code>Action</code> function gets
+called.</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Action</span> <span class="kd">func</span><span class="p">(</span><span class="nx">scan</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">match</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="nx">token</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
+</pre></div>
+
+
+<p>An <code>Action</code> takes a <code>*Scanner</code> (which is a object which is scanning a particular
+string using the <code>*Lexer</code> object), and a <code>*Match</code> (which represents the string
+that was matched by the Regular expression. It returns a token and an error.</p>
+<p>If the <code>token</code> return value is nil, the <code>*Match</code> is skipped. This can be used to
+skip whitespace and other things you would rather ignore. Let's go head and code
+up the the skip Action:</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">skip</span><span class="p">(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Super simple! It is a no op!</p>
+<p>However, most of the time you will want to create a token. First, we need to
+have a *Token object to construct. Luckily, <code>lexmachine</code> defines one (although
+you don't have to use it). Let's take a look at the definition:</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Token</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Type</span>        <span class="kt">int</span> <span class="c1">// the token type</span>
+    <span class="nx">Value</span>       <span class="kd">interface</span><span class="p">{}</span> <span class="c1">// a value associate with the token</span>
+    <span class="nx">Lexeme</span>      <span class="p">[]</span><span class="kt">byte</span> <span class="c1">// the string that was matched</span>
+    <span class="nx">TC</span>          <span class="kt">int</span> <span class="c1">// the index (text counter) in the string</span>
+    <span class="nx">StartLine</span>   <span class="kt">int</span>
+    <span class="nx">StartColumn</span> <span class="kt">int</span>
+    <span class="nx">EndLine</span>     <span class="kt">int</span>
+    <span class="nx">EndColumn</span>   <span class="kt">int</span>
+<span class="p">}</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Token</span><span class="p">)</span> <span class="nx">Equals</span><span class="p">(</span><span class="nx">other</span> <span class="o">*</span><span class="nx">Token</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Token</span><span class="p">)</span> <span class="nx">String</span><span class="p">()</span> <span class="kt">string</span>
+</pre></div>
+
+
+<p>The <code>*Scanner</code> object provides a convience function <code>Token</code> which constructs a
+token for you. Here is the definition:</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">typ</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="o">*</span><span class="nx">Token</span>
+</pre></div>
+
+
+<p>So, with this in mind, here is a simple <code>Action</code> which will construct a Token
+with a string version of the lexeme as the <code>Value</code>.</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">token</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">lex</span><span class="p">.</span><span class="nx">Action</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">func</span><span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Token</span><span class="p">(</span><span class="nx">TokenIds</span><span class="p">[</span><span class="nx">name</span><span class="p">],</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">),</span> <span class="nx">m</span><span class="p">),</span> <span class="kc">nil</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The <code>name</code> paramter is the name of the token (eg. <code>COMMENT</code>, <code>ID</code>, <code>STRICT</code>,
+<code>{</code>, ...). The <code>token</code> function will constuct a <code>*Token</code> of correct type (eg.
+the one you specified with <code>name</code>) and return it.</p>
+<h4>Adding Patterns to the Lexer</h4>
+<p>Now that we have <code>Action</code> functions to work with (<code>skip</code> and <code>token</code>) we are
+ready to add patterns to the lexer. Since <code>lexmachine</code> is built on automata
+theory patterns are matched with these priorities:</p>
+<ol>
+<li>
+<p>Patterns match prefixes of string being scanned. Normally, a regular
+   expression matches the entire string or the first substring (depending on the
+   mode). After a prefix is matched, the lexer is restarted at the end of the
+   previously matched prefix and matches another prefix until the string is
+   consumed.</p>
+</li>
+<li>
+<p>Through use of automata theory, all patterns are matched in parallel.
+   Currently, <code>lexmachine</code> uses an Non-Deterministic Finite Automata (NFA)
+   simulation "under-the-hood" to do the matching. NFA simulations take O(P*S)
+   where S is the size of the string and P is the size of the pattern (or in the
+   case of a lexer the sum of the sizes of all of the patterns). There is a
+   Deterministic Finite Automata (DFA) code generator under development (but not
+   ready at this time) which will be able to generate Go code to lex a string in
+   linear time O(S).</p>
+</li>
+<li>
+<p>The pattern which matches the longest prefix is chosen as the "matching
+   pattern". The matching pattern determines which lexing action gets run (and
+   thus what kind of token gets created).</p>
+</li>
+<li>
+<p>In case of tie, the pattern which was defined first is chosen.</p>
+</li>
+</ol>
+<p>Since order that patterns are added to the lexer matters, literals and keywords
+should be added first. This is important as other token's patterns (such as
+<code>ID</code>) could match them. Since, the literals and keywords are both stored in
+their own lists this is easy to do in a loop:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">lit</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Literals</span> <span class="p">{</span>
+    <span class="nx">r</span> <span class="o">:=</span> <span class="s">&quot;\\&quot;</span> <span class="o">+</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">lit</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="s">&quot;\\&quot;</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="nx">lit</span><span class="p">))</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Keywords</span> <span class="p">{</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">ToLower</span><span class="p">(</span><span class="nx">name</span><span class="p">)),</span> <span class="nx">token</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Note: I add escapes to every character in the literals. So that literals like
+<code>[</code> have patterns such as <code>\[</code>. This ensures those characters (which have
+syntactic meaning in regular expressions) are interpreted as themselves.
+Otherwise, they would be parsed by the regular expression parser incorrectly.</p>
+<p>Second Note: The patterns constructed for the keywords is the lower case version
+of the token name. I could have had the token names for the keywords be in lower
+case but it is tradition for token names to be capitalized. This helps
+distinguish token names from production names in context free grammar.</p>
+<h4>Adding More Complex Patterns</h4>
+<p>The simple patterns are now added to the lexer. For the <code>COMMENT</code> and <code>ID</code>
+tokens I will add a separate pattern for each of the alternative construction
+options:</p>
+<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`//[^\n]*\n?`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
+<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`/\*([^*]|\r|\n|(\*+([^*/]|\r|\n)))*\*+/`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
+<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|_)*`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
+<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`&quot;([^\\&quot;]|(\\.))*&quot;`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Note: I left out the last form of <code>ID</code> the HTML string. We will get back to that
+in a second. The final pattern to add is for whitespace: spaces, tabs, newlines,
+and carriage returns. I don't want tokens produced for these characters to I
+will use the <code>skip</code> function as the lexer <code>Action</code>:</p>
+<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;( |\t|\n|\r)+&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+</pre></div>
+
+
+<h4>Using the "Escape Hatch"</h4>
+<p>Now, to deal with the third form of the <code>ID</code> token: the HTML string. I need a
+pattern that fires when the beginning of the string is found. This is easy as
+the HTML strings always start with a <code>&lt;</code> character and the <code>&lt;</code> is not found
+elsewhere in the language. Then, I write a very special <code>Action</code> function. It
+turns out, that <code>Actions</code> are allowed to make modifications to the internal
+state of the <code>*Scanner</code>. In particular they are allowed to change where the
+index into the string being tokenized is located. That index is called the text
+counter and is stored in the <code>TC</code> variable. Let's take a look at what <code>*Scanner</code>
+exports:</p>
+<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Scanner</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Text</span> <span class="p">[]</span><span class="kt">byte</span>
+    <span class="nx">TC</span>   <span class="kt">int</span>
+    <span class="c1">// contains filtered or unexported fields</span>
+<span class="p">}</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span> <span class="nx">Next</span><span class="p">()</span> <span class="p">(</span><span class="nx">tok</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">,</span> <span class="nx">eof</span> <span class="kt">bool</span><span class="p">)</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">typ</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="o">*</span><span class="nx">Token</span>
+</pre></div>
+
+
+<p>The <code>Text</code> variable can be read but you should not modify it. Modifying it will
+have no effect on the tokenization as the NFA simulation keeps its own pointer
+to the text being scanned. The <code>TC</code> variable is the text counter and we can both
+read and write it inside of an <code>Action</code>. What this allows us to do is find the
+starting point of an HTML string with the pattern <code>&lt;</code> and then scan along
+manually counting the opening and closing angle brackets. Once, the initial open
+bracket has been closed by a matching <code>&gt;</code> the HTML string has been found.</p>
+<p>The only trick is we need to keep track of the text counter and update it. We
+also have to update the <code>*Match</code> object to contain the correct values for the
+end lines and columns for our token.</p>
+<p>Let's see how it works:</p>
+<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\&lt;`</span><span class="p">),</span>
+    <span class="kd">func</span><span class="p">(</span><span class="nx">scan</span> <span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">match</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">str</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="nx">str</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span><span class="o">...</span><span class="p">)</span>
+        <span class="nx">brackets</span> <span class="o">:=</span> <span class="mi">1</span>
+        <span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span> <span class="p">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span>
+        <span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span> <span class="p">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span>
+        <span class="k">for</span> <span class="nx">tc</span> <span class="o">:=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span><span class="p">;</span> <span class="nx">tc</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">);</span> <span class="nx">tc</span><span class="o">++</span> <span class="p">{</span>
+            <span class="nx">str</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">])</span>
+            <span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span> <span class="p">{</span>
+                <span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&lt;&#39;</span> <span class="p">{</span>
+                <span class="nx">brackets</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&gt;&#39;</span> <span class="p">{</span>
+                <span class="nx">brackets</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="nx">brackets</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+                <span class="nx">match</span><span class="p">.</span><span class="nx">TC</span> <span class="p">=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span>
+                <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span> <span class="p">=</span> <span class="nx">tc</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span> <span class="p">=</span> <span class="nx">str</span>
+                <span class="k">return</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">)(</span><span class="nx">scan</span><span class="p">,</span> <span class="nx">match</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;unclosed HTML literal starting at %d, (%d, %d)&quot;</span><span class="p">,</span>
+                <span class="nx">match</span><span class="p">.</span><span class="nx">TC</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">)</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>Here, I defined the action in-line since it will not be reused using Go's
+support for anonymous functions. The text counter, <code>scan.TC</code>, is initially
+pointing at the character directly following the matched pattern. Thus, the
+bracket count in <code>brackets</code> is initialized to <code>1</code>.</p>
+<p>When <code>brackets</code> reaches <code>0</code> through incrementing and decrementing everytime a
+<code>&lt;</code> or <code>&gt;</code> is seen the match is found. When the match is found, the <code>scan.TC</code>
+variable <strong>must</strong> be updated to communicate back to the scanner where to look
+for the next token. The <code>*Match</code> is also updated to reflect the full lexeme that
+was found. Finally, an <code>ID</code> token is constructed using the <code>token</code> function.</p>
+<p>If the function runs out of text before <code>brackets</code> reaches <code>0</code> an error is
+returned reporting an unclosed <code>HTML</code> literal.</p>
+<h4>Compiling the NFA</h4>
+<p>The last step in <code>*Lexer</code> construction is to compile the NFA. This will be done
+automatically when a <code>*Scanner</code> is constructed to tokenize the string. However,
+we can have the NFA precomputed by calling <code>Compile</code>. This is important so that
+we don't spend time parsing regular expressions every time we want to lex a
+string</p>
+<div class="highlight"><pre><span></span><span class="nx">err</span> <span class="o">:=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="nx">lexer</span><span class="p">,</span> <span class="nx">n</span>
+</pre></div>
+
+
+<h4>Putting it all Together</h4>
+<div class="highlight"><pre><span></span><span class="c1">// Creates the lexer object and compiles the NFA.</span>
+<span class="kd">func</span> <span class="nx">initLexer</span><span class="p">()</span> <span class="p">(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Lexer</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">lexer</span> <span class="o">:=</span> <span class="nx">lex</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">lit</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Literals</span> <span class="p">{</span>
+        <span class="nx">r</span> <span class="o">:=</span> <span class="s">&quot;\\&quot;</span> <span class="o">+</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">lit</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="s">&quot;\\&quot;</span><span class="p">)</span>
+        <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="nx">lit</span><span class="p">))</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Keywords</span> <span class="p">{</span>
+        <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">ToLower</span><span class="p">(</span><span class="nx">name</span><span class="p">)),</span> <span class="nx">token</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span>
+    <span class="p">}</span>
+
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`//[^\n]*\n?`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`/\*([^*]|\r|\n|(\*+([^*/]|\r|\n)))*\*+/`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|_)*`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`&quot;([^\\&quot;]|(\\.))*&quot;`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;( |\t|\n|\r)+&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\&lt;`</span><span class="p">),</span>
+        <span class="kd">func</span><span class="p">(</span><span class="nx">scan</span> <span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">match</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">str</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="nx">str</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span><span class="o">...</span><span class="p">)</span>
+            <span class="nx">brackets</span> <span class="o">:=</span> <span class="mi">1</span>
+            <span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span> <span class="p">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span>
+            <span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span> <span class="p">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span>
+            <span class="k">for</span> <span class="nx">tc</span> <span class="o">:=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span><span class="p">;</span> <span class="nx">tc</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">);</span> <span class="nx">tc</span><span class="o">++</span> <span class="p">{</span>
+                <span class="nx">str</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">])</span>
+                <span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span> <span class="p">{</span>
+                    <span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&lt;&#39;</span> <span class="p">{</span>
+                    <span class="nx">brackets</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&gt;&#39;</span> <span class="p">{</span>
+                    <span class="nx">brackets</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="nx">brackets</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+                    <span class="nx">match</span><span class="p">.</span><span class="nx">TC</span> <span class="p">=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span>
+                    <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span> <span class="p">=</span> <span class="nx">tc</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span> <span class="p">=</span> <span class="nx">str</span>
+                    <span class="k">return</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">)(</span><span class="nx">scan</span><span class="p">,</span> <span class="nx">match</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span>
+                <span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;unclosed HTML literal starting at %d, (%d, %d)&quot;</span><span class="p">,</span>
+                    <span class="nx">match</span><span class="p">.</span><span class="nx">TC</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">)</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="nx">err</span> <span class="o">:=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">lexer</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h4>Initializing the Package</h4>
+<p>To ensure that the regular expressions are only compiled once, we are going to
+call <code>initLexer</code> once at the start of the program. To do this we put the call
+inside an <a href="https://golang.org/ref/spec#Package_initialization"><code>init</code> function</a>.
+Init functions get run once on program start up.</p>
+<div class="highlight"><pre><span></span><span class="c1">// Called at package initialization. Creates the lexer and populates token lists.</span>
+<span class="kd">func</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">initTokens</span><span class="p">()</span>
+    <span class="kd">var</span> <span class="nx">err</span> <span class="kt">error</span>
+    <span class="nx">Lexer</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">initLexer</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>And that is it. Here is the <a href="https://github.com/timtadh/dot/blob/9b5afb350454d8e023e02a0b8b3c828869ec647e/lexer.go">source code for the full
+lexer</a>.</p>
+<h3>Using the Lexer</h3>
+<p>Let's put it all together. Here is a simple which uses the lexer:</p>
+<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&quot;fmt&quot;</span>
+    <span class="s">&quot;log&quot;</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&quot;github.com/timtadh/dot&quot;</span>
+    <span class="nx">lex</span> <span class="s">&quot;github.com/timtadh/lexmachine&quot;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">s</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">dot</span><span class="p">.</span><span class="nx">Lexer</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`digraph {</span>
+<span class="s">  rankdir=LR;</span>
+<span class="s">  a [label=&quot;a&quot; shape=box];</span>
+<span class="s">  c [&lt;label&gt;=&lt;&lt;u&gt;C&lt;/u&gt;&gt;];</span>
+<span class="s">  b [label=&quot;bb&quot;];</span>
+<span class="s">  a -&gt; c;</span>
+<span class="s">  c -&gt; b;</span>
+<span class="s">  d -&gt; c;</span>
+<span class="s">  b -&gt; a;L</span>
+<span class="s">  b -&gt; e;</span>
+<span class="s">  e -&gt; f;</span>
+<span class="s">}`</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Type    | Lexeme     | Position&quot;</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;--------+------------+------------&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nx">tok</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Next</span><span class="p">();</span> <span class="p">!</span><span class="nx">eof</span><span class="p">;</span> <span class="nx">tok</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="p">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">token</span> <span class="o">:=</span> <span class="nx">tok</span><span class="p">.(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;%-7v | %-10v | %v:%v-%v:%v\n&quot;</span><span class="p">,</span>
+            <span class="nx">dot</span><span class="p">.</span><span class="nx">Tokens</span><span class="p">[</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">],</span>
+            <span class="nb">string</span><span class="p">(</span><span class="nx">token</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">),</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">,</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">EndLine</span><span class="p">,</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">EndColumn</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><strong>Output</strong>:</p>
+<div class="highlight"><pre><span></span>Type    | Lexeme     | Position
+--------+------------+------------
+DIGRAPH | digraph    | 1:1-1:7
+{       | {          | 1:9-1:9
+ID      | rankdir    | 2:3-2:9
+=       | =          | 2:10-2:10
+ID      | LR         | 2:11-2:12
+;       | ;          | 2:13-2:13
+ID      | a          | 3:3-3:3
+[       | [          | 3:5-3:5
+ID      | label      | 3:6-3:10
+=       | =          | 3:11-3:11
+ID      | &quot;a&quot;        | 3:12-3:14
+ID      | shape      | 3:16-3:20
+=       | =          | 3:21-3:21
+ID      | box        | 3:22-3:24
+]       | ]          | 3:25-3:25
+;       | ;          | 3:26-3:26
+ID      | c          | 4:3-4:3
+[       | [          | 4:5-4:5
+ID      | <span class="nt">&lt;label&gt;</span>    | 4:6-4:12
+=       | =          | 4:13-4:13
+ID      | <span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt; | 4:14-4:23
+]       | ]          | 4:24-4:24
+;       | ;          | 4:25-4:25
+ID      | b          | 5:3-5:3
+[       | [          | 5:5-5:5
+ID      | label      | 5:6-5:10
+=       | =          | 5:11-5:11
+ID      | &quot;bb&quot;       | 5:12-5:15
+]       | ]          | 5:16-5:16
+;       | ;          | 5:17-5:17
+ID      | a          | 6:3-6:3
+-&gt;      | -&gt;         | 6:5-6:6
+ID      | c          | 6:8-6:8
+;       | ;          | 6:9-6:9
+ID      | c          | 7:3-7:3
+-&gt;      | -&gt;         | 7:5-7:6
+ID      | b          | 7:8-7:8
+;       | ;          | 7:9-7:9
+ID      | d          | 8:3-8:3
+-&gt;      | -&gt;         | 8:5-8:6
+ID      | c          | 8:8-8:8
+;       | ;          | 8:9-8:9
+ID      | b          | 9:3-9:3
+-&gt;      | -&gt;         | 9:5-9:6
+ID      | a          | 9:8-9:8
+;       | ;          | 9:9-9:9
+ID      | L          | 9:10-9:10
+ID      | b          | 10:3-10:3
+-&gt;      | -&gt;         | 10:5-10:6
+ID      | e          | 10:8-10:8
+;       | ;          | 10:9-10:9
+ID      | e          | 11:3-11:3
+-&gt;      | -&gt;         | 11:5-11:6
+ID      | f          | 11:8-11:8
+;       | ;          | 11:9-11:9
+}       | }          | 12:1-12:1
+</pre></div>
+
+
+<h1>Conclusion</h1>
+<p>Believe it or not 3500 words later, we have only scratched the surface on this
+topic. Testing, custom token representations, automata construction, and more
+will have to wait for another post. While still in an early state I hope you
+find <a href="https://github.com/timtadh/lexmachine">lexmachine</a> useful and this article
+helpful for constructing lexers whatever language you are using.</p>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="http://hackthology.com/index.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/consulting.html">consulting</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/research.html">research</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+</ul></div>
+        <p>Copyright 2014 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
