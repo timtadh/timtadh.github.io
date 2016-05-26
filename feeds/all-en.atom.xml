@@ -118,7 +118,7 @@ characters. The first string, &lt;code&gt;aaa&lt;/code&gt; has none (and that is
 string, &lt;code&gt;abbbba&lt;/code&gt; has 4 &lt;code&gt;b&lt;/code&gt; characters. The third string, &lt;code&gt;aab&lt;/code&gt; has 1 &lt;code&gt;b&lt;/code&gt;. So all
 three strings satisfy the second requirement. Finally the pattern says a string
 must end in an &lt;code&gt;a&lt;/code&gt;. The first and the second string both end in &lt;code&gt;a&lt;/code&gt;. However,
-the third string, &lt;code&gt;aab&lt;/code&gt;, do not. Therefore, the first and second strings match
+the third string, &lt;code&gt;aab&lt;/code&gt;, does not. Therefore, the first and second strings match
 the pattern but the third string does not.&lt;/p&gt;
 &lt;h4&gt;The Token's for the &lt;code&gt;dot&lt;/code&gt; Language&lt;/h4&gt;
 &lt;p&gt;The &lt;code&gt;dot&lt;/code&gt; language has keywords, punctuation, comments, and a rather unusual
