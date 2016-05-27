@@ -95,9 +95,10 @@ case the context of the sentence (it modifies the verb) makes it an adverb. Many
 words in natural languages have this property where the context of the overall
 sentence or paragraph determines the role they play in the sentence.</p>
 <p>Luckily, the situation is much simpler for computer languages. Most <em>compilers</em>,
-which are programs translate computer languages into other computer languages,
-start by lexically analyzing their input. They can also be used in a number of
-other scenarios where a program needs to understand data in textual forms.</p>
+which are programs that translate computer languages into other computer
+languages, start by lexically analyzing their input. They can also be used in a
+number of other scenarios where a program needs to understand data in textual
+forms.</p>
 <p>In this article, I am going to write and explain a lexer for the
 <a href="http://www.graphviz.org">graphviz</a> <a href="http://www.graphviz.org/doc/info/lang.html">dot
 language</a>. <code>graphviz</code> is a tool to
@@ -308,7 +309,7 @@ $ <span class="nb">cd</span> dot
 group is for standard library packages, the second for third party, and the
 third group is for other packages in your code.</p>
 <h4>Defining the Tokens</h4>
-<p>Next, I create global variables and initialize them. The contain the literal
+<p>Next, I create global variables and initialize them. They contain the literal
 tokens, the keywords, the token names, and a mapping from the names of the
 tokens to their type ids. Finally, there is a variable <code>Lexer *lex.Lexer</code> which
 will hold our <code>Lexer</code> object once constructed.</p>

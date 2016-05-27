@@ -29,9 +29,10 @@ case the context of the sentence (it modifies the verb) makes it an adverb. Many
 words in natural languages have this property where the context of the overall
 sentence or paragraph determines the role they play in the sentence.&lt;/p&gt;
 &lt;p&gt;Luckily, the situation is much simpler for computer languages. Most &lt;em&gt;compilers&lt;/em&gt;,
-which are programs translate computer languages into other computer languages,
-start by lexically analyzing their input. They can also be used in a number of
-other scenarios where a program needs to understand data in textual forms.&lt;/p&gt;
+which are programs that translate computer languages into other computer
+languages, start by lexically analyzing their input. They can also be used in a
+number of other scenarios where a program needs to understand data in textual
+forms.&lt;/p&gt;
 &lt;p&gt;In this article, I am going to write and explain a lexer for the
 &lt;a href="http://www.graphviz.org"&gt;graphviz&lt;/a&gt; &lt;a href="http://www.graphviz.org/doc/info/lang.html"&gt;dot
 language&lt;/a&gt;. &lt;code&gt;graphviz&lt;/code&gt; is a tool to
@@ -242,7 +243,7 @@ $ &lt;span class="nb"&gt;cd&lt;/span&gt; dot
 group is for standard library packages, the second for third party, and the
 third group is for other packages in your code.&lt;/p&gt;
 &lt;h4&gt;Defining the Tokens&lt;/h4&gt;
-&lt;p&gt;Next, I create global variables and initialize them. The contain the literal
+&lt;p&gt;Next, I create global variables and initialize them. They contain the literal
 tokens, the keywords, the token names, and a mapping from the names of the
 tokens to their type ids. Finally, there is a variable &lt;code&gt;Lexer *lex.Lexer&lt;/code&gt; which
 will hold our &lt;code&gt;Lexer&lt;/code&gt; object once constructed.&lt;/p&gt;
