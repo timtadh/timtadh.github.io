@@ -45,7 +45,7 @@ visualize &lt;a href="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)"&
   a -&amp;gt; c;
   c -&amp;gt; b;
   d -&amp;gt; c;
-  b -&amp;gt; a;L
+  b -&amp;gt; a;
   b -&amp;gt; e;
   e -&amp;gt; f;
 }
@@ -70,7 +70,7 @@ ID      | &amp;quot;rankdir&amp;quot;
 EQUAL   | &amp;quot;=&amp;quot;
 ID      | &amp;quot;LR&amp;quot;
 SEMI    | &amp;quot;;&amp;quot;
-ID      | &amp;quot;a&amp;quot;
+ID      | &amp;quot;\&amp;quot;a\&amp;quot;&amp;quot;
 LSQUARE | &amp;quot;[&amp;quot;
 ID      | &amp;quot;label&amp;quot;
 EQUAL   | &amp;quot;=&amp;quot;
@@ -82,10 +82,9 @@ RSQUARE | &amp;quot;]&amp;quot;
 SEMI    | &amp;quot;;&amp;quot;
 ID      | &amp;quot;c&amp;quot;
 LSQUARE | &amp;quot;[&amp;quot;
-ID      | &amp;quot;label&amp;quot;
-ID      | &amp;quot;label&amp;quot;
+ID      | &amp;quot;&lt;span class="nt"&gt;&amp;lt;label&amp;gt;&lt;/span&gt;&amp;quot;
 EQUAL   | &amp;quot;=&amp;quot;
-ID      | &amp;quot;&lt;span class="nt"&gt;&amp;lt;u&amp;gt;&lt;/span&gt;C&lt;span class="nt"&gt;&amp;lt;/u&amp;gt;&lt;/span&gt;&amp;quot;
+ID      | &amp;quot;&lt;span class="err"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;u&amp;gt;&lt;/span&gt;C&lt;span class="nt"&gt;&amp;lt;/u&amp;gt;&lt;/span&gt;&amp;gt;&amp;quot;
 RSQUARE | &amp;quot;]&amp;quot;
 SEMI    | &amp;quot;;&amp;quot;
 ID      | &amp;quot;b&amp;quot;
@@ -96,7 +95,7 @@ RCURLY  | &amp;quot;}&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Note, that like when the English sentence was analyzed spaces, newlines, tabs
+&lt;p&gt;Note, that like when the English sentence was analyzed, spaces, newlines, tabs
 and other extraneous characters were dropped. Only the syntactically important
 characters are output.&lt;/p&gt;
 &lt;p&gt;Each token has two parts: the &lt;em&gt;type&lt;/em&gt; and the &lt;em&gt;lexeme&lt;/em&gt;. The type indicates the
@@ -104,7 +103,7 @@ role the token plays. The lexeme is the string the token was extracted from.&lt;
 &lt;h3&gt;Specifying Tokens&lt;/h3&gt;
 &lt;p&gt;To specify how a string should be tokenized a formalism called &lt;em&gt;regular
 expressions&lt;/em&gt; is used. If you don't already know about regular expressions you
-could start with &lt;a href="https://en.wikipedia.org/wiki/Regular_expression"&gt;Wikipedia
+could start with the &lt;a href="https://en.wikipedia.org/wiki/Regular_expression"&gt;Wikipedia
 page&lt;/a&gt;. For a more advanced
 introduction see Russ Cox's &lt;a href="https://swtch.com/~rsc/regexp/"&gt;articles&lt;/a&gt; or Alex
 Aiken's &lt;a href="https://www.youtube.com/watch?v=SRhkfvqeA1M"&gt;video lectures&lt;/a&gt; on the
@@ -146,14 +145,16 @@ ID = ([a-zA-Z_][a-zA-Z0-9_]*)|(&amp;quot;([^\&amp;quot;]|(\\.))*&amp;quot;)|ID-H
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Every token type but &lt;code&gt;ID&lt;/code&gt; and &lt;code&gt;COMMENT&lt;/code&gt; a literals: either a keyword or a
+&lt;p&gt;Every token type but &lt;code&gt;ID&lt;/code&gt; and &lt;code&gt;COMMENT&lt;/code&gt; are literals: either a keyword or a
 punctuation mark. A comment is defined by a complicated regular expression which
 defines "c-style" range comments or line comments. Since the comment expression
 is defined by a regular expression no nesting is allowed.&lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;ID&lt;/code&gt; token is more complicated. It consists of three parts:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;The usual form as a name &lt;code&gt;[a-zA-Z_][a-zA-Z0-9_]*&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The "usual form" as a name &lt;code&gt;[a-zA-Z_][a-zA-Z0-9_]*&lt;/code&gt;. The pattern means a
+   letter (lower case or capital) or underscore followed by 0 or more letters,
+   numbers, or under-scores.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;A string, &lt;code&gt;"([^\"]|(\\.))*"&lt;/code&gt;. Thus &lt;code&gt;"\\\""&lt;/code&gt; and &lt;code&gt;"asdf\""&lt;/code&gt; are valid but
@@ -186,11 +187,11 @@ Lemma&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If all tokens were regular (that is specifiable by a regular expression) then
 the full implementation of the lexer could be generated from the regular
 expressions for each of the tokens. Since the &lt;code&gt;dot&lt;/code&gt; language contains at least
-one token which is non-regular special consideration needs to be taken.&lt;/p&gt;
+one token which is non-regular, special consideration needs to be taken.&lt;/p&gt;
 &lt;p&gt;This turns out to be a fairly common situation in lexer implementation. For
 instance, if you want to support c-style comments such as &lt;code&gt;/* comment */&lt;/code&gt; which
 support properly nested comments &lt;code&gt;/* asdf /* asdf */ asdf*/&lt;/code&gt; then the comment
-token will not longer be regular. Furthermore, many languages (such as C)
+token will no longer be regular. Furthermore, many languages (such as C)
 require collaboration between the parser and lexer to properly identify whether
 symbols should be variable names or type names. This can also introduce a degree
 of non-regularity.&lt;/p&gt;
@@ -625,7 +626,7 @@ lexer&lt;/a&gt;.&lt;/p&gt;
 &lt;span class="s"&gt;  a -&amp;gt; c;&lt;/span&gt;
 &lt;span class="s"&gt;  c -&amp;gt; b;&lt;/span&gt;
 &lt;span class="s"&gt;  d -&amp;gt; c;&lt;/span&gt;
-&lt;span class="s"&gt;  b -&amp;gt; a;L&lt;/span&gt;
+&lt;span class="s"&gt;  b -&amp;gt; a;&lt;/span&gt;
 &lt;span class="s"&gt;  b -&amp;gt; e;&lt;/span&gt;
 &lt;span class="s"&gt;  e -&amp;gt; f;&lt;/span&gt;
 &lt;span class="s"&gt;}`&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
@@ -700,7 +701,6 @@ ID      | b          | 9:3-9:3
 -&amp;gt;      | -&amp;gt;         | 9:5-9:6
 ID      | a          | 9:8-9:8
 ;       | ;          | 9:9-9:9
-ID      | L          | 9:10-9:10
 ID      | b          | 10:3-10:3
 -&amp;gt;      | -&amp;gt;         | 10:5-10:6
 ID      | e          | 10:8-10:8

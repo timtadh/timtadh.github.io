@@ -111,7 +111,7 @@ visualize <a href="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)">gra
   a -&gt; c;
   c -&gt; b;
   d -&gt; c;
-  b -&gt; a;L
+  b -&gt; a;
   b -&gt; e;
   e -&gt; f;
 }
@@ -136,7 +136,7 @@ ID      | &quot;rankdir&quot;
 EQUAL   | &quot;=&quot;
 ID      | &quot;LR&quot;
 SEMI    | &quot;;&quot;
-ID      | &quot;a&quot;
+ID      | &quot;\&quot;a\&quot;&quot;
 LSQUARE | &quot;[&quot;
 ID      | &quot;label&quot;
 EQUAL   | &quot;=&quot;
@@ -148,10 +148,9 @@ RSQUARE | &quot;]&quot;
 SEMI    | &quot;;&quot;
 ID      | &quot;c&quot;
 LSQUARE | &quot;[&quot;
-ID      | &quot;label&quot;
-ID      | &quot;label&quot;
+ID      | &quot;<span class="nt">&lt;label&gt;</span>&quot;
 EQUAL   | &quot;=&quot;
-ID      | &quot;<span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&quot;
+ID      | &quot;<span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt;&quot;
 RSQUARE | &quot;]&quot;
 SEMI    | &quot;;&quot;
 ID      | &quot;b&quot;
@@ -162,7 +161,7 @@ RCURLY  | &quot;}&quot;
 </pre></div>
 
 
-<p>Note, that like when the English sentence was analyzed spaces, newlines, tabs
+<p>Note, that like when the English sentence was analyzed, spaces, newlines, tabs
 and other extraneous characters were dropped. Only the syntactically important
 characters are output.</p>
 <p>Each token has two parts: the <em>type</em> and the <em>lexeme</em>. The type indicates the
@@ -170,7 +169,7 @@ role the token plays. The lexeme is the string the token was extracted from.</p>
 <h3>Specifying Tokens</h3>
 <p>To specify how a string should be tokenized a formalism called <em>regular
 expressions</em> is used. If you don't already know about regular expressions you
-could start with <a href="https://en.wikipedia.org/wiki/Regular_expression">Wikipedia
+could start with the <a href="https://en.wikipedia.org/wiki/Regular_expression">Wikipedia
 page</a>. For a more advanced
 introduction see Russ Cox's <a href="https://swtch.com/~rsc/regexp/">articles</a> or Alex
 Aiken's <a href="https://www.youtube.com/watch?v=SRhkfvqeA1M">video lectures</a> on the
@@ -212,14 +211,16 @@ ID = ([a-zA-Z_][a-zA-Z0-9_]*)|(&quot;([^\&quot;]|(\\.))*&quot;)|ID-HTML
 </pre></div>
 
 
-<p>Every token type but <code>ID</code> and <code>COMMENT</code> a literals: either a keyword or a
+<p>Every token type but <code>ID</code> and <code>COMMENT</code> are literals: either a keyword or a
 punctuation mark. A comment is defined by a complicated regular expression which
 defines "c-style" range comments or line comments. Since the comment expression
 is defined by a regular expression no nesting is allowed.</p>
 <p>The <code>ID</code> token is more complicated. It consists of three parts:</p>
 <ol>
 <li>
-<p>The usual form as a name <code>[a-zA-Z_][a-zA-Z0-9_]*</code></p>
+<p>The "usual form" as a name <code>[a-zA-Z_][a-zA-Z0-9_]*</code>. The pattern means a
+   letter (lower case or capital) or underscore followed by 0 or more letters,
+   numbers, or under-scores.</p>
 </li>
 <li>
 <p>A string, <code>"([^\"]|(\\.))*"</code>. Thus <code>"\\\""</code> and <code>"asdf\""</code> are valid but
@@ -252,11 +253,11 @@ Lemma</a>.</p>
 <p>If all tokens were regular (that is specifiable by a regular expression) then
 the full implementation of the lexer could be generated from the regular
 expressions for each of the tokens. Since the <code>dot</code> language contains at least
-one token which is non-regular special consideration needs to be taken.</p>
+one token which is non-regular, special consideration needs to be taken.</p>
 <p>This turns out to be a fairly common situation in lexer implementation. For
 instance, if you want to support c-style comments such as <code>/* comment */</code> which
 support properly nested comments <code>/* asdf /* asdf */ asdf*/</code> then the comment
-token will not longer be regular. Furthermore, many languages (such as C)
+token will no longer be regular. Furthermore, many languages (such as C)
 require collaboration between the parser and lexer to properly identify whether
 symbols should be variable names or type names. This can also introduce a degree
 of non-regularity.</p>
@@ -691,7 +692,7 @@ lexer</a>.</p>
 <span class="s">  a -&gt; c;</span>
 <span class="s">  c -&gt; b;</span>
 <span class="s">  d -&gt; c;</span>
-<span class="s">  b -&gt; a;L</span>
+<span class="s">  b -&gt; a;</span>
 <span class="s">  b -&gt; e;</span>
 <span class="s">  e -&gt; f;</span>
 <span class="s">}`</span><span class="p">))</span>
@@ -766,7 +767,6 @@ ID      | b          | 9:3-9:3
 -&gt;      | -&gt;         | 9:5-9:6
 ID      | a          | 9:8-9:8
 ;       | ;          | 9:9-9:9
-ID      | L          | 9:10-9:10
 ID      | b          | 10:3-10:3
 -&gt;      | -&gt;         | 10:5-10:6
 ID      | e          | 10:8-10:8
