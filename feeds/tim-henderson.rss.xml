@@ -604,7 +604,7 @@ Init functions get run once on program start up.&lt;/p&gt;
 &lt;p&gt;And that is it. Here is the &lt;a href="https://github.com/timtadh/dot/blob/9b5afb350454d8e023e02a0b8b3c828869ec647e/lexer.go"&gt;source code for the full
 lexer&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Using the Lexer&lt;/h3&gt;
-&lt;p&gt;Let's put it all together. Here is a simple which uses the lexer:&lt;/p&gt;
+&lt;p&gt;Let's put it all together. Here is a simple example which uses the lexer:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;
 
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
