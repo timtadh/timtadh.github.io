@@ -202,7 +202,7 @@ of non-regularity.&lt;/p&gt;
 still leveraging &lt;a href="https://swtch.com/~rsc/regexp/"&gt;theory&lt;/a&gt; for most of the work.&lt;/p&gt;
 &lt;h2&gt;The LexMachine&lt;/h2&gt;
 &lt;p&gt;To create a lexer for the &lt;code&gt;dot&lt;/code&gt; language I am going to use
-&lt;a href="https://github.com/timtadh/lexmachine"&gt;&lt;code&gt;lexmachine&lt;/code&gt;&lt;/a&gt; a library I wrote for
+&lt;a href="https://github.com/timtadh/lexmachine"&gt;lexmachine&lt;/a&gt; a library I wrote for
 creating lexers. &lt;code&gt;lexmachine&lt;/code&gt; handles all the tricky bits of converting regular
 expressions into &lt;em&gt;Non-Deterministic Finite Automata&lt;/em&gt; (NFA) and using the the NFA
 to tokenize strings. It also provides the aformentioned "escape hatch" to deal
