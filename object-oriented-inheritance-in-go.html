@@ -73,7 +73,7 @@ for sharing code and data but today another (older) technique called composition
 has seen a resurgence.</p>
 <blockquote>
 <p>Thank you 李浩 (Hao Li) for translating this article into Mandarin:
-<a href="/shi-yong-dui-xiang-zai-golangmian-xiang-ji-cheng.html" title="使用对象在Golang面向继承">使用对象在Golang面向继承</a></p>
+<a href="/golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html" title="Golang中的面向对象继承">Golang中的面向对象继承</a></p>
 </blockquote>
 <p>Before we jump into how to use inheritance in Go (which has some interesting
 edge cases) let's see how it is used in Java.</p>
@@ -221,8 +221,8 @@ interface. This works equally well in both Java and Go:</p>
 </pre></div>
 
 
-<p>The Lexer can then easily return return the <code>Token</code> interface which both <code>*Match</code>
-and <code>*IntegerConstant</code> satisfy.</p>
+<p>The Lexer can then easily return the <code>Token</code> interface which both <code>*Match</code> and
+<code>*IntegerConstant</code> satisfy.</p>
 <h4>Simplifying with inheritance</h4>
 <p>One of the problems with the previous design is the manual work in
 <code>*IntegerConstant</code> calling <code>i.token.Type()</code> and <code>i.token.Lexeme()</code>. It turns out

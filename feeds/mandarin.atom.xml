@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/mandarin.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2016-05-20T00:00:00-04:00</updated><entry><title>使用对象在Golang面向继承</title><link href="http://hackthology.com/shi-yong-dui-xiang-zai-golangmian-xiang-ji-cheng.html" rel="alternate"></link><updated>2016-05-20T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-05-20:shi-yong-dui-xiang-zai-golangmian-xiang-ji-cheng.html</id><summary type="html">&lt;p&gt;Golang的面向对象机制与Smalltalk或者Java等传统面向对象的编程语言不同。传统面向对象编程语言的一个重要特性是继承机制。因为继承机制支持在关联对象间进行代码复用和数据共享。继承机制曾在代码复用和数据共享的设计模式占据主导地位，但是目前组合这一古老的技术重新焕发了活力。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/mandarin.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2016-05-20T00:00:00-04:00</updated><entry><title>Golang中的面向对象继承</title><link href="http://hackthology.com/golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html" rel="alternate"></link><updated>2016-05-20T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-05-20:golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html</id><summary type="html">&lt;p&gt;Golang的面向对象机制与Smalltalk或者Java等传统面向对象的编程语言不同。传统面向对象编程语言的一个重要特性是继承机制。因为继承机制支持在关联对象间进行代码复用和数据共享。继承机制曾在代码复用和数据共享的设计模式占据主导地位，但是目前组合这一古老的技术重新焕发了活力。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本篇文章转自Tim Henderson的 "Object Oriented Inheritance in Go"， 原文地址是 &lt;a href="http://hackthology.com/object-oriented-inheritance-in-go.html"&gt;http://hackthology.com/object-oriented-inheritance-in-go.html&lt;/a&gt; 。非常感谢李浩用于翻译的文章。&lt;/p&gt;
+&lt;p&gt;本篇文章转自Tim Henderson的 "Object Oriented Inheritance in Go"， 原文地址是 &lt;a href="http://hackthology.com/object-oriented-inheritance-in-go.html"&gt;http://hackthology.com/object-oriented-inheritance-in-go.html&lt;/a&gt; 。非常感谢李浩和骏奇对于这篇文章的翻译。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;在我们探讨如何在Go中实现继承机制之前（该机制会有悖于我们对继承机制的常规印象），我们先看一下Java中如何实现继承机制。&lt;/p&gt;
+&lt;p&gt;在我们探讨如何在Go中实现继承机制之前（Golong中的继承机制和其他语言(Java)的继承机制有区别），我们先看一下Java中如何实现继承机制。&lt;/p&gt;
 &lt;h3&gt;继承与组合&lt;/h3&gt;
 &lt;p&gt;让我们先看一下我最喜欢的话题之一：编译器！编译器由管道转换构成，该管道读取text文本并将其转化为机器代码、汇编语言、字节码或者其他的编程语言。管道首先会使用语法分析器对目标变成语言进行语法分析。一般情况下文本会被分解为不同的组成部分，例如：关键词、标识符、标点和数字等等。每个组成部分都会被相应的数据类型标记。例如下面这个Java数据类型：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Main&lt;/span&gt; &lt;span class="o"&gt;{}&lt;/span&gt;
@@ -127,7 +127,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;这样分析器就可以返回满足Token接口的&lt;em&gt;Match 和 &lt;/em&gt;IntegerConstant类型。&lt;/p&gt;
+&lt;p&gt;这样分析器就可以返回满足&lt;em&gt;Match 和 &lt;/em&gt;IntegerConstant类型的Token接口。&lt;/p&gt;
 &lt;h4&gt;继承机制的简化版&lt;/h4&gt;
 &lt;p&gt;上面的实现方案的一个问题是*IntegerConstant的方法调用中，出现了重复造轮子的问题。但是我们可以使用Go内建的嵌入机制来避免此类情况的出现。嵌入机制(匿名嵌入)允许类型之前共享代码和数据。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt; &lt;span class="nx"&gt;IntegerConstant&lt;/span&gt; &lt;span class="kd"&gt;struct&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;

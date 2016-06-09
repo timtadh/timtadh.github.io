@@ -728,7 +728,7 @@ for sharing code and data but today another (older) technique called composition
 has seen a resurgence.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Thank you 李浩 (Hao Li) for translating this article into Mandarin:
-&lt;a href="/shi-yong-dui-xiang-zai-golangmian-xiang-ji-cheng.html" title="使用对象在Golang面向继承"&gt;使用对象在Golang面向继承&lt;/a&gt;&lt;/p&gt;
+&lt;a href="/golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html" title="Golang中的面向对象继承"&gt;Golang中的面向对象继承&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Before we jump into how to use inheritance in Go (which has some interesting
 edge cases) let's see how it is used in Java.&lt;/p&gt;
@@ -876,8 +876,8 @@ interface. This works equally well in both Java and Go:&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;The Lexer can then easily return return the &lt;code&gt;Token&lt;/code&gt; interface which both &lt;code&gt;*Match&lt;/code&gt;
-and &lt;code&gt;*IntegerConstant&lt;/code&gt; satisfy.&lt;/p&gt;
+&lt;p&gt;The Lexer can then easily return the &lt;code&gt;Token&lt;/code&gt; interface which both &lt;code&gt;*Match&lt;/code&gt; and
+&lt;code&gt;*IntegerConstant&lt;/code&gt; satisfy.&lt;/p&gt;
 &lt;h4&gt;Simplifying with inheritance&lt;/h4&gt;
 &lt;p&gt;One of the problems with the previous design is the manual work in
 &lt;code&gt;*IntegerConstant&lt;/code&gt; calling &lt;code&gt;i.token.Type()&lt;/code&gt; and &lt;code&gt;i.token.Lexeme()&lt;/code&gt;. It turns out

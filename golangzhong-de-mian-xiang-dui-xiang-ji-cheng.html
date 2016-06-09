@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
-    <title> 使用对象在Golang面向继承 </title>
+    <title> Golang中的面向对象继承 </title>
     <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
@@ -53,9 +53,9 @@
       <header class="post-header">
         <h1 class="full">
           <a rel="bookmark"
-             href="http://hackthology.com/shi-yong-dui-xiang-zai-golangmian-xiang-ji-cheng.html"
-             title="perm link 使用对象在Golang面向继承">
-             使用对象在Golang面向继承
+             href="http://hackthology.com/golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html"
+             title="perm link Golang中的面向对象继承">
+             Golang中的面向对象继承
           </a>
         </h1>
         <div class="meta">
@@ -67,9 +67,9 @@
       <div class="post-content"> 
         <p>Golang的面向对象机制与Smalltalk或者Java等传统面向对象的编程语言不同。传统面向对象编程语言的一个重要特性是继承机制。因为继承机制支持在关联对象间进行代码复用和数据共享。继承机制曾在代码复用和数据共享的设计模式占据主导地位，但是目前组合这一古老的技术重新焕发了活力。</p>
 <blockquote>
-<p>本篇文章转自Tim Henderson的 "Object Oriented Inheritance in Go"， 原文地址是 <a href="http://hackthology.com/object-oriented-inheritance-in-go.html">http://hackthology.com/object-oriented-inheritance-in-go.html</a> 。非常感谢李浩用于翻译的文章。</p>
+<p>本篇文章转自Tim Henderson的 "Object Oriented Inheritance in Go"， 原文地址是 <a href="http://hackthology.com/object-oriented-inheritance-in-go.html">http://hackthology.com/object-oriented-inheritance-in-go.html</a> 。非常感谢李浩和骏奇对于这篇文章的翻译。</p>
 </blockquote>
-<p>在我们探讨如何在Go中实现继承机制之前（该机制会有悖于我们对继承机制的常规印象），我们先看一下Java中如何实现继承机制。</p>
+<p>在我们探讨如何在Go中实现继承机制之前（Golong中的继承机制和其他语言(Java)的继承机制有区别），我们先看一下Java中如何实现继承机制。</p>
 <h3>继承与组合</h3>
 <p>让我们先看一下我最喜欢的话题之一：编译器！编译器由管道转换构成，该管道读取text文本并将其转化为机器代码、汇编语言、字节码或者其他的编程语言。管道首先会使用语法分析器对目标变成语言进行语法分析。一般情况下文本会被分解为不同的组成部分，例如：关键词、标识符、标点和数字等等。每个组成部分都会被相应的数据类型标记。例如下面这个Java数据类型：</p>
 <div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{}</span>
@@ -193,7 +193,7 @@
 </pre></div>
 
 
-<p>这样分析器就可以返回满足Token接口的<em>Match 和 </em>IntegerConstant类型。</p>
+<p>这样分析器就可以返回满足<em>Match 和 </em>IntegerConstant类型的Token接口。</p>
 <h4>继承机制的简化版</h4>
 <p>上面的实现方案的一个问题是*IntegerConstant的方法调用中，出现了重复造轮子的问题。但是我们可以使用Go内建的嵌入机制来避免此类情况的出现。嵌入机制(匿名嵌入)允许类型之前共享代码和数据。</p>
 <div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
