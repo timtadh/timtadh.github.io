@@ -726,6 +726,10 @@ oriented design is inheritance.  Inheritance supports sharing of code and data
 between related objects. It used to be that inheritance was the dominant design
 for sharing code and data but today another (older) technique called composition
 has seen a resurgence.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Thank you 李浩 (Hao Li) for translating this article into Mandarin:
+&lt;a href="/shi-yong-dui-xiang-zai-golangmian-xiang-ji-cheng.html" title="使用对象在Golang面向继承"&gt;使用对象在Golang面向继承&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;Before we jump into how to use inheritance in Go (which has some interesting
 edge cases) let's see how it is used in Java.&lt;/p&gt;
 &lt;h3&gt;Inheritance vs. Composition in Java&lt;/h3&gt;

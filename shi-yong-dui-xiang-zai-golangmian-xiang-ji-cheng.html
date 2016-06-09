@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
-    <title> Object Oriented Inheritance in Go </title>
+    <title> 使用对象在Golang面向继承 </title>
     <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
@@ -53,9 +53,9 @@
       <header class="post-header">
         <h1 class="full">
           <a rel="bookmark"
-             href="http://hackthology.com/object-oriented-inheritance-in-go.html"
-             title="perm link Object Oriented Inheritance in Go">
-             Object Oriented Inheritance in Go
+             href="http://hackthology.com/shi-yong-dui-xiang-zai-golangmian-xiang-ji-cheng.html"
+             title="perm link 使用对象在Golang面向继承">
+             使用对象在Golang面向继承
           </a>
         </h1>
         <div class="meta">
@@ -65,32 +65,18 @@
             <br/> <time datetime="2016-05-20T00:00:00-04:00">Fri 20 May 2016</time></div>        </div>
       </header>
       <div class="post-content"> 
-        <p>The Go (golang) programming language is not a traditional object oriented
-language like Smalltalk or Java. A key feature supporting traditional object
-oriented design is inheritance.  Inheritance supports sharing of code and data
-between related objects. It used to be that inheritance was the dominant design
-for sharing code and data but today another (older) technique called composition
-has seen a resurgence.</p>
+        <p>Golang的面向对象机制与Smalltalk或者Java等传统面向对象的编程语言不同。传统面向对象编程语言的一个重要特性是继承机制。因为继承机制支持在关联对象间进行代码复用和数据共享。继承机制曾在代码复用和数据共享的设计模式占据主导地位，但是目前组合这一古老的技术重新焕发了活力。</p>
 <blockquote>
-<p>Thank you 李浩 (Hao Li) for translating this article into Mandarin:
-<a href="/shi-yong-dui-xiang-zai-golangmian-xiang-ji-cheng.html" title="使用对象在Golang面向继承">使用对象在Golang面向继承</a></p>
+<p>本篇文章转自Tim Henderson的 "Object Oriented Inheritance in Go"， 原文地址是 <a href="http://hackthology.com/object-oriented-inheritance-in-go.html">http://hackthology.com/object-oriented-inheritance-in-go.html</a> 。非常感谢李浩用于翻译的文章。</p>
 </blockquote>
-<p>Before we jump into how to use inheritance in Go (which has some interesting
-edge cases) let's see how it is used in Java.</p>
-<h3>Inheritance vs. Composition in Java</h3>
-<p>Let's look at an example from one of my favorite topics: compilers! A compiler
-is made up of a pipeline of transformations that take "plain text" and transform
-it either to machine code, assembly language, bytecode, or another programming
-language. The first stage of the pipeline the <em>lexer</em> performs what is called
-<em>lexical analysis</em> of the programming language. It traditionally splits the text
-up into the different components as: keywords, identifiers, punctuation,
-numbers, etc... Each component is tagged with the class of component it is. So
-for this fragment of Java:</p>
+<p>在我们探讨如何在Go中实现继承机制之前（该机制会有悖于我们对继承机制的常规印象），我们先看一下Java中如何实现继承机制。</p>
+<h3>继承与组合</h3>
+<p>让我们先看一下我最喜欢的话题之一：编译器！编译器由管道转换构成，该管道读取text文本并将其转化为机器代码、汇编语言、字节码或者其他的编程语言。管道首先会使用语法分析器对目标变成语言进行语法分析。一般情况下文本会被分解为不同的组成部分，例如：关键词、标识符、标点和数字等等。每个组成部分都会被相应的数据类型标记。例如下面这个Java数据类型：</p>
 <div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{}</span>
 </pre></div>
 
 
-<p>The "components" (called <em>tokens</em>) would be:</p>
+<p>这些组成部分（可以称作标记）如下所示：</p>
 <div class="highlight"><pre><span></span>&lt;public keyword&gt;, &quot;public&quot;
 &lt;class keyword&gt;, &quot;class&quot;
 &lt;idenitifier&gt;, &quot;Main&quot;
@@ -99,38 +85,32 @@ for this fragment of Java:</p>
 </pre></div>
 
 
-<p>The tokens have two parts:</p>
+<p>这些标记可以划分为两个部分：</p>
 <ol>
-<li>The <em>token type</em></li>
-<li>The <em>lexeme</em>, or the string the token was extracted from</li>
+<li>标记类型</li>
+<li>语义部分</li>
 </ol>
-<p>This leads to the following Java design</p>
+<p>这会导致我们进行如下的Java设计方式：</p>
 <div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">TokenType</span> <span class="o">{</span>
     <span class="n">KEYWORD</span><span class="o">,</span> <span class="n">IDENTIFIER</span><span class="o">,</span> <span class="n">LBRACKET</span><span class="o">,</span> <span class="n">RBRACKET</span><span class="o">,</span> <span class="o">...</span>
 <span class="o">}</span>
-</pre></div>
 
-
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Token</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Token</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="n">TokenToken</span> <span class="n">type</span><span class="o">;</span>
+    <span class="o">**</span><span class="n">Here</span><span class="o">,</span> <span class="n">I</span> <span class="n">think</span> <span class="n">TokenToken</span> <span class="n">should</span> <span class="n">be</span> <span class="s">&quot;TokenType&quot;</span><span class="o">**</span>
     <span class="kd">public</span> <span class="n">String</span> <span class="n">lexeme</span><span class="o">;</span>
 <span class="o">}</span>
 </pre></div>
 
 
-<p>For some tokens, such as numeric constants, it convenient to specialize the
-<code>Token</code> object to contain some extra information. In the case of numeric
-constants the numerical value of the lexeme is convenient in to store directly in
-the <code>Token</code>. The traditional way to accomplish this is to have the numeric
-tokens <em>inherit</em> from the <code>Token</code> class.</p>
+<p>对于一些标记类型来说，例如数值常量，标记类型最好能够将包含这些属性信息。就数值常量来说，在他的标记类型里应该包括常量值这一属性。实现这一设计的传统方式是使用继承机制产生Token子类。</p>
 <div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntegerConstant</span> <span class="kd">extends</span> <span class="n">Token</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kt">long</span> <span class="n">value</span><span class="o">;</span>
 <span class="o">}</span>
 </pre></div>
 
 
-<p>Another way this can be achieved is to use composition where the <code>IntegerConstant</code>
-instead of extending the <code>Token</code> class contains a reference to the token.</p>
+<p>另外一种完成该设计的方式是利用组合方式产生IntegerConstant，IntegerConstant包含token的引用：</p>
 <div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntegerConstant</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="n">Token</span> <span class="n">type</span><span class="o">;</span>
     <span class="kd">public</span> <span class="kt">long</span> <span class="n">value</span><span class="o">;</span>
@@ -138,9 +118,7 @@ instead of extending the <code>Token</code> class contains a reference to the to
 </pre></div>
 
 
-<p>It turns out, in this particular case, inheritance is the better choice. The
-reason is the <code>Lexer</code> which produces the tokens needs to return a common type.
-Consider the interface of the Lexer:</p>
+<p>在这个例子中，继承机制是一个比较恰当的选择。理由是语法分析器需要返回一个通用类型。考虑一下语法分析器的接口设计：</p>
 <div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Lexer</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="nf">Lexer</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span><span class="o">)</span>
     <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">EOF</span><span class="o">()</span>
@@ -150,13 +128,9 @@ Consider the interface of the Lexer:</p>
 </pre></div>
 
 
-<p>Since in the first design (which uses inheritance) a <code>IntegerConstant</code> <em>is a</em>
-<code>Token</code> it can be used in the Lexer. Now, this isn't the only design that can be
-used and maybe isn't even the best design but it is valid. Let's take a look at
-how it translates to into Go.</p>
+<p>在继承机制中，IntegerConstant 属于Token类型，所以它可以在Lexer中调用。这不是唯一可用或者最好的设计，但是这种设计方式是有效的。让我们看一下Go是如何完成这一目的的。</p>
 <h3>Inheritance and Composition in Go</h3>
-<p>Composition is very natural in Go (as it is in most languages). To compose two
-structures simply provide a pointer or embedding to the collaborating structure.</p>
+<p>Go中实现组合是一件十分容易的事情。简单组合两个结构体就能够构造一个新的数据类型。</p>
 <div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">TokenType</span> <span class="kt">uint16</span>
 
 <span class="kd">const</span> <span class="p">(</span>
@@ -179,11 +153,9 @@ structures simply provide a pointer or embedding to the collaborating structure.
 </pre></div>
 
 
-<p>This would be the usual way to share code and data in Go. However, if you feel
-the need for inheritance then how can we use it?</p>
-<h4>Why would you want to use inheritance in go?</h4>
-<p>One of the obvious alternative designs for the <code>Token</code> is to make it an
-interface. This works equally well in both Java and Go:</p>
+<p>这就是Go中实现代码和数据共享的常用方式。然而如果你想实现继承机制，我们该如何去做？</p>
+<h4>Why would you want to use inheritance in go</h4>
+<p>一个可选的方案是将Token设计成接口类型。这种方案在Java和Go都适用：</p>
 <div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Token</span> <span class="kd">interface</span> <span class="p">{</span>
   <span class="nx">Type</span><span class="p">()</span>   <span class="nx">TokenType</span>
   <span class="nx">Lexeme</span><span class="p">()</span> <span class="kt">string</span>
@@ -221,14 +193,9 @@ interface. This works equally well in both Java and Go:</p>
 </pre></div>
 
 
-<p>The Lexer can then easily return return the <code>Token</code> interface which both <code>*Match</code>
-and <code>*IntegerConstant</code> satisfy.</p>
-<h4>Simplifying with inheritance</h4>
-<p>One of the problems with the previous design is the manual work in
-<code>*IntegerConstant</code> calling <code>i.token.Type()</code> and <code>i.token.Lexeme()</code>. It turns out
-we can use Go's built in support for
-<a href="https://twitter.com/hackthology"><em>embedding</em></a> to avoid this work. Embedding is
-a limited form of inheritance which allows types to share data and code.</p>
+<p>这样分析器就可以返回满足Token接口的<em>Match 和 </em>IntegerConstant类型。</p>
+<h4>继承机制的简化版</h4>
+<p>上面的实现方案的一个问题是*IntegerConstant的方法调用中，出现了重复造轮子的问题。但是我们可以使用Go内建的嵌入机制来避免此类情况的出现。嵌入机制(匿名嵌入)允许类型之前共享代码和数据。</p>
 <div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
   <span class="nx">Token</span>
   <span class="nx">value</span> <span class="kt">uint64</span>
@@ -240,9 +207,7 @@ a limited form of inheritance which allows types to share data and code.</p>
 </pre></div>
 
 
-<p>By not giving the <code>Token</code> field a name in <code>IntegerConstant</code>, it "inherits" the
-methods (and fields if <code>Token</code> was a <code>struct</code>) from <code>Token</code>. This pretty cool!
-We can write code like this:</p>
+<p>IntegerConstant中匿名嵌入了Token类型，使得IntegerConstant"继承"了Token的字段和方法。很酷的方法！我们可以这样写代码：</p>
 <div class="highlight"><pre><span></span><span class="nx">t</span> <span class="o">:=</span> <span class="nx">IntegerConstant</span><span class="p">{</span><span class="o">&amp;</span><span class="nx">Match</span><span class="p">{</span><span class="nx">KEYWORD</span><span class="p">,</span> <span class="s">&quot;wizard&quot;</span><span class="p">},</span> <span class="mi">2</span><span class="p">}</span>
 <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">Type</span><span class="p">(),</span> <span class="nx">t</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">(),</span> <span class="nx">t</span><span class="p">.</span><span class="nx">Value</span><span class="p">())</span>
 <span class="nx">x</span> <span class="o">:=</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
@@ -250,17 +215,14 @@ We can write code like this:</p>
 </pre></div>
 
 
-<p>(try it in the playground <a href="https://play.golang.org/p/PJW7VShpE0">https://play.golang.org/p/PJW7VShpE0</a>)</p>
-<p>So wow! Not only did we not have implement <code>Type()</code> and <code>Value()</code> but
-<code>*IntegerConstant</code> also implements the <code>Token</code> interface. Pretty nice.</p>
-<h4>"Inheriting" from <code>structs</code></h4>
-<p>There are three ways to do "inheritance" in Go. You have already seen one,
-"inheriting" from an <code>interface</code> by putting it as the first member without a field
-name. It turns out your can do the same thing with <code>struct</code>s and you have two
-choices</p>
-<ol>
-<li>
-<p>Inherit by embedding the <code>struct</code> by value</p>
+<p>(可以在这里试一下 ：<a href="https://play.golang.org/p/PJW7VShpE0">https://play.golang.org/p/PJW7VShpE0</a>)</p>
+<p>我们没有编写Type()和Value()方法的代码，但是*IntegerConstant也实现了Token接口，非常棒。</p>
+<h4>结构体的"继承"机制</h4>
+<p>Go中有三种方式完成”继承“机制，您已经看到了第一种实现方式：在结构体的第一个字段匿名嵌入接口类型。你还可以利用结构体实现其他两种”继承“机制：</p>
+<div class="highlight"><pre><span></span>1. 匿名嵌入结构体实例
+</pre></div>
+
+
 <div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
   <span class="nx">Match</span>
   <span class="nx">value</span> <span class="kt">uint64</span>
@@ -268,9 +230,10 @@ choices</p>
 </pre></div>
 
 
-</li>
-<li>
-<p>Inherit by embedding a pointer to a <code>struct</code></p>
+<div class="highlight"><pre><span></span>2. 匿名嵌入结构体实例指针
+</pre></div>
+
+
 <div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
   <span class="o">*</span><span class="nx">Match</span>
   <span class="nx">value</span> <span class="kt">uint64</span>
@@ -278,22 +241,10 @@ choices</p>
 </pre></div>
 
 
-</li>
-</ol>
-<p>In all cases, the difference from a regular field is the lack of an explicit
-name. However, the field still has a name. It is the name of the embedded type.
-In the case of <code>IntegerConstant</code> the <code>Match</code> field is named <code>Match</code>. This is
-true whether one embeds a pointer to a struct or a struct by value.</p>
-<p>On gotcha of all of these options, you can't have a Field and a method with the
-same name. A <code>struct</code> <code>Bar</code> is embedding a <code>struct</code> <code>Foo</code> precludes <code>Bar</code> from
-having a method called <code>Foo</code>. It also prevents <code>Bar</code> from implementing <code>type
-Fooer interface { Foo() }</code>.</p>
-<h3>Sharing Data, Code or Both</h3>
-<p>In Go the line between inheritance and composition is pretty blurry in
-comparison with Java. There is no <code>extends</code> keyword. Syntactically, inheritance
-looks almost identical to composition. The only difference between composition
-and inheritance in Go, is a <code>struct</code> which inherits from another <code>struct</code> can
-directly access the methods and fields of the parent <code>struct</code>.</p>
+<p>在所有的例子中，与正常嵌入类型不同的是我们使用匿名嵌入。然而，这个字段还是有字段名称的，名称是嵌入类型名称。在IntegerConstant 的Match字段中，字段名称是Match，无论嵌入类型是实例还是指针。</p>
+<p>在以上的方案中，你不能嵌入与嵌入类型相同的方法名。例如结构体Bar匿名嵌入结构体Foo后，就不能拥有名称为Foo的方法，同样也不能实现type Fooer interface { Foo() }接口类型。</p>
+<h3>共享代码、共享数据或者两者兼得</h3>
+<p>相比于Java，Go在继承和聚合之间的界限是很模糊的。Go中没有extends关键词。在语法的层次上，继承看上去与聚合没有什么区别。Go中聚合跟继承唯一的不同在于，继承自其他结构体的struct类型可以直接访问父类结构体的字段和方法。</p>
 <div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Pet</span> <span class="kd">struct</span> <span class="p">{</span>
   <span class="nx">name</span> <span class="kt">string</span>
 <span class="p">}</span>
@@ -323,21 +274,17 @@ directly access the methods and fields of the parent <code>struct</code>.</p>
 </pre></div>
 
 
-<p>(try in the playground <a href="https://play.golang.org/p/Pmkd27Nqqy">https://play.golang.org/p/Pmkd27Nqqy</a>)</p>
-<p><strong>Output</strong>:</p>
+<p>(可以试一下  <a href="https://play.golang.org/p/Pmkd27Nqqy">https://play.golang.org/p/Pmkd27Nqqy</a>)</p>
+<p>输出：</p>
 <div class="highlight"><pre><span></span>spot
 my name is spot and I am a pointer
 </pre></div>
 
 
-<h3>Limitations of Embedding as Inheritance</h3>
-<p>In comparison to a language like Java, Go's form of inheritance is quite
-limited. There are multiple designs which can be easy accomplished in Java which
-are not possible in Go. Let's look at some of them.</p>
+<h3>嵌入式继承机制的的局限</h3>
+<p>相比于Java， Go的继承机制的作用是非常有限的。有很多的设计方案可以在Java轻松实现，但是Go却不可能完成同样的工作。让我们看一下：</p>
 <h4>Overriding Methods</h4>
-<p>In the pet example above, <code>Dog</code> "overrides" the <code>Speak()</code> method. However, if
-<code>Pet</code> had another method <code>Play()</code> which invokes <code>Speak()</code> that <code>Dog</code> does not
-override the <code>Dog</code>'s implementation of <code>Speak()</code> would not be used:</p>
+<p>上面的Pet例子中，Dog类型重载了Speak()方法。然而如果Pet有另外一个方法Play()被调用，但是Dog没有实现Play()的时候，Dog类型的Speak()方法则不会被调用。</p>
 <div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="p">(</span>
@@ -378,15 +325,15 @@ override the <code>Dog</code>'s implementation of <code>Speak()</code> would not
 </pre></div>
 
 
-<p>(try it on the playground: <a href="https://play.golang.org/p/id-aDKW8L6">https://play.golang.org/p/id-aDKW8L6</a>)</p>
-<p><strong>Output</strong>:</p>
+<p>(试一下  <a href="https://play.golang.org/p/id-aDKW8L6">https://play.golang.org/p/id-aDKW8L6</a>)</p>
+<p>输出：</p>
 <div class="highlight"><pre><span></span>spot
 my name is spot and I am a pointer
 my name is spot
 </pre></div>
 
 
-<p>Contrast this to Java, in Java it would work as expected!</p>
+<p>但是Java中就会像我们预想的那样工作：</p>
 <div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">Dog</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Dog</span><span class="o">(</span><span class="s">&quot;spot&quot;</span><span class="o">,</span> <span class="s">&quot;pointer&quot;</span><span class="o">);</span>
@@ -431,7 +378,7 @@ my name is spot
 </pre></div>
 
 
-<p><strong>Output</strong></p>
+<p>输出：</p>
 <div class="highlight"><pre><span></span>$ javac Main.java <span class="o">&amp;&amp;</span> java Main
 spot
 my name is spot and I am a pointer
@@ -439,8 +386,7 @@ my name is spot and I am a pointer
 </pre></div>
 
 
-<p>This is a pretty big difference as it essentially precludes the use of abstract
-methods as you might want to define them. However, there is a work around:</p>
+<p>这个明显的区别是因为Go从根本上阻止了抽象方法的使用。让我们看看下面这个例子：</p>
 <div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="p">(</span>
@@ -503,26 +449,18 @@ methods as you might want to define them. However, there is a work around:</p>
 </pre></div>
 
 
-<p>(try it on the playground <a href="https://play.golang.org/p/9iIb2px7jH">https://play.golang.org/p/9iIb2px7jH</a>)</p>
-<p><strong>Output</strong>:</p>
+<p>(试一下 <a href="https://play.golang.org/p/9iIb2px7jH">https://play.golang.org/p/9iIb2px7jH</a>)</p>
+<p>输出：</p>
 <div class="highlight"><pre><span></span>spot
 my name is spot and I am a pointer
 my name is spot and I am a pointer
 </pre></div>
 
 
-<p>Now, it works "as expected" but it is much more verbose and difficult than in
-Java. You manually have to override the method yourself. Furthermore, it is
-rather fragile because if the struct is initialized incorrectly it will crash
-when <code>Speak()</code> is called because <code>speaker()</code> will not have been correctly
-initialized.</p>
+<p>现在跟我们预想的一样了，但是跟Java相比略显冗长和晦涩。你必须手工重载方法签名。而且，代码在结构体未正确初始化的情况下会崩溃，例如当调用Speak()时，speaker()却没有完成初始化工作的时候。</p>
 <h4>Subtyping</h4>
-<p>In Java, when the class <code>Dog</code> extends <code>Pet</code> it <em>is</em> a <code>Pet</code>. That means in every
-place you need an object of type <code>Pet</code> you can use a <code>Dog</code> object. <code>Dog</code> is
-said to <em>substitute</em> for <code>Pet</code>. This relationship is known as <em>subtyping</em> (<code>Dog</code>
-is a <em>subtype</em> of <code>Pet</code>). This relationship is also called subtype polymorphism
-and it does not exist in the Go programming language for <code>struct</code> types.</p>
-<p>Let's look at an example:</p>
+<p>在Java中，Dog继承自Pet，那么Dog类型就是Pet子类。这意味着在任何需要调用Pet类型的场景都可以使用Dog类型替换。这种关系称作多态性，但Go的结构体类型不存在这种机制。</p>
+<p>让我们看下面的例子：</p>
 <div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="p">(</span>
@@ -589,14 +527,13 @@ and it does not exist in the Go programming language for <code>struct</code> typ
 </pre></div>
 
 
-<p>(try it out on the playground <a href="https://play.golang.org/p/e1Ujx0VhwK">https://play.golang.org/p/e1Ujx0VhwK</a>)</p>
-<p><strong>Output</strong>:</p>
+<p>(试一下  <a href="https://play.golang.org/p/e1Ujx0VhwK">https://play.golang.org/p/e1Ujx0VhwK</a>)</p>
+<p>输出：</p>
 <div class="highlight"><pre><span></span>prog.go:62: cannot use d (type *Dog) as type *Pet in argument to Play
 </pre></div>
 
 
-<p>However, not all is lost because subtyping does exist for <code>interface</code> types!
-Let's try it out:</p>
+<p>然而，接口类型中存在子类化的多态机制！</p>
 <div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="p">(</span>
@@ -674,29 +611,18 @@ Let's try it out:</p>
 </pre></div>
 
 
-<p>(try it on the playground <a href="https://play.golang.org/p/WMH-cr4AJf">https://play.golang.org/p/WMH-cr4AJf</a>)</p>
-<p><strong>Output</strong>:</p>
+<p>(试一下  <a href="https://play.golang.org/p/WMH-cr4AJf">https://play.golang.org/p/WMH-cr4AJf</a>)</p>
+<p>输出：</p>
 <div class="highlight"><pre><span></span>spot
 my name is spot and I am a pointer
 my name is spot and I am a pointer
 </pre></div>
 
 
-<p>Thus, <code>interface</code>s can be used to acheive a form of subtyping. However, if they
-do not change the equation on method overriding. If you want a method overridden
-correctly you still have to use the "trick" I presented above.</p>
-<h3>Conclusion</h3>
-<p>So it turns out, while it isn't a headline feature of Go, its ability for
-<code>struct</code>s to embed <code>struct</code> pointers, <code>struct</code>s, and <code>interface</code>s is powerful
-and flexible. It allows innovative designs that can solve real problems.
-However, in comparison to Java it is limited because of a lack of direct support
-for subtyping and method overriding. It does contain one feature that Java does
-not, the ability to embed an <code>interface</code>. For more details on embedding checkout
-the <a href="https://golang.org/doc/effective_go.html#embedding">Embedding</a> section of
-<a href="https://golang.org/doc/effective_go.html">Effective Go</a>.</p>
-<hr />
-<p>Thank you to echlebek, Alexander Staubo, spriggan3, and breerly for reading and
-providing thoughtful feedback on this post.</p>
+<p>所以接口类型可以用来实现子类化的机制。但是如果你想正确的实现方法重载，需要了解以上的技巧。</p>
+<h2>Conclusion</h2>
+<p>事实上，虽然这不是Go的主打特性，但是Go语言在结构体嵌入结构体或者接口方面的能力确实为实际工作增加了很大的灵活性。Go的这些特性为我们解决实际问题提供了新的解决方案。但是相较于Java等语言，由于Go缺少子类化和方法重载支持还有存在一些局限性。Go含有一项Java没有的特性--接口嵌入。关于接口嵌入的细节请参考Golang的官方文档的Embedding部分。</p>
+<p>非常感谢echlebek, Alexander Staubo, spriggan3和breerly对这篇文章提供的支持！</p>
       </div>
       </article> <!-- /#page-main -->
 
