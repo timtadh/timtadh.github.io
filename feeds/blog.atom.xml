@@ -4,7 +4,7 @@ infrastructure. You can watch the talk on &lt;a href="http://youtu.be/4qav2EuXsG
 or look at the
 &lt;a href="http://hackthology.com/pdfs/managing-infrastructure-with-python.pdf"&gt;slides&lt;/a&gt;. The talk
 starts with a short poem printed below for posterity. I also created a super
-simple demo which I did not have time to show. You can download a &lt;a href="{filename}/tars/ops-example.tar.gz"&gt;tarball of
+simple demo which I did not have time to show. You can download a &lt;a href="http://hackthology.com/tars/ops-example.tar.gz"&gt;tarball of
 the demo&lt;/a&gt;. To run the demo you are going to
 need vagrant and the "hasicorp/precise64" box. No guarantees it works, I wrote
 it in an hour or so to make sure everything in the presentation was sensible.&lt;/p&gt;
