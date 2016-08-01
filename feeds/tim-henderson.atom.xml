@@ -1,5 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/tim-henderson.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2016-05-25T00:00:00-04:00</updated><entry><title>Writing a Lexer in Go with LexMachine</title><link href="http://hackthology.com/writing-a-lexer-in-go-with-lexmachine.html" rel="alternate"></link><updated>2016-05-25T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-05-25:writing-a-lexer-in-go-with-lexmachine.html</id><summary type="html">&lt;p&gt;This article is about &lt;a href="https://github.com/timtadh/lexmachine"&gt;lexmachine&lt;/a&gt;, a
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/tim-henderson.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2016-08-01T00:00:00-04:00</updated><entry><title>Managing Infrastructure with Python, Fabric and Ansible</title><link href="http://hackthology.com/managing-infrastructure-with-python-fabric-and-ansible.html" rel="alternate"></link><updated>2016-08-01T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-08-01:managing-infrastructure-with-python-fabric-and-ansible.html</id><summary type="html">&lt;p&gt;For &lt;a href="http://pyohio.org/"&gt;PyOhio&lt;/a&gt; 2016 I gaven a short talk on managing
+infrastructure. You can watch the talk on &lt;a href="http://youtu.be/4qav2EuXsGU"&gt;youtube&lt;/a&gt;
+or look at the
+&lt;a href="http://hackthology.com/pdfs/managing-infrastructure-with-python.pdf"&gt;slides&lt;/a&gt;. The talk
+starts with a short poem printed below for posterity.&lt;/p&gt;
+&lt;h2&gt;The World is Changing&lt;/h2&gt;
+&lt;p&gt;by Tim Henderson&lt;/p&gt;
+&lt;h3&gt;death of a sys-admin&lt;/h3&gt;
+&lt;p&gt;One person.&lt;br/&gt;
+Alone.&lt;br/&gt;
+Do the many keyboards&lt;br/&gt;
+Make the work light?&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;In the dead of the night,&lt;br/&gt;
+How the flickers&lt;br/&gt;
+Of the tubes&lt;br/&gt;
+Shine so bright.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;Two hands&lt;br/&gt;
+Ten fingers&lt;br/&gt;
+Typing so swift.&lt;br/&gt;
+On keys, mechanical,&lt;br/&gt;
+You can hear them click.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;A machine.&lt;br/&gt;
+One then another,&lt;br/&gt;
+Fixed.&lt;br/&gt;
+The backlog clean.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;Now it is June,&lt;br/&gt;
+An evening star in the sky.&lt;br/&gt;
+The sys-admin feels the breeze&lt;br/&gt;
+As seagulls fly by.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;Back in the office&lt;br/&gt;
+Are the keyboards lonely?&lt;br/&gt;
+A customer wonders:&lt;br/&gt;
+Why do my pages&lt;br/&gt;
+Load slowly?&lt;br/&gt;&lt;/p&gt;
+&lt;h3&gt;there are too many machines&lt;/h3&gt;
+&lt;p&gt;The flickering screens,&lt;br/&gt;
+Can not keeps pace&lt;br/&gt;
+With the whirring fans.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;The blades spin&lt;br/&gt;
+As the AC hums.&lt;br/&gt;
+The metal racks gleam&lt;br/&gt;
+The floor it glows.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;But. Not enough,&lt;br/&gt;
+Not enough dollars.&lt;br/&gt;
+For too few cents,&lt;br/&gt;
+Per page view is made.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;Where is the sys-admin?&lt;br/&gt;
+They left last May.&lt;br/&gt;
+None to replace them,&lt;br/&gt;
+For we couldn’t pay.&lt;br/&gt;&lt;/p&gt;
+&lt;h3&gt;now, we have become root&lt;/h3&gt;
+&lt;p&gt;The humble programmer.&lt;br/&gt;
+One keyboard,&lt;br/&gt;
+One screen!&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;No rituals on approach.&lt;br/&gt;
+No doors to knock.&lt;br/&gt;
+Just expensive headphones&lt;br/&gt;
+Fuzzing with static.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;In the fields of desks&lt;br/&gt;
+By the window so small&lt;br/&gt;
+Sits the humble programmer&lt;br/&gt;
+Trying to stay away&lt;br/&gt;
+From it all.&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;But alas!&lt;br/&gt;
+The servers are down.&lt;br/&gt;
+Sys-admins?&lt;br/&gt;
+None to be found!&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;To the command-line?&lt;br/&gt;
+Neigh! &lt;br/&gt;
+To the ansible, we pray!&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;Provision&lt;br/&gt;
+Config&lt;br/&gt;
+Deploy&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;The chant &lt;br/&gt;
+Doth resound.&lt;br/&gt;&lt;/p&gt;</summary></entry><entry><title>Writing a Lexer in Go with LexMachine</title><link href="http://hackthology.com/writing-a-lexer-in-go-with-lexmachine.html" rel="alternate"></link><updated>2016-05-25T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-05-25:writing-a-lexer-in-go-with-lexmachine.html</id><summary type="html">&lt;p&gt;This article is about &lt;a href="https://github.com/timtadh/lexmachine"&gt;lexmachine&lt;/a&gt;, a
 library I wrote to help you write great lexers in Go. If you are looking to
 write a golang lexer or a lexer in golang this article is for you.&lt;/p&gt;
 &lt;p&gt;A &lt;strong&gt;lexer&lt;/strong&gt; is a software component that analyzes a string and breaks it up into its
