@@ -1,0 +1,74 @@
+==================================================================
+https://keybase.io/tadh
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://hackthology.com
+  * I am tadh (https://keybase.io/tadh) on keybase.
+  * I have a public key with fingerprint 3116 0263 CF1F 3E14 E6B0  6223 A319 F5FF AEA1 C3D9
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "010174e65201bf08c341c66b594e3c22d4983466c9712425b05f16ec1800a72c10ed0a",
+            "fingerprint": "31160263cf1f3e14e6b06223a319f5ffaea1c3d9",
+            "host": "keybase.io",
+            "key_id": "a319f5ffaea1c3d9",
+            "kid": "010174e65201bf08c341c66b594e3c22d4983466c9712425b05f16ec1800a72c10ed0a",
+            "uid": "2a85f19f53b2f0b1a79d15fe741d0819",
+            "username": "tadh"
+        },
+        "service": {
+            "hostname": "hackthology.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1470930826,
+    "expire_in": 157680000,
+    "prev": "423d3b46f971d70b5816ec82b8fa972ccaa6c4297dd2dcc6c39ee3b132c99b00",
+    "seqno": 3,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v1
+
+owGtUn1MVWUYv1zICEYSo4QJhIelrRG87znnnnvO5SPcoEuAuvUhoMDlnPe8h3sA
+74F7DxC7QGkEQTKVEeC0gKUMipWy3YGJ6QRnTApXIRmhRn6MpgsolyIfncPsv/7s
+r3fv8/w+nt+z52CAt8Ho9Wno/dUvuoavel2aFQyZfR2H3ISgiJWExU0U4bUHF4vY
+pdqKZJGwEAACaKYxYyIBFCTAIoqGiGEEE0djCpGkSHMsRTMM4syQpEmTAEwSZDCC
+LAC8mUQQYBHwRDQhyY4C7Cxxyg5Vk6UgZADJUEiCEoWhZiAAhiQpnoKcZJIkHvMQ
+USKnEe2KS2dowwm8C8fIilbTPra18f4D/z/PXbYmR/Ks1tesKIGUgAB5MydCk4TN
+NBQBC3XfMhd2Ovg9WEOrvGgnqqMJrVIuI6wvVU/xuGvnUZFqV4qVgsoYpOzRqCVO
+RVWQUqw3VbXEonPVyhIdXIEF22MZmyA7RG2LGqEcO12y4iAsUEMiVdZ1IW0GHAVY
+kokm8NslshPbZB1hMjNaJgB0G1yuSdIkJVICzUg7teyiGQgmVk/OkgIr8ZyWHfE8
+g2iSM4siKSLEIIrDmBIgRSKOEwAg9GSlDoWwUNqcfIGm6ZILHLxa5sREtV+DMczH
+4GU0rHvCqN+Xwe+pwH+PLm15/Up81Klt3MLEI0d+XcwLo/OmpLQm38j60J5doa9V
+FfamNl9gr20J9r51OpZtDIJJd6bzeuseZL5Ztr10o/tKXe6hmUug167u/iUnZM7r
+3b35v821fDdl3OGfdvIIF/4StXo47fIZ1+E/MhyfN0ScaVj9JuBh4vDGv5cvxJlz
+hzpa8r4e/TOkPb5vvNHz8eTWyJX0vORnDoTSyR99kD52N+9Z38ujWSHrrD/U4t1h
+65PsU7P+vWFMsGUqo7UtqSdxuqrGb7KH2JmSPfyjzGSnbpm/EVdhnVncf636/lhV
+d8HA8a6oMTzTsslwPuBR+BDbGnXzRmP/8XuNV85WtR7r/Mo6e6/i9IeG3/FNn27L
+DJPjMUgRqfYaJr7plrctKOHFyURhHHgEvst6pHnDl/WVOYq31+BgbttcW4VsN+bv
+bXrPdKLed+Fi8UJwsmdgfPO5fRRxvn75ZOKulXzyjY521zu1sREj1cLg1sUNzmF2
+/pz9bMfmhlPFi0KHZ2npoNzeftTv1XDQ/1Y6no6diJODNu2Tnv4pJUO6bcvmQxtD
+Cve/H3W30+V2fztEpOwYSHiyLjLcp7y7sK/p+czO4BF4fQp5Hg4E3v656mpWRKmF
+Z8sDR1d72QeLaXeaxeDJmleGTvRvQxMHQqrD6ZiVYy9/n3U99bmL0/7Sinvpr5FP
+pFrr6wm/fpb6Dw==
+=VrWo
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/tadh
+
+==================================================================
+
