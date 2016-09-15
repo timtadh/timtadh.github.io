@@ -6,4 +6,67 @@ Dependence Graphs with GRAPLE&lt;/em&gt;.
 &lt;a href="http://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="http://hackthology.com/pdfs/swan-2016-supplemental.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
 &lt;a href="https://github.com/timtadh/graple"&gt;CODE&lt;/a&gt;.
-&lt;a href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;</summary></entry></feed>
+&lt;a href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;We present &lt;a href="https://github.com/timtadh/graple"&gt;GRAPLE&lt;/a&gt;, a method to generate a
+representative sample of recurring (frequent) subgraphs of any directed labeled
+graph(s).  &lt;code&gt;GRAPLE&lt;/code&gt; is based on frequent subgraph mining, absorbing Markov
+chains, and Horvitz-Thompson estimation. It can be used to sample any kind of
+graph representation for programs. One of many software engineering applications
+for finding recurring subgraphs is detecting duplicated code (code clones) from
+representations such as program dependence graphs (PDGs) and abstract syntax
+trees.  To assess the usefulness of clones detected from PDGs, we conducted a
+case study on a 73 KLOC commercial Android application developed over 5 years.
+Nine of the application's developers participated. To our knowledge, it is the
+first study to have professional developers examine code clones detected from
+PDGs.  We describe a new PDG generation tool
+&lt;a href="https://github.com/timtadh/jpdg"&gt;jpdg&lt;/a&gt; for JVM languages, which was used to
+generate the dependence graphs used in the study.&lt;/p&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Code clones&lt;/em&gt; are similar fragments of program code. They can arise from copying
+and pasting, using certain design patterns or certain APIs, or adhering to
+coding conventions, among other causes. Code clones create maintenance hazards,
+because they often require subtle context-dependent adaptation and because other
+changes must be applied to each member of a clone class. To manage clone
+evolution the clones must first be found. Clones can be detected using any
+program representation: source code text, tokens, abstract syntax trees (ASTs),
+flow graphs, dependence graphs, etc. Each representation has advantages and
+disadvantages for clone detection.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;PDG-based clone detection&lt;/em&gt; finds &lt;em&gt;dependence clones&lt;/em&gt; corresponding to recurring
+subgraphs of a program dependence graph (PDG).  Since PDGs are oblivious to
+semantics preserving statement reorderings they are well suited to detect
+&lt;em&gt;semantic&lt;/em&gt; (functionally equivalent) clones. A number of algorithms find clones
+from PDGs.  However, as Bellon notes, "PDG based techniques are computationally
+expensive and often report non-contiguous clones that may not be perceived as
+clones by a human evaluator." Most PDG-based clone detection tools are biased,
+detecting certain clones but not others.&lt;/p&gt;
+&lt;p&gt;The root cause of scalability problems with PDG-based clone detection is the
+number of dependence clones. The Background Section (in the
+&lt;a href="http://hackthology.com/pdfs/swan-2016.pdf"&gt;pdf&lt;/a&gt;) illustrates this with an example in which
+we used an unbiased frequent subgraph mining algorithm to detect all dependence
+clones in Java programs. In programs with about 70 KLOC it detected around 10
+million clones before disk space was exhausted. Processing all dependence clones
+is impractical even for modestly sized programs.&lt;/p&gt;
+&lt;p&gt;Instead of exhaustively enumerating all dependence clones, an unbiased random
+sample can be used to statistically estimate parameters of the whole
+"population" of clones, such as the prevalence of clones exhibiting properties
+of interest.  For these reasons, we developed a statistically unbiased method
+for &lt;em&gt;sampling&lt;/em&gt; dependence clones and for &lt;em&gt;estimating&lt;/em&gt; parameters of the whole
+clone population.&lt;/p&gt;
+&lt;p&gt;We present &lt;a href="https://github.com/timtadh/graple"&gt;GRAPLE (GRAph samPLE)&lt;/a&gt;, a method
+to generate a representative sample of recurring subgraphs of any directed
+labeled graph(s). It can be used to sample subgraphs from any kind of program
+graph representation.  &lt;code&gt;GRAPLE&lt;/code&gt; is not a general purpose clone detector but it
+can answer questions about dependence clones that other PDG-based clone
+detection tools cannot.  We conducted a preliminary case study on a commercial
+application and had its developers evaluate whether the sampled subgraphs
+represented code duplication.  To our knowledge, it is the first study to have
+professional programmers examine dependence clones.  &lt;code&gt;GRAPLE&lt;/code&gt; has applications
+in bug mining, test case selection, and bioinformatics. The sampling algorithm
+also applies to frequent item sets, subsequences, and subtrees allowing code
+clone sampling from tokens and ASTs.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;p&gt;See the &lt;a href="http://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt; for the complete paper. ACM
+has the exclusive rights to publish this paper. Tim Henderson and Andy Podgurski
+own the copyright. Follow the &lt;a href="https://dx.doi.org/10.1145/2989238.2989241"&gt;DOI&lt;/a&gt;
+for the ACM copy. This copy is posted here with the permission of ACM.&lt;/p&gt;</summary></entry></feed>
