@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/paper.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2016-11-13T00:00:00-05:00</updated><entry><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html" rel="alternate"></link><updated>2016-11-13T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2016-11-13:sampling-code-clones-from-program-dependence-graphs-with-graple.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
+Dependence Graphs with GRAPLE&lt;/em&gt;.
+&lt;a href="http://softwareanalytics.ca/swan16/Home.html"&gt;SWAN 2016&lt;/a&gt;.
+&lt;a href="https://dx.doi.org/10.1145/2989238.2989241"&gt;DOI&lt;/a&gt;.
+&lt;a href="http://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="http://hackthology.com/pdfs/swan-2016-supplemental.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
+&lt;a href="https://github.com/timtadh/graple"&gt;CODE&lt;/a&gt;.
+&lt;a href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;</summary></entry></feed>
