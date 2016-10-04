@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hackthology</title><link>http://hackthology.com/</link><description></description><atom:link href="http://hackthology.com/feeds/arda-durmaz-tim-henderson-doug-brubaker-and-gurkan-bebek.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 03 Jan 2017 00:00:00 -0500</lastBuildDate><item><title>Frequent Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with Frequently Dysregulated Disease Pathways and Predicts Prognosis.</title><link>http://hackthology.com/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html</link><description>&lt;p&gt;A. Durmaz*, &lt;strong&gt;T. A. D. Henderson&lt;/strong&gt;*, D.  Brubaker, and G. Bebek. &lt;em&gt;Frequent
+Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with
+Frequently Dysregulated Disease Pathways and Predicts Prognosis.&lt;/em&gt;
+&lt;a href="http://psb.stanford.edu/"&gt;PSB 2017&lt;/a&gt;.
+&lt;a href="http://hackthology.com/pdfs/psb-2017.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="http://hackthology.com/pdfs/psb-2017-supplemental.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
+&lt;a href="http://hackthology.com/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html"&gt;WEB&lt;/a&gt;. &lt;br/&gt;
+* &lt;strong&gt;Co-First Author&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;Abstract&lt;/h3&gt;
+&lt;h4&gt;Motivation&lt;/h4&gt;
+&lt;p&gt;Large scale genomics studies have generated comprehensive molecular
+characterization of numerous cancer types. Subtypes for many tumor types have
+been established; however, these classifications are based on molecular
+characteristics of a small gene sets with limited power to detect dysregulation
+at the patient level.  We hypothesize that frequent graph mining of pathways to
+gather pathways functionally relevant to tumors can characterize tumor types and
+provide opportunities for personalized therapies.&lt;/p&gt;
+&lt;h4&gt;Results&lt;/h4&gt;
+&lt;p&gt;In this study we present an integrative omics approach to group patients based
+on their altered pathway characteristics and show prognostic differences within
+breast cancer (p &amp;lt; 9.57e-10) and glioblastoma multiforme (p &amp;lt; 0.05) patients. We
+were able validate this approach in secondary RNA-Seq datasets with p &amp;lt; 0.05 and
+p &amp;lt; 0.01 respectively. We also performed pathway enrichment analysis to further
+investigate the biological relevance of dysregulated pathways. We compared our
+approach with network-based classifier algorithms and showed that our
+unsupervised approach generates more robust and biologically relevant clustering
+whereas previous approaches failed to report specific functions for similar
+patient groups or classify patients into prognostic groups.&lt;/p&gt;
+&lt;h4&gt;Conclusions&lt;/h4&gt;
+&lt;p&gt;These results could serve as a means to improve
+prognosis for future cancer patients, and to provide opportunities for
+improved treatment options and personalized interventions.  The proposed novel 
+graph mining approach is able to integrate PPI networks 
+with gene expression in a biologically sound approach and cluster patients in to
+clinically distinct groups. We have utilized breast cancer and glioblastoma
+multiforme datasets from microarray and RNA-Seq platforms and identified
+disease mechanisms differentiating samples.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Arda Durmaz, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Doug Brubaker, and &lt;a href="http://gurkan.case.edu"&gt;Gurkan Bebek&lt;/a&gt;</dc:creator><pubDate>Tue, 03 Jan 2017 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2017-01-03:frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html</guid></item></channel></rss>
