@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> Rethinking Dependence Clones </title>
+    <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="http://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="http://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="http://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="http://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="http://hackthology.com/feeds/rss.xml" /> 
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="http://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <h3>
+          The Discourses of Tim Henderson
+        </h3>
+        <div class="top-nav">
+<ul>
+    <li><a href="http://hackthology.com/articles.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/rethinking-dependence-clones.html"
+             title="perm link Rethinking Dependence Clones">
+             Rethinking Dependence Clones
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by &nbsp;<a href="http://hackthology.com">Tim Henderson</a> and <a href="http://engineering.case.edu/profiles/hap">Andy Podgurski</a>
+<br/> <time datetime="2017-02-21T00:00:00-05:00">Tue 21 February 2017</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p><strong>Tim A. D. Henderson</strong> and Andy Podgurski.
+<em>Rethinking Dependence Clones</em>.
+<a href="https://iwsc2017.github.io/">IWSC 2017</a>.
+<br/>
+<a href="http://hackthology.com/pdfs/iwsc-2017.pdf">PDF</a>.
+<a href="http://hackthology.com/rethinking-dependence-clones.html">WEB</a>.</p>
+<h4>Abstract</h4>
+<p><em>Semantic code clones</em> are regions of duplicated code that may appear dissimilar
+but compute similar functions. Since in general it is algorithmically
+undecidable whether two or more programs compute the same function, locating all
+semantic code clones is infeasible. One way to dodge the undecidability issue
+and find potential semantic clones, using only static information, is to search
+for recurring subgraphs of a <em>program dependence graph</em> (PDG).  PDGs represent
+control and data dependence relationships between statements or operations in a
+program.  PDG-based clone detection techniques, unlike syntactically-based
+techniques, do not distinguish between code fragments that differ only because
+of dependence-preserving statement re-orderings, which also preserve semantics.
+Consequently, they detect clones that are difficult to find by other means.
+Despite this very desirable property, work on PDG-based clone detection has
+largely stalled, apparently because of concerns about the scalability of the
+approach.  We argue, however, that the time has come to reconsider PDG-based
+clone detection, as a part of a holistic strategy for clone management.  We
+present evidence that its scalability problems are not as severe as previously
+thought.  This suggests the possibility of developing integrated clone
+management systems that fuse information from multiple clone detection methods,
+including PDG-based ones.</p>
+<h2>Introduction</h2>
+<p>Fragments of similar code are typically scattered throughout large code bases.
+These repeated fragments or <em>code clones</em> often result from programmers copying
+and pasting code.  Code clones (or just <em>clones</em>) may also result from
+limitations of a programming language, use of certain APIs or design patterns,
+following coding conventions, or a variety of other causes.  Whatever their
+causes, existing clones need to be managed. When a programmer modifies a region
+of code that is cloned in another location in the program, they should make an
+active decision whether or not to modify the other location.  Clearly, such
+decisions can only be made if the programmer is aware of the other location.</p>
+<p>In general, there are 4 types of code clones:</p>
+<ul>
+<li><strong>Type-1 Clones -</strong> Identical regions of code (excepting whitespace and
+  comments).</li>
+<li><strong>Type-2 Clones -</strong> Syntactically equivalent regions (excepting names,
+  literals, types, and comments).</li>
+<li><strong>Type-3 Clones -</strong> Syntactically similar regions (as in Type-2) but with
+  minor differences such as statement additions or deletions.</li>
+<li><strong>Type-4 Clones -</strong> Regions of code with functionally equivalent behavior but
+  possibly with different syntactic structures.</li>
+</ul>
+<p>Much of the research on code clone detection and maintenance has been geared
+toward Type-1 and Type-2 clone, as they are easier to detect and validate than
+Type-3 and Type-4 clones.  The two most popular detection methods involve
+searching for clones in <em>token streams</em> and <em>abstract syntax trees</em> (ASTs).</p>
+<p>An alternative approach to clone detection is to search for them in a <em>Program
+Dependence Graph</em> (PDG), which represents the control and data dependences
+between statements or operations in a program.  Recurring subgraphs in PDGs
+represent potential <em>dependence clones</em>.  Some of the previous work on PDG-based
+clone detection used forward and backward path-slicing to find clones.  This
+method can detect matching slices, but it cannot detect all recurring subgraphs.
+The latter can be identified using <em>frequent subgraph mining</em> (FSM).  However,
+for low frequency thresholds, the number of PDG subgraphs discovered by FSM may
+be enormous.  For example, we found that for a Java program with 70,000 lines of
+code (LOC), over 700 million PDG subgraphs with 5 or more instances were
+discovered by FSM.</p>
+<p>Since it is infeasible for developers to examine so many subgraphs, we
+previously developed <a href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html">GRAPLE</a>, an algorithm to
+select representative samples of maximal frequent subgraphs.  In this paper, the
+core sampling process remains the same as in GRAPLE but we present a new
+algorithm for traversing the <em>k</em>-frequent subgraph lattice.  One tricky aspect
+of FSM is how to define exactly what "frequency" means in a large connected
+graph. In order to handle pathological cases that occur in real programs, we
+introduce a new metric to measure subgraph frequency (or "support"), called
+the <em>Greedy Independent Subgraphs</em> (GIS) measure.  The results section details
+the first empirical examination of the scalability and speed of sampling
+dependence clones from large programs. The study showed that our new system can
+quickly sample from programs with 500 KLOC of code and successfully sample from
+programs with perhaps 2 MLOC. Finally, since at times the sampling algorithm may
+return several potential clones, which are quite similar to each other, we
+evaluate the performance of a density-based clustering algorithm on the samples
+collected.</p>
+<h4>Note</h4>
+<p>See the <a href="http://hackthology.com/pdfs/iwsc-2017.pdf">PDF</a> for the complete paper. IEEE has
+the exclusive rights to publish this paper. Follow the <a href="TBA">DOI</a> for the IEEE
+copy.</p>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="http://hackthology.com/articles.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+        <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

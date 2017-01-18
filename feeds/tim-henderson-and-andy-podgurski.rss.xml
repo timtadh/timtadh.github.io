@@ -1,7 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hackthology</title><link>http://hackthology.com/</link><description></description><atom:link href="http://hackthology.com/feeds/tim-henderson-and-andy-podgurski.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 13 Nov 2016 00:00:00 -0500</lastBuildDate><item><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link>http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hackthology</title><link>http://hackthology.com/</link><description></description><atom:link href="http://hackthology.com/feeds/tim-henderson-and-andy-podgurski.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 21 Feb 2017 00:00:00 -0500</lastBuildDate><item><title>Rethinking Dependence Clones</title><link>http://hackthology.com/rethinking-dependence-clones.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
+&lt;em&gt;Rethinking Dependence Clones&lt;/em&gt;.
+&lt;a href="https://iwsc2017.github.io/"&gt;IWSC 2017&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="http://hackthology.com/rethinking-dependence-clones.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;&lt;em&gt;Semantic code clones&lt;/em&gt; are regions of duplicated code that may appear dissimilar
+but compute similar functions. Since in general it is algorithmically
+undecidable whether two or more programs compute the same function, locating all
+semantic code clones is infeasible. One way to dodge the undecidability issue
+and find potential semantic clones, using only static information, is to search
+for recurring subgraphs of a &lt;em&gt;program dependence graph&lt;/em&gt; (PDG).  PDGs represent
+control and data dependence relationships between statements or operations in a
+program.  PDG-based clone detection techniques, unlike syntactically-based
+techniques, do not distinguish between code fragments that differ only because
+of dependence-preserving statement re-orderings, which also preserve semantics.
+Consequently, they detect clones that are difficult to find by other means.
+Despite this very desirable property, work on PDG-based clone detection has
+largely stalled, apparently because of concerns about the scalability of the
+approach.  We argue, however, that the time has come to reconsider PDG-based
+clone detection, as a part of a holistic strategy for clone management.  We
+present evidence that its scalability problems are not as severe as previously
+thought.  This suggests the possibility of developing integrated clone
+management systems that fuse information from multiple clone detection methods,
+including PDG-based ones.&lt;/p&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Fragments of similar code are typically scattered throughout large code bases.
+These repeated fragments or &lt;em&gt;code clones&lt;/em&gt; often result from programmers copying
+and pasting code.  Code clones (or just &lt;em&gt;clones&lt;/em&gt;) may also result from
+limitations of a programming language, use of certain APIs or design patterns,
+following coding conventions, or a variety of other causes.  Whatever their
+causes, existing clones need to be managed. When a programmer modifies a region
+of code that is cloned in another location in the program, they should make an
+active decision whether or not to modify the other location.  Clearly, such
+decisions can only be made if the programmer is aware of the other location.&lt;/p&gt;
+&lt;p&gt;In general, there are 4 types of code clones:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Type-1 Clones -&lt;/strong&gt; Identical regions of code (excepting whitespace and
+  comments).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type-2 Clones -&lt;/strong&gt; Syntactically equivalent regions (excepting names,
+  literals, types, and comments).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type-3 Clones -&lt;/strong&gt; Syntactically similar regions (as in Type-2) but with
+  minor differences such as statement additions or deletions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type-4 Clones -&lt;/strong&gt; Regions of code with functionally equivalent behavior but
+  possibly with different syntactic structures.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Much of the research on code clone detection and maintenance has been geared
+toward Type-1 and Type-2 clone, as they are easier to detect and validate than
+Type-3 and Type-4 clones.  The two most popular detection methods involve
+searching for clones in &lt;em&gt;token streams&lt;/em&gt; and &lt;em&gt;abstract syntax trees&lt;/em&gt; (ASTs).&lt;/p&gt;
+&lt;p&gt;An alternative approach to clone detection is to search for them in a &lt;em&gt;Program
+Dependence Graph&lt;/em&gt; (PDG), which represents the control and data dependences
+between statements or operations in a program.  Recurring subgraphs in PDGs
+represent potential &lt;em&gt;dependence clones&lt;/em&gt;.  Some of the previous work on PDG-based
+clone detection used forward and backward path-slicing to find clones.  This
+method can detect matching slices, but it cannot detect all recurring subgraphs.
+The latter can be identified using &lt;em&gt;frequent subgraph mining&lt;/em&gt; (FSM).  However,
+for low frequency thresholds, the number of PDG subgraphs discovered by FSM may
+be enormous.  For example, we found that for a Java program with 70,000 lines of
+code (LOC), over 700 million PDG subgraphs with 5 or more instances were
+discovered by FSM.&lt;/p&gt;
+&lt;p&gt;Since it is infeasible for developers to examine so many subgraphs, we
+previously developed &lt;a href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html"&gt;GRAPLE&lt;/a&gt;, an algorithm to
+select representative samples of maximal frequent subgraphs.  In this paper, the
+core sampling process remains the same as in GRAPLE but we present a new
+algorithm for traversing the &lt;em&gt;k&lt;/em&gt;-frequent subgraph lattice.  One tricky aspect
+of FSM is how to define exactly what "frequency" means in a large connected
+graph. In order to handle pathological cases that occur in real programs, we
+introduce a new metric to measure subgraph frequency (or "support"), called
+the &lt;em&gt;Greedy Independent Subgraphs&lt;/em&gt; (GIS) measure.  The results section details
+the first empirical examination of the scalability and speed of sampling
+dependence clones from large programs. The study showed that our new system can
+quickly sample from programs with 500 KLOC of code and successfully sample from
+programs with perhaps 2 MLOC. Finally, since at times the sampling algorithm may
+return several potential clones, which are quite similar to each other, we
+evaluate the performance of a density-based clustering algorithm on the samples
+collected.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;p&gt;See the &lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. IEEE has
+the exclusive rights to publish this paper. Follow the &lt;a href="TBA"&gt;DOI&lt;/a&gt; for the IEEE
+copy.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</dc:creator><pubDate>Tue, 21 Feb 2017 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2017-02-21:rethinking-dependence-clones.html</guid></item><item><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link>http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
 Dependence Graphs with GRAPLE&lt;/em&gt;.
 &lt;a href="http://softwareanalytics.ca/swan16/Home.html"&gt;SWAN 2016&lt;/a&gt;.
+&lt;br/&gt;
 &lt;a href="https://dx.doi.org/10.1145/2989238.2989241"&gt;DOI&lt;/a&gt;.
 &lt;a href="http://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="http://hackthology.com/pdfs/swan-2016-supplemental.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
