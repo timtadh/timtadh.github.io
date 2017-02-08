@@ -80,7 +80,43 @@ collected.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;p&gt;See the &lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. IEEE has
 the exclusive rights to publish this paper. Follow the &lt;a href="TBA"&gt;DOI&lt;/a&gt; for the IEEE
-copy.&lt;/p&gt;</summary></entry><entry><title>Frequent Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with Frequently Dysregulated Disease Pathways and Predicts Prognosis</title><link href="http://hackthology.com/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html" rel="alternate"></link><updated>2017-01-03T00:00:00-05:00</updated><author><name>Arda Durmaz, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Doug Brubaker, and &lt;a href="http://gurkan.case.edu"&gt;Gurkan Bebek&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-01-03:frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html</id><summary type="html">&lt;p&gt;A. Durmaz*, &lt;strong&gt;T. A. D. Henderson&lt;/strong&gt;*, D.  Brubaker, and G. Bebek. &lt;em&gt;Frequent
+copy.&lt;/p&gt;</summary></entry><entry><title>`xrandr` Script to Setup External Monitor</title><link href="http://hackthology.com/xrandr-script-to-setup-external-monitor.html" rel="alternate"></link><updated>2017-02-08T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2017-02-08:xrandr-script-to-setup-external-monitor.html</id><summary type="html">&lt;p&gt;I have a quirky adapter for my external monitor. The adapter doesn't correctly
+report the display's size or refresh rate to the laptop. To solve this problem,
+I wrote the following script to automatically setup the external monitor:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
+
+&lt;span class="c1"&gt;## size and refresh rate of the screen&lt;/span&gt;
+&lt;span class="nv"&gt;X&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1920
+&lt;span class="nv"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1200
+&lt;span class="nv"&gt;R&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;60
+
+&lt;span class="c1"&gt;## mode string&lt;/span&gt;
+&lt;span class="nv"&gt;MODE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$X&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;x&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$Y&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;_&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$R&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;.00
+
+&lt;span class="c1"&gt;## turn the output off in case it is on&lt;/span&gt;
+xrandr --output DP1 --off
+
+&lt;span class="c1"&gt;## delete the mode from the output in case it exists&lt;/span&gt;
+xrandr --delmode DP1 &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$MODE&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;## delete the mode&lt;/span&gt;
+xrandr --rmmode &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$MODE&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;## create the mode, you need to compute the actual mode line using the `gtf`&lt;/span&gt;
+&lt;span class="c1"&gt;## program which computes VESA GTF mode lines from size and refresh rates&lt;/span&gt;
+gtf &lt;span class="nv"&gt;$X&lt;/span&gt; &lt;span class="nv"&gt;$Y&lt;/span&gt; &lt;span class="nv"&gt;$R&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; grep Modeline &lt;span class="p"&gt;|&lt;/span&gt; sed &lt;span class="s1"&gt;&amp;#39;s/ *Modeline *//&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs xrandr --newmode
+
+&lt;span class="c1"&gt;## add your newly created mode to the output&lt;/span&gt;
+xrandr --addmode DP1 &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$MODE&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;## turn on the output with the new mode. Place it to the right of the laptop&lt;/span&gt;
+&lt;span class="c1"&gt;## display but displaced -600 pixels above the laptop display&lt;/span&gt;
+xrandr --output DP1 --mode &lt;span class="nv"&gt;$MODE&lt;/span&gt; --pos 1920x-600
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This script also has the advantage that I never have to run the GUI tool to
+change the position of the monitor in relationship to my laptop's monitor.&lt;/p&gt;</summary></entry><entry><title>Frequent Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with Frequently Dysregulated Disease Pathways and Predicts Prognosis</title><link href="http://hackthology.com/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html" rel="alternate"></link><updated>2017-01-03T00:00:00-05:00</updated><author><name>Arda Durmaz, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Doug Brubaker, and &lt;a href="http://gurkan.case.edu"&gt;Gurkan Bebek&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-01-03:frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html</id><summary type="html">&lt;p&gt;A. Durmaz*, &lt;strong&gt;T. A. D. Henderson&lt;/strong&gt;*, D.  Brubaker, and G. Bebek. &lt;em&gt;Frequent
 Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with
 Frequently Dysregulated Disease Pathways and Predicts Prognosis.&lt;/em&gt;
 &lt;a href="http://psb.stanford.edu/"&gt;PSB 2017&lt;/a&gt;.  * &lt;strong&gt;Co-First Author&lt;/strong&gt;

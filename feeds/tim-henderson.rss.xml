@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hackthology</title><link>http://hackthology.com/</link><description></description><atom:link href="http://hackthology.com/feeds/tim-henderson.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 01 Aug 2016 00:00:00 -0400</lastBuildDate><item><title>Managing Infrastructure with Python, Fabric and Ansible</title><link>http://hackthology.com/managing-infrastructure-with-python-fabric-and-ansible.html</link><description>&lt;p&gt;For &lt;a href="http://pyohio.org/"&gt;PyOhio&lt;/a&gt; 2016 I gave a short talk on managing
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hackthology</title><link>http://hackthology.com/</link><description></description><atom:link href="http://hackthology.com/feeds/tim-henderson.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 08 Feb 2017 00:00:00 -0500</lastBuildDate><item><title>`xrandr` Script to Setup External Monitor</title><link>http://hackthology.com/xrandr-script-to-setup-external-monitor.html</link><description>&lt;p&gt;I have a quirky adapter for my external monitor. The adapter doesn't correctly
+report the display's size or refresh rate to the laptop. To solve this problem,
+I wrote the following script to automatically setup the external monitor:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
+
+&lt;span class="c1"&gt;## size and refresh rate of the screen&lt;/span&gt;
+&lt;span class="nv"&gt;X&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1920
+&lt;span class="nv"&gt;Y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1200
+&lt;span class="nv"&gt;R&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;60
+
+&lt;span class="c1"&gt;## mode string&lt;/span&gt;
+&lt;span class="nv"&gt;MODE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$X&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;x&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$Y&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;_&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$R&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;.00
+
+&lt;span class="c1"&gt;## turn the output off in case it is on&lt;/span&gt;
+xrandr --output DP1 --off
+
+&lt;span class="c1"&gt;## delete the mode from the output in case it exists&lt;/span&gt;
+xrandr --delmode DP1 &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$MODE&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;## delete the mode&lt;/span&gt;
+xrandr --rmmode &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$MODE&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;## create the mode, you need to compute the actual mode line using the `gtf`&lt;/span&gt;
+&lt;span class="c1"&gt;## program which computes VESA GTF mode lines from size and refresh rates&lt;/span&gt;
+gtf &lt;span class="nv"&gt;$X&lt;/span&gt; &lt;span class="nv"&gt;$Y&lt;/span&gt; &lt;span class="nv"&gt;$R&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; grep Modeline &lt;span class="p"&gt;|&lt;/span&gt; sed &lt;span class="s1"&gt;&amp;#39;s/ *Modeline *//&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs xrandr --newmode
+
+&lt;span class="c1"&gt;## add your newly created mode to the output&lt;/span&gt;
+xrandr --addmode DP1 &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$MODE&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;## turn on the output with the new mode. Place it to the right of the laptop&lt;/span&gt;
+&lt;span class="c1"&gt;## display but displaced -600 pixels above the laptop display&lt;/span&gt;
+xrandr --output DP1 --mode &lt;span class="nv"&gt;$MODE&lt;/span&gt; --pos 1920x-600
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This script also has the advantage that I never have to run the GUI tool to
+change the position of the monitor in relationship to my laptop's monitor.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Wed, 08 Feb 2017 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2017-02-08:xrandr-script-to-setup-external-monitor.html</guid></item><item><title>Managing Infrastructure with Python, Fabric and Ansible</title><link>http://hackthology.com/managing-infrastructure-with-python-fabric-and-ansible.html</link><description>&lt;p&gt;For &lt;a href="http://pyohio.org/"&gt;PyOhio&lt;/a&gt; 2016 I gave a short talk on managing
 infrastructure. You can watch the talk on &lt;a href="http://youtu.be/4qav2EuXsGU"&gt;youtube&lt;/a&gt;
 or look at the
 &lt;a href="http://hackthology.com/pdfs/managing-infrastructure-with-python.pdf"&gt;slides&lt;/a&gt;. The talk
