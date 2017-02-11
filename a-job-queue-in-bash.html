@@ -187,12 +187,11 @@ send<span class="o">()</span> <span class="o">{</span>
   <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span> 1&gt;<span class="p">&amp;</span><span class="m">3</span> <span class="c1">## the fifo is fd 3</span>
 <span class="o">}</span>
 
-<span class="c1">## Produce the jobs to run. In this case run 10 replicates of each</span>
-<span class="c1">## dataset in the list.</span>
+<span class="c1">## Produce the jobs to run.</span>
 <span class="nv">i</span><span class="o">=</span>0
 <span class="k">for</span> item in <span class="o">{</span>dataset-A,dataset-B,dataset-C,dataset-D<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
   <span class="nb">echo</span> <span class="s2">&quot;sending </span><span class="nv">$data</span><span class="s2"> </span><span class="nv">$i</span><span class="s2">&quot;</span>
-  <span class="nb">echo</span> <span class="nv">$data</span> <span class="nv">$i</span> 1&gt;<span class="p">&amp;</span>3
+  <span class="nb">echo</span> <span class="nv">$i</span> <span class="nv">$data</span> 1&gt;<span class="p">&amp;</span>3
   <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
 <span class="k">done</span>
 <span class="c1">## close the filo</span>

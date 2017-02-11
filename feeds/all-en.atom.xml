@@ -201,12 +201,11 @@ send&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
   &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$work_id&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$work_item&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; 1&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="c1"&gt;## the fifo is fd 3&lt;/span&gt;
 &lt;span class="o"&gt;}&lt;/span&gt;
 
-&lt;span class="c1"&gt;## Produce the jobs to run. In this case run 10 replicates of each&lt;/span&gt;
-&lt;span class="c1"&gt;## dataset in the list.&lt;/span&gt;
+&lt;span class="c1"&gt;## Produce the jobs to run.&lt;/span&gt;
 &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0
 &lt;span class="k"&gt;for&lt;/span&gt; item in &lt;span class="o"&gt;{&lt;/span&gt;dataset-A,dataset-B,dataset-C,dataset-D&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
   &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;sending &lt;/span&gt;&lt;span class="nv"&gt;$data&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$i&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
-  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$data&lt;/span&gt; &lt;span class="nv"&gt;$i&lt;/span&gt; 1&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;3
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$i&lt;/span&gt; &lt;span class="nv"&gt;$data&lt;/span&gt; 1&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;3
   &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;i+1&lt;span class="k"&gt;))&lt;/span&gt;
 &lt;span class="k"&gt;done&lt;/span&gt;
 &lt;span class="c1"&gt;## close the filo&lt;/span&gt;
