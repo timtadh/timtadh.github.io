@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> A Job Queue in BASH </title>
+    <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="http://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="http://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="http://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="http://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="http://hackthology.com/feeds/rss.xml" /> 
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="http://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <h3>
+          The Discourses of Tim Henderson
+        </h3>
+        <div class="top-nav">
+<ul>
+    <li><a href="http://hackthology.com/articles.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/a-job-queue-in-bash.html"
+             title="perm link A Job Queue in BASH">
+             A Job Queue in BASH
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by &nbsp;Tim Henderson
+<br/> <time datetime="2017-02-11T00:00:00-05:00">Sat 11 February 2017</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>A Job Queue is typically a first in first out queue of "work items" or "jobs" to
+be processed. Ideally, a good job queue should support multiple workers (also
+called readers) so multiple jobs can be processed at one time. For production
+systems and clusters there are many robust options availble. Sometimes you need
+a job queue for a local system but cannot install (or do not want to install)
+one of the many networked job queues. But, if you are running Linux you probably
+have GNU BASH installed which can be used to create a relatively simple and
+robust job queue.</p>
+<p>Below is an example BASH Job Queue made with <code>fifo</code>s and <code>flock</code>s. A <code>fifo</code> is a
+first in first out UNIX pipe (<a href="https://linux.die.net/man/4/fifo">see <code>man
+fifo</code></a>). A <code>flock</code> (<a href="https://linux.die.net/man/1/flock">see <code>man
+flock</code></a>) is a "file lock" which lets the
+queue support multiple readers.  This queue may or may not work for other shells
+as it relies on the BASH <a href="http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_08_02.html">built in
+<code>read</code></a>. You
+will need to consult the man pages for your shell to determine if this will work
+for you.</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+
+<span class="c1">## this is the &quot;job&quot; function which is does whatever work</span>
+<span class="c1">## the queue workers are supposed to be doing</span>
+job<span class="o">()</span> <span class="o">{</span>
+  <span class="nv">i</span><span class="o">=</span><span class="nv">$1</span>
+  <span class="nv">work</span><span class="o">=</span><span class="nv">$2</span>
+  <span class="c1">## run the work ....</span>
+<span class="o">}</span>
+
+<span class="c1"># make the files</span>
+<span class="nv">START</span><span class="o">=</span><span class="k">$(</span>mktemp -t start-XXXX<span class="k">)</span>
+<span class="nv">FIFO</span><span class="o">=</span><span class="k">$(</span>mktemp -t fifo-XXXX<span class="k">)</span>
+<span class="nv">FIFO_LOCK</span><span class="o">=</span><span class="k">$(</span>mktemp -t lock-XXXX<span class="k">)</span>
+<span class="nv">START_LOCK</span><span class="o">=</span><span class="k">$(</span>mktemp -t lock-XXXX<span class="k">)</span>
+
+<span class="c1">## mktemp makes a regular file. Delete that an make a fifo.</span>
+rm <span class="nv">$FIFO</span>
+mkfifo <span class="nv">$FIFO</span>
+<span class="nb">echo</span> <span class="nv">$FIFO</span>
+
+<span class="c1">## create a trap to cleanup on exit if we fail in the middle.</span>
+cleanup<span class="o">()</span> <span class="o">{</span>
+  rm <span class="nv">$FIFO</span>
+  rm <span class="nv">$START</span>
+  rm <span class="nv">$FIFO_LOCK</span>
+  rm <span class="nv">$START_LOCK</span>
+<span class="o">}</span>
+<span class="nb">trap</span> cleanup 0
+
+<span class="c1">## This is the worker to read from the queue.</span>
+work<span class="o">()</span> <span class="o">{</span>
+  <span class="nv">ID</span><span class="o">=</span><span class="nv">$1</span>
+  <span class="c1">## first open the fifo and locks for reading.</span>
+  <span class="nb">exec</span> 3&lt;<span class="nv">$FIFO</span>
+  <span class="nb">exec</span> 4&lt;<span class="nv">$FIFO_LOCK</span>
+  <span class="nb">exec</span> 5&lt;<span class="nv">$START_LOCK</span>
+
+  <span class="c1">## signal the worker has started.</span>
+  flock <span class="m">5</span>                 <span class="c1"># obtain the start lock</span>
+  <span class="nb">echo</span> <span class="nv">$ID</span> &gt;&gt; <span class="nv">$START</span>      <span class="c1"># put my worker ID in the start file</span>
+  flock -u <span class="m">5</span>              <span class="c1"># release the start lock</span>
+  <span class="nb">exec</span> 5&lt;<span class="p">&amp;</span>-               <span class="c1"># close the start lock file</span>
+  <span class="nb">echo</span> worker <span class="nv">$ID</span> started
+
+  <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+    <span class="c1">## try to read the queue</span>
+    flock <span class="m">4</span>                      <span class="c1"># obtain the fifo lock</span>
+    <span class="nb">read</span> -su <span class="m">3</span> work_id work_item <span class="c1"># read into work_id and work_item</span>
+    <span class="nv">read_status</span><span class="o">=</span><span class="nv">$?</span>               <span class="c1"># save the exit status of read</span>
+    flock -u <span class="m">4</span>                   <span class="c1"># release the fifo lock</span>
+
+    <span class="c1">## check the line read.</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$read_status</span> -eq <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="c1">## If read gives an exit code of 0 the read succeeded.</span>
+      <span class="c1"># got a work item. do the work</span>
+      <span class="nb">echo</span> <span class="nv">$ID</span> got <span class="nv">work_id</span><span class="o">=</span><span class="nv">$work_id</span> <span class="nv">work_item</span><span class="o">=</span><span class="nv">$work_item</span>
+      <span class="c1">## Run the job in a subshell. That way any exit calls do not kill</span>
+      <span class="c1">## the worker process.</span>
+      <span class="o">(</span> job <span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span> <span class="o">)</span>
+    <span class="k">else</span>
+      <span class="c1">## Any other exit code indicates an EOF.</span>
+      <span class="nb">break</span>
+    <span class="k">fi</span>
+  <span class="k">done</span>
+  <span class="c1"># clean up the fd(s)</span>
+  <span class="nb">exec</span> 3&lt;<span class="p">&amp;</span>-
+  <span class="nb">exec</span> 4&lt;<span class="p">&amp;</span>-
+  <span class="nb">echo</span> <span class="nv">$ID</span> <span class="s2">&quot;done working&quot;</span>
+<span class="o">}</span>
+
+<span class="c1">## Start the workers.</span>
+<span class="nv">WORKERS</span><span class="o">=</span>4
+<span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span>1<span class="p">;</span>i&lt;<span class="o">=</span><span class="nv">$WORKERS</span><span class="p">;</span>i++<span class="o">))</span><span class="p">;</span> <span class="k">do</span>
+  <span class="nb">echo</span> will start <span class="nv">$i</span>
+  work <span class="nv">$i</span> <span class="p">&amp;</span>
+<span class="k">done</span>
+
+<span class="c1">## Open the fifo for writing.</span>
+<span class="nb">exec</span> 3&gt;<span class="nv">$FIFO</span>
+<span class="c1">## Open the start lock for reading</span>
+<span class="nb">exec</span> 4&lt;<span class="nv">$START_LOCK</span>
+
+<span class="c1">## Wait for the workers to start</span>
+<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+  flock 4
+  <span class="nv">started</span><span class="o">=</span><span class="k">$(</span>wc -l <span class="nv">$START</span> <span class="p">|</span> cut -d <span class="se">\ </span> -f 1<span class="k">)</span>
+  flock -u 4
+  <span class="k">if</span> <span class="o">[[</span> <span class="nv">$started</span> -eq <span class="nv">$WORKERS</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">break</span>
+  <span class="k">else</span>
+    <span class="nb">echo</span> waiting, started <span class="nv">$started</span> of <span class="nv">$WORKERS</span>
+  <span class="k">fi</span>
+<span class="k">done</span>
+<span class="nb">exec</span> 4&lt;<span class="p">&amp;</span>-
+
+<span class="c1">## utility function to send the jobs to the workers</span>
+send<span class="o">()</span> <span class="o">{</span>
+  <span class="nv">work_id</span><span class="o">=</span><span class="nv">$1</span>
+  <span class="nv">work_item</span><span class="o">=</span><span class="nv">$1</span>
+  <span class="nb">echo</span> sending <span class="nv">$work_id</span> <span class="nv">$work_item</span>
+  <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span> 1&gt;<span class="p">&amp;</span><span class="m">3</span> <span class="c1">## the fifo is fd 3</span>
+<span class="o">}</span>
+
+<span class="c1">## Produce the jobs to run. In this case run 10 replicates of each</span>
+<span class="c1">## dataset in the list.</span>
+<span class="nv">i</span><span class="o">=</span>0
+<span class="k">for</span> item in <span class="o">{</span>dataset-A,dataset-B,dataset-C,dataset-D<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&quot;sending </span><span class="nv">$data</span><span class="s2"> </span><span class="nv">$i</span><span class="s2">&quot;</span>
+  <span class="nb">echo</span> <span class="nv">$data</span> <span class="nv">$i</span> 1&gt;<span class="p">&amp;</span>3
+  <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
+<span class="k">done</span>
+<span class="c1">## close the filo</span>
+<span class="nb">exec</span> 3&lt;<span class="p">&amp;</span>-
+<span class="c1">## disable the cleanup trap</span>
+<span class="nb">trap</span> <span class="s1">&#39;&#39;</span> 0
+<span class="c1">## It is safe to delete the files because the workers</span>
+<span class="c1">## already opened them. Thus, only the names are going away</span>
+<span class="c1">## the actual files will stay there until the workers</span>
+<span class="c1">## all finish.</span>
+cleanup
+<span class="c1">## now wait for all the workers.</span>
+<span class="nb">wait</span>
+</pre></div>
+
+
+<h4>References</h4>
+<ul>
+<li><a href="http://wiki.osdev.org/Unix_Pipes">http://wiki.osdev.org/Unix_Pipes</a></li>
+<li><a href="https://beej.us/guide/bgipc/output/html/multipage/fifos.html">https://beej.us/guide/bgipc/output/html/multipage/fifos.html</a></li>
+<li><a href="http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_08_02.html">http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_08_02.html</a></li>
+<li><a href="https://linux.die.net/man/1/flock">https://linux.die.net/man/1/flock</a></li>
+</ul>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="http://hackthology.com/articles.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+        <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

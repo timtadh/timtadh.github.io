@@ -1,5 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/blog.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2017-02-08T00:00:00-05:00</updated><entry><title>`xrandr` Script to Setup External Monitor</title><link href="http://hackthology.com/xrandr-script-to-setup-external-monitor.html" rel="alternate"></link><updated>2017-02-08T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2017-02-08:xrandr-script-to-setup-external-monitor.html</id><summary type="html">&lt;p&gt;I have a quirky adapter for my external monitor. The adapter doesn't correctly
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/blog.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2017-02-11T00:00:00-05:00</updated><entry><title>A Job Queue in BASH</title><link href="http://hackthology.com/a-job-queue-in-bash.html" rel="alternate"></link><updated>2017-02-11T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2017-02-11:a-job-queue-in-bash.html</id><summary type="html">&lt;p&gt;A Job Queue is typically a first in first out queue of "work items" or "jobs" to
+be processed. Ideally, a good job queue should support multiple workers (also
+called readers) so multiple jobs can be processed at one time. For production
+systems and clusters there are many robust options availble. Sometimes you need
+a job queue for a local system but cannot install (or do not want to install)
+one of the many networked job queues. But, if you are running Linux you probably
+have GNU BASH installed which can be used to create a relatively simple and
+robust job queue.&lt;/p&gt;
+&lt;p&gt;Below is an example BASH Job Queue made with &lt;code&gt;fifo&lt;/code&gt;s and &lt;code&gt;flock&lt;/code&gt;s. A &lt;code&gt;fifo&lt;/code&gt; is a
+first in first out UNIX pipe (&lt;a href="https://linux.die.net/man/4/fifo"&gt;see &lt;code&gt;man
+fifo&lt;/code&gt;&lt;/a&gt;). A &lt;code&gt;flock&lt;/code&gt; (&lt;a href="https://linux.die.net/man/1/flock"&gt;see &lt;code&gt;man
+flock&lt;/code&gt;&lt;/a&gt;) is a "file lock" which lets the
+queue support multiple readers.  This queue may or may not work for other shells
+as it relies on the BASH &lt;a href="http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_08_02.html"&gt;built in
+&lt;code&gt;read&lt;/code&gt;&lt;/a&gt;. You
+will need to consult the man pages for your shell to determine if this will work
+for you.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
+
+&lt;span class="c1"&gt;## this is the &amp;quot;job&amp;quot; function which is does whatever work&lt;/span&gt;
+&lt;span class="c1"&gt;## the queue workers are supposed to be doing&lt;/span&gt;
+job&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+  &lt;span class="nv"&gt;work&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;
+  &lt;span class="c1"&gt;## run the work ....&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;# make the files&lt;/span&gt;
+&lt;span class="nv"&gt;START&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -t start-XXXX&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;FIFO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -t fifo-XXXX&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;FIFO_LOCK&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -t lock-XXXX&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;START_LOCK&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -t lock-XXXX&lt;span class="k"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;## mktemp makes a regular file. Delete that an make a fifo.&lt;/span&gt;
+rm &lt;span class="nv"&gt;$FIFO&lt;/span&gt;
+mkfifo &lt;span class="nv"&gt;$FIFO&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$FIFO&lt;/span&gt;
+
+&lt;span class="c1"&gt;## create a trap to cleanup on exit if we fail in the middle.&lt;/span&gt;
+cleanup&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  rm &lt;span class="nv"&gt;$FIFO&lt;/span&gt;
+  rm &lt;span class="nv"&gt;$START&lt;/span&gt;
+  rm &lt;span class="nv"&gt;$FIFO_LOCK&lt;/span&gt;
+  rm &lt;span class="nv"&gt;$START_LOCK&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="nb"&gt;trap&lt;/span&gt; cleanup 0
+
+&lt;span class="c1"&gt;## This is the worker to read from the queue.&lt;/span&gt;
+work&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="nv"&gt;ID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+  &lt;span class="c1"&gt;## first open the fifo and locks for reading.&lt;/span&gt;
+  &lt;span class="nb"&gt;exec&lt;/span&gt; 3&amp;lt;&lt;span class="nv"&gt;$FIFO&lt;/span&gt;
+  &lt;span class="nb"&gt;exec&lt;/span&gt; 4&amp;lt;&lt;span class="nv"&gt;$FIFO_LOCK&lt;/span&gt;
+  &lt;span class="nb"&gt;exec&lt;/span&gt; 5&amp;lt;&lt;span class="nv"&gt;$START_LOCK&lt;/span&gt;
+
+  &lt;span class="c1"&gt;## signal the worker has started.&lt;/span&gt;
+  flock &lt;span class="m"&gt;5&lt;/span&gt;                 &lt;span class="c1"&gt;# obtain the start lock&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$ID&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="nv"&gt;$START&lt;/span&gt;      &lt;span class="c1"&gt;# put my worker ID in the start file&lt;/span&gt;
+  flock -u &lt;span class="m"&gt;5&lt;/span&gt;              &lt;span class="c1"&gt;# release the start lock&lt;/span&gt;
+  &lt;span class="nb"&gt;exec&lt;/span&gt; 5&amp;lt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;-               &lt;span class="c1"&gt;# close the start lock file&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; worker &lt;span class="nv"&gt;$ID&lt;/span&gt; started
+
+  &lt;span class="k"&gt;while&lt;/span&gt; true&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="c1"&gt;## try to read the queue&lt;/span&gt;
+    flock &lt;span class="m"&gt;4&lt;/span&gt;                      &lt;span class="c1"&gt;# obtain the fifo lock&lt;/span&gt;
+    &lt;span class="nb"&gt;read&lt;/span&gt; -su &lt;span class="m"&gt;3&lt;/span&gt; work_id work_item &lt;span class="c1"&gt;# read into work_id and work_item&lt;/span&gt;
+    &lt;span class="nv"&gt;read_status&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;               &lt;span class="c1"&gt;# save the exit status of read&lt;/span&gt;
+    flock -u &lt;span class="m"&gt;4&lt;/span&gt;                   &lt;span class="c1"&gt;# release the fifo lock&lt;/span&gt;
+
+    &lt;span class="c1"&gt;## check the line read.&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; &lt;span class="nv"&gt;$read_status&lt;/span&gt; -eq &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+      &lt;span class="c1"&gt;## If read gives an exit code of 0 the read succeeded.&lt;/span&gt;
+      &lt;span class="c1"&gt;# got a work item. do the work&lt;/span&gt;
+      &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$ID&lt;/span&gt; got &lt;span class="nv"&gt;work_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$work_id&lt;/span&gt; &lt;span class="nv"&gt;work_item&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$work_item&lt;/span&gt;
+      &lt;span class="c1"&gt;## Run the job in a subshell. That way any exit calls do not kill&lt;/span&gt;
+      &lt;span class="c1"&gt;## the worker process.&lt;/span&gt;
+      &lt;span class="o"&gt;(&lt;/span&gt; job &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$work_id&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$work_item&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+      &lt;span class="c1"&gt;## Any other exit code indicates an EOF.&lt;/span&gt;
+      &lt;span class="nb"&gt;break&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+  &lt;span class="k"&gt;done&lt;/span&gt;
+  &lt;span class="c1"&gt;# clean up the fd(s)&lt;/span&gt;
+  &lt;span class="nb"&gt;exec&lt;/span&gt; 3&amp;lt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;-
+  &lt;span class="nb"&gt;exec&lt;/span&gt; 4&amp;lt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;-
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$ID&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;done working&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;## Start the workers.&lt;/span&gt;
+&lt;span class="nv"&gt;WORKERS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1&lt;span class="p"&gt;;&lt;/span&gt;i&amp;lt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$WORKERS&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;i++&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; will start &lt;span class="nv"&gt;$i&lt;/span&gt;
+  work &lt;span class="nv"&gt;$i&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+
+&lt;span class="c1"&gt;## Open the fifo for writing.&lt;/span&gt;
+&lt;span class="nb"&gt;exec&lt;/span&gt; 3&amp;gt;&lt;span class="nv"&gt;$FIFO&lt;/span&gt;
+&lt;span class="c1"&gt;## Open the start lock for reading&lt;/span&gt;
+&lt;span class="nb"&gt;exec&lt;/span&gt; 4&amp;lt;&lt;span class="nv"&gt;$START_LOCK&lt;/span&gt;
+
+&lt;span class="c1"&gt;## Wait for the workers to start&lt;/span&gt;
+&lt;span class="k"&gt;while&lt;/span&gt; true&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  flock 4
+  &lt;span class="nv"&gt;started&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;wc -l &lt;span class="nv"&gt;$START&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; cut -d &lt;span class="se"&gt;\ &lt;/span&gt; -f 1&lt;span class="k"&gt;)&lt;/span&gt;
+  flock -u 4
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; &lt;span class="nv"&gt;$started&lt;/span&gt; -eq &lt;span class="nv"&gt;$WORKERS&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    &lt;span class="nb"&gt;break&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; waiting, started &lt;span class="nv"&gt;$started&lt;/span&gt; of &lt;span class="nv"&gt;$WORKERS&lt;/span&gt;
+  &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;span class="nb"&gt;exec&lt;/span&gt; 4&amp;lt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;-
+
+&lt;span class="c1"&gt;## utility function to send the jobs to the workers&lt;/span&gt;
+send&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="nv"&gt;work_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+  &lt;span class="nv"&gt;work_item&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; sending &lt;span class="nv"&gt;$work_id&lt;/span&gt; &lt;span class="nv"&gt;$work_item&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$work_id&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$work_item&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; 1&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="c1"&gt;## the fifo is fd 3&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;## Produce the jobs to run. In this case run 10 replicates of each&lt;/span&gt;
+&lt;span class="c1"&gt;## dataset in the list.&lt;/span&gt;
+&lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0
+&lt;span class="k"&gt;for&lt;/span&gt; item in &lt;span class="o"&gt;{&lt;/span&gt;dataset-A,dataset-B,dataset-C,dataset-D&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;sending &lt;/span&gt;&lt;span class="nv"&gt;$data&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$i&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$data&lt;/span&gt; &lt;span class="nv"&gt;$i&lt;/span&gt; 1&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;3
+  &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;i+1&lt;span class="k"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;span class="c1"&gt;## close the filo&lt;/span&gt;
+&lt;span class="nb"&gt;exec&lt;/span&gt; 3&amp;lt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;-
+&lt;span class="c1"&gt;## disable the cleanup trap&lt;/span&gt;
+&lt;span class="nb"&gt;trap&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt; 0
+&lt;span class="c1"&gt;## It is safe to delete the files because the workers&lt;/span&gt;
+&lt;span class="c1"&gt;## already opened them. Thus, only the names are going away&lt;/span&gt;
+&lt;span class="c1"&gt;## the actual files will stay there until the workers&lt;/span&gt;
+&lt;span class="c1"&gt;## all finish.&lt;/span&gt;
+cleanup
+&lt;span class="c1"&gt;## now wait for all the workers.&lt;/span&gt;
+&lt;span class="nb"&gt;wait&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;References&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://wiki.osdev.org/Unix_Pipes"&gt;http://wiki.osdev.org/Unix_Pipes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://beej.us/guide/bgipc/output/html/multipage/fifos.html"&gt;https://beej.us/guide/bgipc/output/html/multipage/fifos.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_08_02.html"&gt;http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_08_02.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://linux.die.net/man/1/flock"&gt;https://linux.die.net/man/1/flock&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary></entry><entry><title>`xrandr` Script to Setup External Monitor</title><link href="http://hackthology.com/xrandr-script-to-setup-external-monitor.html" rel="alternate"></link><updated>2017-02-08T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2017-02-08:xrandr-script-to-setup-external-monitor.html</id><summary type="html">&lt;p&gt;I have a quirky adapter for my external monitor. The adapter doesn't correctly
 report the display's size or refresh rate to the laptop. To solve this problem,
 I wrote the following script to automatically setup the external monitor:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
