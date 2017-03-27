@@ -3,6 +3,7 @@
 &lt;em&gt;Rethinking Dependence Clones&lt;/em&gt;.
 &lt;a href="https://iwsc2017.github.io/"&gt;IWSC 2017&lt;/a&gt;.
 &lt;br/&gt;
+&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt;.
 &lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="http://hackthology.com/rethinking-dependence-clones.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Abstract&lt;/h4&gt;
@@ -79,8 +80,8 @@ evaluate the performance of a density-based clustering algorithm on the samples
 collected.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;p&gt;See the &lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. IEEE has
-the exclusive rights to publish this paper. Follow the &lt;a href="TBA"&gt;DOI&lt;/a&gt; for the IEEE
-copy.&lt;/p&gt;</summary></entry><entry><title>A Job Queue in BASH</title><link href="http://hackthology.com/a-job-queue-in-bash.html" rel="alternate"></link><updated>2017-02-11T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2017-02-11:a-job-queue-in-bash.html</id><summary type="html">&lt;p&gt;A Job Queue is typically a first in first out queue of "work items" or "jobs" to
+the exclusive rights to publish this paper. Follow the
+&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt; for the IEEE copy.&lt;/p&gt;</summary></entry><entry><title>A Job Queue in BASH</title><link href="http://hackthology.com/a-job-queue-in-bash.html" rel="alternate"></link><updated>2017-02-11T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2017-02-11:a-job-queue-in-bash.html</id><summary type="html">&lt;p&gt;A Job Queue is typically a first in first out queue of "work items" or "jobs" to
 be processed. Ideally, a good job queue should support multiple workers (also
 called readers) so multiple jobs can be processed at one time. For production
 systems and clusters there are many robust options availble. Sometimes you need

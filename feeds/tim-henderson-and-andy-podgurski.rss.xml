@@ -3,6 +3,7 @@
 &lt;em&gt;Rethinking Dependence Clones&lt;/em&gt;.
 &lt;a href="https://iwsc2017.github.io/"&gt;IWSC 2017&lt;/a&gt;.
 &lt;br/&gt;
+&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt;.
 &lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="http://hackthology.com/rethinking-dependence-clones.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Abstract&lt;/h4&gt;
@@ -79,8 +80,8 @@ evaluate the performance of a density-based clustering algorithm on the samples
 collected.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;p&gt;See the &lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. IEEE has
-the exclusive rights to publish this paper. Follow the &lt;a href="TBA"&gt;DOI&lt;/a&gt; for the IEEE
-copy.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</dc:creator><pubDate>Tue, 21 Feb 2017 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2017-02-21:rethinking-dependence-clones.html</guid></item><item><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link>http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
+the exclusive rights to publish this paper. Follow the
+&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt; for the IEEE copy.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</dc:creator><pubDate>Tue, 21 Feb 2017 00:00:00 -0500</pubDate><guid>tag:hackthology.com,2017-02-21:rethinking-dependence-clones.html</guid></item><item><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link>http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
 Dependence Graphs with GRAPLE&lt;/em&gt;.
 &lt;a href="http://softwareanalytics.ca/swan16/Home.html"&gt;SWAN 2016&lt;/a&gt;.
 &lt;br/&gt;
