@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> Faster Tokenization with a DFA Backend for Lexmachine </title>
+    <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="http://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="http://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="http://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="http://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="http://hackthology.com/feeds/rss.xml" /> 
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="http://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <h3>
+          The Discourses of Tim Henderson
+        </h3>
+        <div class="top-nav">
+<ul>
+    <li><a href="http://hackthology.com/articles.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/faster-tokenization-with-a-dfa-backend-for-lexmachine.html"
+             title="perm link Faster Tokenization with a DFA Backend for Lexmachine">
+             Faster Tokenization with a DFA Backend for Lexmachine
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by &nbsp;Tim Henderson
+<br/> <time datetime="2017-11-27T00:00:00-05:00">Mon 27 November 2017</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <style>
+div.dfa-scroller {
+    overflow-x: unset;
+}
+div.dfa-scroller img {
+    margin-left: -25%;
+}
+@media screen and (max-width: 1100px) {
+    div.dfa-scroller {
+        overflow-x: scroll;
+    }
+    div.dfa-scroller img {
+        margin-left: unset;
+    }
+}
+aiv.dfa-scroller {
+    overflow-x: unset;
+}
+div.dfa-scroller img {
+    margin-left: -25%;
+}
+@media screen and (max-width: 1100px) {
+    div.dfa-scroller {
+        overflow-x: scroll;
+    }
+    div.dfa-scroller img {
+        margin-left: unset;
+    }
+}
+</style>
+
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<p><a href="https://github.com/timtadh/lexmachine">Lexmachine</a> is a lexical analysis (or
+tokenization) library for Go (golang) and it just got faster thanks to a new
+backend I wrote. This article is going to explain the new backend, how it works,
+and why it is faster. If you want to use lexmachine checkout the
+<a href="https://github.com/timtadh/lexmachine#documentation">documentation</a> or the
+<a href="http://hackthology.com/writing-a-lexer-in-go-with-lexmachine.html">tutorial</a>.</p>
+<p>Lexical analysis is the process of breaking strings up into substrings, called
+<em>lexemes</em>, and putting them into categories called <em>tokens</em>. This process is
+also called <em>tokenization</em> is the first step in parsing complex file formats,
+programming languages, network protocols, and other information. Let's look at a
+quick example, suppose we wanted to process a custom configuration file format.
+For instance, <a href="https://linux.die.net/man/5/sensors.conf">sensors.conf</a> describes
+how Linux should translate the raw readings hardware monitoring chips to
+real-world values -- such as voltage and temperature. The first part of my
+laptop's <code>sensors.conf</code> file begins with the following:</p>
+<div class="highlight"><pre><span></span># It is recommended not to modify this file, but to drop your local
+# changes in /etc/sensors.d/. File with names that start with a dot
+# are ignored.
+
+chip &quot;lm78-*&quot; &quot;lm79-*&quot; &quot;lm80-*&quot; &quot;lm96080-*&quot;
+
+    label temp1 &quot;M/B Temp&quot;
+
+
+chip &quot;w83792d-*&quot;
+
+    label in0 &quot;VcoreA&quot;
+    label in1 &quot;VcoreB&quot;
+    label in6 &quot;+5V&quot;
+    label in7 &quot;5VSB&quot;
+    label in8 &quot;Vbat&quot;
+
+    set in6_min  5.0 * 0.90
+    set in6_max  5.0 * 1.10
+    set in7_min  5.0 * 0.90
+    set in7_max  5.0 * 1.10
+    set in8_min  3.0 * 0.90
+    set in8_max  3.0 * 1.10
+</pre></div>
+
+
+<p>Accoring to the <a href="https://linux.die.net/man/5/sensors.conf">man page</a>, there are
+several syntactic elements in this file: keywords (<code>chip</code>, <code>label</code>, <code>set</code>, ...),
+names (<code>in0</code>, <code>in6_min</code>, ..., <code>"lm78-*"</code>, <code>"VcoreA"</code>, ...), floats (<code>5.0</code>,
+<code>0.90</code>, ...), operators (<code>+</code>, <code>-</code>, <code>*</code>, ...), and comments which start with <code>#</code>.
+A lexical analysis would break down the file as follows:</p>
+<div class="highlight"><pre><span></span>Type    | Lexeme
+-------------------
+COMMENT | # It is recommended not to modify this file, but to drop your local
+COMMENT | # changes in /etc/sensors.d/. File with names that start with a dot
+COMMENT | # are ignored.
+CHIP    | chip
+NAME    | &quot;lm78-*&quot;
+NAME    | &quot;lm78-*&quot;
+NAME    | &quot;lm79-*&quot;
+NAME    | &quot;lm80-*&quot;
+NAME    | &quot;lm96080-*&quot;
+LABEL   | label
+NAME    | temp1
+NAME    | &quot;M/B Temp&quot;
+CHIP    | chip
+NAME    | &quot;w83792d-*&quot;
+...
+SET     | set
+NAME    | in8_max
+FLOAT   | 3.0
+STAR    | *
+FLOAT   | 1.10
+</pre></div>
+
+
+<p>The categories are defined by <em>patterns</em> which are expressed as <a href="https://github.com/timtadh/lexmachine#regular-expressions">regular
+expressions</a>.  As a
+quick review, regular expressions (regex) are a "pattern" which describe a set
+of strings. A regex is made up of characters (<code>a</code>, <code>b</code>, <code>0</code>, <code>@</code>, ...) which
+combine with the operators: concatenation <code>abc</code>, alternation <code>a|b</code>, grouping
+<code>a(b|c)d</code>, and repetition <code>a*</code>. Some examples:</p>
+<ul>
+<li><code>abc</code> matches {<code>"abc"</code>}</li>
+<li><code>a|b</code> matches {<code>"a"</code>, <code>"b"</code>}</li>
+<li><code>a(b|c)d</code> matches {<code>"abd"</code>, <code>"acd"</code>}</li>
+<li><code>a*</code> matches {<code>""</code>, <code>"a"</code>, <code>"aa"</code>, ...}</li>
+<li><code>a(b(c|d))*</code> matches {<code>"a"</code>, <code>"abc"</code>, <code>"abd"</code>, <code>"abcbc"</code>, <code>"abcbd"</code>, ...}</li>
+</ul>
+<p>In the running example of the <code>sensors.conf</code> file one might define the following
+patterns:</p>
+<ul>
+<li>AT: <code>@</code></li>
+<li>PLUS: <code>+</code></li>
+<li>STAR: <code>*</code></li>
+<li>DASH: <code>-</code></li>
+<li>SLASH: <code>/</code></li>
+<li>CARROT: <code>^</code></li>
+<li>BACKTICK: <code>`</code></li>
+<li>LPAREN: <code>(</code></li>
+<li>RPAREN: <code>)</code></li>
+<li>BUS: <code>bus</code></li>
+<li>CHIP: <code>chip</code></li>
+<li>LABEL: <code>label</code></li>
+<li>COMPUTE: <code>compute</code></li>
+<li>IGNORE: <code>ignore</code></li>
+<li>SET: <code>set</code></li>
+<li>NUMBER: <code>[0-9]*\.?[0-9]+</code></li>
+<li>NAME: <code>[a-zA-Z_][a-zA-Z0-9_]*|"[^"]*"</code></li>
+</ul>
+<p>These patterns define how text in the input should categorized according to the
+rules for the <code>sensors.conf</code> file.</p>
+<h1>Efficiently Categorizing Substrings with Automata</h1>
+<p>Now we turn our attention from <em>what</em> lexical analysis is to <em>how</em> it works.
+Specifically we are going to concern ourselves with the following matters:</p>
+<ol>
+<li>How the lexical analysis problem is different than the one solved by standard
+   implementations of regular expression engines (such as the
+   <a href="https://golang.org/pkg/regexp/">regexp</a> standard library package).</li>
+<li>How to solve the lexical analysis problem with non-deterministic
+   finite automatons (NFA).</li>
+<li>How to more deterministic automatons improve on the solution presented by
+   NFAs</li>
+</ol>
+<h2>The Lexical Analysis Problem</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a>
+problem decides whether a <em>pattern</em> (as specified by a regular expression)
+<em>matches</em> a given <em>string</em>. If the pattern does describe the string a regular
+expression engine will answer: yes it matches. Otherwise, it answers: no it does
+not.</p>
+<p>The lexical analysis problem on the other hand seeks to break up (tokenize) a
+long piece of text based on an ordered set of regular expressions. It does this
+by proceeding from the start of the string and finding the longest <em>prefix</em> of
+the string that matches at least one pattern. It then chooses a matching pattern
+with the <em>highest precidence</em> and outputs the matched text (<em>lexeme</em>) and the
+category the pattern defines (<em>token type</em>).  Solving the lexical analysis
+problem is possible with a standard regular expression engine is possible but it
+not efficient. The whole piece of text has to be repeatedly scanned for each
+token to decide on the longest prefix match and highest precedence token type to
+use.</p>
+<p>However, we can use the theory that is used to implement efficient regular
+expression engines to implement efficient lexical analysis engines. The
+following adjustments must be made:</p>
+<ol>
+<li>Prefixes of a string are matched</li>
+<li>Several patterns are matched at once</li>
+<li>The pattern which matches the longest prefix wins</li>
+<li>In case of ties, the pattern with the highest precedence wins</li>
+</ol>
+<h2>Finite Automata</h2>
+<p><a href="https://swtch.com/~rsc/regexp/">Efficient regular expression engines</a> are
+implemented using the theory of finite automata. Automata or automatons are
+theoretical mathematical constructs which specify a machine. Specifically, a
+machine that reads a string, character by character, and decides whether it is
+in some <em>language</em> or not (see Figure 1). The language is a type of formal
+language called a <em>regular</em> language or a Type-3 language in the Chomsky Formal
+Language Hierarchy.</p>
+<p><img alt="Finite Automata" src="/images/regex-machine.png" />
+<div style="text-align: center; margin-top: -2em;">
+<strong>Figure 1.</strong> A Simple Finite State Automaton.<br/>
+If the string matches the Accept light lights up, otherwise the error light
+lights up.
+</div></p>
+<p> Finite state automatons encode their matching "program" as a set of states
+<span class="math">\(S\)</span>, an alphabet <span
+class="math">\(\Sigma\)</span>, and a transition function which maps the current
+state and next symbol to the next state <span class="math">\( T: S \times \Sigma
+\rightarrow S \)</span>. There are several distinguished states: the
+<em>starting state</em>, and one or more <em>accepting states</em>. At each step
+through the input string the machine reads a character and consults the
+transition function to determine the next state. If at the end of the string the
+state has reached an <em>accepting state</em> the string is said to match the
+automaton.
+</p>
+
+<p>
+When the transition function <span class="math">\(T\)</span> produces multiple
+states for the same input combination the automaton is said to be
+<em>non-deterministic</em>. Figure 2 shows a non-deterministic finite automaton
+(NFA) for our running example for <code>sensors.conf</code>. In the figure,
+the <em>starting state</em> (state 0) may transition on character <code>c</code>
+to states 12, 21, and 40. This may be interpreted as the machine transitioning
+to all of these states simultaneously and maintaining multiple threads of
+execution. Simulations of NFAs must keep track of each independent thread of
+execution.  If an NFA has <span class="math">\(n\)</span> states and a string
+has <span class="math">\(m\)</span> characters it can be matched in <span
+class="math">\(\mathcal{O}(n \cdot m)\)</span> steps.
+</p>
+
+<p><img alt="Non-deterministic Finite Automata" src="/images/nfa.png" />
+<div style="text-align: center; margin-top: -2em;">
+<strong>Figure 2.</strong> A Non-deterministic Finite Automaton for
+<code>sensors.conf</code>.<br/>
+States with double circles are accepting states. Each accepting state is labeled
+with the category it corresponds to. The starting state is marked.
+</div></p>
+<p>To use an NFA for the lexical analysis problem several adjustments need to be
+made.</p>
+<ol>
+<li>To match prefixes, keep scanning until no new states are found (that is all
+   threads of execution have either reached end of the string or the error
+   state).</li>
+<li>Track all accepting states reached during the scanning.</li>
+<li>Return the "most relevant" match on state exhaustion by returning the
+   accepting state which matched the longest prefix. Ties are broken by user
+   supplied precedence.</li>
+<li>When the user requests the next token, reset the simulation to the starting
+   state and rerun starting at the next character after the previously returned
+   prefix.</li>
+<li>After all input has been consumed check all of the input was successfully
+   matched. Return an error otherwise.</li>
+</ol>
+<p>
+As languages get more complex the cost of tokenization goes up when using NFAs
+because the cost for matching a regular expression is dependent in the size of
+the NFA (<span class="math">\(\mathcal{O}(n \cdot m)\)</span> where <span
+class="math">\(n\) is the number of states in the NFA and <span
+class="math">\(m\) is the length of the string). Can we do better?  We can! If
+we do not allow the transition function <span class="math">\(T\)</span> to
+produce more than one state for each input combination the automaton will be
+deterministic finite automaton (DFA). If the automaton is deterministic then
+simulation is greatly simplified versus a non-deterministic automaton. Recall,
+in the case of NFA simulation non-deterministic steps are modeled by having the
+machine transition to all possible next states at once and keeping track of
+multiple threads of execution.  In a DFA, there will always be one (and only
+one) state to transition to -- and therefore only one thread of execution. If
+there is only one thread of execution the simulation can be run in <span
+class="math">\(\mathcal{O}(m)\)</span> steps (where <span
+class="math">\(m\)</span> is the length of string).
+</p>
+
+<p>
+Figure 3 shows the minimal DFA for the NFA given in Figure 2. By coincidence
+there is one fewer states in the DFA than in the NFA. In general, this will not
+be the case. Indeed, in the worst case if the NFA has <span
+class="math">\(n\)</span> states the DFA could have as many as <span
+class="math">\(2^{n}\)</span> states. However, on average the DFA will only have
+<span class="math">\(n^3\)</span> states. Thus, a DFA makes the classic space
+vs. time tradeoff. It uses more space (in the form of a larger transition table
+on average) to get faster execution time.
+</p>
+
+<p>&nbsp;</p>
+
+<div style="text-align: center; margin-top: -2em;">
+<div class=dfa-scroller>
+<img alt="Deterministic Finite Automata" src="/images/dfa.png" style="width: 150%;">
+</div>
+<strong>Figure 3.</strong> A Minimal Deterministic Finite Automaton for
+<code>sensors.conf</code>.<br/>
+States with double circles are accepting states. Each accepting state is labeled
+with the category it corresponds to. The starting state is marked.
+</div>
+
+<h2>Practical Results</h2>
+<p>Does the new DFA backend outperform the NFA backend when tokenizing many
+strings? The answer is yes. As an quick (non-rigorous) example, let's tokenize
+my <code>sensors.conf</code> file 1000 times using both the NFA backend and the DFA backend.</p>
+<p><strong>Using the NFA backend</strong></p>
+<div class="highlight"><pre><span></span>$ go install github.com/timtadh/lexmachine/examples/sensors <span class="o">&amp;&amp;</span>
+&gt; cat /etc/sensors*.conf <span class="p">|</span> <span class="o">(</span>/usr/bin/time -v sensors --nfa <span class="o">)</span>
+        Command being timed: <span class="s2">&quot;sensors --nfa&quot;</span>
+        User <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: 3.0
+        System <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: 0.00
+        Percent of CPU this job got: 102%
+        Elapsed <span class="o">(</span>wall clock<span class="o">)</span> <span class="nb">time</span> <span class="o">(</span>h:mm:ss or m:ss<span class="o">)</span>: 0:02.97
+        Average shared text size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Average unshared data size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Average stack size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Average total size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Maximum resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: 6564
+        Average resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Major <span class="o">(</span>requiring I/O<span class="o">)</span> page faults: 0
+        Minor <span class="o">(</span>reclaiming a frame<span class="o">)</span> page faults: 1749
+        Voluntary context switches: 1866
+        Involuntary context switches: 473
+        Swaps: 0
+        File system inputs: 0
+        File system outputs: 0
+        Socket messages sent: 0
+        Socket messages received: 0
+        Signals delivered: 0
+        Page size <span class="o">(</span>bytes<span class="o">)</span>: 4096
+        Exit status: 0
+</pre></div>
+
+
+<p><strong>Using the DFA backend</strong></p>
+<div class="highlight"><pre><span></span>$ go install github.com/timtadh/lexmachine/examples/sensors <span class="o">&amp;&amp;</span>
+&gt; cat /etc/sensors*.conf <span class="p">|</span> <span class="o">(</span>/usr/bin/time -v sensors --dfa <span class="o">)</span>
+        Command being timed: <span class="s2">&quot;sensors --dfa&quot;</span>
+        User <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: 2.01
+        System <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: 0.00
+        Percent of CPU this job got: 104%
+        Elapsed <span class="o">(</span>wall clock<span class="o">)</span> <span class="nb">time</span> <span class="o">(</span>h:mm:ss or m:ss<span class="o">)</span>: 0:01.93
+        Average shared text size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Average unshared data size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Average stack size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Average total size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Maximum resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: 7680
+        Average resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: 0
+        Major <span class="o">(</span>requiring I/O<span class="o">)</span> page faults: 0
+        Minor <span class="o">(</span>reclaiming a frame<span class="o">)</span> page faults: 2172
+        Voluntary context switches: 2231
+        Involuntary context switches: 359
+        Swaps: 0
+        File system inputs: 0
+        File system outputs: 0
+        Socket messages sent: 0
+        Socket messages received: 0
+        Signals delivered: 0
+        Page size <span class="o">(</span>bytes<span class="o">)</span>: 4096
+        Exit status: 0
+</pre></div>
+
+
+<p>Note as predicted by the theory presented above, the NFA backend used less
+memory but took longer to tokenize the file 1000 times. The DFA backend used
+more memory (but not a lot more) and tokenized the file faster than the NFA
+backend.</p>
+<p>Intrigued? Try out <a href="https://github.com/timtadh/lexmachine">lexmachine</a> today!</p>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="http://hackthology.com/articles.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+        <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
