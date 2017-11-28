@@ -230,10 +230,10 @@ by proceeding from the start of the string and finding the longest <em>prefix</e
 the string that matches at least one pattern. It then chooses a matching pattern
 with the <em>highest precidence</em> and outputs the matched text (<em>lexeme</em>) and the
 category the pattern defines (<em>token type</em>).  Solving the lexical analysis
-problem is possible with a standard regular expression engine is possible but it
-not efficient. The whole piece of text has to be repeatedly scanned for each
-token to decide on the longest prefix match and highest precedence token type to
-use.</p>
+problem with a standard regular expression engine is possible but not efficient.
+With a standard regex engine, the whole piece of text has to be repeatedly
+scanned for each token to decide on the longest prefix match and highest
+precedence token type to use.</p>
 <p>However, we can use the theory that is used to implement efficient regular
 expression engines to implement efficient lexical analysis engines. The
 following adjustments must be made:</p>
