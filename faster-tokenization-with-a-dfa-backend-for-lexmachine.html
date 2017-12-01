@@ -107,13 +107,14 @@ and why it is faster. If you want to use lexmachine checkout the
 <a href="http://hackthology.com/writing-a-lexer-in-go-with-lexmachine.html">tutorial</a>.</p>
 <p>Lexical analysis is the process of breaking strings up into substrings, called
 <em>lexemes</em>, and putting them into categories called <em>tokens</em>. This process is
-also called <em>tokenization</em> is the first step in parsing complex file formats,
-programming languages, network protocols, and other information. Let's look at a
-quick example, suppose we wanted to process a custom configuration file format.
-For instance, <a href="https://linux.die.net/man/5/sensors.conf">sensors.conf</a> describes
-how Linux should translate the raw readings hardware monitoring chips to
-real-world values -- such as voltage and temperature. The first part of my
-laptop's <code>sensors.conf</code> file begins with the following:</p>
+also called <em>tokenization</em> and is the first step in parsing complex file
+formats, programming languages, network protocols, and other information. Let's
+look at a quick example, suppose we wanted to process a custom configuration
+file format.  For instance,
+<a href="https://linux.die.net/man/5/sensors.conf">sensors.conf</a> describes how Linux
+should translate the raw readings hardware monitoring chips to real-world values
+-- such as voltage and temperature. The first part of my laptop's <code>sensors.conf</code>
+file begins with the following:</p>
 <div class="highlight"><pre><span></span># It is recommended not to modify this file, but to drop your local
 # changes in /etc/sensors.d/. File with names that start with a dot
 # are ignored.
@@ -215,8 +216,7 @@ Specifically we are going to concern ourselves with the following matters:</p>
    <a href="https://golang.org/pkg/regexp/">regexp</a> standard library package).</li>
 <li>How to solve the lexical analysis problem with non-deterministic
    finite automatons (NFA).</li>
-<li>How to more deterministic automatons improve on the solution presented by
-   NFAs</li>
+<li>How deterministic automatons (DFAs) improve on the solution presented by NFAs</li>
 </ol>
 <h2>The Lexical Analysis Problem</h2>
 <p>The <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a>

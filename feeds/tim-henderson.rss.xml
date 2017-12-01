@@ -40,13 +40,14 @@ and why it is faster. If you want to use lexmachine checkout the
 &lt;a href="http://hackthology.com/writing-a-lexer-in-go-with-lexmachine.html"&gt;tutorial&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Lexical analysis is the process of breaking strings up into substrings, called
 &lt;em&gt;lexemes&lt;/em&gt;, and putting them into categories called &lt;em&gt;tokens&lt;/em&gt;. This process is
-also called &lt;em&gt;tokenization&lt;/em&gt; is the first step in parsing complex file formats,
-programming languages, network protocols, and other information. Let's look at a
-quick example, suppose we wanted to process a custom configuration file format.
-For instance, &lt;a href="https://linux.die.net/man/5/sensors.conf"&gt;sensors.conf&lt;/a&gt; describes
-how Linux should translate the raw readings hardware monitoring chips to
-real-world values -- such as voltage and temperature. The first part of my
-laptop's &lt;code&gt;sensors.conf&lt;/code&gt; file begins with the following:&lt;/p&gt;
+also called &lt;em&gt;tokenization&lt;/em&gt; and is the first step in parsing complex file
+formats, programming languages, network protocols, and other information. Let's
+look at a quick example, suppose we wanted to process a custom configuration
+file format.  For instance,
+&lt;a href="https://linux.die.net/man/5/sensors.conf"&gt;sensors.conf&lt;/a&gt; describes how Linux
+should translate the raw readings hardware monitoring chips to real-world values
+-- such as voltage and temperature. The first part of my laptop's &lt;code&gt;sensors.conf&lt;/code&gt;
+file begins with the following:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# It is recommended not to modify this file, but to drop your local
 # changes in /etc/sensors.d/. File with names that start with a dot
 # are ignored.
@@ -148,8 +149,7 @@ Specifically we are going to concern ourselves with the following matters:&lt;/p
    &lt;a href="https://golang.org/pkg/regexp/"&gt;regexp&lt;/a&gt; standard library package).&lt;/li&gt;
 &lt;li&gt;How to solve the lexical analysis problem with non-deterministic
    finite automatons (NFA).&lt;/li&gt;
-&lt;li&gt;How to more deterministic automatons improve on the solution presented by
-   NFAs&lt;/li&gt;
+&lt;li&gt;How deterministic automatons (DFAs) improve on the solution presented by NFAs&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2&gt;The Lexical Analysis Problem&lt;/h2&gt;
 &lt;p&gt;The &lt;a href="https://en.wikipedia.org/wiki/Regular_expression"&gt;regular expression&lt;/a&gt;
