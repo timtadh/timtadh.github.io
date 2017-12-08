@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> How to Tokenize Complex Strings with Lexmachine </title>
+    <link href='http://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="http://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="http://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="http://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="http://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="http://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="http://hackthology.com/feeds/rss.xml" /> 
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="http://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="http://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <h3>
+          The Discourses of Tim Henderson
+        </h3>
+        <div class="top-nav">
+<ul>
+    <li><a href="http://hackthology.com/articles.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="http://hackthology.com/how-to-tokenize-complex-strings-with-lexmachine.html"
+             title="perm link How to Tokenize Complex Strings with Lexmachine">
+             How to Tokenize Complex Strings with Lexmachine
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by &nbsp;Tim Henderson
+<br/> <time datetime="2017-12-08T00:00:00-05:00">Fri 08 December 2017</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>This article is about using <a href="https://github.com/timtadh/lexmachine">lexmachine</a>
+to tokenize strings (split up into component parts) in the Go (golang)
+programming language. If you find yourself processing a complex file format or
+network protocol this article will walk you through how to use <code>lexmachine</code> to
+process both accurately and quickly. If you need more help after reading this
+article take a look at the
+<a href="https://github.com/timtadh/lexmachine#documentation">documentation</a>, a
+<a href="http://hackthology.com/writing-a-lexer-in-go-with-lexmachine.html">tutorial</a>,
+or an <a href="http://hackthology.com/faster-tokenization-with-a-dfa-backend-for-lexmachine.html">explainer
+article</a>
+on how it all works.</p>
+<h1>What is string tokenization?</h1>
+<p>String tokenization takes a piece of text and splits it into categorized
+substrings. When conducted as part of parsing or compiling a programming
+language it may also be called <em>lexical analysis</em>. Depending on the kind of text
+being processed splitting it up might be very simple or extremely complicated.
+For instance, some simple text formats (such as basic CSV or TSV files) separate
+each record by newline characters (<code>\n</code> or ASCII <code>0x0A</code>). At the other end of
+the spectrum, natural language (such as English text) may be very difficult to
+correctly tokenize.</p>
+<p>Let's look at a quick example of tokenizing an English sentence. </p>
+<blockquote>
+<p>Mary had a little lamb and its fleece was white as snow.</p>
+</blockquote>
+<p>Each word will be a separate token.  A <em>token</em> is a pair made up of the <em>lexeme</em>
+(or substring) and the <em>token type</em> (or category). When tokenizing English,
+often the token type will be the part of speech.</p>
+<div class="highlight"><pre><span></span> Mary           had     a          little      lamb    and            ...
+&lt;Proper Noun&gt;  &lt;Verb&gt;  &lt;Article&gt;  &lt;Adjetive&gt;  &lt;Noun&gt;  &lt;Conjunction&gt;   ...
+</pre></div>
+
+
+<p>Tokenizing English is very difficult in general because determining the part of
+speech of a particular word is not always obvious. The same word can play
+multiple <em>semantic</em> roles in a sentence. Humans to consider the sentence in its
+entirety when determining the parts of speech for each word. This allows us to
+"noun verbs" and "verb nouns."</p>
+<h2>String tokenization as part of parsing</h2>
+<p>There are many common applications of tokenization which are not as difficult as
+assigning parts of speech to words in English. For instance, computer languages,
+configuration files, log files, network protocols, data interchange formats,
+etc... are all easy to tokenize. In these applications (as with natural
+language), tokenization is the first step in parsing or compilation and is
+called lexical analysis.</p>
+<p>Modern compilers are designed as a "pipeline" or series of steps (called passes)
+which operator over a program. They take the source code and transform it step
+by step into the desired output (machine code, assembly, another programming
+language). Breaking compilation into steps simplifies each stage and makes the
+individual passes reusable. The start of the pipeline is shown in Figure 1.</p>
+<p><img alt="The pipeline of a compiler. Source Code - Lexing - Tokens - Parsing - AST -
+..." src="/images/compiler-structure.png" />
+<div style="text-align: center; margin-top: -2em;">
+<strong>Figure 1.</strong> The start of a compiler's pipeline of passes.<br/>
+A compiler starts with source code and then preforms lexical analysis to split
+the code up into <em>tokens</em>. Then, the <em>parser</em> transforms that stream or list of
+tokens into a structured format (often an Abstract Syntax Tree).
+</div></p>
+<p>But why tokenize before parsing? Surely, the parser could operate on the bytes
+of the source code rather than on a list of tokens. Some parsers do operate
+directly on the bytes. However, the parser can be simplified and made shorter
+and often more robust by defining it over tokens rather than bytes.</p>
+<p>Consider the following, programming languages often have keywords: <code>func</code>,
+<code>return</code>, <code>if</code>. They also have "identifiers" or names. The keywords are set
+aside as special names and are treated by a parser the same way other names are
+treated as they often denote the start of special syntactic regions. In this
+way, they really operate in a similar manner to punctuation in written English.</p>
+<p>However, since keywords would be valid names if they were not reserved special
+care must be taken in a parser which operates on bytes directly not to
+accidentally classify a keyword as a name. Parsers which work on tokens rather
+than bytes can ignore this problem as it is handled at the lexical analysis
+stage.</p>
+<h2>Processing a custom configuration file format</h2>
+<p>As a motivating example for why you might need to perform a tokenization
+operation in your daily life as a programmer let's take a look at processing a
+customer configuration file format. Linux has a library <code>libsensor</code> which allows
+it to read and understand the output of hardware sensors (such as CPU
+temperature probes). It has a custom configuration file format,
+<a href="https://linux.die.net/man/5/sensors.conf">sensors.conf</a>, which describes how
+Linux should translate the raw readings hardware monitoring chips to real-world
+values -- such as voltage and temperature. The first part of my laptop's
+<code>sensors.conf</code> file begins with the following:</p>
+<div class="highlight"><pre><span></span># It is recommended not to modify this file, but to drop your local
+# changes in /etc/sensors.d/. File with names that start with a dot
+# are ignored.
+
+chip &quot;lm78-*&quot; &quot;lm79-*&quot; &quot;lm80-*&quot; &quot;lm96080-*&quot;
+
+    label temp1 &quot;M/B Temp&quot;
+
+
+chip &quot;w83792d-*&quot;
+
+    label in0 &quot;VcoreA&quot;
+    label in1 &quot;VcoreB&quot;
+    label in6 &quot;+5V&quot;
+    label in7 &quot;5VSB&quot;
+    label in8 &quot;Vbat&quot;
+
+    set in6_min  5.0 * 0.90
+    set in6_max  5.0 * 1.10
+    set in7_min  5.0 * 0.90
+    set in7_max  5.0 * 1.10
+    set in8_min  3.0 * 0.90
+    set in8_max  3.0 * 1.10
+</pre></div>
+
+
+<p>Let's pretend we want to extract some information from <code>sensors.conf</code> files. For
+instance, maybe we want to know for each chip what labels have been defined.
+Straightforward enough and definitely doable "by hand" if necessary but much
+easier if the file is preprocessed to pull out the tokens:</p>
+<div class="highlight"><pre><span></span>Type    | Lexeme
+-------------------
+COMMENT | # It is recommended not to modify this file, but to drop your local
+COMMENT | # changes in /etc/sensors.d/. File with names that start with a dot
+COMMENT | # are ignored.
+CHIP    | chip
+NAME    | &quot;lm78-*&quot;
+NAME    | &quot;lm78-*&quot;
+NAME    | &quot;lm79-*&quot;
+NAME    | &quot;lm80-*&quot;
+NAME    | &quot;lm96080-*&quot;
+LABEL   | label
+NAME    | temp1
+NAME    | &quot;M/B Temp&quot;
+CHIP    | chip
+NAME    | &quot;w83792d-*&quot;
+...
+SET     | set
+NAME    | in8_max
+FLOAT   | 3.0
+STAR    | *
+FLOAT   | 1.10
+</pre></div>
+
+
+<p>According to the <a href="https://linux.die.net/man/5/sensors.conf">man page</a> the chip
+and label statements have the following structure (other bits left out):</p>
+<blockquote>
+<h4><em>chip</em> Statement</h4>
+<p>A  chip  statement selects for which chips all following <em>compute</em>, <em>label</em>,
+<em>ignore</em> and <em>set</em> statements are meant for.</p>
+<h4><em>label</em> Statement</h4>
+<p>A  label statement describes how a feature should be called.</p>
+<p><em>chip</em> <strong>NAME-LIST</strong> <br/>
+<em>label</em> <strong>NAME</strong> <strong>NAME</strong></p>
+<p>A  <strong>NAME</strong>  is  a string. If it only contains letters, digits and
+underscores, it does not have to be quoted; in all other cases, you must use
+double quotes around it.  Within quotes, you can use the normal escape-codes
+from C.</p>
+<p>A <strong>NAME-LIST</strong> is one or more <strong>NAME</strong> items behind each other, separated by
+whitespace.</p>
+</blockquote>
+<p>So to find all of the labeled "features" of a chip we need to do two things.
+First, find a <code>chip</code> statement and collect all the names associated with it.
+These names are actually patterns which match multiple chips but we will ignore
+that for this example. Second, collect all the <code>label</code> statements (and the two
+associated names). The labels go with the chips which immediately proceed them.</p>
+<p>To implement the above idea we are going to use
+<a href="https://github.com/timtadh/lexmachine">lexmachine</a> to construct a <em>lexer</em> (or
+tokenizer) which split up the file into the appropriate tokens.</p>
+<h1>Defining a lexer with lexmachine</h1>
+<p>A <em>lexer</em> (or tokenizer) is defined by a set of <em>categories</em> (token types) which
+are defined by <em>patterns</em>. The patterns (in a traditional lexer) are expressed
+as <a href="https://github.com/timtadh/lexmachine#regular-expressions">regular
+expressions</a>.   As a
+quick and incomplete review, regular expressions (regex) are a "pattern" which
+describe a set of strings. A regex is made up of characters (<code>a</code>, <code>b</code>, <code>0</code>, <code>@</code>,
+...) which combine with the operators: concatenation <code>abc</code>, alternation <code>a|b</code>,
+grouping <code>a(b|c)d</code>, and repetition <code>a*</code>. Some examples:</p>
+<ul>
+<li><code>abc</code> matches {<code>"abc"</code>}</li>
+<li><code>a|b</code> matches {<code>"a"</code>, <code>"b"</code>}</li>
+<li><code>a(b|c)d</code> matches {<code>"abd"</code>, <code>"acd"</code>}</li>
+<li><code>a*</code> matches {<code>""</code>, <code>"a"</code>, <code>"aa"</code>, ...}</li>
+<li><code>a(b(c|d))*</code> matches {<code>"a"</code>, <code>"abc"</code>, <code>"abd"</code>, <code>"abcbc"</code>, <code>"abcbd"</code>, ...}</li>
+</ul>
+<p>A fairly close reading of the <a href="https://linux.die.net/man/5/sensors.conf">man
+page</a> for <code>sensors.conf</code> gives the
+following regular expressions to tokenize the file. (Note: <code>[]</code> define
+<a href="https://github.com/timtadh/lexmachine#character-classes">character classes</a>
+which express a number of alternative characters to match)</p>
+<ul>
+<li><code>AT</code>: <code>@</code></li>
+<li><code>PLUS</code>: <code>\+</code></li>
+<li><code>STAR</code>: <code>\*</code></li>
+<li><code>DASH</code>: <code>-</code></li>
+<li><code>SLASH</code>: <code>/</code></li>
+<li><code>BACKSLASH</code>: <code>\\</code></li>
+<li><code>CARROT</code>: <code>\^</code></li>
+<li><code>BACKTICK</code>: <code>`</code></li>
+<li><code>COMMA</code>: <code>,</code></li>
+<li><code>LPAREN</code>: <code>\(</code></li>
+<li><code>RPAREN</code>: <code>\)</code></li>
+<li><code>BUS</code>: <code>bus</code></li>
+<li><code>CHIP</code>: <code>chip</code></li>
+<li><code>LABEL</code>: <code>label</code></li>
+<li><code>COMPUTE</code>: <code>compute</code></li>
+<li><code>IGNORE</code>: <code>ignore</code></li>
+<li><code>SET</code>: <code>set</code></li>
+<li><code>NUMBER</code>: <code>[0-9]*\.?[0-9]+</code></li>
+<li><code>COMMENT</code>: <code>#[^\n]*</code></li>
+<li><code>SPACE</code>: <code>\s+</code></li>
+<li><code>NAME</code>: <code>[a-zA-Z_][a-zA-Z0-9_]*</code></li>
+<li><code>NAME</code>: <code>"((\\\\)|(\\.)|([^"\\]))*"</code></li>
+</ul>
+<p>With these regular expressions in hand let's define a lexer using
+<a href="https://github.com/timtadh/lexmachine">lexmachine</a> and use it to tokenize an
+example <code>sensors.conf</code>.</p>
+<blockquote>
+<h4>Aside, can't we just use <a href="https://golang.org/pkg/regexp/">regexp</a>?</h4>
+<p>A lexical analysis engine is very similar to a
+standard regular expression engine. However, the problem which regular
+expression engines solve (matching whole strings or finding patterns inside of
+strings) is slightly different than the lexial analysis problem. You could
+implement a lexical analyzer with the <code>regexp</code> package but it would be much
+slower than <a href="https://github.com/timtadh/lexmachine">lexmachine</a>.  Lexical
+analysis engines are fast because they use the same <a href="http://hackthology.com/faster-tokenization-with-a-dfa-backend-for-lexmachine.html">theoretical
+framework</a>
+as is used to implement regular expression engines with the following
+adjustments:</p>
+<ol>
+<li>Prefixes of a string are matched</li>
+<li>All patterns are matched at the same time</li>
+<li>The pattern which matches the longest prefix wins</li>
+<li>In case of ties, the pattern with the highest precedence wins</li>
+</ol>
+</blockquote>
+<h2>Constructing a <code>*lexmachine.Lexer</code></h2>
+<h3>Importing the packages</h3>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&quot;github.com/timtadh/lexmachine&quot;</span>
+    <span class="s">&quot;github.com/timtadh/lexmachine/machines&quot;</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<h3>Defining the tokens types</h3>
+<p>There are many ways to represent the token types (categories). In this example,
+the names of the types are defined as a list of strings. The types themselves
+(<code>id</code>s) will be the index of the names. An <code>init</code> function is used to construct
+a reverse mapping from name to <code>id</code>.</p>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">tokens</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+    <span class="s">&quot;AT&quot;</span><span class="p">,</span> <span class="s">&quot;PLUS&quot;</span><span class="p">,</span> <span class="s">&quot;STAR&quot;</span><span class="p">,</span> <span class="s">&quot;DASH&quot;</span><span class="p">,</span> <span class="s">&quot;SLASH&quot;</span><span class="p">,</span> <span class="s">&quot;BACKSLASH&quot;</span><span class="p">,</span> <span class="s">&quot;CARROT&quot;</span><span class="p">,</span> <span class="s">&quot;BACKTICK&quot;</span><span class="p">,</span>
+    <span class="s">&quot;COMMA&quot;</span><span class="p">,</span> <span class="s">&quot;LPAREN&quot;</span><span class="p">,</span> <span class="s">&quot;RPAREN&quot;</span><span class="p">,</span> <span class="s">&quot;BUS&quot;</span><span class="p">,</span> <span class="s">&quot;COMPUTE&quot;</span><span class="p">,</span> <span class="s">&quot;CHIP&quot;</span><span class="p">,</span> <span class="s">&quot;IGNORE&quot;</span><span class="p">,</span> <span class="s">&quot;LABEL&quot;</span><span class="p">,</span>
+    <span class="s">&quot;SET&quot;</span><span class="p">,</span> <span class="s">&quot;NUMBER&quot;</span><span class="p">,</span> <span class="s">&quot;NAME&quot;</span><span class="p">,</span> <span class="s">&quot;COMMENT&quot;</span><span class="p">,</span> <span class="s">&quot;SPACE&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">tokmap</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span>
+
+<span class="kd">func</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">tokmap</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tokens</span> <span class="p">{</span>
+        <span class="nx">tokmap</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">id</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>Constructing a new lexer object</h3>
+<div class="highlight"><pre><span></span><span class="nx">lexer</span> <span class="o">:=</span> <span class="nx">lexmachine</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
+</pre></div>
+
+
+<h3>Adding a single pattern</h3>
+<p>Patterns are added using the
+<a href="https://godoc.org/github.com/timtadh/lexmachine#Lexer.Add">lexer.Add</a> method.
+Let's add the pattern for the <code>chip</code> keyword:</p>
+<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`chip`</span><span class="p">),</span> <span class="kd">func</span><span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">})</span>
+</pre></div>
+
+
+<p>The <code>Add</code> method takes two arguments. The first is the regular expression and
+the second is the <em>lexing action</em> function. The action is called on pattern
+discovery. This action typically takes a low-level
+<a href="https://godoc.org/github.com/timtadh/lexmachine/machines#Match">*machines.Match</a>
+object and turns it into a token representation of your (the user's) choice.</p>
+<p>For users who do not have strict requirements for how tokens are represented
+the <a href="https://godoc.org/github.com/timtadh/lexmachine#Token">*lexmachine.Token</a>
+object provides a useful implementation. <a href="https://godoc.org/github.com/timtadh/lexmachine#Scanner">*lexmachine.Scanner</a> has a utility
+method for constructing the tokens which helps us write a simple <code>getToken</code>
+action:</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokenType</span> <span class="kt">int</span><span class="p">)</span> <span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Action</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">func</span><span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Token</span><span class="p">(</span><span class="nx">tokenType</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">),</span> <span class="nx">m</span><span class="p">),</span> <span class="kc">nil</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>Adding all the patterns</h3>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">newLexer</span><span class="p">()</span> <span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Lexer</span> <span class="p">{</span>
+    <span class="nx">lexer</span> <span class="o">:=</span> <span class="nx">lexmachine</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;@&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;AT&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\+`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;PLUS&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\*`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;STAR&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;DASH&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;SLASH&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;\\&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;BACKSLASH&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\^`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;CARROT&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;`&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;BACKTICK&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;COMMA&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\(`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;LPAREN&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\)`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;RPAREN&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;bus&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;BUS&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;chip&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;CHIP&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;label&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;LABEL&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;compute&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;COMPUTE&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;ignore&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;IGNORE&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;set&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;SET&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`[0-9]*\.?[0-9]+`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NUMBER&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`[a-zA-Z_][a-zA-Z0-9_]*`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NAME&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`&quot;((\\.)|([^&quot;\\]))*&quot;`</span><span class="p">),</span> <span class="kd">func</span><span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Token</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NAME&quot;</span><span class="p">],</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="nx">m</span><span class="p">),</span> <span class="kc">nil</span>
+    <span class="p">})</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`#[^\n]*`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;COMMENT&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`( |\t|\f)+`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;SPACE&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\\\n`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;SPACE&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\n|\r|\n\r`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NEWLINE&quot;</span><span class="p">]))</span>
+    <span class="nx">err</span> <span class="p">=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">lexer</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>Skipping a pattern</h3>
+<p>Sometimes it is advantageous to not emit tokens for certain patterns and to
+instead skip them. Commonly this occurs for whitespace and comments.  To skip a
+pattern simply have the action <code>return nil, nil</code>:</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">skip</span><span class="p">(</span><span class="nx">scan</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">match</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;\s+&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>     <span class="c1">// skip whitespace</span>
+<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`#[^\n]*`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span> <span class="c1">// skip comments</span>
+</pre></div>
+
+
+<p>In our example for <code>sensors.conf</code> we only care about the keywords and the <code>NAME</code>
+tokens. Let's skip the rest:</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">newLexer</span><span class="p">()</span> <span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Lexer</span> <span class="p">{</span>
+    <span class="nx">lexer</span> <span class="o">:=</span> <span class="nx">lexmachine</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`@`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\+`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\*`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;\\&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\^`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;`&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\(`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\)`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;bus&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;chip&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;CHIP&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;label&quot;</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;LABEL&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;compute&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;ignore&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;set&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`[0-9]*\.?[0-9]+`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`[a-zA-Z_][a-zA-Z0-9_]*`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NAME&quot;</span><span class="p">]))</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`&quot;((\\.)|([^&quot;\\]))*&quot;`</span><span class="p">),</span> <span class="kd">func</span><span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Token</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NAME&quot;</span><span class="p">],</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="nx">m</span><span class="p">),</span> <span class="kc">nil</span>
+    <span class="p">})</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`#[^\n]*`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`( |\t|\f)+`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\\\n`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
+    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\n|\r|\n\r`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NEWLINE&quot;</span><span class="p">]))</span>
+    <span class="nx">err</span> <span class="p">=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">lexer</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>Constructing the lexer exactly once</h3>
+<p>The lexer should be constructed and compiled exactly once: on program startup
+(unless the regular expressions are defined dynamically). This ensures that you
+only pay the compilation costs at program startup and get the maximum benefit
+from the efficient <a href="http://hackthology.com/faster-tokenization-with-a-dfa-backend-for-lexmachine.html">DFA
+representation</a>
+produced by compilation.</p>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">lexer</span> <span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Lexer</span>
+
+<span class="kd">func</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">lexer</span> <span class="p">=</span> <span class="nx">newLexer</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Example tokenization</h2>
+<div class="highlight"><pre><span></span><span class="nx">scanner</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;chip chip1 chip2 label name value&quot;</span><span class="p">))</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="nx">tk</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="o">:=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nx">Next</span><span class="p">();</span> <span class="p">!</span><span class="nx">eof</span><span class="p">;</span> <span class="nx">tk</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="p">=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">token</span> <span class="o">:=</span> <span class="nx">tk</span><span class="p">.(</span><span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;%-7v | %-25q | %v:%v-%v:%v\n&quot;</span><span class="p">,</span>
+            <span class="nx">tokens</span><span class="p">[</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">],</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">),</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">,</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">EndLine</span><span class="p">,</span>
+            <span class="nx">token</span><span class="p">.</span><span class="nx">EndColumn</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><strong>Output</strong></p>
+<div class="highlight"><pre><span></span>CHIP    | &quot;chip&quot;                    | 1:1-1:4
+NAME    | &quot;chip1&quot;                   | 1:6-1:10
+NAME    | &quot;chip2&quot;                   | 1:12-1:16
+LABEL   | &quot;label&quot;                   | 1:18-1:22
+NAME    | &quot;name&quot;                    | 1:24-1:27
+NAME    | &quot;value&quot;                   | 1:29-1:33
+</pre></div>
+
+
+<p>For more details on the scanner interface consult the <a href="https://github.com/timtadh/lexmachine#tokenizing-a-string">narrative
+documentation</a>.</p>
+<h2>Associating <code>label</code>s with <code>chip</code>s</h2>
+<p>There are several ways we could approach taking the output of the <code>scanner</code>
+above and using it to find what labels go with what chip names. In this example,
+a very simple, short, but ugly method is going to be demonstrated. Inside of the
+scanning for-loop a simple state machine will track what the current statement a
+particular <code>NAME</code> token belongs to. If it belongs to a <code>chip</code> statement or a
+<code>label</code> statement it is appropriately associated. Finally, whenever a new <code>CHIP</code>
+token is encountered the current buffer of labels are associated with the
+previous chip statement.</p>
+<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">printChipLabels</span><span class="p">(</span><span class="nx">text</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+    <span class="nx">scanner</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="nx">order</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="nx">chipLabels</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">string</span><span class="p">)</span>
+    <span class="nx">curChips</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="nx">curLabels</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="nx">curLabel</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nx">state</span> <span class="o">:=</span> <span class="s">&quot;none&quot;</span>
+    <span class="nx">addChips</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">chip</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">curChips</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">has</span> <span class="o">:=</span> <span class="nx">chipLabels</span><span class="p">[</span><span class="nx">chip</span><span class="p">];</span> <span class="p">!</span><span class="nx">has</span> <span class="p">{</span>
+                <span class="nx">order</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">order</span><span class="p">,</span> <span class="nx">chip</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="nx">chipLabels</span><span class="p">[</span><span class="nx">chip</span><span class="p">]</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">chipLabels</span><span class="p">[</span><span class="nx">chip</span><span class="p">],</span> <span class="nx">curLabels</span><span class="o">...</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">curChips</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="nx">curLabels</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="nx">curLabel</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="nx">tk</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="o">:=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nx">Next</span><span class="p">();</span> <span class="p">!</span><span class="nx">eof</span><span class="p">;</span> <span class="nx">tk</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="p">=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">err</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">token</span> <span class="o">:=</span> <span class="nx">tk</span><span class="p">.(</span><span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
+            <span class="k">switch</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Type</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;CHIP&quot;</span><span class="p">]:</span>
+                <span class="nx">addChips</span><span class="p">()</span>
+                <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;chip&quot;</span>
+            <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;LABEL&quot;</span><span class="p">]:</span>
+                <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;label&quot;</span>
+            <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NAME&quot;</span><span class="p">]:</span>
+                <span class="k">switch</span> <span class="nx">state</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="s">&quot;chip&quot;</span><span class="p">:</span>
+                    <span class="nx">curChips</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curChips</span><span class="p">,</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">))</span>
+                <span class="k">case</span> <span class="s">&quot;label&quot;</span><span class="p">:</span>
+                    <span class="nx">curLabel</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">,</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="p">{</span>
+                        <span class="nx">curLabels</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curLabels</span><span class="p">,</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">,</span> <span class="s">&quot;:&quot;</span><span class="p">))</span>
+                        <span class="nx">curLabel</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NEWLINE&quot;</span><span class="p">]:</span>
+                <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;none&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nx">addChips</span><span class="p">()</span> <span class="c1">// close the final chip statement</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">chip</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">order</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;chip %v: %v\n&quot;</span><span class="p">,</span> <span class="nx">chip</span><span class="p">,</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">chipLabels</span><span class="p">[</span><span class="nx">chip</span><span class="p">],</span> <span class="s">&quot;, &quot;</span><span class="p">))</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><strong>Output</strong> for the <code>sensors.conf</code> file on my machine:</p>
+<div class="highlight"><pre><span></span>chip lm78-*: temp1:M/B Temp
+chip lm79-*: temp1:M/B Temp
+chip lm80-*: temp1:M/B Temp
+chip lm96080-*: temp1:M/B Temp
+chip w83792d-*: in0:VcoreA, in1:VcoreB, in6:+5V, in7:5VSB, in8:Vbat
+chip w83793-*: in0:VcoreA, in1:VcoreB, in7:+5V, in8:5VSB, in9:Vbat
+chip w83795g-*: in12:+3.3V, in13:3VSB, in14:Vbat
+chip w83795adg-*: in12:+3.3V, in13:3VSB, in14:Vbat
+chip via686a-*: in0:Vcore, in2:+3.3V, in3:+5V, in4:+12V
+chip adm1025-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, in5:VCC, temp1:CPU Temp, temp2:M/B Temp
+chip ne1619-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, in5:VCC, temp1:CPU Temp, temp2:M/B Temp
+chip lm87-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp1:M/B Temp, temp2:CPU Temp
+chip adm1024-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp1:M/B Temp, temp2:CPU Temp
+chip it87-*: in8:Vbat
+chip it8712-*: in8:Vbat
+chip it8716-*: in8:Vbat
+chip it8718-*: in8:Vbat
+chip it8720-*: in8:Vbat
+chip fscpos-*: in0:+12V, in1:+5V, in2:Vbat, temp1:CPU Temp, temp2:M/B Temp, temp3:Aux Temp
+chip fscher-*: in0:+12V, in1:+5V, in2:Vbat, temp1:CPU Temp, temp2:M/B Temp, temp3:Aux Temp
+chip fscscy-*: in0:+12V, in1:+5V, in2:+3.3V, temp1:CPU0 Temp, temp2:CPU1 Temp, temp3:M/B Temp, temp4:Aux Temp
+chip fschds-*: temp1:CPU Temp, temp2:Super I/O Temp, temp3:System Temp, an1:PSU Fan, an2:CPU Fan, an3:System FAN2, an4:System FAN3, an5:System FAN4, in0:+12V, in1:+5V, in2:Vbat
+chip fscsyl-*: temp1:CPU Temp, temp4:Super I/O Temp, temp5:Northbridge Temp, an1:CPU Fan, an2:System FAN2, an3:System FAN3, an4:System FAN4, an7:PSU Fan, in0:+12V, in1:+5V, in2:Vbat, in3:+3.3V, in5:+3.3V-Aux
+chip vt1211-*: in5:+3.3V, temp2:SIO Temp
+chip vt8231-*: in5:+3.3V
+chip smsc47m192-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, in5:VCC, temp1:SIO Temp
+chip lm85-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip lm85b-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip lm85c-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip adm1027-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip adt7463-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip adt7468-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip emc6d100-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip emc6d102-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip emc6d103-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip emc6d103s-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip emc6w201-*: in2:+3.3V, in3:+5V, temp6:M/B Temp
+chip pc87365-*: in7:3VSB, in8:VDD, in9:Vbat, in10:AVDD, temp3:SIO Temp
+chip pc87366-*: in7:3VSB, in8:VDD, in9:Vbat, in10:AVDD, temp3:SIO Temp
+chip adm1030-*: temp1:M/B Temp
+chip adm1031-*: temp1:M/B Temp
+chip w83627thf-*: in3:+5V, in7:5VSB, in8:Vbat
+chip w83627ehf-*: in0:Vcore, in2:AVCC, in3:+3.3V, in7:3VSB, in8:Vbat
+chip w83627dhg-*: in0:Vcore, in2:AVCC, in3:+3.3V, in7:3VSB, in8:Vbat
+chip w83667hg-*: in0:Vcore, in2:AVCC, in3:+3.3V, in7:3VSB, in8:Vbat
+chip nct6775-*: in0:Vcore, in2:AVCC, in3:+3.3V, in7:3VSB, in8:Vbat
+chip nct6776-*: in0:Vcore, in2:AVCC, in3:+3.3V, in7:3VSB, in8:Vbat
+chip w83627uhg-*: in2:AVCC, in3:+5V, in7:5VSB, in8:Vbat
+chip f71805f-*: in0:+3.3V
+chip f71872f-*: in0:+3.3V, in9:Vbat, in10:3VSB
+chip k8temp-*: temp1:Core0 Temp, temp2:Core0 Temp, temp3:Core1 Temp, temp4:Core1 Temp
+chip dme1737-*: in0:5VSB, in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, in5:3VSB, in6:Vbat, temp2:SIO Temp
+chip sch311x-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, in5:3VSB, in6:Vbat, temp2:SIO Temp
+chip sch5027-*: in0:5VSB, in1:Vcore, in2:+3.3V, in5:3VSB, in6:Vbat, temp2:SIO Temp
+chip sch5127-*: in2:+3.3V, in5:3VSB, in6:Vbat
+chip f71808e-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71808a-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71862fg-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71869-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71869a-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71882fg-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71889fg-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71889ed-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71889a-*: in0:+3.3V, in7:3VSB, in8:Vbat
+chip f71858fg-*: in0:+3.3V, in1:3VSB, in2:Vbat
+chip f8000-*: in0:+3.3V, in1:3VSB, in2:Vbat
+chip f81865f-*: in0:+3.3V, in5:3VSB, in6:Vbat
+chip adt7473-*: in2:+3.3V, temp2:Board Temp
+chip adt7475-*: in2:+3.3V, temp2:Board Temp
+chip adt7476-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+chip adt7490-*: in1:Vcore, in2:+3.3V, in3:+5V, in4:+12V, temp2:M/B Temp
+</pre></div>
+
+
+<h1>Conclusion</h1>
+<p>This article presented <a href="https://github.com/timtadh/lexmachine">lexmachine</a> a
+library that helps you break up complex strings into their component parts
+safely, reliably, and quickly. To learn more visit the <a href="https://github.com/timtadh/lexmachine">project
+page</a>,
+browse the <a href="https://github.com/timtadh/lexmachine#documentation">documentation</a>,
+look at another
+<a href="http://hackthology.com/writing-a-lexer-in-go-with-lexmachine.html">tutorial</a>,
+or read an <a href="http://hackthology.com/faster-tokenization-with-a-dfa-backend-for-lexmachine.html">explainer
+article</a>
+on how it all works.</p>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="http://hackthology.com/articles.html">articles</a></li>
+    <li><a href="http://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="http://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="http://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="http://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="http://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+        <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
