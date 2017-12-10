@@ -100,7 +100,7 @@ often the token type will be the part of speech.</p>
 
 <p>Tokenizing English is very difficult in general because determining the part of
 speech of a particular word is not always obvious. The same word can play
-multiple <em>semantic</em> roles in a sentence. Humans to consider the sentence in its
+multiple <em>semantic</em> roles in a sentence. Humans consider the sentence in its
 entirety when determining the parts of speech for each word. This allows us to
 "noun verbs" and "verb nouns."</p>
 <h2>String tokenization as part of parsing</h2>
@@ -111,7 +111,7 @@ etc... are all easy to tokenize. In these applications (as with natural
 language), tokenization is the first step in parsing or compilation and is
 called lexical analysis.</p>
 <p>Modern compilers are designed as a "pipeline" or series of steps (called passes)
-which operator over a program. They take the source code and transform it step
+which operate over a program. They take the source code and transform it step
 by step into the desired output (machine code, assembly, another programming
 language). Breaking compilation into steps simplifies each stage and makes the
 individual passes reusable. The start of the pipeline is shown in Figure 1.</p>
@@ -386,7 +386,7 @@ action:</p>
     <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`( |\t|\f)+`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;SPACE&quot;</span><span class="p">]))</span>
     <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\\\n`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;SPACE&quot;</span><span class="p">]))</span>
     <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\n|\r|\n\r`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NEWLINE&quot;</span><span class="p">]))</span>
-    <span class="nx">err</span> <span class="p">=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
+    <span class="nx">err</span> <span class="o">:=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
     <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
         <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
     <span class="p">}</span>
@@ -405,7 +405,7 @@ pattern simply have the action <code>return nil, nil</code>:</p>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;\s+&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>     <span class="c1">// skip whitespace</span>
+<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\s+`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>     <span class="c1">// skip whitespace</span>
 <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`#[^\n]*`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span> <span class="c1">// skip comments</span>
 </pre></div>
 
@@ -440,7 +440,7 @@ tokens. Let's skip the rest:</p>
     <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`( |\t|\f)+`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
     <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\\\n`</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
     <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\n|\r|\n\r`</span><span class="p">),</span> <span class="nx">getToken</span><span class="p">(</span><span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NEWLINE&quot;</span><span class="p">]))</span>
-    <span class="nx">err</span> <span class="p">=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
+    <span class="nx">err</span> <span class="o">:=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
     <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
         <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
     <span class="p">}</span>
@@ -472,16 +472,15 @@ produced by compilation.</p>
 <span class="k">for</span> <span class="nx">tk</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="o">:=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nx">Next</span><span class="p">();</span> <span class="p">!</span><span class="nx">eof</span><span class="p">;</span> <span class="nx">tk</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="p">=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
         <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">token</span> <span class="o">:=</span> <span class="nx">tk</span><span class="p">.(</span><span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;%-7v | %-25q | %v:%v-%v:%v\n&quot;</span><span class="p">,</span>
-            <span class="nx">tokens</span><span class="p">[</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">],</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">),</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">,</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">EndLine</span><span class="p">,</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">EndColumn</span><span class="p">)</span>
     <span class="p">}</span>
+    <span class="nx">token</span> <span class="o">:=</span> <span class="nx">tk</span><span class="p">.(</span><span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;%-7v | %-25q | %v:%v-%v:%v\n&quot;</span><span class="p">,</span>
+        <span class="nx">tokens</span><span class="p">[</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">],</span>
+        <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">),</span>
+        <span class="nx">token</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span>
+        <span class="nx">token</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">,</span>
+        <span class="nx">token</span><span class="p">.</span><span class="nx">EndLine</span><span class="p">,</span>
+        <span class="nx">token</span><span class="p">.</span><span class="nx">EndColumn</span><span class="p">)</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -532,28 +531,27 @@ previous chip statement.</p>
     <span class="k">for</span> <span class="nx">tk</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="o">:=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nx">Next</span><span class="p">();</span> <span class="p">!</span><span class="nx">eof</span><span class="p">;</span> <span class="nx">tk</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="p">=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">err</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">token</span> <span class="o">:=</span> <span class="nx">tk</span><span class="p">.(</span><span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
-            <span class="k">switch</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Type</span> <span class="p">{</span>
-            <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;CHIP&quot;</span><span class="p">]:</span>
-                <span class="nx">addChips</span><span class="p">()</span>
-                <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;chip&quot;</span>
-            <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;LABEL&quot;</span><span class="p">]:</span>
-                <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;label&quot;</span>
-            <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NAME&quot;</span><span class="p">]:</span>
-                <span class="k">switch</span> <span class="nx">state</span> <span class="p">{</span>
-                <span class="k">case</span> <span class="s">&quot;chip&quot;</span><span class="p">:</span>
-                    <span class="nx">curChips</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curChips</span><span class="p">,</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">))</span>
-                <span class="k">case</span> <span class="s">&quot;label&quot;</span><span class="p">:</span>
-                    <span class="nx">curLabel</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">,</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">))</span>
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="p">{</span>
-                        <span class="nx">curLabels</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curLabels</span><span class="p">,</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">,</span> <span class="s">&quot;:&quot;</span><span class="p">))</span>
-                        <span class="nx">curLabel</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-                    <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">token</span> <span class="o">:=</span> <span class="nx">tk</span><span class="p">.(</span><span class="o">*</span><span class="nx">lexmachine</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
+        <span class="k">switch</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Type</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;CHIP&quot;</span><span class="p">]:</span>
+            <span class="nx">addChips</span><span class="p">()</span>
+            <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;chip&quot;</span>
+        <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;LABEL&quot;</span><span class="p">]:</span>
+            <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;label&quot;</span>
+        <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NAME&quot;</span><span class="p">]:</span>
+            <span class="k">switch</span> <span class="nx">state</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="s">&quot;chip&quot;</span><span class="p">:</span>
+                <span class="nx">curChips</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curChips</span><span class="p">,</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">))</span>
+            <span class="k">case</span> <span class="s">&quot;label&quot;</span><span class="p">:</span>
+                <span class="nx">curLabel</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">,</span> <span class="nx">token</span><span class="p">.</span><span class="nx">Value</span><span class="p">.(</span><span class="kt">string</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="p">{</span>
+                    <span class="nx">curLabels</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">curLabels</span><span class="p">,</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">curLabel</span><span class="p">,</span> <span class="s">&quot;:&quot;</span><span class="p">))</span>
+                    <span class="nx">curLabel</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
                 <span class="p">}</span>
-            <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NEWLINE&quot;</span><span class="p">]:</span>
-                <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;none&quot;</span>
             <span class="p">}</span>
+        <span class="k">case</span> <span class="nx">tokmap</span><span class="p">[</span><span class="s">&quot;NEWLINE&quot;</span><span class="p">]:</span>
+            <span class="nx">state</span> <span class="p">=</span> <span class="s">&quot;none&quot;</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="nx">addChips</span><span class="p">()</span> <span class="c1">// close the final chip statement</span>
