@@ -2908,8 +2908,8 @@ my name is spot and I am a pointer
 
 &lt;h3&gt;Limitations of Embedding as Inheritance&lt;/h3&gt;
 &lt;p&gt;In comparison to a language like Java, Go's form of inheritance is quite
-limited. There are multiple designs which can be easy accomplished in Java which
-are not possible in Go. Let's look at some of them.&lt;/p&gt;
+limited. There are multiple designs which can be easily accomplished in Java
+which are not possible in Go. Let's look at some of them.&lt;/p&gt;
 &lt;h4&gt;Overriding Methods&lt;/h4&gt;
 &lt;p&gt;In the pet example above, &lt;code&gt;Dog&lt;/code&gt; "overrides" the &lt;code&gt;Speak()&lt;/code&gt; method. However, if
 &lt;code&gt;Pet&lt;/code&gt; had another method &lt;code&gt;Play()&lt;/code&gt; which invokes &lt;code&gt;Speak()&lt;/code&gt; that &lt;code&gt;Dog&lt;/code&gt; does not
