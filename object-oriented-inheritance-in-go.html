@@ -119,9 +119,9 @@ for this fragment of Java:</p>
 </pre></div>
 
 
-<p>For some tokens, such as numeric constants, it convenient to specialize the
+<p>For some tokens, such as numeric constants, it is convenient to specialize the
 <code>Token</code> object to contain some extra information. In the case of numeric
-constants the numerical value of the lexeme is convenient in to store directly in
+constants the numerical value of the lexeme is convenient to store directly in
 the <code>Token</code>. The traditional way to accomplish this is to have the numeric
 tokens <em>inherit</em> from the <code>Token</code> class.</p>
 <div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntegerConstant</span> <span class="kd">extends</span> <span class="n">Token</span> <span class="o">{</span>

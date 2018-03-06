@@ -2889,9 +2889,9 @@ for this fragment of Java:&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;For some tokens, such as numeric constants, it convenient to specialize the
+&lt;p&gt;For some tokens, such as numeric constants, it is convenient to specialize the
 &lt;code&gt;Token&lt;/code&gt; object to contain some extra information. In the case of numeric
-constants the numerical value of the lexeme is convenient in to store directly in
+constants the numerical value of the lexeme is convenient to store directly in
 the &lt;code&gt;Token&lt;/code&gt;. The traditional way to accomplish this is to have the numeric
 tokens &lt;em&gt;inherit&lt;/em&gt; from the &lt;code&gt;Token&lt;/code&gt; class.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;IntegerConstant&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;Token&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
