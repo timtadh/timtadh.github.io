@@ -1,5 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/paper.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2017-08-18T00:00:00-04:00</updated><entry><title>Frequent Subgraph Analysis and its Software Engineering Applications</title><link href="http://hackthology.com/frequent-subgraph-analysis-and-its-software-engineering-applications.html" rel="alternate"></link><updated>2017-08-18T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-08-18:frequent-subgraph-analysis-and-its-software-engineering-applications.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;Frequent Subgraph Analysis and its Software Engineering Applications&lt;/em&gt;.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/paper.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2018-04-03T00:00:00-04:00</updated><entry><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link href="http://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html" rel="alternate"></link><updated>2018-04-03T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2018-04-03:behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</id><summary type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
+&lt;em&gt;Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow
+Subgraphs&lt;/em&gt;.  &lt;a href="http://www.es.mdh.se/icst2018/"&gt;ICST 2018&lt;/a&gt;.
+&lt;br/&gt;
+DOI.
+&lt;a href="http://hackthology.com/pdfs/icst-2018.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="http://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;We present a new algorithm, Score Weighted Random Walks (SWRW), for behavioral
+fault localization. Behavioral fault localization localizes faults (bugs) in
+programs to a group of interacting program elements such as basic blocks or
+functions.  SWRW samples suspicious (or discriminative) subgraphs from
+basic-block level dynamic control flow graphs collected during the execution of
+passing and failing tests.  The suspiciousness of a subgraph may be measured by
+any one of a family of new metrics adapted from probabilistic formulations of
+existing coverage-based statistical fault localization metrics.  We conducted an
+empirical evaluation of SWRW with nine subgraph-suspiciousness measures on five
+real-world subject programs.  The results indicate that SWRW outperforms
+previous fault localization techniques based on discriminative subgraph mining.&lt;/p&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;Automated fault localization&lt;/em&gt; techniques have been developed to help
+programmers locate software faults (bugs) responsible for observed software
+failures.  Many of these techniques are statistical in nature (e.g., {&lt;a href="https://dx.doi.org/10.1145/581339.581397"&gt;Jones
+2002&lt;/a&gt;, &lt;a href="https://dx.doi.org/10.1145/1064978.1065014"&gt;Liblit
+2005&lt;/a&gt;, &lt;a href="https://dx.doi.org/10.1137/1.9781611972757.26"&gt;Liu
+2005&lt;/a&gt;}).  They employ statistical
+measures of the &lt;em&gt;association&lt;/em&gt;, if any, between the occurrence of failures and
+the execution of particular program elements like statements or conditional
+branches.  The program elements that are most strongly associated with failures
+are identified as "suspicious", so that developers can examine them to see if
+they are faulty.  The association measures that are used are often called
+&lt;em&gt;suspiciousness metrics&lt;/em&gt; {&lt;a href="https://dx.doi.org/10.1109/ICSE.2004.1317420"&gt;Jones
+2004&lt;/a&gt;}.  Such &lt;em&gt;statistical fault
+localization&lt;/em&gt; (SFL) techniques typically require &lt;em&gt;execution profiles&lt;/em&gt; (or
+&lt;em&gt;spectra&lt;/em&gt;) and PASS/FAIL labels for a set of both passing and failing program
+runs.  Each profile entry characterizes the execution of a
+particular program element during a run.  For example, a statement-coverage
+profile for a run indicates which statements were executed at least once.  The
+profiles are collected with program instrumentation, while the labels are
+typically supplied by software testers or end users.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Coverage Based Statistical Fault Localization&lt;/em&gt; (CBSFL) techniques compute a
+suspiciousness score for each program element. The elements are presented to the
+programmer as a ranked list with the most suspicious elements at the top
+{&lt;a href="https://dx.doi.org/10.1145/1064978.1065014"&gt;Liblit 2005&lt;/a&gt;}.  Programmers
+utilize the list to guide their debugging effort by starting at the most
+suspicious element and moving down. The effectiveness of a CBSFL suspiciousness
+metric is judged by how accurately it ranks a bug's (or bugs) location in a
+program. The higher in the list the bug's location appears the better the metric
+performs {&lt;a href="https://dx.doi.org/10.1002/smr.1616"&gt;Lucia 2014&lt;/a&gt;}.&lt;/p&gt;
+&lt;p&gt;Kochhar &lt;em&gt;et al.&lt;/em&gt;  {&lt;a href="https://dx.doi.org/10.1145/2931037.2931051"&gt;Kochhar 2016&lt;/a&gt;}
+recently surveyed 386 software engineering practitioners about their
+expectations for automated fault localization. While practitioners indicated
+their preference for very accurate algorithms, over 85% of respondents also
+indicated their preference for tools which help them understand the output of
+fault localization algorithms. This is an important finding as most statistical
+approaches do not provide an explanation of their results. The SFL techniques
+often simply compute suspiciousness measures and rank the program elements
+accordingly.  These rankings may be helpful, but without more information
+programmers could overlook the faulty element even when it is ranked highly.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Localization Process" src="/images/icst-localization-process.png" /&gt;
+&lt;div style="text-align: center; margin-top: -2em;"&gt;
+&lt;strong&gt;Figure 1.&lt;/strong&gt; Process for localizing faults  with discriminative graph mining.
+&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Suspicious-Behavior Based Fault Localization&lt;/em&gt; (SBBFL) is a statistical fault
+localization technique that aids the programmer in understanding suspiciousness
+scores by providing a &lt;em&gt;context&lt;/em&gt; of interacting elements.
+&lt;span style="color: gray"&gt;(&lt;em&gt;NB: Dynamic slicing {&lt;a href="https://www.franktip.org/pubs/jpl1995.pdf"&gt;Tip
+1995&lt;/a&gt;} also provides such a context, but does
+not in itself involve suspiciousness measures&lt;/em&gt;)&lt;/span&gt; Instead of implicating a
+single element, SBBFL implicates a larger runtime behavior (see process in
+Figure 1). The implicated control flow paths (or subgraphs) may help the
+programmer understand the nature of a bug {&lt;a href="https://dx.doi.org/10.1145/1572272.1572290"&gt;Cheng
+2009&lt;/a&gt;}.&lt;/p&gt;
+&lt;p&gt;We present a new algorithm, &lt;em&gt;Score-Weighted Random Walks&lt;/em&gt; (SWRW), for
+behavioral fault-localization.  SWRW belongs to a family of
+&lt;em&gt;discriminative graph-mining algorithms&lt;/em&gt;  that have previously been used
+for behavioral fault localization 
+{
+&lt;a href="https://dx.doi.org/10.1137/1.9781611972757.26"&gt;Liu2005&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1145/1188895.1188910"&gt;DiFatta2006&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1007/978-3-540-87479-9_40"&gt;Eichinger2008&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1145/1572272.1572290"&gt;Cheng2009a&lt;/a&gt;,
+&lt;a href="http://dl.acm.org/citation.cfm?id=1888258.1888293"&gt;Eichinger2010&lt;/a&gt;,
+&lt;a href="http://www.scopus.com/inward/record.url?eid=2-s2.0-84880082474&amp;amp;partnerID=tZOtx3y1"&gt;Eichinger2011&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1145/1982595.1982599"&gt;Mousavian2011&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1109/TSE.2010.93"&gt;Mariani2011&lt;/a&gt;,
+&lt;a href="http://dl.acm.org/citation.cfm?id=2029256.2029305"&gt;Parsa2011&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1109/ICSTW.2013.17"&gt;Yousefi2013&lt;/a&gt;
+}. Graph mining is very powerful in principle but algorithms must
+make trade-offs to address the challenging combinatorics of the graph mining
+problem.  Our new algorithm, SWRW, mitigates the combinatorics by randomly
+sampling "suspicious" subgraphs from dynamic control flow graphs.  During the
+sampling process, the most suspicious subgraphs (as judged by a suitable
+suspiciousness metric) are favored for selection. Unlike previous algorithms,
+SWRW can be used with a wide variety of suspiciousness metrics --- which allows
+it to use better metrics than available to previous work.  Even when using the
+same metric as similar algorithms, SWRW localizes faults more accurately than
+they do.&lt;/p&gt;
+&lt;h2&gt;Summary of Contributions&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A new behavioral fault localization algorithm, SWRW, that samples suspicious
+   subgraphs from dynamic control flow graphs.  Unlike similar algorithms, SWRW
+   can be used with a variety of suspiciousness metrics.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;New generalizations of existing suspiciousness metrics that allow them to be
+   applied to behaviors represented by subgraphs of dynamic control flow graphs.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;An empirical study whose results suggest that SWRW is more accurate than
+   similar algorithms.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Dynagrok, a new instrumentation, mutation, and analysis tool for the Go
+   programming language.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Dynagrok: A New Profiling Tool&lt;/h1&gt;
+&lt;p&gt;All &lt;em&gt;Coverage-Based Statistical Fault Localization&lt;/em&gt; (CBSFL) techniques use
+&lt;em&gt;coverage profiles&lt;/em&gt; to gather information on how software behaved when
+executed on a set of test inputs. A coverage profile typically contains an entry
+for each program element of a given kind (e.g., statement, basic block, branch,
+or function), which records whether (and possibly how many times) the element
+was executed during the corresponding program run.  The profiles and PASS/FAIL
+labels for all tests are then used to compute a statistical
+&lt;em&gt;suspiciousness score&lt;/em&gt; for each program element.&lt;/p&gt;
+&lt;p&gt;The process of gathering the coverage information from running programs is
+called &lt;em&gt;profiling&lt;/em&gt; and there are many different varieties of profilers and
+profiling techniques available. Coverage profiling is a simple and widely
+implemented technique, which is why it has been widely used by the fault
+localization community. Another technique is &lt;em&gt;tracing&lt;/em&gt;, which logs the sequence
+of program locations as they are executed. The traces provide detailed
+information on the behavior of the program but could grow to be very large for
+long running programs. This paper uses &lt;em&gt;execution flow profiling&lt;/em&gt; which
+computes the dynamic interprocedural control flow graph of a program's
+execution.  This provides some of the benefits of tracing without recording an
+excessive amount of data.&lt;/p&gt;
+&lt;p&gt;To capture execution flow profiles we developed
+&lt;a href="https://github.com/timtadh/dynagrok"&gt;Dynagrok&lt;/a&gt;, a new analysis, instrumentation
+and mutation platform for the Go programming language. Go is a newer language
+(2009) from Google that has been seeing increasing adoption in industry. It has
+been adopted for web programming, systems programming, "DevOps," network
+programing, and databases {&lt;a href="http://tiobe.com/tiobe-index/"&gt;http://tiobe.com/tiobe-index/&lt;/a&gt;,
+&lt;a href="http://blog.golang.org/survey2017-results"&gt;http://blog.golang.org/survey2017-results&lt;/a&gt;}.  Dynagrok builds upon the
+&lt;em&gt;abstract syntax tree&lt;/em&gt; (AST) representation provided by the Go standard
+library.&lt;/p&gt;
+&lt;p&gt;
+Dynagrok collects profiles by inserting instrumentation into the AST of the
+subject program.  The profiles currently collected are &lt;em&gt;dynamic control flow
+graphs&lt;/em&gt; (DCFGs) whose vertices represent basic blocks. A &lt;em&gt;basic
+block&lt;/em&gt; is a sequence of program operations that can only be entered at the
+start of the sequence and can only be exited after the last operation in the
+sequence 
+{&lt;a href="https://www.worldcat.org/title/compilers-principles-techniques-and-tools/oclc/12285707"&gt;Aho 2007&lt;/a&gt;}.
+A basic-block level &lt;em&gt;control flow graph&lt;/em&gt; (CFG) is a directed labeled
+graph &lt;span class="math"&gt;\(g = (V, E, l)\)&lt;/span&gt; comprised of a finite set of
+vertices &lt;span class="math"&gt;\(V\)&lt;/span&gt;, a set of edges &lt;span class="math"&gt;\(E
+\subseteq V \times V\)&lt;/span&gt;, and a labeling function &lt;span
+class="math"&gt;\(l\)&lt;/span&gt; mapping vertices and edges to labels.  Each vertex
+&lt;span class="math"&gt;\(v \in V\)&lt;/span&gt; represents a basic block of the program.
+Each edge &lt;span class="math"&gt;\((u, v) \in E\)&lt;/span&gt; represents a transition in
+program execution from block &lt;span class="math"&gt;\(u\)&lt;/span&gt; to block &lt;span
+class="math"&gt;\(v\)&lt;/span&gt;. The labeling function &lt;span class="math"&gt;\(l\)&lt;/span&gt;
+labels the basic blocks with a unique identifier (e.g.
+&lt;code&gt;function-name:block-id&lt;/code&gt;), which is consistently applied across
+multiple executions but is never repeated in the same execution.
+&lt;/p&gt;
+
+&lt;p&gt;Figure 2 shows an example DCFG collected by Dynagrok for a simple program that
+computes terms of the Fibonacci sequence. To collect such graphs Dynagrok parses
+the program into an AST using Go's standard library.  Dynagrok then uses a
+custom control flow analysis to build static control flow graphs. Each basic
+block holds pointers to the statements inside of the AST. The blocks also have a
+pointer to the enclosing &lt;em&gt;lexical block&lt;/em&gt; in the AST.  Using this information,
+Dynagrok inserts profiling instructions into the AST at the beginning of each
+basic block. The instructions inserted by Dynagrok use its &lt;code&gt;dgruntime&lt;/code&gt; library
+to track the control flow of each thread (which is called a &lt;em&gt;goroutine&lt;/em&gt; in Go).
+When the program shuts down (either normally or abnormally) the &lt;code&gt;dgruntime&lt;/code&gt;
+library merges the flow graphs from all the threads together and writes out the
+result.&lt;/p&gt;
+&lt;p&gt;(&lt;a href="http://hackthology.com/pdfs/icst-2018.pdf"&gt;Read the rest of the paper as a pdf&lt;/a&gt;)&lt;/p&gt;
+&lt;div style="text-align: center;"&gt;
+&lt;img src="/images/icst-dcfg.png"
+     text="Example Dynamic Control Flow Graph"
+     style="width: 65%;"/&gt;
+&lt;/div&gt;
+
+&lt;div style="text-align: center; margin-top: -1em;"&gt;
+&lt;strong&gt;Figure 2.&lt;/strong&gt; 
+The dynamic control flow graph (DCFG) for the program &lt;br&gt;
+in  Listing 1 (see below).
+&lt;/div&gt;
+
+&lt;div style="width: 90%; left:05%; position: relative;"&gt;
+Each vertex is a basic block with a basic block identifer (e.g.
+&lt;code&gt;b1&lt;/code&gt;) that, in conjunction with the name of the containing function,
+serves as the label for the block (e.g. &lt;code&gt;main:b1&lt;/code&gt;). Each edge shows
+the number of traversals taken during the execution of the program.  Note that
+the loop update blocks (&lt;code&gt;main:b3&lt;/code&gt; and &lt;code&gt;fib:b7&lt;/code&gt;) will not
+be in the profiles because Dynagrok instruments the Go source code and profiling
+instructions cannot be syntactically inserted in those locations.  The
+instrumented program is shown on the right.
+&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;
+
+&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;
+        &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div style="text-align: center; margin-top: -1em;"&gt;
+&lt;strong&gt;Listing 1.&lt;/strong&gt; 
+An example Go program to compute the Fibonacci Sequence.
+&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;dgruntime&amp;quot;&lt;/span&gt;
+
+&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;defer&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Shutdown&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;}()&lt;/span&gt;
+    &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;defer&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ExitFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}()&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlkFromCond&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fib&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;defer&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ExitFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fib&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}()&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlkFromCond&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;
+        &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div style="text-align: center; margin-top: -1em;"&gt;
+&lt;strong&gt;Listing 2.&lt;/strong&gt; 
+The program shown in Listing 1 after the instrumentation has been inserted by
+dynagrok.
+&lt;/div&gt;</summary></entry><entry><title>Frequent Subgraph Analysis and its Software Engineering Applications</title><link href="http://hackthology.com/frequent-subgraph-analysis-and-its-software-engineering-applications.html" rel="alternate"></link><updated>2017-08-18T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-08-18:frequent-subgraph-analysis-and-its-software-engineering-applications.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;Frequent Subgraph Analysis and its Software Engineering Applications&lt;/em&gt;.
 &lt;a href="http://case.edu/"&gt;Case Western Reserve University&lt;/a&gt;. Doctoral Dissertation. 2017.
 &lt;br/&gt;
 &lt;a href="http://hackthology.com/pdfs/dissertation.pdf"&gt;PDF&lt;/a&gt;.
