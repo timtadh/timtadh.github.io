@@ -79,16 +79,16 @@ behavioral fault-localization.  SWRW belongs to a family of
 &lt;em&gt;discriminative graph-mining algorithms&lt;/em&gt;  that have previously been used
 for behavioral fault localization 
 {
-&lt;a href="https://dx.doi.org/10.1137/1.9781611972757.26"&gt;Liu2005&lt;/a&gt;,
-&lt;a href="https://dx.doi.org/10.1145/1188895.1188910"&gt;DiFatta2006&lt;/a&gt;,
-&lt;a href="https://dx.doi.org/10.1007/978-3-540-87479-9_40"&gt;Eichinger2008&lt;/a&gt;,
-&lt;a href="https://dx.doi.org/10.1145/1572272.1572290"&gt;Cheng2009a&lt;/a&gt;,
-&lt;a href="http://dl.acm.org/citation.cfm?id=1888258.1888293"&gt;Eichinger2010&lt;/a&gt;,
-&lt;a href="http://www.scopus.com/inward/record.url?eid=2-s2.0-84880082474&amp;amp;partnerID=tZOtx3y1"&gt;Eichinger2011&lt;/a&gt;,
-&lt;a href="https://dx.doi.org/10.1145/1982595.1982599"&gt;Mousavian2011&lt;/a&gt;,
-&lt;a href="https://dx.doi.org/10.1109/TSE.2010.93"&gt;Mariani2011&lt;/a&gt;,
-&lt;a href="http://dl.acm.org/citation.cfm?id=2029256.2029305"&gt;Parsa2011&lt;/a&gt;,
-&lt;a href="https://dx.doi.org/10.1109/ICSTW.2013.17"&gt;Yousefi2013&lt;/a&gt;
+&lt;a href="https://dx.doi.org/10.1137/1.9781611972757.26"&gt;Liu 2005&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1145/1188895.1188910"&gt;DiFatta 2006&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1007/978-3-540-87479-9_40"&gt;Eichinger 2008&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1145/1572272.1572290"&gt;Cheng 2009a&lt;/a&gt;,
+&lt;a href="http://dl.acm.org/citation.cfm?id=1888258.1888293"&gt;Eichinger 2010&lt;/a&gt;,
+&lt;a href="http://www.scopus.com/inward/record.url?eid=2-s2.0-84880082474&amp;amp;partnerID=tZOtx3y1"&gt;Eichinger 2011&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1145/1982595.1982599"&gt;Mousavian 2011&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1109/TSE.2010.93"&gt;Mariani 2011&lt;/a&gt;,
+&lt;a href="http://dl.acm.org/citation.cfm?id=2029256.2029305"&gt;Parsa 2011&lt;/a&gt;,
+&lt;a href="https://dx.doi.org/10.1109/ICSTW.2013.17"&gt;Yousefi 2013&lt;/a&gt;
 }. Graph mining is very powerful in principle but algorithms must
 make trade-offs to address the challenging combinatorics of the graph mining
 problem.  Our new algorithm, SWRW, mitigates the combinatorics by randomly
