@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="http://hackthology.com/" rel="alternate"></link><link href="http://hackthology.com/feeds/tim-henderson-and-andy-podgurski.atom.xml" rel="self"></link><id>http://hackthology.com/</id><updated>2018-04-03T00:00:00-04:00</updated><entry><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link href="http://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html" rel="alternate"></link><updated>2018-04-03T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2018-04-03:behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</id><summary type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/tim-henderson-and-andy-podgurski.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2018-04-03T00:00:00-04:00</updated><entry><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link href="https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html" rel="alternate"></link><updated>2018-04-03T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2018-04-03:behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</id><summary type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
 
 &lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
 &lt;em&gt;Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow
 Subgraphs&lt;/em&gt;.  &lt;a href="http://www.es.mdh.se/icst2018/"&gt;ICST 2018&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://dx.doi.org/10.1109/ICST.2018.00019"&gt;DOI&lt;/a&gt;.
-&lt;a href="http://hackthology.com/pdfs/icst-2018.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="http://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="https://hackthology.com/pdfs/icst-2018.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Abstract&lt;/h4&gt;
 &lt;p&gt;We present a new algorithm, Score Weighted Random Walks (SWRW), for behavioral
 fault localization. Behavioral fault localization localizes faults (bugs) in
@@ -182,7 +182,7 @@ to track the control flow of each thread (which is called a &lt;em&gt;goroutine&
 When the program shuts down (either normally or abnormally) the &lt;code&gt;dgruntime&lt;/code&gt;
 library merges the flow graphs from all the threads together and writes out the
 result.&lt;/p&gt;
-&lt;p&gt;(&lt;a href="http://hackthology.com/pdfs/icst-2018.pdf"&gt;Read the rest of the paper as a pdf&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;(&lt;a href="https://hackthology.com/pdfs/icst-2018.pdf"&gt;Read the rest of the paper as a pdf&lt;/a&gt;)&lt;/p&gt;
 &lt;div style="text-align: center;"&gt;
 &lt;img src="/images/icst-dcfg.png"
      text="Example Dynamic Control Flow Graph"
@@ -271,13 +271,13 @@ An example Go program to compute the Fibonacci Sequence.
 &lt;strong&gt;Listing 2.&lt;/strong&gt; 
 The program shown in Listing 1 after the instrumentation has been inserted by
 dynagrok.
-&lt;/div&gt;</summary></entry><entry><title>Rethinking Dependence Clones</title><link href="http://hackthology.com/rethinking-dependence-clones.html" rel="alternate"></link><updated>2017-02-21T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-02-21:rethinking-dependence-clones.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
+&lt;/div&gt;</summary></entry><entry><title>Rethinking Dependence Clones</title><link href="https://hackthology.com/rethinking-dependence-clones.html" rel="alternate"></link><updated>2017-02-21T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-02-21:rethinking-dependence-clones.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
 &lt;em&gt;Rethinking Dependence Clones&lt;/em&gt;.
 &lt;a href="https://iwsc2017.github.io/"&gt;IWSC 2017&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt;.
-&lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="http://hackthology.com/rethinking-dependence-clones.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="https://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/rethinking-dependence-clones.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Abstract&lt;/h4&gt;
 &lt;p&gt;&lt;em&gt;Semantic code clones&lt;/em&gt; are regions of duplicated code that may appear dissimilar
 but compute similar functions. Since in general it is algorithmically
@@ -335,7 +335,7 @@ be enormous.  For example, we found that for a Java program with 70,000 lines of
 code (LOC), over 700 million PDG subgraphs with 5 or more instances were
 discovered by FSM.&lt;/p&gt;
 &lt;p&gt;Since it is infeasible for developers to examine so many subgraphs, we
-previously developed &lt;a href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html"&gt;GRAPLE&lt;/a&gt;, an algorithm to
+previously developed &lt;a href="https://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html"&gt;GRAPLE&lt;/a&gt;, an algorithm to
 select representative samples of maximal frequent subgraphs.  In this paper, the
 core sampling process remains the same as in GRAPLE but we present a new
 algorithm for traversing the &lt;em&gt;k&lt;/em&gt;-frequent subgraph lattice.  One tricky aspect
@@ -351,17 +351,17 @@ return several potential clones, which are quite similar to each other, we
 evaluate the performance of a density-based clustering algorithm on the samples
 collected.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
-&lt;p&gt;See the &lt;a href="http://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. IEEE has
+&lt;p&gt;See the &lt;a href="https://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. IEEE has
 the exclusive rights to publish this paper. Follow the
-&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt; for the IEEE copy.&lt;/p&gt;</summary></entry><entry><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html" rel="alternate"></link><updated>2016-11-13T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2016-11-13:sampling-code-clones-from-program-dependence-graphs-with-graple.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
+&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt; for the IEEE copy.&lt;/p&gt;</summary></entry><entry><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link href="https://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html" rel="alternate"></link><updated>2016-11-13T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2016-11-13:sampling-code-clones-from-program-dependence-graphs-with-graple.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
 Dependence Graphs with GRAPLE&lt;/em&gt;.
 &lt;a href="http://softwareanalytics.ca/swan16/Home.html"&gt;SWAN 2016&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://dx.doi.org/10.1145/2989238.2989241"&gt;DOI&lt;/a&gt;.
-&lt;a href="http://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="http://hackthology.com/pdfs/swan-2016-supplemental.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/swan-2016-supplemental.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
 &lt;a href="https://github.com/timtadh/graple"&gt;CODE&lt;/a&gt;.
-&lt;a href="http://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="https://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Abstract&lt;/h4&gt;
 &lt;p&gt;We present &lt;a href="https://github.com/timtadh/graple"&gt;GRAPLE&lt;/a&gt;, a method to generate a
 representative sample of recurring (frequent) subgraphs of any directed labeled
@@ -397,7 +397,7 @@ clones by a human evaluator." Most PDG-based clone detection tools are biased,
 detecting certain clones but not others.&lt;/p&gt;
 &lt;p&gt;The root cause of scalability problems with PDG-based clone detection is the
 number of dependence clones. The Background Section (in the
-&lt;a href="http://hackthology.com/pdfs/swan-2016.pdf"&gt;pdf&lt;/a&gt;) illustrates this with an example in which
+&lt;a href="https://hackthology.com/pdfs/swan-2016.pdf"&gt;pdf&lt;/a&gt;) illustrates this with an example in which
 we used an unbiased frequent subgraph mining algorithm to detect all dependence
 clones in Java programs. In programs with about 70 KLOC it detected around 10
 million clones before disk space was exhausted. Processing all dependence clones
@@ -421,7 +421,7 @@ in bug mining, test case selection, and bioinformatics. The sampling algorithm
 also applies to frequent item sets, subsequences, and subtrees allowing code
 clone sampling from tokens and ASTs.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
-&lt;p&gt;See the &lt;a href="http://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt; for the complete paper. ACM
+&lt;p&gt;See the &lt;a href="https://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt; for the complete paper. ACM
 has the exclusive rights to publish this paper. Tim Henderson and Andy Podgurski
 own the copyright. Follow the &lt;a href="https://dx.doi.org/10.1145/2989238.2989241"&gt;DOI&lt;/a&gt;
 for the ACM copy. This copy is posted here with the permission of ACM.&lt;/p&gt;</summary></entry></feed>
