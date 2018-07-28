@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all-en.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2018-07-27T00:00:00-04:00</updated><entry><title>How to Evaluate Statistical Fault Localization</title><link href="https://hackthology.com/how-to-evaluate-statistical-fault-localization.html" rel="alternate"></link><published>2018-07-27T00:00:00-04:00</published><updated>2018-07-27T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2018-07-27:/how-to-evaluate-statistical-fault-localization.html</id><summary type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all-en.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2018-07-27T00:00:00-04:00</updated><entry><title>How to Evaluate Statistical Fault Localization</title><link href="https://hackthology.com/how-to-evaluate-statistical-fault-localization.html" rel="alternate"></link><published>2018-07-27T00:00:00-04:00</published><updated>2018-07-27T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2018-07-27:/how-to-evaluate-statistical-fault-localization.html</id><summary type="html">&lt;h4&gt;Cite as:&lt;/h4&gt;
 
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;How To Evaluate Statistical Fault Localization&lt;/em&gt;.
+Blog. 2018.  &lt;a href="https://hackthology.com/how-to-evaluate-statistical-fault-localization.html"&gt;https://hackthology.com/how-to-evaluate-statistical-fault-localization.html&lt;/a&gt;
+&lt;br/&gt;
+&lt;a href="https://hackthology.com/pdfs/how-to-eval-fault-localization.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/how-to-evaluate-statistical-fault-localization.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/how-to-eval-fault-localization.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
 
 &lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
 
-&lt;p&gt;Automatic fault localization is a software engineering technique to assist a programmer during the debugging process by suggesting suspicious locations that may be related to the root cause of the bug. The big idea behind behind automatic fault localization (or just fault localization) is by pointing the programmer towards …&lt;/p&gt;</summary><content type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+&lt;p&gt;Automatic fault localization is a …&lt;/p&gt;</summary><content type="html">&lt;h4&gt;Cite as:&lt;/h4&gt;
 
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;How To Evaluate Statistical Fault Localization&lt;/em&gt;.
+Blog. 2018.  &lt;a href="https://hackthology.com/how-to-evaluate-statistical-fault-localization.html"&gt;https://hackthology.com/how-to-evaluate-statistical-fault-localization.html&lt;/a&gt;
+&lt;br/&gt;
+&lt;a href="https://hackthology.com/pdfs/how-to-eval-fault-localization.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/how-to-evaluate-statistical-fault-localization.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/how-to-eval-fault-localization.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
 
 &lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
