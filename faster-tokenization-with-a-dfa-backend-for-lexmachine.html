@@ -252,7 +252,7 @@ machine that reads a string, character by character, and decides whether it is
 in some <em>language</em> or not (see Figure 1). The language is a type of formal
 language called a <em>regular</em> language or a Type-3 language in the Chomsky Formal
 Language Hierarchy.</p>
-<p><img alt="Finite Automata" src="/images/regex-machine.png" />
+<p><img alt="Finite Automata" src="/images/regex-machine.png">
 <div style="text-align: center; margin-top: -2em;">
 <strong>Figure 1.</strong> A Simple Finite State Automaton.<br/>
 If the string matches the Accept light lights up, otherwise the error light
@@ -284,7 +284,7 @@ has <span class="math">\(m\)</span> characters it can be matched in <span
 class="math">\(\mathcal{O}(n \cdot m)\)</span> steps.
 </p>
 
-<p><img alt="Non-deterministic Finite Automata" src="/images/nfa.png" />
+<p><img alt="Non-deterministic Finite Automata" src="/images/nfa.png">
 <div style="text-align: center; margin-top: -2em;">
 <strong>Figure 2.</strong> A Non-deterministic Finite Automaton for
 <code>sensors.conf</code>.<br/>
@@ -357,28 +357,28 @@ my <code>sensors.conf</code> file 1000 times using both the NFA backend and the 
 <div class="highlight"><pre><span></span>$ go install github.com/timtadh/lexmachine/examples/sensors <span class="o">&amp;&amp;</span>
 &gt; cat /etc/sensors*.conf <span class="p">|</span> <span class="o">(</span>/usr/bin/time -v sensors --nfa <span class="o">)</span>
         Command being timed: <span class="s2">&quot;sensors --nfa&quot;</span>
-        User <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: 3.0
-        System <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: 0.00
-        Percent of CPU this job got: 102%
-        Elapsed <span class="o">(</span>wall clock<span class="o">)</span> <span class="nb">time</span> <span class="o">(</span>h:mm:ss or m:ss<span class="o">)</span>: 0:02.97
-        Average shared text size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Average unshared data size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Average stack size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Average total size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Maximum resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: 6564
-        Average resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Major <span class="o">(</span>requiring I/O<span class="o">)</span> page faults: 0
-        Minor <span class="o">(</span>reclaiming a frame<span class="o">)</span> page faults: 1749
-        Voluntary context switches: 1866
-        Involuntary context switches: 473
-        Swaps: 0
-        File system inputs: 0
-        File system outputs: 0
-        Socket messages sent: 0
-        Socket messages received: 0
-        Signals delivered: 0
-        Page size <span class="o">(</span>bytes<span class="o">)</span>: 4096
-        Exit status: 0
+        User <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: <span class="m">3</span>.0
+        System <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: <span class="m">0</span>.00
+        Percent of CPU this job got: <span class="m">102</span>%
+        Elapsed <span class="o">(</span>wall clock<span class="o">)</span> <span class="nb">time</span> <span class="o">(</span>h:mm:ss or m:ss<span class="o">)</span>: <span class="m">0</span>:02.97
+        Average shared text size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Average unshared data size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Average stack size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Average total size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Maximum resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">6564</span>
+        Average resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Major <span class="o">(</span>requiring I/O<span class="o">)</span> page faults: <span class="m">0</span>
+        Minor <span class="o">(</span>reclaiming a frame<span class="o">)</span> page faults: <span class="m">1749</span>
+        Voluntary context switches: <span class="m">1866</span>
+        Involuntary context switches: <span class="m">473</span>
+        Swaps: <span class="m">0</span>
+        File system inputs: <span class="m">0</span>
+        File system outputs: <span class="m">0</span>
+        Socket messages sent: <span class="m">0</span>
+        Socket messages received: <span class="m">0</span>
+        Signals delivered: <span class="m">0</span>
+        Page size <span class="o">(</span>bytes<span class="o">)</span>: <span class="m">4096</span>
+        Exit status: <span class="m">0</span>
 </pre></div>
 
 
@@ -386,28 +386,28 @@ my <code>sensors.conf</code> file 1000 times using both the NFA backend and the 
 <div class="highlight"><pre><span></span>$ go install github.com/timtadh/lexmachine/examples/sensors <span class="o">&amp;&amp;</span>
 &gt; cat /etc/sensors*.conf <span class="p">|</span> <span class="o">(</span>/usr/bin/time -v sensors --dfa <span class="o">)</span>
         Command being timed: <span class="s2">&quot;sensors --dfa&quot;</span>
-        User <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: 2.01
-        System <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: 0.00
-        Percent of CPU this job got: 104%
-        Elapsed <span class="o">(</span>wall clock<span class="o">)</span> <span class="nb">time</span> <span class="o">(</span>h:mm:ss or m:ss<span class="o">)</span>: 0:01.93
-        Average shared text size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Average unshared data size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Average stack size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Average total size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Maximum resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: 7680
-        Average resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: 0
-        Major <span class="o">(</span>requiring I/O<span class="o">)</span> page faults: 0
-        Minor <span class="o">(</span>reclaiming a frame<span class="o">)</span> page faults: 2172
-        Voluntary context switches: 2231
-        Involuntary context switches: 359
-        Swaps: 0
-        File system inputs: 0
-        File system outputs: 0
-        Socket messages sent: 0
-        Socket messages received: 0
-        Signals delivered: 0
-        Page size <span class="o">(</span>bytes<span class="o">)</span>: 4096
-        Exit status: 0
+        User <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: <span class="m">2</span>.01
+        System <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: <span class="m">0</span>.00
+        Percent of CPU this job got: <span class="m">104</span>%
+        Elapsed <span class="o">(</span>wall clock<span class="o">)</span> <span class="nb">time</span> <span class="o">(</span>h:mm:ss or m:ss<span class="o">)</span>: <span class="m">0</span>:01.93
+        Average shared text size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Average unshared data size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Average stack size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Average total size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Maximum resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">7680</span>
+        Average resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
+        Major <span class="o">(</span>requiring I/O<span class="o">)</span> page faults: <span class="m">0</span>
+        Minor <span class="o">(</span>reclaiming a frame<span class="o">)</span> page faults: <span class="m">2172</span>
+        Voluntary context switches: <span class="m">2231</span>
+        Involuntary context switches: <span class="m">359</span>
+        Swaps: <span class="m">0</span>
+        File system inputs: <span class="m">0</span>
+        File system outputs: <span class="m">0</span>
+        Socket messages sent: <span class="m">0</span>
+        Socket messages received: <span class="m">0</span>
+        Signals delivered: <span class="m">0</span>
+        Page size <span class="o">(</span>bytes<span class="o">)</span>: <span class="m">4096</span>
+        Exit status: <span class="m">0</span>
 </pre></div>
 
 

@@ -67,7 +67,7 @@
 <br/> <time datetime="2011-05-23T00:00:00-04:00">Mon 23 May 2011</time></div>        </div>
       </header>
       <div class="post-content"> 
-        <p>If you are a pip<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> and virtualenv user you already know how easy it is
+        <p>If you are a pip<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup> and virtualenv user you already know how easy it is
 to install python packages. Unlike the bad old days when I started
 programming in Python, 9 years ago, it is now easy to add, remove and
 manage python modules. In fact we can leverage pip to create an <code>update</code>
@@ -99,7 +99,7 @@ including tracking the master branch.</p>
 <p>Use Pip and the <code>-e</code> option plus a base URL to automatically update your
 software. eg. Have you software run pip for the user.</p>
 <p>example command:</p>
-<div class="highlight"><pre><span></span><span class="x">pip install --upgrade --src=&quot;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.src&quot; -e git+&lt;URL&gt;@&lt;REV&gt;</span><span class="cp">#</span><span class="nf">egg</span><span class="x">=PACKAGE_NAME</span>
+<div class="highlight"><pre><span></span>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+&lt;URL&gt;@&lt;REV&gt;#egg=PACKAGE_NAME
 </pre></div>
 
 
@@ -129,18 +129,18 @@ version.</p>
 <h4>Pip Gotcha</h4>
 <p>When checking out branches using pip you have to supply
 <code>origin/branchname</code> ex:</p>
-<div class="highlight"><pre><span></span><span class="x">pip install --upgrade --src=&quot;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.src&quot; -e git+https://github.com/user/repo.git@origin/branch</span><span class="cp">#</span><span class="nf">egg</span><span class="x">=PACKAGE_NAME</span>
+<div class="highlight"><pre><span></span>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@origin/branch#egg=PACKAGE_NAME
 </pre></div>
 
 
 <p>While when checking out a commit you should not supply origin</p>
-<div class="highlight"><pre><span></span><span class="x">pip install --upgrade --src=&quot;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.src&quot; -e git+https://github.com/user/repo.git@COMMIT_ID</span><span class="cp">#</span><span class="nf">egg</span><span class="x">=PACKAGE_NAME</span>
+<div class="highlight"><pre><span></span>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@COMMIT_ID#egg=PACKAGE_NAME
 </pre></div>
 
 
 <p>Why does pip work like this? Because of the commands it executes. For
 the command:</p>
-<div class="highlight"><pre><span></span><span class="x">pip install --upgrade --src=&quot;</span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.src&quot; -e git+https://github.com/user/repo.git@&lt;VERSION&gt;</span><span class="cp">#</span><span class="nf">egg</span><span class="x">=PACKAGE_NAME</span>
+<div class="highlight"><pre><span></span>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@&lt;VERSION&gt;#egg=PACKAGE_NAME
 </pre></div>
 
 
@@ -207,10 +207,10 @@ to add.</p>
 
 
 <div class="footnote">
-<hr />
+<hr>
 <ol>
-<li id="fn:1">
-<p><a href="http://www.pip-installer.org/en/latest/index.html">http://www.pip-installer.org/en/latest/index.html</a> "A Python package installer."&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn-1">
+<p><a href="http://www.pip-installer.org/en/latest/index.html">http://www.pip-installer.org/en/latest/index.html</a> "A Python package installer."&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

@@ -102,7 +102,7 @@ transform strings into numbers (which correspond to buckets in an
 array). Good hash functions have wide variance in hashing strings and
 will not hash a similar string or a sub string to the same bucket.</p>
 <h2>Introducing the Trie</h2>
-<p><img alt="Example Binary Search Trie" src="/images/Trie1.png" /></p>
+<p><img alt="Example Binary Search Trie" src="/images/Trie1.png"></p>
 <p>Figure 1. <strong>An Example Binary Search Trie</strong></p>
 <p>In general a Trie is a special for of a tree. However, instead of
 comparing entire key at each node during traversal, it only compares
@@ -129,7 +129,7 @@ trie for a set of keys of cardinality greater than one is an internal
 node with left link referring to the trie for the keys whose initial bit
 is 0 and right link referring to the trie for the keys whose initial bit
 is 1, with the leading bit considered to be removed for the purpose of
-constructing the subtrees."<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup></p>
+constructing the subtrees."<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup></p>
 <p>A search using this structure is directed by the strings in the
 database. However, since only one bit is considered at a time in the
 search for a k-bit string the search will take in the worst case k bit
@@ -140,11 +140,11 @@ that modern processors typically work more efficiently when accessing
 bytes or words. Thus, a more efficient structure might consider multiple
 bits at once.</p>
 <h2>Multi-way Tries</h2>
-<p><img alt="Example R-Way Trie" src="/images/Trie2.png" /></p>
+<p><img alt="Example R-Way Trie" src="/images/Trie2.png"></p>
 <p>Figure 2. <strong>An Example R-Way Trie</strong></p>
 <p>If one considers multiple bits at once one has to increase the fanout
 (number of children per node) of the tree. Consider figure 2, in which
-each node has a fanout of 26.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup> While useful if every
+each node has a fanout of 26.<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup> While useful if every
 node has 26 children, the space to store the pointers becomes wasteful
 for real data. However, despite the wasted space in comparison to the
 binary version, searches on the R-Way Trie will perform faster than on
@@ -161,7 +161,7 @@ work either because hash tables are slower than an array access and if
 the hash table becomes overly full it may actually use more space than
 the array. Thus, a different structure is needed.</p>
 <h2>Ternary Search Tries</h2>
-<p><img alt="Example Ternary Search Trie" src="/images/TST1.png" /></p>
+<p><img alt="Example Ternary Search Trie" src="/images/TST1.png"></p>
 <p>Figure 3. <strong>An Example Ternary Search Trie</strong> with strings [abc, abs,
 awe, and].</p>
 <p>The Ternary Search Trie helps avoid the unnecessary space needed by a
@@ -176,7 +176,7 @@ character.</p>
 <p>While a Multi-way Trie has about R*N/log~2~(R) pointers, a Ternary
 Search Trie has R + c*N pointers where c is a small constant, perhaps
 3. Consider the graph of their performance:</p>
-<p><img alt="Multi-way Trie vs. Ternary Search Trie" src="/images/Multiway_vs_Trie.gif" /></p>
+<p><img alt="Multi-way Trie vs. Ternary Search Trie" src="/images/Multiway_vs_Trie.gif"></p>
 <p>Figure 4. <strong>Links in a Multi-way Trie vs. a Ternary Search Trie</strong></p>
 <p>When R is small, 2, 3, 4 Multi-way Tries and Ternary Tries have similar
 a similar number of pointers, but a low branching factor destroys the
@@ -191,7 +191,7 @@ may need to traverse up to 3 times that many links in the worst case.
 However, this pathological case is rare. In the average case the
 situation can be made much better through a few small improvements to
 the basic structure.</p>
-<p><img alt="An Improved Ternary Search Trie" src="/images/TST2.png" /></p>
+<p><img alt="An Improved Ternary Search Trie" src="/images/TST2.png"></p>
 <p>Figure 5. <strong>An Improved Ternary Search Trie</strong>.</p>
 <p>The first improvement, illustrated below in Figure 5, involves
 collapsing the leaf nodes. Instead of allowing long chains of nodes at
@@ -203,7 +203,7 @@ is an R-Way node like in the Multi-way Search Trie. The rest of the tree
 is a Ternary Search Trie with the leaf nodes collapsed. In practice
 these improvements result in an enormous speedup. The theory also
 supports the practice; according to Sedgewick, these improvements cut
-the number of comparisons needed in half.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup></p>
+the number of comparisons needed in half.<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup></p>
 <p>There is one final improvement to consider not shown the above figure.
 Similar to the first improvement, it involves collapsing nodes, but
 instead of collapsing leaf nodes, internal nodes are collapsed. This
@@ -221,16 +221,16 @@ in
 my <a href="http://hackthology.com/data-structures">data-structures</a> repository. I also
 wrote a <a href="https://github.com/timtadh/tst">python implementation</a>.</p>
 <div class="footnote">
-<hr />
+<hr>
 <ol>
-<li id="fn:1">
-<p>Sedgewick R. <em>Algorithms</em>. Third Edition. Definition 15.1.  <a href="http://www.amazon.com/dp/0201314525/"></a><a href="http://www.amazon.com/dp/0201314525/">http://www.amazon.com/dp/0201314525/</a> Hereafter: <em>Sedgewick</em> &#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn-1">
+<p>Sedgewick R. <em>Algorithms</em>. Third Edition. Definition 15.1.  <a href="http://www.amazon.com/dp/0201314525/"></a><a href="http://www.amazon.com/dp/0201314525/">http://www.amazon.com/dp/0201314525/</a> Hereafter: <em>Sedgewick</em>&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li id="fn:2">
-<p>Note: Usually an R-Way or Multi-Way Trie has a fanout equal to the numbers of characters in the character set or the number of bits in a machine word, half word or byte. So in practice a node in an R-Way Trie might have 256 children or perhaps 2\^16 children. As the fanout (the number of children per node) increases the space efficiency of the Trie decreases. However, the search speed increases. A classic time/space trace off.&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<li id="fn-2">
+<p>Note: Usually an R-Way or Multi-Way Trie has a fanout equal to the numbers of characters in the character set or the number of bits in a machine word, half word or byte. So in practice a node in an R-Way Trie might have 256 children or perhaps 2\^16 children. As the fanout (the number of children per node) increases the space efficiency of the Trie decreases. However, the search speed increases. A classic time/space trace off.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
-<li id="fn:3">
-<p><em>Sedgewick</em> Table 15.2 and related text.&#160;<a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<li id="fn-3">
+<p><em>Sedgewick</em> Table 15.2 and related text.&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

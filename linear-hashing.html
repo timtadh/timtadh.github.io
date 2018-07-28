@@ -67,26 +67,26 @@
 <br/> <time datetime="2013-11-13T00:00:00-05:00">Wed 13 November 2013</time></div>        </div>
       </header>
       <div class="post-content"> 
-        <p>Linear Hashing<sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup><sup>,</sup><sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup> is a hash table algorithm suitable for
+        <p>Linear Hashing<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup><sup>,</sup><sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup> is a hash table algorithm suitable for
 secondary storage. It is often used to implement hash indices in databases and
 file systems. Linear Hashing was invented by Witold Litwin in 1980 and has been
 in widespread use since that time. I implemented this file-structure earlier
 this year. You can find <a href="https://github.com/timtadh/file-structures/blob/master/linhash">my implementation on
 github</a>. This
-article is based off a talk<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> I gave at <a href="http://hacsoc.org">CWRU Hacker
+article is based off a talk<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup> I gave at <a href="http://hacsoc.org">CWRU Hacker
 Society</a>.</p>
 <p>I also implemented an in memory version of this algorithm. I give a detailed
 break down of each element of the implementation in the follow up
 <a href="https://hackthology.com/an-in-memory-go-implementation-of-linear-hashing.html">post</a>. You should read that article after you
 have finished this one.</p>
-<p><img alt="Linear Hash" src="/images/lin-hash.png" /></p>
+<p><img alt="Linear Hash" src="/images/lin-hash.png"></p>
 <h1>Hashing, A Refresher</h1>
 <p>In order to understand Linear Hashing one should take a moment to review
-Classical Hashing.<sup id="fnref:4"><a class="footnote-ref" href="#fn:4" rel="footnote">4</a></sup> Briefly, a hash table is a "symbol table" which maps keys
+Classical Hashing.<sup id="fnref-4"><a class="footnote-ref" href="#fn-4">4</a></sup> Briefly, a hash table is a "symbol table" which maps keys
 to values. By "maps" I mean if you give it a key it will give the associated
 value if one exists. Keys must be hashable, which means there must be some way
 to turn them into integers. For a discussion on constructing such hash functions
-I recommend the Hashing Tutorial.<sup id="fnref:4"><a class="footnote-ref" href="#fn:4" rel="footnote">4</a></sup></p>
+I recommend the Hashing Tutorial.<sup id="fnref2-4"><a class="footnote-ref" href="#fn-4">4</a></sup></p>
 <h3>Abstract Data Type</h3>
 <p>If the above description was confusing perhaps this ADT will clarify what I
 mean:</p>
@@ -292,7 +292,7 @@ number of elements is over a certain threshold. The threshold is often set at
 
 
 <h1>Adapting Hash Tables for Secondary Storage</h1>
-<p><a href="/images/cpu-arch.png"><img alt="CPU and Storage" src="/images/cpu-arch.png" /></a>
+<p><a href="/images/cpu-arch.png"><img alt="CPU and Storage" src="/images/cpu-arch.png"></a>
 Figure 1. <strong>CPU and Storage</strong></p>
 <p>Unfortunately, the algorithm presented above does work well when using secondary
 storage mediums like hard disks and solid state drives. There are several
@@ -318,7 +318,7 @@ reasons for this:</p>
 <h2>Back to Hashing</h2>
 <p>The first adjustment to make is to hash into blocks instead of hashing into
 individual array buckets. Each block is then a sorted array of entries.</p>
-<p><a href="/images/block-file.png"><img alt="Block File" src="/images/block-file.png" /></a>
+<p><a href="/images/block-file.png"><img alt="Block File" src="/images/block-file.png"></a>
 Figure 2. <strong>Block File</strong></p>
 <p>We could make a fairly straight forward adaption of our separate chained hash
 table above to this restriction. However, there is a problem: what do we do when
@@ -371,7 +371,7 @@ block in our new table (2*N writes) -- ouch.</p>
 <p>The <strong>key</strong> insight is to not use all the bits of the hash function "H(.)" all
 the time. When the table is small we only use as much of the hash function as
 we need. As the table grows we use more bits. As the table shrinks we use less.</p>
-<p><a href="/images/lin-hash-ex-1.png"><img alt="Linear Hash" src="/images/lin-hash-ex-1.png" /></a>
+<p><a href="/images/lin-hash-ex-1.png"><img alt="Linear Hash" src="/images/lin-hash-ex-1.png"></a>
 Figure 3. <strong>Example</strong></p>
 <p>In the figure, <code>n</code> is the number of blocks, <code>i</code> is the number of bits of the
 hash functions and <code>r</code> is the number of records.</p>
@@ -425,12 +425,12 @@ whether or not an expansion (called a split) is needed.</p>
 
 <p>As I mentioned above, if a bucket is full it should chain out an extra block for
 itself. This can be handled transparently.</p>
-<p><a href="/images/lin-hash-ex-2.png"><img alt="Linear Hash" src="/images/lin-hash-ex-2.png" /></a>
+<p><a href="/images/lin-hash-ex-2.png"><img alt="Linear Hash" src="/images/lin-hash-ex-2.png"></a>
 Figure 4. <strong>Chaining Example</strong></p>
 <h4>Splitting</h4>
 <p>The split mechanism is clever bit of the linear hash algorithm. When the table
 is too full another block is added to the table:</p>
-<p><a href="/images/lin-hash-ex-3.png"><img alt="Linear Hash" src="/images/lin-hash-ex-3.png" /></a>
+<p><a href="/images/lin-hash-ex-3.png"><img alt="Linear Hash" src="/images/lin-hash-ex-3.png"></a>
 Figure 5. <strong>Split Example Part 1</strong></p>
 <p>Note that the bucket we added in the example was </p>
 <div class="highlight"><pre><span></span>1 a_i == 1 0 == a_1 a_2
@@ -440,7 +440,7 @@ Figure 5. <strong>Split Example Part 1</strong></p>
 <p>There are some keys in the old bucket <code>0</code> which is now called <code>00</code> which
 actually belong to bucket <code>10</code>. So in order to make the addition of the new
 bucket correct we need to split bucket <code>00</code>.</p>
-<p><a href="/images/lin-hash-ex-4.png"><img alt="Linear Hash" src="/images/lin-hash-ex-4.png" /></a>
+<p><a href="/images/lin-hash-ex-4.png"><img alt="Linear Hash" src="/images/lin-hash-ex-4.png"></a>
 Figure 5. <strong>Split Example Part 2</strong></p>
 <p>In general if we add</p>
 <div class="highlight"><pre><span></span>1 a_2 a_3 ... a_i
@@ -452,7 +452,7 @@ Figure 5. <strong>Split Example Part 2</strong></p>
 </pre></div>
 
 
-<p>In code<sup id="fnref:5"><a class="footnote-ref" href="#fn:5" rel="footnote">5</a></sup></p>
+<p>In code<sup id="fnref-5"><a class="footnote-ref" href="#fn-5">5</a></sup></p>
 <div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="nx">LinearHash</span><span class="p">)</span> <span class="nx">split</span><span class="p">()</span> <span class="kt">error</span> <span class="p">{</span>
     <span class="nx">bkt_idx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">n</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
     <span class="nx">bkt_a</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">get_bucket</span><span class="p">(</span><span class="nx">bkt_idx</span><span class="p">)</span>
@@ -484,38 +484,38 @@ Garcia-Molina book and taking a look at the original paper. You can also take a
 look at <a href="https://github.com/timtadh/file-structures/blob/master/linhash">my implementation</a> or my other
 implementation, an <a href="https://hackthology.com/an-in-memory-go-implementation-of-linear-hashing.html">in memory version</a>.</p>
 <div class="footnote">
-<hr />
+<hr>
 <ol>
-<li id="fn:1">
+<li id="fn-1">
 <p>Henderson, T. A. D. (2013)
 <a href="https://hackthology.com/pdfs/2013-11-13-linear-hashing-lecture.pdf">Linear Virtual Hashing</a>.
-CWRU Hacker Society. Lecture Notes. November, 2013.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+CWRU Hacker Society. Lecture Notes. November, 2013.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li id="fn:2">
+<li id="fn-2">
 <p>Litwin, W. (1980).
 <a href="https://hackthology.com/pdfs/Litwin-1980-Linear_Hashing.pdf">Linear hashing: a new tool for file and table addressing</a>. In Proceedings of the sixth
 international conference on Very Large Data Bases - Volume 6 (pp.  212–223).
 VLDB Endowment. Retrieved from
-<a href="http://dl.acm.org/citation.cfm?id=1286887.1286911">http://dl.acm.org/citation.cfm?id=1286887.1286911</a>&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<a href="http://dl.acm.org/citation.cfm?id=1286887.1286911">http://dl.acm.org/citation.cfm?id=1286887.1286911</a>&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
-<li id="fn:3">
+<li id="fn-3">
 <p>Garcia-Molina, H., Ullman J. D., and Widom J. (2002)
 <a href="http://www.worldcat.org/title/database-systems-the-complete-book/oclc/47915796">Database Systems: The Complete Book</a>.
 Prentice Hall. Upper Saddle River, New Jersey. ISBN 0-13-031995-3. Section
-13.4.7 "Linear Hash Tables"&#160;<a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+13.4.7 "Linear Hash Tables"&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
-<li id="fn:4">
+<li id="fn-4">
 <p>Shaffer, C. A. (2007)
 <a href="http://research.cs.vt.edu/AVresearch/hashing/">Hashing Tutorial</a>
-Virginia Tech Algorithm Research Group.&#160;<a class="footnote-backref" href="#fnref:4" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+Virginia Tech Algorithm Research Group.&#160;<a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
-<li id="fn:5">
+<li id="fn-5">
 <p>Ok, I am not that mean here is how to do the split_into in this file:
-<a href="https://github.com/timtadh/file-structures/blob/master/linhash/bucket/bucket.go">https://github.com/timtadh/file-structures/blob/master/linhash/bucket/bucket.go</a>&#160;<a class="footnote-backref" href="#fnref:5" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<a href="https://github.com/timtadh/file-structures/blob/master/linhash/bucket/bucket.go">https://github.com/timtadh/file-structures/blob/master/linhash/bucket/bucket.go</a>&#160;<a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
-<li id="fn:6">
+<li id="fn-6">
 <p>Henderson, T. A. D. (2013) <a href="https://github.com/timtadh/file-structures/blob/master/linhash">Linear Hash
-Implementation</a>&#160;<a class="footnote-backref" href="#fnref:6" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+Implementation</a>&#160;<a class="footnote-backref" href="#fnref-6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

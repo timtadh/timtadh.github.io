@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/mandarin.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2016-05-20T00:00:00-04:00</updated><entry><title>Golang中的面向对象继承</title><link href="https://hackthology.com/golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html" rel="alternate"></link><updated>2016-05-20T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-05-20:golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html</id><summary type="html">&lt;p&gt;Golang的面向对象机制与Smalltalk或者Java等传统面向对象的编程语言不同。传统面向对象编程语言的一个重要特性是继承机制。因为继承机制支持在关联对象间进行代码复用和数据共享。继承机制曾在代码复用和数据共享的设计模式占据主导地位，但是目前组合这一古老的技术重新焕发了活力。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology - Mandarin</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/mandarin.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2016-05-20T00:00:00-04:00</updated><entry><title>Golang中的面向对象继承</title><link href="https://hackthology.com/golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html" rel="alternate"></link><published>2016-05-20T00:00:00-04:00</published><updated>2016-05-20T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2016-05-20:/golangzhong-de-mian-xiang-dui-xiang-ji-cheng.html</id><summary type="html">&lt;p&gt;Golang的面向对象机制与Smalltalk或者Java等传统面向对象的编程语言不同。传统面向对象编程语言的一个重要特性是继承机制。因为继承机制支持在关联对象间进行代码复用和数据共享。继承机制曾在代码复用和数据共享的设计模式占据主导地位，但是目前组合这一古老的技术重新焕发了活力。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本篇文章转自Tim Henderson的 "Object Oriented Inheritance in Go"， 原文地址是 &lt;a href="http://hackthology.com/object-oriented-inheritance-in-go.html"&gt;http://hackthology.com/object-oriented-inheritance-in-go.html&lt;/a&gt; 。非常感谢李浩和骏奇对于这篇文章的翻译。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在我们探讨如何在Go中实现继承机制之前（Golong中的继承机制和其他语言(Java)的继承机制有区别），我们先看一下Java中如何实现继承机制。&lt;/p&gt;
+&lt;h3&gt;继承与组合&lt;/h3&gt;
+&lt;p&gt;让我们先看一下我最喜欢的话题之一：编译器！编译器由管道转换构成，该管道读取text文本并将其转化为机器代码、汇编语言、字节码或者其他的编程语言。管道首先会使用语法分析器对目标变成语言进行语法分析。一般情况下文本会被分解为不同的组成部分，例如：关键词、标识符、标点和数字等等。每个组成部分都会被相应的数据类型标记。例如下面这个Java数据类型：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Main&lt;/span&gt; &lt;span class="o"&gt;{}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这些组成部分（可以称作标记）如下所示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&amp;lt;public keyword&amp;gt;, &amp;quot;public&amp;quot;
+&amp;lt;class keyword …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;Golang的面向对象机制与Smalltalk或者Java等传统面向对象的编程语言不同。传统面向对象编程语言的一个重要特性是继承机制。因为继承机制支持在关联对象间进行代码复用和数据共享。继承机制曾在代码复用和数据共享的设计模式占据主导地位，但是目前组合这一古老的技术重新焕发了活力。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;本篇文章转自Tim Henderson的 "Object Oriented Inheritance in Go"， 原文地址是 &lt;a href="http://hackthology.com/object-oriented-inheritance-in-go.html"&gt;http://hackthology.com/object-oriented-inheritance-in-go.html&lt;/a&gt; 。非常感谢李浩和骏奇对于这篇文章的翻译。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -556,4 +569,4 @@ my name is spot and I am a pointer
 &lt;p&gt;所以接口类型可以用来实现子类化的机制。但是如果你想正确的实现方法重载，需要了解以上的技巧。&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;事实上，虽然这不是Go的主打特性，但是Go语言在结构体嵌入结构体或者接口方面的能力确实为实际工作增加了很大的灵活性。Go的这些特性为我们解决实际问题提供了新的解决方案。但是相较于Java等语言，由于Go缺少子类化和方法重载支持还有存在一些局限性。Go含有一项Java没有的特性--接口嵌入。关于接口嵌入的细节请参考Golang的官方文档的Embedding部分。&lt;/p&gt;
-&lt;p&gt;非常感谢echlebek, Alexander Staubo, spriggan3和breerly对这篇文章提供的支持！&lt;/p&gt;</summary></entry></feed>
+&lt;p&gt;非常感谢echlebek, Alexander Staubo, spriggan3和breerly对这篇文章提供的支持！&lt;/p&gt;</content></entry></feed>

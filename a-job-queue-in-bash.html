@@ -112,21 +112,21 @@ cleanup<span class="o">()</span> <span class="o">{</span>
   rm <span class="nv">$FIFO_LOCK</span>
   rm <span class="nv">$START_LOCK</span>
 <span class="o">}</span>
-<span class="nb">trap</span> cleanup 0
+<span class="nb">trap</span> cleanup <span class="m">0</span>
 
 <span class="c1">## This is the worker to read from the queue.</span>
 work<span class="o">()</span> <span class="o">{</span>
   <span class="nv">ID</span><span class="o">=</span><span class="nv">$1</span>
   <span class="c1">## first open the fifo and locks for reading.</span>
-  <span class="nb">exec</span> 3&lt;<span class="nv">$FIFO</span>
-  <span class="nb">exec</span> 4&lt;<span class="nv">$FIFO_LOCK</span>
-  <span class="nb">exec</span> 5&lt;<span class="nv">$START_LOCK</span>
+  <span class="nb">exec</span> <span class="m">3</span>&lt;<span class="nv">$FIFO</span>
+  <span class="nb">exec</span> <span class="m">4</span>&lt;<span class="nv">$FIFO_LOCK</span>
+  <span class="nb">exec</span> <span class="m">5</span>&lt;<span class="nv">$START_LOCK</span>
 
   <span class="c1">## signal the worker has started.</span>
   flock <span class="m">5</span>                 <span class="c1"># obtain the start lock</span>
   <span class="nb">echo</span> <span class="nv">$ID</span> &gt;&gt; <span class="nv">$START</span>      <span class="c1"># put my worker ID in the start file</span>
   flock -u <span class="m">5</span>              <span class="c1"># release the start lock</span>
-  <span class="nb">exec</span> 5&lt;<span class="p">&amp;</span>-               <span class="c1"># close the start lock file</span>
+  <span class="nb">exec</span> <span class="m">5</span>&lt;<span class="p">&amp;</span>-               <span class="c1"># close the start lock file</span>
   <span class="nb">echo</span> worker <span class="nv">$ID</span> started
 
   <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
@@ -150,54 +150,54 @@ work<span class="o">()</span> <span class="o">{</span>
     <span class="k">fi</span>
   <span class="k">done</span>
   <span class="c1"># clean up the fd(s)</span>
-  <span class="nb">exec</span> 3&lt;<span class="p">&amp;</span>-
-  <span class="nb">exec</span> 4&lt;<span class="p">&amp;</span>-
+  <span class="nb">exec</span> <span class="m">3</span>&lt;<span class="p">&amp;</span>-
+  <span class="nb">exec</span> <span class="m">4</span>&lt;<span class="p">&amp;</span>-
   <span class="nb">echo</span> <span class="nv">$ID</span> <span class="s2">&quot;done working&quot;</span>
 <span class="o">}</span>
 
 <span class="c1">## Start the workers.</span>
-<span class="nv">WORKERS</span><span class="o">=</span>4
-<span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span>1<span class="p">;</span>i&lt;<span class="o">=</span><span class="nv">$WORKERS</span><span class="p">;</span>i++<span class="o">))</span><span class="p">;</span> <span class="k">do</span>
+<span class="nv">WORKERS</span><span class="o">=</span><span class="m">4</span>
+<span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span><span class="m">1</span><span class="p">;</span>i&lt;<span class="o">=</span><span class="nv">$WORKERS</span><span class="p">;</span>i++<span class="o">))</span><span class="p">;</span> <span class="k">do</span>
   <span class="nb">echo</span> will start <span class="nv">$i</span>
   work <span class="nv">$i</span> <span class="p">&amp;</span>
 <span class="k">done</span>
 
 <span class="c1">## Open the fifo for writing.</span>
-<span class="nb">exec</span> 3&gt;<span class="nv">$FIFO</span>
+<span class="nb">exec</span> <span class="m">3</span>&gt;<span class="nv">$FIFO</span>
 <span class="c1">## Open the start lock for reading</span>
-<span class="nb">exec</span> 4&lt;<span class="nv">$START_LOCK</span>
+<span class="nb">exec</span> <span class="m">4</span>&lt;<span class="nv">$START_LOCK</span>
 
 <span class="c1">## Wait for the workers to start</span>
 <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
-  flock 4
-  <span class="nv">started</span><span class="o">=</span><span class="k">$(</span>wc -l <span class="nv">$START</span> <span class="p">|</span> cut -d <span class="se">\ </span> -f 1<span class="k">)</span>
-  flock -u 4
+  flock <span class="m">4</span>
+  <span class="nv">started</span><span class="o">=</span><span class="k">$(</span>wc -l <span class="nv">$START</span> <span class="p">|</span> cut -d <span class="se">\ </span> -f <span class="m">1</span><span class="k">)</span>
+  flock -u <span class="m">4</span>
   <span class="k">if</span> <span class="o">[[</span> <span class="nv">$started</span> -eq <span class="nv">$WORKERS</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">break</span>
   <span class="k">else</span>
     <span class="nb">echo</span> waiting, started <span class="nv">$started</span> of <span class="nv">$WORKERS</span>
   <span class="k">fi</span>
 <span class="k">done</span>
-<span class="nb">exec</span> 4&lt;<span class="p">&amp;</span>-
+<span class="nb">exec</span> <span class="m">4</span>&lt;<span class="p">&amp;</span>-
 
 <span class="c1">## utility function to send the jobs to the workers</span>
 send<span class="o">()</span> <span class="o">{</span>
   <span class="nv">work_id</span><span class="o">=</span><span class="nv">$1</span>
   <span class="nv">work_item</span><span class="o">=</span><span class="nv">$1</span>
   <span class="nb">echo</span> sending <span class="nv">$work_id</span> <span class="nv">$work_item</span>
-  <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span> 1&gt;<span class="p">&amp;</span><span class="m">3</span> <span class="c1">## the fifo is fd 3</span>
+  <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span> <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">3</span> <span class="c1">## the fifo is fd 3</span>
 <span class="o">}</span>
 
 <span class="c1">## Produce the jobs to run.</span>
-<span class="nv">i</span><span class="o">=</span>0
+<span class="nv">i</span><span class="o">=</span><span class="m">0</span>
 <span class="k">for</span> item in <span class="o">{</span>dataset-A,dataset-B,dataset-C,dataset-D<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
   send <span class="nv">$i</span> <span class="nv">$data</span>
   <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
 <span class="k">done</span>
 <span class="c1">## close the filo</span>
-<span class="nb">exec</span> 3&lt;<span class="p">&amp;</span>-
+<span class="nb">exec</span> <span class="m">3</span>&lt;<span class="p">&amp;</span>-
 <span class="c1">## disable the cleanup trap</span>
-<span class="nb">trap</span> <span class="s1">&#39;&#39;</span> 0
+<span class="nb">trap</span> <span class="s1">&#39;&#39;</span> <span class="m">0</span>
 <span class="c1">## It is safe to delete the files because the workers</span>
 <span class="c1">## already opened them. Thus, only the names are going away</span>
 <span class="c1">## the actual files will stay there until the workers</span>
