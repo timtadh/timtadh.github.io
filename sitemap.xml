@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://hackthology.com/</loc>
-<lastmod>2018-07-27T17:49:06-00:00</lastmod>
+<lastmod>2018-11-05T10:54:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -34,6 +34,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://hackthology.com/pages/teaching.html</loc>
 <lastmod>2014-09-26T00:00:00-04:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://hackthology.com/godel-incompleteness-theorem-does-have-philosophical-implications.html</loc>
+<lastmod>2018-11-05T00:00:00-05:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -320,7 +327,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://hackthology.com/category/blog.html</loc>
-<lastmod>2018-07-27T00:00:00-04:56</lastmod>
+<lastmod>2018-11-05T00:00:00-04:56</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -348,7 +355,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://hackthology.com/author/tim-henderson.html</loc>
-<lastmod>2018-07-27T00:00:00-04:56</lastmod>
+<lastmod>2018-11-05T00:00:00-04:56</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

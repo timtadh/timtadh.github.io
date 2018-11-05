@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> Gödel Incompleteness Theorem Does Have Philosophical Implications </title>
+    <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="https://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="https://hackthology.com/feeds/rss.xml" /> 
+    <link rel="canonical" href="https://hackthology.com/godel-incompleteness-theorem-does-have-philosophical-implications.html"/>
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <h3>
+          The Discourses of Tim Henderson
+        </h3>
+        <div class="top-nav">
+<ul>
+    <li><a href="https://hackthology.com/articles.html">articles</a></li>
+    <li><a href="https://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="https://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="https://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="https://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="https://hackthology.com/godel-incompleteness-theorem-does-have-philosophical-implications.html"
+             title="perm link Gödel Incompleteness Theorem Does Have Philosophical Implications">
+             Gödel Incompleteness Theorem Does Have Philosophical Implications
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by &nbsp;Tim Henderson
+<br/> <time datetime="2018-11-05T00:00:00-05:00">Mon 05 November 2018</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>In 1931 Kurt Gödel published a paper in German that has continued to
+reverberate through the scientific community:</p>
+<blockquote>
+<p>K. Gödel, "On Formally Undecidable Propositions of Principia Mathematica and
+Related Systems," Monatshefte für Math. und Phys., vol. 38, pp. 173–198, Jan.
+1931.</p>
+<p>Translation: <a href="https://doi.org/10.1111/j.1468-0149.1963.tb00774.x">doi</a>
+<a href="http://hope.simons-rock.edu/~pshields/cs/cmpt300/easiergoedel.pdf">pdf</a></p>
+</blockquote>
+<p>This paper sets clear limits on what is "rationally computable" and what that
+means. There have been those that argue this work has little to no philosophical
+significance. I believe it does have philosophical significance as I explain at
+the end.</p>
+<h2>First some definitions.</h2>
+<p>By rational I mean reasoning (that is thinking) through the means of logical
+inference without outside facts or "intuition." Such a manner of thought would
+have been foreign to most in 1931 (except those pursuing <a href="https://en.wikipedia.org/wiki/Principia_Mathematica"><em>formal</em>
+mathematics</a>). Today it has
+become explicit through our interaction with computers -- who can only reason
+rationally.*</p>
+<p>By computable I mean a question (such as does 2 + 2 = 4?) can be provably
+answered in a finite number of discrete steps in the logical system of choice.
+By logical system of choice I mean the allowed methods of reasoning and the set
+of base "facts" (called axioms). For example:</p>
+<blockquote>
+<p>Facts:</p>
+<ol>
+<li>0 == 0</li>
+<li>0 + 1 != 0</li>
+<li>x + 1 == y + 1 ---&gt; x == y</li>
+<li>x + (y + 1) == (x + y) + 1</li>
+<li>0 + x == x</li>
+</ol>
+<p>allowed deductions:</p>
+<p>if A is true and A implies B then B is true</p>
+<p>2 + 2 == 4?</p>
+<ul>
+<li>2 ==&gt; 0 + 1 + 1 ("de-sugaring the natural number")</li>
+<li>4 ==&gt; 0 + 1 + 1 + 1 + 1 ("de-sugaring the natural number")</li>
+<li>(0 + 1 + 1) + (0 + 1 + 1) == (0 + 1 + 1 + 1 + 1) ("restatement of lemma")</li>
+<li>((0 + 1 + 1) + (0 + 1)) + 1 (rule 4)</li>
+<li>((0 + 1 + 1) + (0)) + 1 + 1 (rule 4)</li>
+<li>(0 + 1 + 1) + 1 + 1 (rule 5)</li>
+<li>(0 + 1) + 1 + 1 + 1 (rule 4)</li>
+<li>0 + 1 + 1 + 1 + 1 (rule 4)</li>
+<li>(0 + 1 + 1 + 1 + 1) == (0 + 1 + 1 + 1 + 1) ("restatement of lemma using previous step")</li>
+<li>(0 + 1 + 1 + 1) == (0 + 1 + 1 + 1) (rule 3)</li>
+<li>(0 + 1 + 1) == (0 + 1 + 1) (rule 3)</li>
+<li>(0 + 1) == (0 + 1) (rule 3)</li>
+<li>0 == 0 (rule 3)</li>
+<li>true (rule 1)</li>
+</ul>
+</blockquote>
+<h2>What did Gödel prove?</h2>
+<p>In laymen's terms, Gödel proved that any logical system with finite "axioms"
+(read: starting facts) could not be both "complete" and "consistent." By
+complete logicians mean the system can answer any question. By consistent
+logicians mean the system never gives two answers (both true and false) to a
+single question.**</p>
+<h2>Why does this matter?</h2>
+<p>It matters because, like <a href="https://en.wikipedia.org/wiki/Halting_problem">the Halting
+Theorem</a>, the Incompleteness
+Theorem shows there are computations (answers to logical questions) which cannot
+be decided by mechanistic means -- that is they are <em>uncomputable</em>.</p>
+<p>Some say that these results are both ordinary and without profound implications.
+For instance consider this comment from <a href="https://blogs.scientificamerican.com/cross-check/philosophy-has-made-plenty-of-progress/">an interview with Tim
+Maudlin</a>:</p>
+<blockquote>
+<blockquote>
+<p>Does Gödel's incompleteness theorem have implications beyond mathematics? Is
+it a worm in the apple of rationality? </p>
+</blockquote>
+<p>No. Absolutely no one should have ever been surprised that mathematical truth
+cannot be equated with theoremhood in some finite axiomatic system. An
+infinitude of mathematical truths are uninteresting trivia, with no obvious
+route to being proved. Example: let's say that the decimal expressions of the
+square root of 17 and pi to the 27th power “match” just in case either they
+have the same digit in the tenths place, or the same two digits in the next
+two places, or the same three digits in the next three places, etc. If we
+treat these decimal expressions as essentially random sequences of digits,
+then the a priori chance that these two numbers match is one out of nine.</p>
+<p>Now: how do we tell if they match or not? Well, we can just calculate out the
+sequences of digits and check. And if they match we will eventually find the
+match and prove that they match. But what if, as is likely, they don't match?
+No amount of just grinding out the digits and checking will ever prove it:
+there are always more digits to check. And I see zero prospect of any other
+way to prove that they don't match. So if they don't match, that is an
+unprovable mathematical fact. It is also a very, very, very uninteresting one.
+All Gödel did was find a clever way to construct a provably unprovable
+mathematical fact, given any consistent and finite set of axioms to work with.
+The work is clever but in no way profound. It should have come as no surprise
+at all.</p>
+</blockquote>
+<p>However, it is (particularly in the historical context) profound to be able to
+<em>prove</em> that a particular question has no <em>computable</em> answer. The answer may be
+out there but if we (humans) discover it will be by luck not will. There are
+limits and important ones about what we as humans and machines can and cannot
+prove and know. From a philosophical point of view this argues for the concept
+of <em>mystery</em>. That there are and will be those areas of truth for which we can
+grasp but never hold, for we reach for but do not touch. Thus, we must strive on
+in our collective quest to know who and what we. All the while <em>knowing</em> there are
+parts of the world and ourselves for which there is no final a HA!</p>
+<hr>
+<p>* - Of course those who work on stochastic algorithms and machine learning may
+quibble on this point. However, I believe even those algorithms and systems --
+and indeed our brains at a fundamental level -- reason rationally. Indeed this
+is <em>why</em> Gödel's theorem is of such interest.</p>
+<p>** - This and this article necessarily simplifies and collapses much of the
+nuance in the work. For instance there are actually 2 incompleteness theorems
+that work in concert with each other. I am interested in this article with the
+effect of the theorems not in giving a rigorous introduction to them.</p>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="https://hackthology.com/articles.html">articles</a></li>
+    <li><a href="https://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="https://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="https://hackthology.com/pages/projects.html">projects</a></li>
+    <li><a href="https://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+        <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20145944-2']);
+          _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); 
+        ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>

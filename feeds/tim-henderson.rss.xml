@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Hackthology - Tim Henderson</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Fri, 27 Jul 2018 00:00:00 -0400</lastBuildDate><item><title>How to Evaluate Statistical Fault Localization</title><link>https://hackthology.com/how-to-evaluate-statistical-fault-localization.html</link><description>&lt;h4&gt;Cite as:&lt;/h4&gt;
+<rss version="2.0"><channel><title>Hackthology - Tim Henderson</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Mon, 05 Nov 2018 00:00:00 -0500</lastBuildDate><item><title>Gödel Incompleteness Theorem Does Have Philosophical Implications</title><link>https://hackthology.com/godel-incompleteness-theorem-does-have-philosophical-implications.html</link><description>&lt;p&gt;In 1931 Kurt Gödel published a paper in German that has continued to
+reverberate through the scientific community:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;K. Gödel, "On Formally Undecidable Propositions of Principia Mathematica and
+Related Systems," Monatshefte für Math. und Phys., vol. 38, pp. 173–198, Jan.
+1931.&lt;/p&gt;
+&lt;p&gt;Translation: &lt;a href="https://doi.org/10.1111/j.1468-0149.1963.tb00774.x"&gt;doi&lt;/a&gt;
+&lt;a href="http://hope.simons-rock.edu/~pshields/cs/cmpt300/easiergoedel.pdf"&gt;pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This paper sets clear limits …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Mon, 05 Nov 2018 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:hackthology.com,2018-11-05:/godel-incompleteness-theorem-does-have-philosophical-implications.html</guid></item><item><title>How to Evaluate Statistical Fault Localization</title><link>https://hackthology.com/how-to-evaluate-statistical-fault-localization.html</link><description>&lt;h4&gt;Cite as:&lt;/h4&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;How To Evaluate Statistical Fault Localization&lt;/em&gt;.

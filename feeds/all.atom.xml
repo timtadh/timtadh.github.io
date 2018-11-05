@@ -1,5 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2018-07-27T00:00:00-04:00</updated><entry><title>How to Evaluate Statistical Fault Localization</title><link href="https://hackthology.com/how-to-evaluate-statistical-fault-localization.html" rel="alternate"></link><published>2018-07-27T00:00:00-04:00</published><updated>2018-07-27T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2018-07-27:/how-to-evaluate-statistical-fault-localization.html</id><summary type="html">&lt;h4&gt;Cite as:&lt;/h4&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2018-11-05T00:00:00-05:00</updated><entry><title>Gödel Incompleteness Theorem Does Have Philosophical Implications</title><link href="https://hackthology.com/godel-incompleteness-theorem-does-have-philosophical-implications.html" rel="alternate"></link><published>2018-11-05T00:00:00-05:00</published><updated>2018-11-05T00:00:00-05:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2018-11-05:/godel-incompleteness-theorem-does-have-philosophical-implications.html</id><summary type="html">&lt;p&gt;In 1931 Kurt Gödel published a paper in German that has continued to
+reverberate through the scientific community:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;K. Gödel, "On Formally Undecidable Propositions of Principia Mathematica and
+Related Systems," Monatshefte für Math. und Phys., vol. 38, pp. 173–198, Jan.
+1931.&lt;/p&gt;
+&lt;p&gt;Translation: &lt;a href="https://doi.org/10.1111/j.1468-0149.1963.tb00774.x"&gt;doi&lt;/a&gt;
+&lt;a href="http://hope.simons-rock.edu/~pshields/cs/cmpt300/easiergoedel.pdf"&gt;pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This paper sets clear limits …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In 1931 Kurt Gödel published a paper in German that has continued to
+reverberate through the scientific community:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;K. Gödel, "On Formally Undecidable Propositions of Principia Mathematica and
+Related Systems," Monatshefte für Math. und Phys., vol. 38, pp. 173–198, Jan.
+1931.&lt;/p&gt;
+&lt;p&gt;Translation: &lt;a href="https://doi.org/10.1111/j.1468-0149.1963.tb00774.x"&gt;doi&lt;/a&gt;
+&lt;a href="http://hope.simons-rock.edu/~pshields/cs/cmpt300/easiergoedel.pdf"&gt;pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This paper sets clear limits on what is "rationally computable" and what that
+means. There have been those that argue this work has little to no philosophical
+significance. I believe it does have philosophical significance as I explain at
+the end.&lt;/p&gt;
+&lt;h2&gt;First some definitions.&lt;/h2&gt;
+&lt;p&gt;By rational I mean reasoning (that is thinking) through the means of logical
+inference without outside facts or "intuition." Such a manner of thought would
+have been foreign to most in 1931 (except those pursuing &lt;a href="https://en.wikipedia.org/wiki/Principia_Mathematica"&gt;&lt;em&gt;formal&lt;/em&gt;
+mathematics&lt;/a&gt;). Today it has
+become explicit through our interaction with computers -- who can only reason
+rationally.*&lt;/p&gt;
+&lt;p&gt;By computable I mean a question (such as does 2 + 2 = 4?) can be provably
+answered in a finite number of discrete steps in the logical system of choice.
+By logical system of choice I mean the allowed methods of reasoning and the set
+of base "facts" (called axioms). For example:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Facts:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;0 == 0&lt;/li&gt;
+&lt;li&gt;0 + 1 != 0&lt;/li&gt;
+&lt;li&gt;x + 1 == y + 1 ---&amp;gt; x == y&lt;/li&gt;
+&lt;li&gt;x + (y + 1) == (x + y) + 1&lt;/li&gt;
+&lt;li&gt;0 + x == x&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;allowed deductions:&lt;/p&gt;
+&lt;p&gt;if A is true and A implies B then B is true&lt;/p&gt;
+&lt;p&gt;2 + 2 == 4?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;2 ==&amp;gt; 0 + 1 + 1 ("de-sugaring the natural number")&lt;/li&gt;
+&lt;li&gt;4 ==&amp;gt; 0 + 1 + 1 + 1 + 1 ("de-sugaring the natural number")&lt;/li&gt;
+&lt;li&gt;(0 + 1 + 1) + (0 + 1 + 1) == (0 + 1 + 1 + 1 + 1) ("restatement of lemma")&lt;/li&gt;
+&lt;li&gt;((0 + 1 + 1) + (0 + 1)) + 1 (rule 4)&lt;/li&gt;
+&lt;li&gt;((0 + 1 + 1) + (0)) + 1 + 1 (rule 4)&lt;/li&gt;
+&lt;li&gt;(0 + 1 + 1) + 1 + 1 (rule 5)&lt;/li&gt;
+&lt;li&gt;(0 + 1) + 1 + 1 + 1 (rule 4)&lt;/li&gt;
+&lt;li&gt;0 + 1 + 1 + 1 + 1 (rule 4)&lt;/li&gt;
+&lt;li&gt;(0 + 1 + 1 + 1 + 1) == (0 + 1 + 1 + 1 + 1) ("restatement of lemma using previous step")&lt;/li&gt;
+&lt;li&gt;(0 + 1 + 1 + 1) == (0 + 1 + 1 + 1) (rule 3)&lt;/li&gt;
+&lt;li&gt;(0 + 1 + 1) == (0 + 1 + 1) (rule 3)&lt;/li&gt;
+&lt;li&gt;(0 + 1) == (0 + 1) (rule 3)&lt;/li&gt;
+&lt;li&gt;0 == 0 (rule 3)&lt;/li&gt;
+&lt;li&gt;true (rule 1)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;What did Gödel prove?&lt;/h2&gt;
+&lt;p&gt;In laymen's terms, Gödel proved that any logical system with finite "axioms"
+(read: starting facts) could not be both "complete" and "consistent." By
+complete logicians mean the system can answer any question. By consistent
+logicians mean the system never gives two answers (both true and false) to a
+single question.**&lt;/p&gt;
+&lt;h2&gt;Why does this matter?&lt;/h2&gt;
+&lt;p&gt;It matters because, like &lt;a href="https://en.wikipedia.org/wiki/Halting_problem"&gt;the Halting
+Theorem&lt;/a&gt;, the Incompleteness
+Theorem shows there are computations (answers to logical questions) which cannot
+be decided by mechanistic means -- that is they are &lt;em&gt;uncomputable&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Some say that these results are both ordinary and without profound implications.
+For instance consider this comment from &lt;a href="https://blogs.scientificamerican.com/cross-check/philosophy-has-made-plenty-of-progress/"&gt;an interview with Tim
+Maudlin&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Does Gödel's incompleteness theorem have implications beyond mathematics? Is
+it a worm in the apple of rationality? &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;No. Absolutely no one should have ever been surprised that mathematical truth
+cannot be equated with theoremhood in some finite axiomatic system. An
+infinitude of mathematical truths are uninteresting trivia, with no obvious
+route to being proved. Example: let's say that the decimal expressions of the
+square root of 17 and pi to the 27th power “match” just in case either they
+have the same digit in the tenths place, or the same two digits in the next
+two places, or the same three digits in the next three places, etc. If we
+treat these decimal expressions as essentially random sequences of digits,
+then the a priori chance that these two numbers match is one out of nine.&lt;/p&gt;
+&lt;p&gt;Now: how do we tell if they match or not? Well, we can just calculate out the
+sequences of digits and check. And if they match we will eventually find the
+match and prove that they match. But what if, as is likely, they don't match?
+No amount of just grinding out the digits and checking will ever prove it:
+there are always more digits to check. And I see zero prospect of any other
+way to prove that they don't match. So if they don't match, that is an
+unprovable mathematical fact. It is also a very, very, very uninteresting one.
+All Gödel did was find a clever way to construct a provably unprovable
+mathematical fact, given any consistent and finite set of axioms to work with.
+The work is clever but in no way profound. It should have come as no surprise
+at all.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;However, it is (particularly in the historical context) profound to be able to
+&lt;em&gt;prove&lt;/em&gt; that a particular question has no &lt;em&gt;computable&lt;/em&gt; answer. The answer may be
+out there but if we (humans) discover it will be by luck not will. There are
+limits and important ones about what we as humans and machines can and cannot
+prove and know. From a philosophical point of view this argues for the concept
+of &lt;em&gt;mystery&lt;/em&gt;. That there are and will be those areas of truth for which we can
+grasp but never hold, for we reach for but do not touch. Thus, we must strive on
+in our collective quest to know who and what we. All the while &lt;em&gt;knowing&lt;/em&gt; there are
+parts of the world and ourselves for which there is no final a HA!&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;* - Of course those who work on stochastic algorithms and machine learning may
+quibble on this point. However, I believe even those algorithms and systems --
+and indeed our brains at a fundamental level -- reason rationally. Indeed this
+is &lt;em&gt;why&lt;/em&gt; Gödel's theorem is of such interest.&lt;/p&gt;
+&lt;p&gt;** - This and this article necessarily simplifies and collapses much of the
+nuance in the work. For instance there are actually 2 incompleteness theorems
+that work in concert with each other. I am interested in this article with the
+effect of the theorems not in giving a rigorous introduction to them.&lt;/p&gt;</content></entry><entry><title>How to Evaluate Statistical Fault Localization</title><link href="https://hackthology.com/how-to-evaluate-statistical-fault-localization.html" rel="alternate"></link><published>2018-07-27T00:00:00-04:00</published><updated>2018-07-27T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2018-07-27:/how-to-evaluate-statistical-fault-localization.html</id><summary type="html">&lt;h4&gt;Cite as:&lt;/h4&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;How To Evaluate Statistical Fault Localization&lt;/em&gt;.
