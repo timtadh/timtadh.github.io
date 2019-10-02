@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>Hackthology - Tim Henderson, Yiğit Küçük, and Andy Podgurski</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Mon, 30 Sep 2019 00:00:00 -0400</lastBuildDate><item><title>Evaluating Automatic Fault Localization Using Markov Processes</title><link>https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
+&lt;em&gt;Evaluating Automatic Fault Localization Using Markov Processes&lt;/em&gt;.  &lt;a href="http://www.ieee-scam.org/2019/"&gt;SCAM 2019&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="https://hackthology.com/pdfs/scam-2019.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;
+Statistical fault localization (SFL) techniques are commonly compared and
+evaluated using a measure known as "Rank Score" and its associated evaluation
+process.  In the latter …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Yiğit Küçük, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</dc:creator><pubDate>Mon, 30 Sep 2019 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2019-09-30:/evaluating-automatic-fault-localization-using-markov-processes.html</guid></item></channel></rss>
