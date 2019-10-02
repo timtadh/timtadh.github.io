@@ -2,17 +2,31 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2019-09-30T00:00:00-04:00</updated><entry><title>Evaluating Automatic Fault Localization Using Markov Processes</title><link href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html" rel="alternate"></link><published>2019-09-30T00:00:00-04:00</published><updated>2019-09-30T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Yiğit Küçük, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-09-30:/evaluating-automatic-fault-localization-using-markov-processes.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
 &lt;em&gt;Evaluating Automatic Fault Localization Using Markov Processes&lt;/em&gt;.  &lt;a href="http://www.ieee-scam.org/2019/"&gt;SCAM 2019&lt;/a&gt;.
 &lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/scam-2019.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/scam-2019-supplement.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
 &lt;a href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;Abstract&lt;/h4&gt;
-&lt;p&gt;
-Statistical fault localization (SFL) techniques are commonly compared and
-evaluated using a measure known as "Rank Score" and its associated evaluation
-process.  In the latter …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
+&lt;h4&gt;Note&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/scam-2019.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Abstract …&lt;/h4&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
 &lt;em&gt;Evaluating Automatic Fault Localization Using Markov Processes&lt;/em&gt;.  &lt;a href="http://www.ieee-scam.org/2019/"&gt;SCAM 2019&lt;/a&gt;.
 &lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/scam-2019.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/scam-2019-supplement.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
 &lt;a href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/scam-2019.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h4&gt;Abstract&lt;/h4&gt;
 &lt;p&gt;
 Statistical fault localization (SFL) techniques are commonly compared and
