@@ -38,11 +38,10 @@ Blog. 2018.  &lt;a href="https://hackthology.com/how-to-evaluate-statistical-fau
 correct you should read the
 &lt;a href="https://hackthology.com/pdfs/how-to-eval-fault-localization.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
 
-&lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;Automatic fault localization is a …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Fri, 27 Jul 2018 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2018-07-27:/how-to-evaluate-statistical-fault-localization.html</guid></item><item><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link>https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</link><description>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I now have a pulished …&lt;/p&gt;&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Fri, 27 Jul 2018 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2018-07-27:/how-to-evaluate-statistical-fault-localization.html</guid></item><item><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link>https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</link><description>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
 
 &lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
 &lt;em&gt;Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow

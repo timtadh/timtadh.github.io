@@ -134,11 +134,10 @@ Blog. 2018.  &lt;a href="https://hackthology.com/how-to-evaluate-statistical-fau
 correct you should read the
 &lt;a href="https://hackthology.com/pdfs/how-to-eval-fault-localization.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
 
-&lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;Automatic fault localization is a …&lt;/p&gt;</summary><content type="html">&lt;h4&gt;Cite as:&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I now have a pulished …&lt;/p&gt;&lt;/blockquote&gt;</summary><content type="html">&lt;h4&gt;Cite as:&lt;/h4&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;How To Evaluate Statistical Fault Localization&lt;/em&gt;.
@@ -153,6 +152,14 @@ Blog. 2018.  &lt;a href="https://hackthology.com/how-to-evaluate-statistical-fau
 &lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
 correct you should read the
 &lt;a href="https://hackthology.com/pdfs/how-to-eval-fault-localization.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;I now have a pulished paper on this topic. You probably want to read that as
+well.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski.
+&lt;a href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html"&gt;Evaluating Automatic Fault Localization Using Markov Processes&lt;/a&gt;. SCAM 2019.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
 
