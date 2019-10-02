@@ -183,7 +183,7 @@ work<span class="o">()</span> <span class="o">{</span>
 <span class="c1">## utility function to send the jobs to the workers</span>
 send<span class="o">()</span> <span class="o">{</span>
   <span class="nv">work_id</span><span class="o">=</span><span class="nv">$1</span>
-  <span class="nv">work_item</span><span class="o">=</span><span class="nv">$1</span>
+  <span class="nv">work_item</span><span class="o">=</span><span class="nv">$2</span>
   <span class="nb">echo</span> sending <span class="nv">$work_id</span> <span class="nv">$work_item</span>
   <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span> <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">3</span> <span class="c1">## the fifo is fd 3</span>
 <span class="o">}</span>
