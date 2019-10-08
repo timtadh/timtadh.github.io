@@ -4,12 +4,33 @@
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icsme-2019.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="https://hackthology.com/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
+&lt;a href="https://hackthology.com/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;Statistical Fault Localization (SFL) uses coverage profiles (or "spectra")
+collected from passing and failing tests, together …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
 &lt;em&gt;The Impact of Rare Failures on Statistical Fault Localization: the Case of the Defects4J Suite&lt;/em&gt;.  &lt;a href="https://icsme2019.github.io/"&gt;ICSME 2019&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icsme-2019.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="https://hackthology.com/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;</content></entry><entry><title>Evaluating Automatic Fault Localization Using Markov Processes</title><link href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html" rel="alternate"></link><published>2019-09-30T00:00:00-04:00</published><updated>2019-09-30T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Yiğit Küçük, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-09-30:/evaluating-automatic-fault-localization-using-markov-processes.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
+&lt;a href="https://hackthology.com/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;Statistical Fault Localization (SFL) uses coverage profiles (or "spectra")
+collected from passing and failing tests, together with statistical metrics,
+which are typically composed of simple estimators, to identify which elements of
+a program are most likely to have caused observed failures. Previous SFL
+research has not thoroughly examined how the effectiveness of SFL metrics is
+related to the proportion of failures in test suites and related quantities. To
+address this issue, we studied the Defects4J benchmark suite of programs and
+test suites and found that if a test suite has very few failures, SFL performs
+poorly. To better understand this phenomenon, we investigated the precision of
+some statistical estimators of which SFL metrics are composed, as measured by
+their coefficients of variation.  The precision of an embedded estimator, which
+depends on the dataset, was found to correlate with the effectiveness of a
+metric containing it: low precision is associated with poor effectiveness.
+Boosting precision by adding test cases was found to improve overall SFL
+effectiveness. We present our findings and discuss their implications for the
+evaluation and use of SFL metrics.&lt;/p&gt;
+&lt;p&gt;(&lt;a href="https://hackthology.com/pdfs/icsme-2019.pdf"&gt;Read the rest of the paper as a pdf&lt;/a&gt;)&lt;/p&gt;</content></entry><entry><title>Evaluating Automatic Fault Localization Using Markov Processes</title><link href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html" rel="alternate"></link><published>2019-09-30T00:00:00-04:00</published><updated>2019-09-30T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Yiğit Küçük, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-09-30:/evaluating-automatic-fault-localization-using-markov-processes.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
 &lt;em&gt;Evaluating Automatic Fault Localization Using Markov Processes&lt;/em&gt;.  &lt;a href="http://www.ieee-scam.org/2019/"&gt;SCAM 2019&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
