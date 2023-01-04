@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all-en.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2023-05-26T00:00:00-04:00</updated><entry><title>Improving fault localization by integrating value and predicate based causal inference techniques</title><link href="https://hackthology.com/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html" rel="alternate"></link><published>2023-05-26T00:00:00-04:00</published><updated>2023-05-26T00:00:00-04:00</updated><author><name>Yiğit Küçük, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2023-05-26:/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html</id><summary type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all-en.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2023-04-17T00:00:00-04:00</updated><entry><title>Flake Aware Culprit Finding</title><link href="https://hackthology.com/flake-aware-culprit-finding.html" rel="alternate"></link><published>2023-04-17T00:00:00-04:00</published><updated>2023-04-17T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</name></author><id>tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
+&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/home/icst-2023"&gt;ICST Industry 2023&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;When a change introduces a bug into a large software repository, there is
+often a delay between when the change is committed and when bug is …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
+&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/home/icst-2023"&gt;ICST Industry 2023&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;When a change introduces a bug into a large software repository, there is
+often a delay between when the change is committed and when bug is detected.
+This is true even when the bug causes an existing test to fail! These delays
+are caused by resource constraints which prevent the organization from running
+all of the tests on every change. Due to the delay, a Continuous Integration
+system needs to locate buggy commits. Locating them is complicated by flaky
+tests that pass and fail non-deterministically. The flaky tests introduce
+noise into the CI system requiring costly reruns to determine if a failure was
+caused by a bad code change or caused by non-deterministic test behavior. This
+paper presents an algorithm, &lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;, that locates
+buggy commits more accurately than a traditional bisection search. The
+algorithm is based on Bayesian inference and noisy binary search, utilizing
+prior information about which changes are most likely to contain the bug. A
+large scale empirical study was conducted at Google on 13,000+ test breakages.
+The study evaluates the accuracy and cost of the new algorithm versus a
+traditional deflaked bisection search.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;Read the paper&lt;/a&gt;&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Improving fault localization by integrating value and predicate based causal inference techniques</title><link href="https://hackthology.com/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html" rel="alternate"></link><published>2021-05-26T00:00:00-04:00</published><updated>2021-05-26T00:00:00-04:00</updated><author><name>Yiğit Küçük, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2021-05-26:/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html</id><summary type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
 &lt;em&gt;Improving fault localization by integrating value and predicate based causal inference techniques&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icse-2021/icse-2021-papers/72/Improving-Fault-Localization-by-Integrating-Value-and-Predicate-Based-Causal-Inferenc"&gt;ICSE 2021&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://doi.org/10.1109/ICSE43902.2021.00066"&gt;DOI&lt;/a&gt;.
@@ -31,38 +62,7 @@ information about both predicate outcomes and variable values to more accurately
 estimate the true failure-causing effect of program statements. UniVal was
 empirically compared to several coverage-based, predicate-based, and value-based
 SFL techniques on 800 program versions with real faults.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/icse-2021.pdf"&gt;Read the paper&lt;/a&gt;&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Flake Aware Culprit Finding</title><link href="https://hackthology.com/flake-aware-culprit-finding.html" rel="alternate"></link><published>2023-04-17T00:00:00-04:00</published><updated>2023-04-17T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</name></author><id>tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
-&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/home/icst-2023"&gt;ICST Industry 2023&lt;/a&gt;.
-&lt;br/&gt;
-&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
-&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;Abstract&lt;/h4&gt;
-&lt;p&gt;When a change introduces a bug into a large software repository, there is
-often a delay between when the change is committed and when bug is …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
-&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/home/icst-2023"&gt;ICST Industry 2023&lt;/a&gt;.
-&lt;br/&gt;
-&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
-&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
-&lt;h4&gt;Abstract&lt;/h4&gt;
-&lt;p&gt;When a change introduces a bug into a large software repository, there is
-often a delay between when the change is committed and when bug is detected.
-This is true even when the bug causes an existing test to fail! These delays
-are caused by resource constraints which prevent the organization from running
-all of the tests on every change. Due to the delay, a Continuous Integration
-system needs to locate buggy commits. Locating them is complicated by flaky
-tests that pass and fail non-deterministically. The flaky tests introduce
-noise into the CI system requiring costly reruns to determine if a failure was
-caused by a bad code change or caused by non-deterministic test behavior. This
-paper presents an algorithm, &lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;, that locates
-buggy commits more accurately than a traditional bisection search. The
-algorithm is based on Bayesian inference and noisy binary search, utilizing
-prior information about which changes are most likely to contain the bug. A
-large scale empirical study was conducted at Google on 13,000+ test breakages.
-The study evaluates the accuracy and cost of the new algorithm versus a
-traditional deflaked bisection search.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;Read the paper&lt;/a&gt;&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>The Impact of Rare Failures on Statistical Fault Localization: the Case of the Defects4J Suite</title><link href="https://hackthology.com/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html" rel="alternate"></link><published>2019-10-03T00:00:00-04:00</published><updated>2019-10-03T00:00:00-04:00</updated><author><name>Yiğit Küçük, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-10-03:/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html</id><summary type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
+&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/icse-2021.pdf"&gt;Read the paper&lt;/a&gt;&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>The Impact of Rare Failures on Statistical Fault Localization: the Case of the Defects4J Suite</title><link href="https://hackthology.com/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html" rel="alternate"></link><published>2019-10-03T00:00:00-04:00</published><updated>2019-10-03T00:00:00-04:00</updated><author><name>Yiğit Küçük, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-10-03:/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html</id><summary type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
 &lt;em&gt;The Impact of Rare Failures on Statistical Fault Localization: the Case of the Defects4J Suite&lt;/em&gt;.  &lt;a href="https://icsme2019.github.io/"&gt;ICSME 2019&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
