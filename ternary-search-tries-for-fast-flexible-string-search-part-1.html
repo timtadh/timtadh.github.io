@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -128,7 +128,7 @@ trie for a set of keys of cardinality greater than one is an internal
 node with left link referring to the trie for the keys whose initial bit
 is 0 and right link referring to the trie for the keys whose initial bit
 is 1, with the leading bit considered to be removed for the purpose of
-constructing the subtrees."<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup></p>
+constructing the subtrees."<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
 <p>A search using this structure is directed by the strings in the
 database. However, since only one bit is considered at a time in the
 search for a k-bit string the search will take in the worst case k bit
@@ -143,7 +143,7 @@ bits at once.</p>
 <p>Figure 2. <strong>An Example R-Way Trie</strong></p>
 <p>If one considers multiple bits at once one has to increase the fanout
 (number of children per node) of the tree. Consider figure 2, in which
-each node has a fanout of 26.<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup> While useful if every
+each node has a fanout of 26.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> While useful if every
 node has 26 children, the space to store the pointers becomes wasteful
 for real data. However, despite the wasted space in comparison to the
 binary version, searches on the R-Way Trie will perform faster than on
@@ -202,7 +202,7 @@ is an R-Way node like in the Multi-way Search Trie. The rest of the tree
 is a Ternary Search Trie with the leaf nodes collapsed. In practice
 these improvements result in an enormous speedup. The theory also
 supports the practice; according to Sedgewick, these improvements cut
-the number of comparisons needed in half.<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup></p>
+the number of comparisons needed in half.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
 <p>There is one final improvement to consider not shown the above figure.
 Similar to the first improvement, it involves collapsing nodes, but
 instead of collapsing leaf nodes, internal nodes are collapsed. This
@@ -222,14 +222,14 @@ wrote a <a href="https://github.com/timtadh/tst">python implementation</a>.</p>
 <div class="footnote">
 <hr>
 <ol>
-<li id="fn-1">
-<p>Sedgewick R. <em>Algorithms</em>. Third Edition. Definition 15.1.  <a href="http://www.amazon.com/dp/0201314525/"></a><a href="http://www.amazon.com/dp/0201314525/">http://www.amazon.com/dp/0201314525/</a> Hereafter: <em>Sedgewick</em>&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn:1">
+<p>Sedgewick R. <em>Algorithms</em>. Third Edition. Definition 15.1.  <a href="http://www.amazon.com/dp/0201314525/"></a><a href="http://www.amazon.com/dp/0201314525/">http://www.amazon.com/dp/0201314525/</a> Hereafter: <em>Sedgewick</em>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
-<li id="fn-2">
-<p>Note: Usually an R-Way or Multi-Way Trie has a fanout equal to the numbers of characters in the character set or the number of bits in a machine word, half word or byte. So in practice a node in an R-Way Trie might have 256 children or perhaps 2\^16 children. As the fanout (the number of children per node) increases the space efficiency of the Trie decreases. However, the search speed increases. A classic time/space trace off.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<li id="fn:2">
+<p>Note: Usually an R-Way or Multi-Way Trie has a fanout equal to the numbers of characters in the character set or the number of bits in a machine word, half word or byte. So in practice a node in an R-Way Trie might have 256 children or perhaps 2\^16 children. As the fanout (the number of children per node) increases the space efficiency of the Trie decreases. However, the search speed increases. A classic time/space trace off.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
-<li id="fn-3">
-<p><em>Sedgewick</em> Table 15.2 and related text.&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<li id="fn:3">
+<p><em>Sedgewick</em> Table 15.2 and related text.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -250,7 +250,7 @@ wrote a <a href="https://github.com/timtadh/tst">python implementation</a>.</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

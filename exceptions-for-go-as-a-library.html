@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -73,32 +73,30 @@ the correct action to take. Fined grained control over the handling of errors
 using multiple return parameters is one of Go's strengths.</p>
 <p>However, there are cases where Go programs do not universally benefit from
 the explicit handling of errors. For instance, consider the following code:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span>
-    <span class="nx">x</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">err</span>
-    <span class="p">}</span>
-    <span class="nx">y</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">err</span>
-    <span class="p">}</span>
-    <span class="nx">z</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">err</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">z</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="p">)</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>If Go had exceptions such code could be easily simplified:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">interface</span><span class="p">{})</span> <span class="nx">throws</span> <span class="kt">error</span> <span class="p">{</span>
-    <span class="nx">x</span> <span class="o">:=</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
-    <span class="nx">y</span> <span class="o">:=</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
-    <span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="nx">throws</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">x</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">y</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">)</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h3>Adding Exceptions with a Library</h3>
 <p>I created a <a href="https://github.com/timtadh/data-structures/exc">library</a> which adds
@@ -111,31 +109,29 @@ values.</p>
 exceptions instead of returning errors. (We will look at the case where they
 return errors that you want to turn into exceptions next). We want DoStuff to
 be an public API function and return an error:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">exc</span><span class="p">.</span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">x</span> <span class="o">:=</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
-        <span class="nx">y</span> <span class="o">:=</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
-        <span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span>
-    <span class="p">}).</span><span class="nx">Error</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">x</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">y</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">Error</span><span class="p">()</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h4>Catch Blocks</h4>
 <p>Now let's consider the case where we want to catch the exception log and
 reraise it:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">exc</span><span class="p">.</span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">x</span> <span class="o">:=</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
-        <span class="nx">y</span> <span class="o">:=</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
-        <span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span>
-    <span class="p">}).</span><span class="nx">Catch</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">exc</span><span class="p">.</span><span class="nx">Exception</span><span class="p">{},</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="nx">exc</span><span class="p">.</span><span class="nx">Throwable</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">log</span><span class="p">.</span><span class="nx">Print</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
-        <span class="nx">exc</span><span class="p">.</span><span class="nx">Rethrow</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">exc</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;rethrow after logging&quot;</span><span class="p">))</span>
-    <span class="p">}).</span><span class="nx">Error</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">x</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">y</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">Catch</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">exc</span><span class="p">.</span><span class="nx">Exception</span><span class="p">{},</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">t</span><span class="w"> </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Throwable</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">log</span><span class="p">.</span><span class="nx">Print</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Rethrow</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span><span class="w"> </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;rethrow after logging&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">Error</span><span class="p">()</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Rethrow will chain the Throwable <code>t</code> with the new <code>*Error</code> created such that
 if/when the exception reaches the top level you know exactly how it was
@@ -144,24 +140,22 @@ created and where it was re-thrown.</p>
 <p>Ok, what about interacting with regular Go APIs which return errors? How can
 we turn those errors into exceptions? The easy was is to use the
 <code>ThrowOnError</code> function which is a sugar for:</p>
-<div class="highlight"><pre><span></span><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-    <span class="nx">ThrowErr</span><span class="p">(</span><span class="nx">ErrorFrom</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">ThrowErr</span><span class="p">(</span><span class="nx">ErrorFrom</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>So converting out original <code>DoStuff</code> function we get</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span> <span class="c1">// Throws</span>
-    <span class="nx">x</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
-    <span class="nx">exc</span><span class="p">.</span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="nx">y</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
-    <span class="nx">exc</span><span class="p">.</span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="nx">z</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span>
-    <span class="nx">exc</span><span class="p">.</span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="nx">exc</span><span class="p">.</span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Throws</span>
+<span class="w">    </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">exc</span><span class="p">.</span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">exc</span><span class="p">.</span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">z</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">exc</span><span class="p">.</span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">exc</span><span class="p">.</span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="p">))</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>This package also supports: catching user defined exceptions, catching
 multiple exception types, <code>Close</code> which works like the "try with resources"
@@ -179,22 +173,21 @@ way.</p>
 of code run unconditionally after a try and catch block even if there was an
 un-handled exception or re-raised exception. In this example I use a finally
 block to log the timing information of the DoStuff function.</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span>
-    <span class="nx">start</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">()</span>
-    <span class="k">return</span> <span class="nx">exc</span><span class="p">.</span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">x</span> <span class="o">:=</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
-        <span class="nx">y</span> <span class="o">:=</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
-        <span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span>
-    <span class="p">}).</span><span class="nx">Catch</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">exc</span><span class="p">.</span><span class="nx">Exception</span><span class="p">{},</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="nx">exc</span><span class="p">.</span><span class="nx">Throwable</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">log</span><span class="p">.</span><span class="nx">Print</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
-        <span class="nx">exc</span><span class="p">.</span><span class="nx">Rethrow</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">exc</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;rethrow after logging&quot;</span><span class="p">))</span>
-    <span class="p">}).</span><span class="nx">Finally</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">end</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">()</span>
-        <span class="nx">log</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Do stuff took: %v&quot;</span><span class="p">,</span> <span class="nx">end</span><span class="p">.</span><span class="nx">Sub</span><span class="p">(</span><span class="nx">start</span><span class="p">))</span>
-    <span class="p">}).</span><span class="nx">Error</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">DoStuff</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">start</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">()</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">x</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">foo</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">y</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">bar</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">baz</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">bax</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">Catch</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">exc</span><span class="p">.</span><span class="nx">Exception</span><span class="p">{},</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">t</span><span class="w"> </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Throwable</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">log</span><span class="p">.</span><span class="nx">Print</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Rethrow</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span><span class="w"> </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;rethrow after logging&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">Finally</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">end</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">()</span>
+<span class="w">        </span><span class="nx">log</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Do stuff took: %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">end</span><span class="p">.</span><span class="nx">Sub</span><span class="p">(</span><span class="nx">start</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">Error</span><span class="p">()</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h4>Automatically Closing Resources</h4>
 <p>One common situation is to open a resource (like a file) and want it to close no
@@ -202,17 +195,16 @@ matter what. In Go this is often accomplished with a <code>defer</code> function
 we can accomplish the same thing with finer granularity using the <code>Close</code>
 function which acts like a <code>Try</code> but automatically closes a created resource
 when the block exits:</p>
-<div class="highlight"><pre><span></span><span class="nx">Close</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Closer</span> <span class="p">{</span>
-    <span class="nx">f</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nx">Create</span><span class="p">(</span><span class="s">&quot;/tmp/wizard&quot;</span><span class="p">)</span>
-    <span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">f</span>
-<span class="p">},</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Closer</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">f</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.(</span><span class="o">*</span><span class="nx">os</span><span class="p">.</span><span class="nx">File</span><span class="p">)</span>
-    <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">WriteString</span><span class="p">(</span><span class="s">&quot;wizardry&quot;</span><span class="p">)</span>
-    <span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nx">Close</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="nx">io</span><span class="p">.</span><span class="nx">Closer</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">f</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Create</span><span class="p">(</span><span class="s">&quot;/tmp/wizard&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">f</span>
+<span class="p">},</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">c</span><span class="w"> </span><span class="nx">io</span><span class="p">.</span><span class="nx">Closer</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">f</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">c</span><span class="p">.(</span><span class="o">*</span><span class="nx">os</span><span class="p">.</span><span class="nx">File</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">f</span><span class="p">.</span><span class="nx">WriteString</span><span class="p">(</span><span class="s">&quot;wizardry&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">ThrowOnError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 <span class="p">}).</span><span class="nx">Unwind</span><span class="p">()</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>In the above code, the file created in the first function will always be closed
 at the end of the *Block even if WriteString had an error. This get more
@@ -221,20 +213,18 @@ throw exceptions.</p>
 <h4>User Defined Exception Types</h4>
 <p>To create a user defined exception simply create a struct which inherits from
 the <code>exc.Exception</code> struct by embedding it as the first member.</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">MyException</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">exc</span><span class="p">.</span><span class="nx">Exception</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">MyException</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">exc</span><span class="p">.</span><span class="nx">Exception</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Then you can catch <em>MyException with </em>Exception. eg:</p>
-<div class="highlight"><pre><span></span><span class="nx">exc</span><span class="p">.</span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">Throw</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">MyException</span><span class="p">{</span><span class="o">*</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;My Exception&quot;</span><span class="p">).</span><span class="nx">Exception</span><span class="p">()})</span>
-<span class="p">}).</span><span class="nx">Catch</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Exception</span><span class="p">{},</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="nx">Throwable</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">log</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="s">&quot;caught!&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nx">exc</span><span class="p">.</span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Throw</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">MyException</span><span class="p">{</span><span class="o">*</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;My Exception&quot;</span><span class="p">).</span><span class="nx">Exception</span><span class="p">()})</span>
+<span class="p">}).</span><span class="nx">Catch</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">Exception</span><span class="p">{},</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">t</span><span class="w"> </span><span class="nx">Throwable</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">log</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="s">&quot;caught!&quot;</span><span class="p">)</span>
 <span class="p">}).</span><span class="nx">Unwind</span><span class="p">()</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>This should work with heirarchies of exceptions allowing your code to declare
 specific exceptions for specific errors.</p>
@@ -244,64 +234,62 @@ functions</a>. <code>panic(.)</code> allows you
 to cause the program to halt and the stack to "unwind". This means stack frame
 by stack frame the each function is halted and any deferred functions are run.
 Let's look at an example:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
 <span class="p">)</span>
 
-<span class="kd">func</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
-    <span class="nx">b</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">a</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">b</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
-    <span class="nx">c</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">b</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">c</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
-    <span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">c</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">a</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">a</span><span class="p">()</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>a
-b
-c
-defer c
-defer b
-defer a
-panic: c panic
+<div class="highlight"><pre><span></span><code><span class="n">a</span>
+<span class="n">b</span>
+<span class="n">c</span>
+<span class="n">defer</span><span class="w"> </span><span class="n">c</span>
+<span class="n">defer</span><span class="w"> </span><span class="n">b</span>
+<span class="n">defer</span><span class="w"> </span><span class="n">a</span>
+<span class="nl">panic</span><span class="p">:</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="n">panic</span>
 
-goroutine 1 [running]:
-panic(0x128360, 0x1040a140)
-    /usr/local/go/src/runtime/panic.go:481 +0x700
-main.c()
-    /tmp/sandbox797297488/main.go:28 +0x180
-main.b()
-    /tmp/sandbox797297488/main.go:20 +0x140
-main.a()
-    /tmp/sandbox797297488/main.go:12 +0x140
-main.main()
-    /tmp/sandbox797297488/main.go:32 +0x20
-</pre></div>
-
+<span class="n">goroutine</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">[</span><span class="n">running</span><span class="o">]</span><span class="err">:</span>
+<span class="n">panic</span><span class="p">(</span><span class="mh">0x128360</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1040a140</span><span class="p">)</span>
+<span class="w">    </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="k">go</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">runtime</span><span class="o">/</span><span class="n">panic</span><span class="p">.</span><span class="k">go</span><span class="err">:</span><span class="mi">481</span><span class="w"> </span><span class="o">+</span><span class="mh">0x700</span>
+<span class="n">main</span><span class="p">.</span><span class="n">c</span><span class="p">()</span>
+<span class="w">    </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">sandbox797297488</span><span class="o">/</span><span class="n">main</span><span class="p">.</span><span class="k">go</span><span class="err">:</span><span class="mi">28</span><span class="w"> </span><span class="o">+</span><span class="mh">0x180</span>
+<span class="n">main</span><span class="p">.</span><span class="n">b</span><span class="p">()</span>
+<span class="w">    </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">sandbox797297488</span><span class="o">/</span><span class="n">main</span><span class="p">.</span><span class="k">go</span><span class="err">:</span><span class="mi">20</span><span class="w"> </span><span class="o">+</span><span class="mh">0x140</span>
+<span class="n">main</span><span class="p">.</span><span class="n">a</span><span class="p">()</span>
+<span class="w">    </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">sandbox797297488</span><span class="o">/</span><span class="n">main</span><span class="p">.</span><span class="k">go</span><span class="err">:</span><span class="mi">12</span><span class="w"> </span><span class="o">+</span><span class="mh">0x140</span>
+<span class="n">main</span><span class="p">.</span><span class="n">main</span><span class="p">()</span>
+<span class="w">    </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">sandbox797297488</span><span class="o">/</span><span class="n">main</span><span class="p">.</span><span class="k">go</span><span class="err">:</span><span class="mi">32</span><span class="w"> </span><span class="o">+</span><span class="mh">0x20</span>
+</code></pre></div>
 
 <p>(try it on the playground <a href="https://play.golang.org/p/0Vp4jq0978">https://play.golang.org/p/0Vp4jq0978</a>)</p>
 <p>So panic by default kills your program but gives you a nice stack trace. It also
@@ -314,60 +302,58 @@ It can only meaingfully be used inside of defer functions. When a <code>recover<
 found it will stop the panic (that is stop unwinding the stack) and allow the
 function the <code>defer</code>ed <code>recover</code> is in to exit normally. Let's look at another
 example:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
 <span class="p">)</span>
 
-<span class="kd">func</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
-    <span class="nx">b</span><span class="p">()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end a&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">a</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">b</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end a&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
-        <span class="nb">recover</span><span class="p">()</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
-    <span class="nx">c</span><span class="p">()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end b&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">b</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">recover</span><span class="p">()</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">c</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end b&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
-    <span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end c&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">c</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end c&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;start&quot;</span><span class="p">)</span>
-    <span class="nx">a</span><span class="p">()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;start&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">a</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">)</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>start
-a
-b
-c
-defer c
-defer b
-end a
-defer a
-end
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="nv">start</span>
+<span class="nv">a</span>
+<span class="nv">b</span>
+<span class="nv">c</span>
+<span class="nv">defer</span><span class="w"> </span><span class="nv">c</span>
+<span class="nv">defer</span><span class="w"> </span><span class="nv">b</span>
+<span class="k">end</span><span class="w"> </span><span class="nv">a</span>
+<span class="nv">defer</span><span class="w"> </span><span class="nv">a</span>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>(Try it on the playground: <a href="https://play.golang.org/p/WTzKywhey2">https://play.golang.org/p/WTzKywhey2</a>)</p>
 <p>This time, instead of the program crashing it exited normally. Functions, <code>a</code>
@@ -375,70 +361,68 @@ and <code>main</code>, who invocations occurred before <code>b</code> which invo
 normally. However, using recover like this will stop all errors and not explain
 what the problem is. Luckily, recover reports whether or not a panic was
 recovered and what the argument to the panic was. Here is an example:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
 <span class="p">)</span>
 
-<span class="kd">func</span> <span class="nx">a</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nb">recover</span><span class="p">();</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;recovered&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end defer of a&quot;</span><span class="p">)</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
-    <span class="nx">b</span><span class="p">()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end a&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">a</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer a&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">recover</span><span class="p">();</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;recovered&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">e</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end defer of a&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">b</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end a&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nb">recover</span><span class="p">();</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;recovered&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end defer of b&quot;</span><span class="p">)</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
-    <span class="nx">c</span><span class="p">()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end b&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">b</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer b&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">recover</span><span class="p">();</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;recovered&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">e</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end defer of b&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">c</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end b&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">c</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
-    <span class="p">}()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
-    <span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end c&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">c</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;defer c&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">panic</span><span class="p">(</span><span class="s">&quot;c panic&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end c&quot;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;start&quot;</span><span class="p">)</span>
-    <span class="nx">a</span><span class="p">()</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;start&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">a</span><span class="p">()</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">)</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>start
-a
-b
-c
-defer c
-defer b
-recovered c panic
-end defer of b
-end a
-defer a
-end defer of a
-end
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="nv">start</span>
+<span class="nv">a</span>
+<span class="nv">b</span>
+<span class="nv">c</span>
+<span class="nv">defer</span><span class="w"> </span><span class="nv">c</span>
+<span class="nv">defer</span><span class="w"> </span><span class="nv">b</span>
+<span class="nv">recovered</span><span class="w"> </span><span class="nv">c</span><span class="w"> </span><span class="nv">panic</span>
+<span class="k">end</span><span class="w"> </span><span class="nv">defer</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">b</span>
+<span class="k">end</span><span class="w"> </span><span class="nv">a</span>
+<span class="nv">defer</span><span class="w"> </span><span class="nv">a</span>
+<span class="k">end</span><span class="w"> </span><span class="nv">defer</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">a</span>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>(Try it on the playground: <a href="https://play.golang.org/p/agxBcqgCb8">https://play.golang.org/p/agxBcqgCb8</a>)</p>
 <p>This time the value passed into panic was returned by the call to <code>recover</code> in
@@ -447,22 +431,21 @@ returned by <code>recover</code>.</p>
 <h4>Implementation</h4>
 <p>To implement exceptions, <code>panic</code> is used to throw the <code>Throwable</code> objects. Then
 a special function <code>exec</code> is created to execute the <code>try</code> functions:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Block</span><span class="p">)</span> <span class="nx">exec</span><span class="p">()</span> <span class="p">(</span><span class="nx">err</span> <span class="nx">Throwable</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nb">recover</span><span class="p">();</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="k">switch</span> <span class="nx">exc</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.(</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">case</span> <span class="nx">Throwable</span><span class="p">:</span>
-                <span class="nx">err</span> <span class="p">=</span> <span class="nx">exc</span>
-            <span class="k">default</span><span class="p">:</span>
-                <span class="nb">panic</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}()</span>
-    <span class="nx">b</span><span class="p">.</span><span class="nx">try</span><span class="p">()</span>
-    <span class="k">return</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">*</span><span class="nx">Block</span><span class="p">)</span><span class="w"> </span><span class="nx">exec</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="w"> </span><span class="nx">Throwable</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">recover</span><span class="p">();</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">switch</span><span class="w"> </span><span class="nx">exc</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">e</span><span class="p">.(</span><span class="kd">type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="nx">Throwable</span><span class="p">:</span>
+<span class="w">                </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">exc</span>
+<span class="w">            </span><span class="k">default</span><span class="p">:</span>
+<span class="w">                </span><span class="nb">panic</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">b</span><span class="p">.</span><span class="nx">try</span><span class="p">()</span>
+<span class="w">    </span><span class="k">return</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>This function simply calls the function passed into <code>Try()</code>. However, <code>exec</code> also
 registers a <code>defer</code> which changes the returned value of <code>exec</code> if a <code>Throwable</code>
@@ -470,24 +453,23 @@ is discovered. Thus, we can throw exceptions with <code>panic</code> (no changes
 necessary!) and catch them with <code>recover</code>. The final piece is implementing the
 semantics of try, catch, finally. This is accomplished by a function called
 <code>run</code>:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Block</span><span class="p">)</span> <span class="nx">run</span><span class="p">()</span> <span class="p">(</span><span class="nx">Throwable</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">err</span> <span class="o">:=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">exec</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nx">t</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">TypeOf</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">b</span><span class="p">.</span><span class="nx">catches</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">isa</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">err</span> <span class="p">=</span> <span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">(){</span><span class="nx">c</span><span class="p">.</span><span class="nx">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)}).</span><span class="nx">exec</span><span class="p">()</span>
-                <span class="k">break</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">finally</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">b</span><span class="p">.</span><span class="nx">finallies</span> <span class="p">{</span>
-        <span class="nx">finally</span><span class="p">()</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">err</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">*</span><span class="nx">Block</span><span class="p">)</span><span class="w"> </span><span class="nx">run</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="nx">Throwable</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">exec</span><span class="p">()</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">t</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">reflect</span><span class="p">.</span><span class="nx">TypeOf</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">catches</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">isa</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">exception</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">Try</span><span class="p">(</span><span class="kd">func</span><span class="p">(){</span><span class="nx">c</span><span class="p">.</span><span class="nx">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)}).</span><span class="nx">exec</span><span class="p">()</span>
+<span class="w">                </span><span class="k">break</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">finally</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">finallies</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">finally</span><span class="p">()</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>The <code>run</code> function first executes the <code>try</code> and gets the error if any. If there
 is an error it tries to find a catch function to handle it (using the <code>isa</code>
@@ -528,7 +510,7 @@ to emulate exceptions using <code>panic</code> and <code>recover</code>.</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

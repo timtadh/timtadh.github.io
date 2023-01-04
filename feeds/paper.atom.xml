@@ -30,7 +30,7 @@ metric containing it: low precision is associated with poor effectiveness.
 Boosting precision by adding test cases was found to improve overall SFL
 effectiveness. We present our findings and discuss their implications for the
 evaluation and use of SFL metrics.&lt;/p&gt;
-&lt;p&gt;(&lt;a href="https://hackthology.com/pdfs/icsme-2019.pdf"&gt;Read the rest of the paper as a pdf&lt;/a&gt;)&lt;/p&gt;</content></entry><entry><title>Evaluating Automatic Fault Localization Using Markov Processes</title><link href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html" rel="alternate"></link><published>2019-09-30T00:00:00-04:00</published><updated>2019-09-30T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Yiğit Küçük, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-09-30:/evaluating-automatic-fault-localization-using-markov-processes.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
+&lt;p&gt;(&lt;a href="https://hackthology.com/pdfs/icsme-2019.pdf"&gt;Read the rest of the paper as a pdf&lt;/a&gt;)&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Evaluating Automatic Fault Localization Using Markov Processes</title><link href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html" rel="alternate"></link><published>2019-09-30T00:00:00-04:00</published><updated>2019-09-30T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Yiğit Küçük, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-09-30:/evaluating-automatic-fault-localization-using-markov-processes.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
 &lt;em&gt;Evaluating Automatic Fault Localization Using Markov Processes&lt;/em&gt;.  &lt;a href="http://www.ieee-scam.org/2019/"&gt;SCAM 2019&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
@@ -38,7 +38,6 @@ evaluation and use of SFL metrics.&lt;/p&gt;
 &lt;a href="https://hackthology.com/pdfs/scam-2019-supplement.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
 &lt;a href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
 correct you should read the
@@ -52,7 +51,6 @@ correct you should read the
 &lt;a href="https://hackthology.com/pdfs/scam-2019-supplement.pdf"&gt;SUPPLEMENT&lt;/a&gt;.
 &lt;a href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
 correct you should read the
@@ -87,86 +85,52 @@ varying in form and granularity.
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
 
 &lt;h1 id="introduction"&gt;Introduction&lt;/h1&gt;
-
 &lt;p&gt;Automatic fault localization is a software engineering technique to assist a programmer during the debugging process by suggesting "suspicious" locations that may contain or overlap with a fault (bug, defect) that is the root cause of observed failures. The big idea behind automatic fault localization (or just fault localization) is that pointing the programmer towards the right area of the program will enable them to find the relevant fault more quickly.&lt;/p&gt;
-
 &lt;p&gt;A much-investigated approach to fault localization is &lt;em&gt;Coverage-Based Statistical Fault Localization&lt;/em&gt; (CBSFL), which is also known as &lt;em&gt;Spectrum-Based Fault Localization&lt;/em&gt; &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2002"&gt;1&lt;/a&gt;]-[&lt;a href="#ref-Sun2016"&gt;3&lt;/a&gt;]&lt;/span&gt;. This approach uses code-coverage profiles and success/failure information from testing or field use of software to rank statements or other generic program locations (e.g., basic blocks, methods, or classes) from most "suspicious" (likely to be faulty) to least suspicious. To perform CBSFL, each test case is run using a version of the program being debugged that has been instrumented to record which potential fault locations were actually executed on that test. A human or automated &lt;em&gt;test oracle&lt;/em&gt; labels each test to indicate whether it passed or failed. The coverage profiles are also referred to as &lt;em&gt;coverage spectra&lt;/em&gt;.&lt;/p&gt;
-
 &lt;p&gt;In the usage scenario typically envisioned for CBSFL, a programmer uses the ranked list of program locations to guide debugging. Starting at the top of the list and moving down, they examine each location to determine if it is faulty. If the location of a fault is near the top of the list, the programmer saves time by avoiding consideration of most of the non-faulty locations in the program. However, if there is no fault near the top of the list, the programmer instead wastes time examining many more locations than necessary. CBSFL techniques are typically evaluated empirically in terms of their ability to rank faulty locations near the top of the list &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2005"&gt;4&lt;/a&gt;], [&lt;a href="#ref-Pearson2017"&gt;5&lt;/a&gt;]&lt;/span&gt;, as measured by each technique's "Rank Score", which is the location of the first faulty location in the list. A CBSFL technique that consistently ranks faulty statements from a wide range of faulty programs near the top of the corresponding lists is considered a good technique.&lt;/p&gt;
-
 &lt;p&gt;One pitfall of using the ranked-list evaluation regime outlined above is that it can be applied fairly only when the techniques being compared provide results as a prioritized list of program elements of the same granularity. This means that if technique A produces a prioritized list of basic blocks, technique B produces an unordered set of sub-expressions, and technique C produces a prioritized list of classes then it is not valid to use the Standard Rank Score to compare them. The Standard Rank Score can only be applied to ordered lists and thus cannot be used directly to evaluate technique B, and it requires the techniques being compared to have the same granularity. Our new evaluation metric (called &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;) accounts for these differences in granularity and report construction, allowing a direct comparison between different styles of fault localization. We present a case study in Section 27 comparing &lt;em&gt;behavioral&lt;/em&gt; fault localization (which produces fragments of the dynamic control flow graph) to standard CBSFL.&lt;/p&gt;
-
 &lt;p&gt;Second, it is evident that the imagined usage scenario for CBSFL, in which a programmer examines each possible fault location in rank order until a fault is found, is an oversimplification of programmer behavior &lt;span class="citation"&gt;[&lt;a href="#ref-Parnin2011"&gt;6&lt;/a&gt;]&lt;/span&gt;. Programmers are likely to deviate from this scenario, e.g.: by choosing not to re-examine locations that have already been carefully examined and have not changed; by examining the locations around a highly ranked one, regardless of their ranks; by examining locations that a highly ranked location is dependent upon or that are dependent upon it &lt;span class="citation"&gt;[&lt;a href="#ref-Renieres2003"&gt;7&lt;/a&gt;]&lt;/span&gt;; by employing a conventional debugger (such as gdb, WinDB, or Visual Studio's debugger); or simply by using their knowledge and intuition about the program.&lt;/p&gt;
-
 &lt;p&gt;To support more flexible and nuanced evaluation criteria for CBSFL and other fault localization techniques, we present a new approach to evaluating them that is based on constructing and analyzing first-order Markov models of debugging processes and that uses a new evaluation metric (&lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;) based on the "hitting time" of a Markov process. This approach allows researchers to directly compare different fault localization techniques by incorporating their results and other relevant information into an appropriate model. To illustrate the approach, we present models for two classes of fault localization techniques: CBSFL and Suspicious Behavior Based Fault Localization (SBBFL) &lt;span class="citation"&gt;[&lt;a href="#ref-Cheng2009a"&gt;8&lt;/a&gt;], [&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt;. The models we present are also easy to update, allowing researchers to incorporate results of future studies of programmers' behavior during debugging.&lt;/p&gt;
-
 &lt;p&gt;Our new debugging model (and its &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; metric) can be thought of as a first-order simulation of the debugging process as conducted by a programmer. As such, we intend for it to be a practical alternative to conducting an expensive user study. The model is capable of incorporating a variety of behaviors a programmer may exhibit while debugging, allowing researchers to evaluate the performance of their tool against multiple debugging "styles."&lt;/p&gt;
-
 &lt;h1 id="background-and-related-work"&gt;Background and Related Work&lt;/h1&gt;
-
 &lt;p&gt;Coverage Based Statistical Fault Localization (CBSFL) &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2002"&gt;1&lt;/a&gt;], [&lt;a href="#ref-Jones2005"&gt;4&lt;/a&gt;]&lt;/span&gt; techniques attempt to quantify the likelihood that individual program locations are faulty using sample statistics, called &lt;em&gt;suspiciousness metrics&lt;/em&gt; or &lt;em&gt;fault localization metrics&lt;/em&gt;, which are computed from PASS/FAIL labels assigned to test executions and from coverage profiles (coverage spectra) collected from those executions. A CBSFL suspiciousness metric (of which there are a great many &lt;span class="citation"&gt;[&lt;a href="#ref-Lucia2014"&gt;2&lt;/a&gt;], [&lt;a href="#ref-Sun2016"&gt;3&lt;/a&gt;]&lt;/span&gt;) measures the statistical association between the occurrence of test failures and the coverage of individual program locations (program elements) of a certain kind.&lt;/p&gt;
-
 &lt;p&gt;Some statistical fault localization techniques use additional information beyond basic coverage information to either improve accuracy or provide more explainable results. For instance, work on &lt;em&gt;Causal Statistical Fault Localization&lt;/em&gt; uses information about the execution of program dependence predecessors of a target statement to adjust for confounding bias that can distort suspiciousness scores &lt;span class="citation"&gt;[&lt;a href="#ref-Baah2010"&gt;10&lt;/a&gt;]&lt;/span&gt;. By contrast, &lt;em&gt;Suspicious-Behavior-Based Fault Localization&lt;/em&gt; (SBBFL) techniques use runtime control-flow information (the behavior) to identify groups of "collaborating" suspicious elements &lt;span class="citation"&gt;[&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt;. These techniques typically leverage data mining techniques &lt;span class="citation"&gt;[&lt;a href="#ref-Aggarwal2014"&gt;11&lt;/a&gt;]&lt;/span&gt; such as frequent pattern mining &lt;span class="citation"&gt;[&lt;a href="#ref-Agrawal1993"&gt;12&lt;/a&gt;]-[&lt;a href="#ref-Aggarwal2014a"&gt;14&lt;/a&gt;]&lt;/span&gt; or significant pattern mining &lt;span class="citation"&gt;[&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;], [&lt;a href="#ref-Yan2008"&gt;15&lt;/a&gt;]&lt;/span&gt;. Unlike CBSFL techniques, SBBFL techniques output a ranked list of &lt;em&gt;patterns&lt;/em&gt; (subgraphs, itemsets, trees) which each contain multiple program locations. This makes it difficult to directly compare SBBFL and CBSFL techniques using traditional evaluation methods.&lt;/p&gt;
-
 &lt;p&gt;Finally, a variety of non-statistical (or hybrid) approaches to fault localization have been explored &lt;span class="citation"&gt;[&lt;a href="#ref-Abreu2006"&gt;16&lt;/a&gt;]-[&lt;a href="#ref-Wong2016"&gt;19&lt;/a&gt;]&lt;/span&gt;. These approaches range from delta debugging &lt;span class="citation"&gt;[&lt;a href="#ref-Zeller1999"&gt;20&lt;/a&gt;]&lt;/span&gt; to nearest neighbor queries &lt;span class="citation"&gt;[&lt;a href="#ref-Renieres2003"&gt;7&lt;/a&gt;]&lt;/span&gt; to program slicing &lt;span class="citation"&gt;[&lt;a href="#ref-Tip1995"&gt;21&lt;/a&gt;], [&lt;a href="#ref-Mao2014"&gt;22&lt;/a&gt;]&lt;/span&gt; to information retrieval &lt;span class="citation"&gt;[&lt;a href="#ref-Marcus2004"&gt;23&lt;/a&gt;]-[&lt;a href="#ref-Le2015"&gt;25&lt;/a&gt;]&lt;/span&gt; to test case generation &lt;span class="citation"&gt;[&lt;a href="#ref-Artzi2010"&gt;26&lt;/a&gt;]-[&lt;a href="#ref-Perez2014"&gt;28&lt;/a&gt;]&lt;/span&gt;. Despite technical and theoretical differences in these approaches, they all suggest locations (or groups of locations) for programmers to consider when debugging.&lt;/p&gt;
-
 &lt;h2 id="the-tarantula-evaluation"&gt;The Tarantula Evaluation&lt;/h2&gt;
-
 &lt;p&gt;Some of the earliest papers on fault localization do not provide a quantitative method for evaluating performance (as is seen in later papers &lt;span class="citation"&gt;[&lt;a href="#ref-Pearson2017"&gt;5&lt;/a&gt;]&lt;/span&gt;). For instance, the earliest CBSFL paper &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2002"&gt;1&lt;/a&gt;]&lt;/span&gt;, by Jones &lt;em&gt;et al.&lt;/em&gt;, proposes a technique and evaluates it qualitatively using data visualization. At the time, this was entirely appropriate as Jones was proposing a technique for visualizing the relative suspiciousness of different statements, as estimated with what is now called a suspiciousness metric (Tarantula). The visualization used for evaluating this technique aggregated the visualizations for all of the subject programs included in the study.&lt;/p&gt;
-
 &lt;p&gt;While the evaluation method used in the Jones &lt;em&gt;et al.&lt;/em&gt; paper &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2002"&gt;1&lt;/a&gt;]&lt;/span&gt; effectively communicated the potential of CBSFL (and interested many researchers in the idea) it was not good way to compare multiple fault localization techniques. In 2005 Jones and Harrold &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2005"&gt;4&lt;/a&gt;]&lt;/span&gt; published a study that compared their Tarantula technique to three other techniques: Set Union and Intersection &lt;span class="citation"&gt;[&lt;a href="#ref-Agrawal1995"&gt;29&lt;/a&gt;]&lt;/span&gt;, Nearest Neighbor &lt;span class="citation"&gt;[&lt;a href="#ref-Renieres2003"&gt;7&lt;/a&gt;]&lt;/span&gt;, and Cause-Transitions &lt;span class="citation"&gt;[&lt;a href="#ref-Cleve2005"&gt;30&lt;/a&gt;]&lt;/span&gt;. These techniques involved different approaches toward the fault localization problem and originally had been evaluated in different ways. Jones and Harrold re-evaluated all of the techniques under a new common evaluation framework.&lt;/p&gt;
-
 &lt;p&gt;In their 2005 paper, Jones and Harrold evaluated the effectiveness of each fault localization technique by using it to rank the statements in each subject program version from most likely to be the root cause of observed program failures to least likely. For their technique Tarantula, the statements were ranked using the Tarantula suspiciousness score.&lt;a href="#fn1" class="footnoteRef" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; To compare the effectiveness of the techniques, another kind of score was assigned to each faulty version of each subject program. This score is based on the "rank score":&lt;/p&gt;
-
 &lt;h4 id="definition.-tarantula-rank-score"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. Tarantula Rank Score &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2005"&gt;4&lt;/a&gt;]&lt;/span&gt;&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;Given a set of locations &lt;span class="math inline"&gt;\(L\)&lt;/span&gt; with their suspiciousness scores &lt;span class="math inline"&gt;\(s(l)\)&lt;/span&gt; for &lt;span class="math inline"&gt;\(l
   \in L\)&lt;/span&gt; the Rank Score &lt;span class="math inline"&gt;\(r(l)\)&lt;/span&gt; for a faulty location &lt;span class="math inline"&gt;\(l \in L\)&lt;/span&gt; is: &lt;span class="math display"&gt;\[\begin{aligned}
     {{\left|{ \left\{ x ~:~ x \in L \wedge s(x) \ge s(l) \right\} }\right|}}
   \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;For Set Union and Intersection, Nearest Neighbor, and Cause-Transitions, Jones and Harrold used an idea of Renieres and Reiss &lt;span class="citation"&gt;[&lt;a href="#ref-Renieres2003"&gt;7&lt;/a&gt;]&lt;/span&gt; and ranked a program's statements based on consideration of its System Dependence Graph (SDG) &lt;span class="citation"&gt;[&lt;a href="#ref-Horwitz1990"&gt;31&lt;/a&gt;]&lt;/span&gt;. The surrogate suspiciousness score of a program location &lt;span class="math inline"&gt;\(L\)&lt;/span&gt; is the inverse of the size of the smallest dependence sphere around &lt;span class="math inline"&gt;\(L\)&lt;/span&gt; that contains a faulty location. The surrogate scores are then used to calculate the Tarantula Rank Score (Def. 14).&lt;/p&gt;
-
 &lt;p&gt;In Jones's and Harrold's evaluation the authors did not use the Tarantula Rank Score directly but instead used a version of it that is normalized by program size:&lt;/p&gt;
-
 &lt;h4 id="definition.-tarantula-effectiveness-score-expense"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. Tarantula Effectiveness Score (Expense) &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2005"&gt;4&lt;/a&gt;]&lt;/span&gt;&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;This score is the proportion of program locations that do &lt;strong&gt;not&lt;/strong&gt; need to be examined to find a fault when the locations are examined in rank order. Formally, let &lt;span class="math inline"&gt;\(n\)&lt;/span&gt; be the total number of program locations, and let &lt;span class="math inline"&gt;\(r(f)\)&lt;/span&gt; be the Tarantula Rank Score (Def. 14) of the faulty location &lt;span class="math inline"&gt;\(f\)&lt;/span&gt;. Then the score is: &lt;span class="math display"&gt;\[\begin{aligned}
     \frac{n-r(f)}{n}
   \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;Using the normalized effectiveness score, Jones and Harrold directly compared the fault localization effectiveness of the techniques they considered. They did this in two ways. First, they presented a table that bucketed all the buggy versions of all the programs by their Tarantula Effectiveness Scores (given as percentages). Second, they presented a figure that showed the same data as a cumulative curve.&lt;/p&gt;
-
 &lt;p&gt;The core ideas of Jones' and Harrold's Effectivness/Expense score now underlie most evaluations of CBSFL techniques. Faulty statements are scored, ranked, rank-scored, normalized, and then aggregated over all programs and versions to provide an overall representation of a fault localization method's performance (e.g., &lt;span class="citation"&gt;[&lt;a href="#ref-Steimann2013"&gt;53&lt;/a&gt;]&lt;/span&gt;, [&lt;a href="#ref-Lucia2014"&gt;2&lt;/a&gt;], [&lt;a href="#ref-Sun2016"&gt;3&lt;/a&gt;], [&lt;a href="#ref-Wong2008"&gt;32&lt;/a&gt;]-[&lt;a href="#ref-Zheng2018"&gt;34&lt;/a&gt;]&lt;/span&gt;). However, some refinements have been made to both the Rank Score and the Effectiveness Score.&lt;/p&gt;
-
 &lt;h2 id="the-implied-debugging-models"&gt;The Implied Debugging Models&lt;/h2&gt;
-
 &lt;p&gt;It is worth (re)stating here the debugging model implied in the Jones and Harrold evaluation &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2005"&gt;4&lt;/a&gt;]&lt;/span&gt;. The programmer receives from the fault localization tool a ranked list of statements with the most suspicious statements at the top. The programmer then moves down the list examining each location in turn. If multiple statements have the same rank (the same suspiciousness score) all of those statements are examined before the programmer makes a determination on whether or not the bug has been located. This rule is captured in the mathematical definition of the Tarantula Rank Score (Definition 14).&lt;/p&gt;
-
 &lt;p&gt;For the non-CBSFL methods which Jones compared CBSFL against, the ranks of the program locations were once again compared using the method of Renieres and Reiss &lt;span class="citation"&gt;[&lt;a href="#ref-Renieres2003"&gt;7&lt;/a&gt;], [&lt;a href="#ref-Cleve2005"&gt;30&lt;/a&gt;], [&lt;a href="#ref-ChaoLiu2006"&gt;35&lt;/a&gt;]&lt;/span&gt; which is sometimes called &lt;em&gt;T-Score&lt;/em&gt;. As a reminder, this method computes a surrogate suspiciousness score based on the size of smallest &lt;em&gt;dependence sphere&lt;/em&gt;&lt;a href="#fn2" class="footnoteRef" id="fnref2"&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt; centered around the locations indicated in the fault localization report that contain the faulty code. This implies a debugging model in which the programmer examines each "shell" of the dependence sphere in turn before moving onto the next larger shell (see Figure 7 in &lt;span class="citation"&gt;[&lt;a href="#ref-Cleve2005"&gt;30&lt;/a&gt;]&lt;/span&gt; for a visualization).&lt;/p&gt;
-
 &lt;p&gt;Neither of these debugging models are realistic. Programmers may be reasonably expected to deviate from the ordering implied by the ranking. During the debugging process a programmer may use a variety of information sources — including intuition — to decide on the next element to examine. They may examine the same element multiple times. They may take a highly circuitous route to the buggy code or via intuition jump immediately to the fault. The models described above allow for none of these subtleties.&lt;/p&gt;
-
 &lt;h2 id="refinements-to-the-evaluation-framework"&gt;Refinements to the Evaluation Framework&lt;/h2&gt;
-
 &lt;p&gt;Wong &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation"&gt;[&lt;a href="#ref-Wong2008"&gt;32&lt;/a&gt;]&lt;/span&gt; introduced the most commonly used effectiveness score, which is called the &lt;span class="math inline"&gt;\(\mathcal{EXAM}\)&lt;/span&gt; score. This score is essentially the same as the Expense score (Def. 15) except that it gives the percentage of locations that need to be examined rather than those avoided.&lt;/p&gt;
-
 &lt;h4 id="definition.-mathcalexam-score"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. &lt;span class="math inline"&gt;\(\mathcal{EXAM}\)&lt;/span&gt; Score &lt;span class="citation"&gt;[&lt;a href="#ref-Wong2008"&gt;32&lt;/a&gt;]&lt;/span&gt;&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;&lt;span class="math display"&gt;\[\begin{aligned}
     \frac{r(f)}{n}
   \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;Ali &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation"&gt;[&lt;a href="#ref-Ali2009"&gt;37&lt;/a&gt;]&lt;/span&gt; identified an important problem with Jones' and Harrold's evaluation method: some fault localization techniques always assign different locations distinct suspiciousness scores, but others do not. Ali &lt;em&gt;et al.&lt;/em&gt; pointed out that when comparing techniques, the Tarantula Effectiveness Score may favor a technique that generates more distinct suspiciousness scores than the other techniques. The fix they propose is to assign to a location in a group of locations with the same suspiciousness score a rank score that reflects developers having to examine half the locations in the group on average.&lt;/p&gt;
-
 &lt;h4 id="definition.-standard-rank-score"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. Standard Rank Score&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;This score is the expected number of locations a programmer would inspect before locating a fault. Formally, given a set of locations &lt;span class="math inline"&gt;\(L\)&lt;/span&gt; with their suspiciousness scores &lt;span class="math inline"&gt;\(s(l)\)&lt;/span&gt; for &lt;span class="math inline"&gt;\(l \in L\)&lt;/span&gt;, the Rank Score for a location &lt;span class="math inline"&gt;\(l
   \in L\)&lt;/span&gt; is &lt;span class="citation"&gt;[&lt;a href="#ref-Ali2009"&gt;37&lt;/a&gt;]&lt;/span&gt;: &lt;span class="math display"&gt;\[\begin{aligned}
@@ -178,13 +142,9 @@ varying in form and granularity.
     }
   \end{aligned}\]&lt;/span&gt; Note: when we refer to the "Standard Rank Score" this is the definition we are referring to.&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;Parnin and Orso &lt;span class="citation"&gt;[&lt;a href="#ref-Parnin2011"&gt;6&lt;/a&gt;]&lt;/span&gt; conducted a study of programmers' actual use of a statistical fault localization tool (Tarantula &lt;span class="citation"&gt;[&lt;a href="#ref-Jones2002"&gt;1&lt;/a&gt;]&lt;/span&gt;). One of their findings was that programmers did not look deeply through the ranked list of locations and would instead only consider the first few locations. Consequently, they encouraged researchers to no longer report effectiveness scores as percentages. Most CBSFL studies now report absolute (non-percentage) rank scores. This is desirable for another reason: larger programs can have much larger absolute ranks than small programs, for the same percentage rank. Consider, for instance a program with 100,000 lines. If a fault's Rank Score is 10,000 its percentage Exam Score would be 10%. A 10% Exam Score might look like a reasonably good localization (and would be if the program had 100 lines) but no programmer will be willing to look through 10,000 lines. By themselves, percentage evaluation metrics (like Exam Score) produce inherently misleading results for large programs.&lt;/p&gt;
-
 &lt;p&gt;Steinmann &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation"&gt;[&lt;a href="#ref-Steimann2013"&gt;53&lt;/a&gt;]&lt;/span&gt; identified a number of threats to validity in CBSFL studies, including: heterogeneous subject programs, poor test suites, small sample sizes, unclear sample spaces, flaky tests, total number of faults, and masked faults. For evaluation they used the Standard Rank Score of Definition 17 modified to deal with &lt;span class="math inline"&gt;\(k\)&lt;/span&gt; faults tied at the same rank.&lt;/p&gt;
-
 &lt;h4 id="definition.-steinmann-rank-score"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. Steinmann Rank Score&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;This score is the expected number of locations a programmer would inspect before finding a fault when multiple faulty statements may have the same rank. Formally, given a set of locations &lt;span class="math inline"&gt;\(L\)&lt;/span&gt; with their suspiciousness scores &lt;span class="math inline"&gt;\(s(l)\)&lt;/span&gt; for &lt;span class="math inline"&gt;\(l \in L\)&lt;/span&gt;, the Rank Score for a location &lt;span class="math inline"&gt;\(l \in L\)&lt;/span&gt; is &lt;span class="citation"&gt;[&lt;a href="#ref-Steimann2013"&gt;53&lt;/a&gt;]&lt;/span&gt;: &lt;span class="math display"&gt;\[\begin{aligned}
     &amp;amp; {{\left|{ \left\{ x ~:~ x \in L \wedge s(x) &amp;gt; s(l) \right\} }\right|}}\\
@@ -196,76 +156,55 @@ varying in form and granularity.
         }
   \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;Moon &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation"&gt;[&lt;a href="#ref-Moon2014"&gt;38&lt;/a&gt;]&lt;/span&gt; proposed Locality Information Loss (LIL) as an alternative evaluation framework. LIL models the localization result as a probability distribution constructed from the suspiciousness scores:&lt;/p&gt;
-
 &lt;h4 id="definition.-lil-probability-distribution"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. LIL Probability Distribution&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;Let &lt;span class="math inline"&gt;\(\tau\)&lt;/span&gt; be a suspicious metric normalized to the &lt;span class="math inline"&gt;\([0,1]\)&lt;/span&gt; range of reals. Let &lt;span class="math inline"&gt;\(n\)&lt;/span&gt; be the number of locations in the program and let &lt;span class="math inline"&gt;\(L = \{l_1,\ldots,
   l_n\}\)&lt;/span&gt; be the set of locations. The constructed probability distribution is given by: &lt;span class="math display"&gt;\[\begin{aligned}
     P_{\tau}(l_i) = \frac{\tau(l_i)}{\sum^{n}_{j=1} \tau(l_j)}
   \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;LIL uses the Kullback-Leibler measure of divergence between distributions to compute a score indicating how different the distribution constructed for a suspiciousness metric of interest is from the distribution constructed from an "ideal" metric, which gives a score of 1 to the faulty location(s) and gives negligible scores to every other location. The advantage of the LIL framework is that it does not depend on a list of ranked statements and can be applied to non-statistical methods (using a synthetic &lt;span class="math inline"&gt;\(\tau\)&lt;/span&gt;). The disadvantage of LIL is that it does not reflect programmer effort (as the Rank Scores do). However, it may be a better metric to use when evaluating fault localization systems as components of automated fault repair systems.&lt;/p&gt;
-
 &lt;p&gt;Pearson &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation"&gt;[&lt;a href="#ref-Pearson2017"&gt;5&lt;/a&gt;]&lt;/span&gt; re-evaluated a number of previous results using new real world subject programs with real defects and test suites. In contrast to previous work they made use of statistical hypothesis testing and confidence intervals to characterize the uncertainty of the results. To evaluate the performance of each technique under study they used the &lt;span class="math inline"&gt;\(\mathcal{EXAM}\)&lt;/span&gt; score, reporting best, average, and worst case results for multi-statement faults.&lt;/p&gt;
-
 &lt;h1 id="a-new-approach-to-evaluation"&gt;A New Approach to Evaluation&lt;/h1&gt;
-
 &lt;p&gt;Programmers consider multiple sources of information when performing debugging tasks and use them to guide their exploration of the source code. In our new approach to evaluating fault localization techniques, a model is constructed for each technique &lt;span class="math inline"&gt;\(T\)&lt;/span&gt; and each program &lt;span class="math inline"&gt;\(P\)&lt;/span&gt; of how a programmer using &lt;span class="math inline"&gt;\(T\)&lt;/span&gt; might move from examining one location in &lt;span class="math inline"&gt;\(P\)&lt;/span&gt; to examining another. The model for &lt;span class="math inline"&gt;\(T\)&lt;/span&gt; and &lt;span class="math inline"&gt;\(P\)&lt;/span&gt; is used to compute a statistical estimate of the expected number of moves a programmer using &lt;span class="math inline"&gt;\(T\)&lt;/span&gt; would make before encountering a fault in &lt;span class="math inline"&gt;\(P\)&lt;/span&gt;. This estimate is used to compute a "hitting-time rank score" for technique &lt;span class="math inline"&gt;\(T\)&lt;/span&gt;. The scores for all the techniques can then be compared to determine which performed best on program &lt;span class="math inline"&gt;\(P\)&lt;/span&gt;. This section presents the general approach and specific example models. The models make use of CBSFL reports and information about static program structure and dynamic control flow.&lt;/p&gt;
-
 &lt;p&gt;In order to support very flexible modeling and tractable analysis of debugging processes, we use first-order Markov chains (described below) to model them. Our first example models the debugging process assumed in previous work, in which a programmer follows a ranked list of suspicious program locations until a fault is found. Then we describe how to incorporate structural information about the program (which could influence a programmer's debugging behavior). Finally, we show how to model and compare CBSFL to a recent &lt;em&gt;Suspicious Behavioral Based Fault Localization&lt;/em&gt; (SBBFL) algorithm &lt;span class="citation"&gt;[&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt; that identifies suspicious subgraphs of dynamic control flow graphs. This third model demonstrates the flexibility of our approach and could be adapted to evaluate other SBBFL techniques &lt;span class="citation"&gt;[&lt;a href="#ref-Cheng2009a"&gt;8&lt;/a&gt;], [&lt;a href="#ref-Liu2005"&gt;39&lt;/a&gt;]-[&lt;a href="#ref-Yousefi2013"&gt;47&lt;/a&gt;]&lt;/span&gt;. It also demonstrates that our approach can be used to compare statistical and non-statistical fault localization techniques under the same assumptions about programmer debugging behavior.&lt;/p&gt;
-
 &lt;p&gt;It is important to emphasize that the quality and value of the evaluation results obtained with our approach depend primarily on the appropriateness of the model of the debugging process that is created. This model represents the evaluators' knowledge about likely programmer behavior during debugging and the factors that influence it. To avoid biasing their evaluation, evaluators must commit to an evaluation model and refrain from "tweaking" it after applying it to the data. &lt;span class="citation"&gt;[&lt;a href="#ref-Ioannidis2005"&gt;48&lt;/a&gt;]&lt;/span&gt;.&lt;/p&gt;
-
 &lt;h2 id="background-on-ergodic-markov-chains"&gt;Background on Ergodic Markov Chains&lt;/h2&gt;
-
 &lt;p&gt;A finite state Markov chain consists of a set of &lt;em&gt;states&lt;/em&gt; &lt;span class="math inline"&gt;\(S = \{s_1, s_2,
 ..., s_n \}\)&lt;/span&gt; and an &lt;span class="math inline"&gt;\(n \times n\)&lt;/span&gt; matrix &lt;span class="math inline"&gt;\({\bf P}\)&lt;/span&gt;, called the &lt;em&gt;transition matrix&lt;/em&gt; &lt;span class="citation"&gt;[&lt;a href="#ref-Grinstead2012"&gt;49&lt;/a&gt;]&lt;/span&gt;. Entry &lt;span class="math inline"&gt;\({\bf P}_{i,j}\)&lt;/span&gt; gives the probability for a &lt;em&gt;Markov process&lt;/em&gt; in state &lt;span class="math inline"&gt;\(s_i\)&lt;/span&gt; to move to state &lt;span class="math inline"&gt;\(s_j\)&lt;/span&gt;. The probability of a Markov process moving from one state to another only depends on the state the process is currently in. This is known as the &lt;em&gt;Markov property&lt;/em&gt;.&lt;/p&gt;
-
 &lt;p&gt;A Markov chain is said to be &lt;em&gt;ergodic&lt;/em&gt; if, given enough steps, it can move from any state &lt;span class="math inline"&gt;\(s_i\)&lt;/span&gt; to any state &lt;span class="math inline"&gt;\(s_j\)&lt;/span&gt;, i.e. &lt;span class="math inline"&gt;\({\textrm{Pr}\left[{s_i \xrightarrow{*} s_j}\right]} &amp;gt; 0\)&lt;/span&gt;. Thus, there are no states in an ergodic chain that the process can never leave.&lt;/p&gt;
-
 &lt;p&gt;Ergodic Markov chains have &lt;em&gt;stationary distributions&lt;/em&gt;. Let &lt;span class="math inline"&gt;\({\bf v}\)&lt;/span&gt; be an arbitrary probability vector. The stationary distribution is a probability vector &lt;span class="math inline"&gt;\({\bf w}\)&lt;/span&gt; such that &lt;span class="math display"&gt;\[\lim_{n \rightarrow \infty} {\bf v}{\bf P}^{n} = {\bf w}\]&lt;/span&gt; The vector &lt;span class="math inline"&gt;\({\bf w}\)&lt;/span&gt; is a fixed point on &lt;span class="math inline"&gt;\({\bf P}\)&lt;/span&gt; implying &lt;span class="math inline"&gt;\({\bf w}{\bf P} = {\bf
 w}\)&lt;/span&gt;. Stationary distributions give the long term behavior of a Markov chain - meaning that after many steps the chance a Markov process ends in state &lt;span class="math inline"&gt;\(s_i\)&lt;/span&gt; is given by &lt;span class="math inline"&gt;\({\bf w}_i\)&lt;/span&gt;.&lt;/p&gt;
-
 &lt;p&gt;The &lt;em&gt;expected hitting time&lt;/em&gt; of a state in a Markov chain is the expected number of steps (transitions) a Markov process will make before it encounters the state for the first time. Our new evaluation metric (&lt;span class="math inline"&gt;\(\text{HT}_{\text{Rank}}\)&lt;/span&gt;) uses the expected hitting time of the state representing a faulty program location to score a fault localization technique's performance. Lower expected hitting times yield better localization scores.&lt;/p&gt;
-
 &lt;h4 id="definition.-expected-hitting-time"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. Expected Hitting Time&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;Consider a Markov chain with transition matrix &lt;span class="math inline"&gt;\({\bf P}\)&lt;/span&gt;. Let &lt;span class="math inline"&gt;\(T_{i,j}\)&lt;/span&gt; be a random variable denoting the time at which a Markov process that starts at state &lt;span class="math inline"&gt;\(s_i\)&lt;/span&gt; reaches state &lt;span class="math inline"&gt;\(s_j\)&lt;/span&gt;. The expected hitting time (or just hitting time) of state &lt;span class="math inline"&gt;\(s_j\)&lt;/span&gt; for such a process is the expected value of &lt;span class="math inline"&gt;\(T_{i,j}\)&lt;/span&gt; &lt;span class="math display"&gt;\[\begin{aligned}
     {\textrm{E}\left[{T_{i,j}}\right]} = \sum_{k=1}^{\infty} k \cdot {\textrm{Pr}\left[{T_{i,j}=k}\right]}
   \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;In general, a hitting time for a single state may be computed in &lt;span class="math inline"&gt;\(\mathcal{O}(n^3)\)&lt;/span&gt; steps &lt;span class="citation"&gt;[&lt;a href="#ref-Kemeny1960"&gt;50&lt;/a&gt;]&lt;/span&gt;. Somewhat less time is required for sparse transition matrices &lt;span class="citation"&gt;[&lt;a href="#ref-Davis2004"&gt;51&lt;/a&gt;]&lt;/span&gt;. Chapter 11 of Grinstead and Snell &lt;span class="citation"&gt;[&lt;a href="#ref-Grinstead2012"&gt;49&lt;/a&gt;]&lt;/span&gt; provides an accessible introduction to hitting time computation.&lt;/p&gt;
-
 &lt;p&gt;Some programs may have too many elements for exact hitting time computations (our case study contains one such program). To deal with large programs the expected hitting time can also be estimated by taking repeated random walks through the Markov chain to obtain a sample of hitting times. The sample can then be used to estimate the expected hitting time by computing the sample mean.&lt;a href="#fn3" class="footnoteRef" id="fnref3"&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
-
 &lt;h2 id="expected-hitting-time-rank-score-textrmht_textrmrank"&gt;Expected Hitting Time Rank Score (&lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;)&lt;/h2&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;Node&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nx"&gt;Has&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;bool&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="kc"&gt;nil&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;
-&lt;span class="o"&gt;++&lt;/span&gt;      &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;k&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Key&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="o"&gt;--&lt;/span&gt;      &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;k&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Key&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Key&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;left&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Has&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;right&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Has&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;Node&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Has&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;bool&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;nil&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;
+&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Key&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;left&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Has&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;right&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Has&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;div style="margin-right: 2em; margin-left: 2em;"&gt;
 &lt;strong&gt;Listing 1.&lt;/strong&gt;
 A bug in the implementation of the "Has" method in an AVL tree.
 &lt;/div&gt;
-
 &lt;table&gt;
 &lt;caption&gt; &lt;span style="font-variant: small-caps;"&gt;Table I: Reduced CBSFL Results for Listing 1&lt;/span&gt; &lt;/caption&gt;
 &lt;thead&gt;
@@ -321,33 +260,26 @@ A bug in the implementation of the "Has" method in an AVL tree.
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
 &lt;p&gt;&lt;img src="images/scam/markov-rank-list.png" alt="image" /&gt;
 &lt;div style="margin-top: -2em; margin-right: 2em; margin-left: 2em;"&gt;
 &lt;strong&gt;Fig. 1:&lt;/strong&gt; A simplified version of the Markov model for evaluating the ranked list of suspicious locations for the bug in Listing 1.
 &lt;/div&gt;
 &lt;/p&gt;
-
 &lt;p&gt;
 &lt;img src="images/scam/markov-rank-list-with-jumps.png" alt="image" /&gt;
 &lt;div style="margin-top: -2em; margin-right: 2em; margin-left: 2em;"&gt;
 &lt;strong&gt;Fig. 2:&lt;/strong&gt; An example Markov model showing how “jump” edges can be added to represent how a programmer might examine locations which are near the location they are currently reviewing. Compare to Figure 1.
 &lt;/div&gt;
 &lt;/p&gt;
-
 &lt;p&gt;This section introduces our new evaluation metric &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;. &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; produces a "rank score" similar to the score produced by the Standard Rank Score of Definition 17. In the standard score, program locations are ranked by their CBSFL suspiciousness scores. A location's position in the ordered list is that location's Rank Score (see the definition for details).&lt;/p&gt;
-
 &lt;p&gt;The new &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; score is obtained as follows:&lt;/p&gt;
-
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;A Markov debugging model is supplied (as a Markov chain).&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The expected hitting times (Def. 22) for each location in the program are computed.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The locations are ordered by their expected hitting times.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; for a location is its position in the ordered list.&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-
 &lt;h4 id="definition.-textrmht_textrmrank"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;Given a set of locations &lt;span class="math inline"&gt;\(L\)&lt;/span&gt; and a Markov chain &lt;span class="math inline"&gt;\((S, {\bf P})\)&lt;/span&gt; that represents the debugging process and has start state &lt;span class="math inline"&gt;\(0\)&lt;/span&gt;, the Hitting-Time Rank Score &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; for a location &lt;span class="math inline"&gt;\(l \in L\cap S\)&lt;/span&gt; is: &lt;span class="math display"&gt;\[\begin{aligned}
     &amp;amp; {{\left|{ \left\{ x ~:~
@@ -366,39 +298,23 @@ A bug in the implementation of the "Has" method in an AVL tree.
     }
   \end{aligned}\]&lt;/span&gt; Note: this is almost identical to Definition 17, but it replaces the suspiciousness score with the expected hitting time. Definition 18 can also be modified in a similar way for multi-fault programs.&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h2 id="markov-debugging-models"&gt;Markov Debugging Models&lt;/h2&gt;
-
 &lt;p&gt;&lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; is parameterized by a "debugging model" expressed as a Markov chain. As noted above, a Markov chain is made up a of set of states &lt;span class="math inline"&gt;\(S\)&lt;/span&gt; and transition matrix &lt;span class="math inline"&gt;\({\bf P}\)&lt;/span&gt;. In a debugging model, there are two types of states: 1) textual locations in the source code of a program and 2) synthetic states. Figures 6 and 7 show examples of debugging models constructed for an implementation of an AVL tree. In the figures, the square nodes are Markov states representing basic blocks in the source code. (Note that CBSFL techniques typically compute the same suspiciousness score for all statements in a basic block.) The smaller, circular nodes are Markov states which are synthetic. They are there for structural reasons but do not represent particular locations in the source code. The edges in the graphs represent possible transitions between states, and they are annotated with transition probabilities. All outgoing edges from a node should sum to 1.&lt;/p&gt;
-
 &lt;p&gt;In a Markov debugging model a programmer is represented by the Markov process. When the Markov process is simulated the debugging actions of a programmer are being simulated. This is a "first order" simulation, which means the actions of the simulated programmer (Markov process) only depend on the current location being examined. Thus, the Markov model provides a simple and easy-to-construct mathematical model of a programmer looking through the source code of a program to find the faulty statement(s). The simulated programmer begins at some starting state and moves from state to state until the faulty location is found. We require that all Markov models are &lt;em&gt;ergodic&lt;/em&gt;, ensuring that every state (program location) is eventually reachable in the model.&lt;/p&gt;
-
 &lt;h2 id="an-extensible-markov-model-for-cbsfl"&gt;An Extensible Markov Model for CBSFL&lt;/h2&gt;
-
 &lt;p&gt;As described in Section 12 a CBSFL report is made up of a ranked list of locations in the subject program. Our extensible Markov model includes a representation of the CBSFL ranked list. By itself, using &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; with a Markov model of a ranked list is just a mathematically complex way of restating Definition 17. However, with a Markov model of a CBSFL report in hand we can add further connections &lt;em&gt;between&lt;/em&gt; program locations (represented as Markov states) to represent other actions a programmer might take besides traversing down the ranked list. For instance, in Section 25 we note that programmers use graphical debuggers to traverse the dynamic control flow in a program - allowing them to visit statements in the order they are executed. We embed the dynamic control flow graph into the transition matrix of the Markov model to reflect this observation.&lt;/p&gt;
-
 &lt;h3 id="a-ranked-list-as-a-markov-chain"&gt;A Ranked List as a Markov Chain&lt;/h3&gt;
-
 &lt;p&gt;Figure 6 provides a graphical example of a Markov chain for a ranked list. Since the nodes in a graphical representation of a Markov chain represent states and the edges represent the transition matrix, the probabilities associated with outgoing edges of each node should sum to 1. In Figure 6, each circular node represents a rank in the list and the square nodes represent associated program locations, which are identified by their function names and static basic-block id number. The square nodes that are grouped together all have the same suspiciousness scores. We will provide here a brief, informal description of the structure of the transition matrix. A formal description of the chain is provided in Definition 28 in the Appendix. The exact choice of transition matrix in the formal chain was driven by a proof of equivalence between &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; with this Markov model (as defined in Definition 28) and the Standard Rank Score (Definition 17).&lt;a href="#fn4" class="footnoteRef" id="fnref4"&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;The transition matrix boils down to a couple of simple connections. The nodes representing groups form a doubly linked list (see the circular nodes in Figure 6). The ordering of the "group nodes" matches the ordering of the ranks in the ranked list. The links between the node are weighted so that a Markov process will tend to end up in a highly ranked node. More formally, the model was constructed so that if you ordered the Markov states by the probabilities in the &lt;em&gt;stationary distribution&lt;/em&gt; (which characterizes the long term behavior of the Markov process) from highest to lowest that ordering would match the order of the ranked list.&lt;/p&gt;
-
 &lt;p&gt;The second type of connection is from a group node to its program location nodes. Each location node connects to exactly one group node. The transition probabilities (as shown in Figure 6) are set up such that there is an equal chance of moving to any of the locations in the group.&lt;/p&gt;
-
 &lt;p&gt;The final connection is from a location node back to its group node. This is always assigned probability &lt;span class="math inline"&gt;\(1\)&lt;/span&gt; (see Figure 6). Again, see Definition 28 in the Appendix for the formal description.&lt;/p&gt;
-
 &lt;h3 id="adding-local-jumps-to-the-cbsfl-chain"&gt;Adding Local Jumps to the CBSFL Chain&lt;/h3&gt;
-
 &lt;p&gt;Figure 7 shows a modified version of the model in Figure 6. The modified model allows the Markov process to jump or "teleport" between program locations which are not adjacent in the CBSFL Ranked List. These "jump" connections are setup to model other ways a programmer might move through the source code of a program when debugging (see below). In the figure, these jumps are shown with added red and blue edges. For the Markov model depicted in the figure, the Markov process will with probability &lt;span class="math inline"&gt;\(\frac{1}{2}\)&lt;/span&gt; move back to the rank list and with probability &lt;span class="math inline"&gt;\(\frac{1}{2}\)&lt;/span&gt; teleport or jump to an alternative program location that is structurally adjacent (in the program's source code) to the current one.&lt;/p&gt;
-
 &lt;p&gt;Informally, the modified model is set up so that if the Markov process is in a state &lt;span class="math inline"&gt;\(s_i\)&lt;/span&gt; which represents program location &lt;span class="math inline"&gt;\(l_x\)&lt;/span&gt; it will with probability &lt;span class="math inline"&gt;\(p_{\text{jump}}\)&lt;/span&gt; move to a state &lt;span class="math inline"&gt;\(s_j\)&lt;/span&gt; which represents program location &lt;span class="math inline"&gt;\(l_y\)&lt;/span&gt; instead of returning to the rank list. The locations that the process can move to from &lt;span class="math inline"&gt;\(s_i\)&lt;/span&gt; are defined in a jump matrix &lt;span class="math inline"&gt;\({\bf J}\)&lt;/span&gt; which is parameter to the Markov model. The matrix &lt;span class="math inline"&gt;\({\bf J}\)&lt;/span&gt; encodes assumptions or observations about how programmers behave when they are debugging. A formal definition of the CBSFL chain with jumps is presented in the Appendix (see Definition 29).&lt;/p&gt;
-
 &lt;p&gt;Definition 26 defines one general-purpose jump matrix &lt;span class="math inline"&gt;\({\bf
 J}\)&lt;/span&gt;. It encodes two assumptions about programmer behavior. First, when a programmer considers a location inside a function they will also potentially examine other locations in that function. Second, when a programmer is examining a location they may examine locations preceding or succeeding it the dynamic control flow (e.g., with the assistance of a graphical debugger). Definition 26 encodes both assumptions by setting the relevant &lt;span class="math inline"&gt;\({\bf
 J}_{i,j}\)&lt;/span&gt; entries to &lt;span class="math inline"&gt;\(1\)&lt;/span&gt;.&lt;/p&gt;
-
 &lt;h4 id="definition.-spacial-behavioral-jumps"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. Spacial + Behavioral Jumps&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;&lt;span class="math display"&gt;\[\begin{aligned}
     {\bf J}_{i,j} &amp;amp;=
@@ -421,28 +337,19 @@ J}_{i,j}\)&lt;/span&gt; entries to &lt;span class="math inline"&gt;\(1\)&lt;/spa
     \right.
   \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;In addition to &lt;span class="math inline"&gt;\({\bf J}\)&lt;/span&gt;, the new chain is parameterized by the probability &lt;span class="math inline"&gt;\(p_{\text{jump}}\)&lt;/span&gt; of a jump occurring when the process visits a state representing a program location. As &lt;span class="math inline"&gt;\(p_{\text{jump}} \rightarrow 0\)&lt;/span&gt; the transition matrix of new chain approaches the transition matrix for the chain in Definition 28 (see the Appendix). We suggest setting &lt;span class="math inline"&gt;\(p_{\text{jump}}\)&lt;/span&gt; to &lt;span class="math inline"&gt;\(0.5\)&lt;/span&gt; in the absence of data from a user study.&lt;/p&gt;
-
 &lt;h2 id="modeling-sbbfl"&gt;Modeling SBBFL&lt;/h2&gt;
-
 &lt;p&gt;As noted earlier, Markov models can be constructed for alternative fault localization techniques. Suspicious Behavior Based Fault Localization (SBBFL) &lt;span class="citation"&gt;[&lt;a href="#ref-Cheng2009a"&gt;8&lt;/a&gt;], [&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt; techniques return a report containing a ranked list of subgraphs or subtrees. Each subgraph contains multiple program locations usually drawn from a dynamic control flow graph of the program. Comparing this output to CBSFL using the Standard Rank Score can be difficult as a location may appear multiple times in graphs returned by the SBBFL algorithm. However, &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; can produce an accurate and comparable score by utilizing the expected hitting times of the states representing the faulty location. Definition 30 in the Appendix provides an example Markov chain which models a ranked list of suspicious subgraphs. It can be extended (not shown due to space constraints) to add a Jump matrix in the manner of Definition 29 (see the Appendix).&lt;/p&gt;
-
 &lt;h1 id="case-study"&gt;Case Study&lt;/h1&gt;
-
 &lt;p&gt;To illustrate our new approach to evaluation, we performed a case study in which it was used to evaluate several fault localization techniques of two different types: CBSFL &lt;span class="citation"&gt;[&lt;a href="#ref-Sun2016"&gt;3&lt;/a&gt;], [&lt;a href="#ref-Jones2005"&gt;4&lt;/a&gt;]&lt;/span&gt; and Suspicious-Behavior-Based Fault Localization (SBBFL) &lt;span class="citation"&gt;[&lt;a href="#ref-Cheng2009a"&gt;8&lt;/a&gt;], [&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt;. We investigated the following research questions:&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;RQ1&lt;/strong&gt;: How Accurate is &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Estimation? (Table III)&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;RQ2&lt;/strong&gt;: Does it make a difference whether &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; or the Standard Rank Score is used? (Table IV, Figs. 5 and 4)&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;We also considered an important general question about fault localization that a typical research study might investigate.&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;strong&gt;RQ3&lt;/strong&gt;: Which kind of fault localization technique performs better, SBBFL or CBSFL? (Table IV)&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;In order to use an SBBFL technique, more complex profiling data (dynamic control flow graphs or DCFGs) are needed than for CBSFL (which requires only coverage data). Therefore, a more specialized profiler was required for this study. We used Dynagrok (https://github.com/timtadh/dynagrok) &lt;span class="citation"&gt;[&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt; - a profiling tool for the Go Programming Language. We also reused subject programs used in a previous study &lt;span class="citation"&gt;[&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt; (see Table II). They are all real-world Go programs of various sizes that were injected with mutation faults. The test cases for the programs are all either real-world inputs or test cases from the system regression testing suites that are distributed with the programs. Six representative suspiciousness metrics were considered: Ochiai, F1, Jaccard, Relative Ochiai, Relative F1, and Relative Jaccard &lt;span class="citation"&gt;[&lt;a href="#ref-Sun2016"&gt;3&lt;/a&gt;]&lt;/span&gt;. These measures were all previously adapted to the SBBFL context &lt;span class="citation"&gt;[&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt;.&lt;/p&gt;
 
 &lt;table&gt;
@@ -488,19 +395,14 @@ J}_{i,j}\)&lt;/span&gt; entries to &lt;span class="math inline"&gt;\(1\)&lt;/spa
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
 &lt;div style="margin-right: 2em; margin-left: 2em;"&gt;
 &lt;p&gt;Note: The AVL tree is in the examples directory.&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;All applications of techniques were replicated to address random variation in the results as the SBBFL algorithm that we used employs sampling &lt;span class="citation"&gt;[&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt;. The results from the replications were averaged and, unless otherwise noted, the average Rank Scores are presented. Finally, the exact &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; score was computed for 4 of the 5 programs. For the fifth program, the Go compiler, although &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; can be computed exactly, this requires so much time for each run to complete (&lt;span class="math inline"&gt;\(\approx\)&lt;/span&gt; 4 hours) that it precluded computing exact results for each program version (including all models for both SBBFL and CBSFL). Therefore, expected hitting times for the Go compiler were estimated using the method outlined in Section 21. Specifically, we collected 500 samples of hitting times of all states in the Markov debugging model by taking random walks (with a maximum walk length of 1,000,000 steps). The expected hitting times were estimated by taking the sample mean.&lt;/p&gt;
-
 &lt;h2 id="the-chosen-textrmht_textrmrank-model"&gt;The Chosen &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Model&lt;/h2&gt;
-
 &lt;p&gt;To avoid bias, it was important to choose the &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; model before the case study was conducted, which we did. We used &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; with jumps (Definition 29) together with the jump matrix specified in Definition 26. We chose this matrix because we believe the order in which programmers examine program elements during debugging is driven in part by the structure of the program, even when they are debugging with the assistance of a fault localization report. The &lt;span class="math inline"&gt;\(p_{\text{jump}}\)&lt;/span&gt; probability was set to &lt;span class="math inline"&gt;\(0.5\)&lt;/span&gt; to indicate an equal chance of the programmer using or not using the fault localization report. A future large scale user study could empirically characterize the behavior of programmers while performing debugging to inform the choice of the &lt;span class="math inline"&gt;\(p_{\text{jump}}\)&lt;/span&gt; parameter. However, without such a study it is reasonable to use &lt;span class="math inline"&gt;\(0.5\)&lt;/span&gt;, which indicates "no information."&lt;/p&gt;
-
 &lt;h2 id="rq1-how-accurate-is-textrmht_textrmrank-estimation"&gt;RQ1: How Accurate is &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Estimation?&lt;/h2&gt;
-
 &lt;table&gt;
 &lt;caption&gt; &lt;span style="font-variant: small-caps;"&gt;&lt;span&gt;&lt;span class="math inline"&gt;Table III: \(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Estimation Error&lt;/span&gt; &lt;/caption&gt;
 &lt;thead&gt;
@@ -522,15 +424,12 @@ J}_{i,j}\)&lt;/span&gt; entries to &lt;span class="math inline"&gt;\(1\)&lt;/spa
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
 &lt;div style="margin-right: 2em; margin-left: 2em;"&gt;
 &lt;p&gt;Percentage error of the estimated &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; versus the exact &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; (see note under Def 22). Letting &lt;span class="math inline"&gt;\(y\)&lt;/span&gt; be the exact &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; and &lt;span class="math inline"&gt;\(\hat{y}\)&lt;/span&gt; be the estimated &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;, the percentage error is &lt;span class="math inline"&gt;\(\frac{|\hat{y} - y|}{y} * 100\)&lt;/span&gt;. &lt;span&gt;-2.0em&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;For large programs the cost of computing the expected hitting times for &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; may be too high. Therefore, we have suggested estimating the expected hitting times (see note under Definition 22). To assess the accuracy of estimating the expected hitting time instead of computing it exactly, we did both for four subject programs, using the Relative F1 measure. For each program version, SFL technique, and Markov chain type the estimation error was computed as a percentage of the true value. Table III presents descriptive statistics characterizing these errors for each subject program. The last row of the table gives p-values from a independent two-sample T-test comparing the estimated &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; values and the exact &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; values. The null hypothesis is that the expected estimate &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; is the same as the expected exact &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;. All p-values are well above the &lt;span class="math inline"&gt;\(0.05\)&lt;/span&gt; significance level that would suggest rejecting the null hypothesis. Therefore, we accept the null hypotheses that the &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; estimates are not significantly different from the exact &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; values. As indicated in the table, the maximum estimation error was around 3.7%. Therefore, if estimation is used we recommend considering &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; scores that are within 5% of each other to be equivalent.&lt;/p&gt;
-
 &lt;h2 id="rq2-does-it-make-a-difference-whether-textrmht_textrmrank-or-the-standard-rank-score-is-used"&gt;RQ2: Does it make a difference whether &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; or the Standard Rank Score is used? &lt;/h2&gt;
-
 &lt;table&gt;
 &lt;caption&gt; &lt;span style="font-variant: small-caps;"&gt;Table IV: Fault Localization Performance&lt;/span&gt; &lt;/caption&gt;
 &lt;thead&gt;
@@ -853,7 +752,6 @@ J}_{i,j}\)&lt;/span&gt; entries to &lt;span class="math inline"&gt;\(1\)&lt;/spa
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
 &lt;div style="margin-right: 2em; margin-left: 2em;"&gt;
 &lt;p&gt;Summarizes the fault localization performance for CBSFL and SBBFL. Each fault localization technique is evaluated using both the Standard Rank Score and the &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Score (Defs. 28 and 25). The mean rank scores are shown as well as the percentage changes from CBSFL to SBBFL. Lower ranks scores indicate better fault localization performance. A negative percentage difference (%&lt;span class="math inline"&gt;\(\Delta\)&lt;/span&gt;) indicates SBBFL &lt;strong&gt;improved&lt;/strong&gt; on CBSFL. A positive %&lt;span class="math inline"&gt;\(\Delta\)&lt;/span&gt; indicates CBSFL &lt;strong&gt;outperformed&lt;/strong&gt; SBBFL.&lt;/p&gt;
 &lt;/div&gt;
@@ -875,46 +773,28 @@ Comparison of CBSFL vs SBBFL average ranks (on log scale), under the Standard Ra
 &lt;/p&gt;
 
 &lt;p&gt;Table IV details the fault localization performance we observed for CBSFL and SBBFL under the Standard Rank Score and &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; using six different suspiciousness metrics. The results obtained with &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; were substantially different from those obtained with the Standard Rank Score, in terms of absolute ranks and percentage differences (%&lt;span class="math inline"&gt;\(\Delta\)&lt;/span&gt;). The mean Standard Rank Score for SBBFL is lower than that for CBSFL for &lt;em&gt;every&lt;/em&gt; suspiciousness metric and subject program. By contrast, for some programs and metrics, the mean &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; scores for CBSFL are lower than those for SBBFL. The mean &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; scores are also higher than the mean Standard Rank Scores overall.&lt;/p&gt;
-
 &lt;p&gt;Another way to look at the same phenomenon is shown in Figure 5, which displays empirical probability density plots for the program Otto. Each plot compares the performance of CBSFL to SBBFL using a different evaluation method. The top plot uses the Standard Rank Score while the other plot uses &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;. As shown in the top plot, the Standard Rank Scores for both CBSFL and SBBFL are concentrated mainly between 0 and 15, with no values over 60. In the &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; plot, by contrast, the scores for both CBSFL and SBBFL are much more widely dispersed. Figure 4 compares CBSFL to SBBFL with respect to average ranks (on a log scale), under the Standard Rank Score (top) and &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; (bottom), for each version of the program Otto. The suspiciousness metric is RelativeF1. The results for &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; are quite distict from those for the Standard Rank Score, with CBSFL showing much more variability under &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;.&lt;/p&gt;
-
 &lt;p&gt;These results provide confirmation for the theoretical motivation for &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;. Recall that one of the problems with the Standard Rank Score is that it does not account for either the differing structures of fault localization reports or differences in report granularity. SBBFL and CBSFL differ in both structure (ranked CFG fragments vs. ranked basic blocks) and granularity (multiple basic blocks vs. lone basic blocks). We expected the Standard Rank Score to unfairly favor SBBFL because it does not account for these differences and that is exactly what we see in Table IV. Under the Standard Rank Score SBBFL outperforms CBSFL on every program using every suspiciousness score.&lt;/p&gt;
-
 &lt;p&gt;To be explicit, SBBFL reports ranked CFG fragments, each of which contains multiple basic blocks. Under the Standard Rank Score those fragments are ranked and the score is the rank of the first fragment in which the bug appears. CBSFL will, by contrast, rank each basic block independently. Now, consider the case where SBBFL reports a CFG fragment at rank 1 that contains 10 basic blocks, one of which contains the bug. Suppose CBSFL also reports each of those basic blocks as maximally suspicious. The Standard Rank Score for CBSFL will be 5 while for SBBFL it will be 1. Thus, the Standard Rank Score is unfairly biased toward SBBFL and against CBSFL. This is once again reflected in Table IV. The new metric &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; does not suffer from this problem. As shown in the table and discussed below, SBBFL often but not always outperforms CBSFL under &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;, suggesting that the theoretical correction we expect is indeed occurring. We therefore conclude that &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; provides a better metric for comparison when reports differ in structure and granularity.&lt;/p&gt;
-
 &lt;h2 id="rq3-which-kind-of-fault-localization-technique-performs-better-sbbfl-or-cbsfl"&gt;RQ3: Which kind of fault localization technique performs better, SBBFL or CBSFL?&lt;/h2&gt;
-
 &lt;p&gt;Referring once again to Table IV, the &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; results indicate that SBBFL often but not always outperformed CBSFL. In particular, when the measure used was Relative F1 (which was found to be the best-performing measure for SBBFL in &lt;span class="citation"&gt;[&lt;a href="#ref-Henderson2018"&gt;9&lt;/a&gt;]&lt;/span&gt;), SBBFL performed better for all programs but the compiler. However, when Ochiai was used CBSFL outperformed SBBFL, although CBSFL with Relative F1 outperforms CBSFL with Ochiai. This indicates that SBBFL and Relative F1 may be the best combination tested with one caveat. For the compiler, SBBFL never outperforms CBSFL. However, CBSFL also performs very badly on this large program. This indicates that while CBSFL beats SBBFL on this program neither technique is effective at localizing faults in it.&lt;/p&gt;
-
 &lt;h2 id="study-limitations"&gt;Study Limitations&lt;/h2&gt;
-
 &lt;p&gt;The purpose of our case study is to illustrate the application of &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt;. It was not designed to settle controversies about the suspiciousness metrics we employed. Second, this study used real programs and tests but used synthetic bugs. In the future, we intend to provide an automated analysis system that builds upon the Defects4J dataset &lt;span class="citation"&gt;[&lt;a href="#ref-Just2014"&gt;52&lt;/a&gt;]&lt;/span&gt;. Third, our study included a representative but not exhaustive set of suspiciousness metrics &lt;span class="citation"&gt;[&lt;a href="#ref-Lucia2014"&gt;2&lt;/a&gt;]&lt;/span&gt; and may not generalize to other metrics.&lt;/p&gt;
-
 &lt;p&gt;Finally, no user-study was performed to validate the chosen debugging model against actions an actual programmer would take. Although we would have liked to perform such a study at this time, our resources do not permit us to do so. To be conclusive, such a study would need to be large-scale and to utilize professional programmers who are skilled in traditional debugging and are able to spend significant time learning to use SFL techniques with comparable skill.&lt;/p&gt;
-
 &lt;h1 id="discussion"&gt;Discussion&lt;/h1&gt;
-
 &lt;p&gt;A new, flexible approach to evaluating automatic fault localization techniques was presented. The new &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Score provides a principled and flexible way of comparing different fault localization techniques. It is robust to differences in granularity and allows complex fault localization reports (such as those produced by SBBFL) to be incorporated. Unlike previous attempts at cross-technique comparison (see Section 12) the final scores are based on the expected number of steps through a Markov model. The model can incorporate both information from the chosen fault localization technique as well as other information available to the programmer (such as the structure of the program). The &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Score is sensitive to the model used (see Fig 5) and hence the choice of model is important. The choice should be made based on 1) the fault localization technique(s) being evaluated and 2) observations of programmer behavior. Choosing a model after viewing the results (and picking the model that gives the "best" results) leads to a biased outcome.&lt;/p&gt;
-
 &lt;h2 id="recommendations-for-researchers" class="unnumbered"&gt;Recommendations for Researchers&lt;/h2&gt;
-
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;Report both Standard Rank Score and &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Score.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;If evaluating multi-line faults the Steinmann Rank Score (Def. 18) should be used as the basis for defining the &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; Score.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Report which model is being used and why it was chosen, and include a description of the model.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;In the absence of user study data, set &lt;span class="math inline"&gt;\(p_{\text{jump}} = .5\)&lt;/span&gt; and set the weights in &lt;span class="math inline"&gt;\({\bf J}\)&lt;/span&gt; uniformly.&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-
 &lt;p&gt;By evaluating fault localization methods with &lt;span&gt;&lt;span class="math inline"&gt;\(\textrm{HT}_{\textrm{Rank}}\)&lt;/span&gt;&lt;/span&gt; in addition to the Standard Rank Score researchers will be able to make valid cross-technique comparisons. This will enable the community to better understand the relationships between techniques and report-granularity while taking into account potential programmer behavior during debugging.&lt;/p&gt;
-
 &lt;h1 id="acknowledgement" class="unnumbered"&gt;Acknowledgement&lt;/h1&gt;
-
 &lt;p&gt;This work was partially supported by NSF award CCF-1525178 to Case Western Reserve University.&lt;/p&gt;
-
 &lt;h1 id="markov-chain-definitions"&gt;Markov Chain Definitions&lt;/h1&gt;
-
 &lt;h4 id="definition.-cbsfl-ranked-list-markov-chain"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. CBSFL Ranked List Markov Chain&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;To construct a Markov chain representing a list of program locations ranked in descending order by their suspiciousness scores:&lt;/p&gt;
 &lt;ol&gt;
@@ -968,9 +848,7 @@ Comparison of CBSFL vs SBBFL average ranks (on log scale), under the Standard Ra
       \right.\]&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/blockquote&gt;
-
 &lt;h4 id="definition.-cbsfl-with-jumps-markov-chain"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. CBSFL with Jumps Markov Chain&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;This definition augments Definition 28.&lt;/p&gt;
 &lt;ol&gt;
@@ -1029,9 +907,7 @@ Comparison of CBSFL vs SBBFL average ranks (on log scale), under the Standard Ra
       \right.
     \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h4 id="definition.-suspicious-behavior-markov-chain"&gt;&lt;strong&gt;Definition&lt;/strong&gt;. Suspicious Behavior Markov Chain&lt;/h4&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;A chain that models a ranked list of suspicious subgraphs:&lt;/p&gt;
 &lt;ol&gt;
@@ -1101,7 +977,6 @@ Comparison of CBSFL vs SBBFL average ranks (on log scale), under the Standard Ra
       \right.\]&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/blockquote&gt;
-
 &lt;div id="refs" class="references"&gt;
 &lt;h1&gt;References&lt;/h1&gt;
 &lt;div id="ref-Jones2002"&gt;
@@ -1264,7 +1139,6 @@ Comparison of CBSFL vs SBBFL average ranks (on log scale), under the Standard Ra
 &lt;p&gt;[53] F. Steimann, M. Frenkel, and R. Abreu, "Threats to the validity and value of empirical assessments of the accuracy of coverage-based fault locators," &lt;em&gt;Proceedings of the 2013 International Symposium on Software Testing and Analysis - ISSTA 2013&lt;/em&gt;, p. 314, 2013, doi:&lt;a href="https://doi.org/10.1145/2483760.2483767"&gt;10.1145/2483760.2483767&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-
 &lt;div class="footnotes"&gt;
 &lt;hr /&gt;
 &lt;ol&gt;
@@ -1273,7 +1147,7 @@ Comparison of CBSFL vs SBBFL average ranks (on log scale), under the Standard Ra
 &lt;li id="fn3"&gt;&lt;p&gt;Implementations of these two computations maybe found in &lt;span&gt;&lt;code&gt;https://github.com/timtadh/expected-hitting-times&lt;/code&gt;&lt;/span&gt;.&lt;a href="#fnref3"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;li id="fn4"&gt;&lt;p&gt;See https://hackthology.com/pdfs/scam-2019-supplement.pdf&lt;a href="#fnref4"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content></entry><entry><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link href="https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html" rel="alternate"></link><published>2018-04-03T00:00:00-04:00</published><updated>2018-04-03T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2018-04-03:/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</id><summary type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+&lt;/div&gt;</content><category term="Paper"></category></entry><entry><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link href="https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html" rel="alternate"></link><published>2018-04-03T00:00:00-04:00</published><updated>2018-04-03T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2018-04-03:/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</id><summary type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
 
 &lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
 &lt;em&gt;Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow
@@ -1346,10 +1220,11 @@ approaches do not provide an explanation of their results. The SFL techniques
 often simply compute suspiciousness measures and rank the program elements
 accordingly.  These rankings may be helpful, but without more information
 programmers could overlook the faulty element even when it is ranked highly.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Localization Process" src="/images/icst-localization-process.png"&gt;
+&lt;p&gt;&lt;img alt="Localization Process" src="/images/icst-localization-process.png"&gt;&lt;/p&gt;
 &lt;div style="text-align: center; margin-top: -2em;"&gt;
 &lt;strong&gt;Figure 1.&lt;/strong&gt; Process for localizing faults  with discriminative graph mining.
-&lt;/div&gt;&lt;/p&gt;
+&lt;/div&gt;
+
 &lt;p&gt;&lt;em&gt;Suspicious-Behavior Based Fault Localization&lt;/em&gt; (SBBFL) is a statistical fault
 localization technique that aids the programmer in understanding suspiciousness
 scores by providing a &lt;em&gt;context&lt;/em&gt; of interacting elements.
@@ -1474,13 +1349,11 @@ result.&lt;/p&gt;
      text="Example Dynamic Control Flow Graph"
      style="width: 65%;"/&gt;
 &lt;/div&gt;
-
 &lt;div style="text-align: center; margin-top: -1em;"&gt;
 &lt;strong&gt;Figure 2.&lt;/strong&gt; 
 The dynamic control flow graph (DCFG) for the program &lt;br&gt;
 in  Listing 1 (see below).
 &lt;/div&gt;
-
 &lt;div style="width: 90%; left:05%; position: relative;"&gt;
 Each vertex is a basic block with a basic block identifer (e.g.
 &lt;code&gt;b1&lt;/code&gt;) that, in conjunction with the name of the containing function,
@@ -1492,72 +1365,70 @@ instructions cannot be syntactically inserted in those locations.  The
 instrumented program is shown on the right.
 &lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;main&lt;/span&gt;
 
-&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;
-        &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;
+&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;div style="text-align: center; margin-top: -1em;"&gt;
 &lt;strong&gt;Listing 1.&lt;/strong&gt; 
 An example Go program to compute the Fibonacci Sequence.
 &lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;main&lt;/span&gt;
 
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;dgruntime&amp;quot;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;dgruntime&amp;quot;&lt;/span&gt;
 
-&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;defer&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Shutdown&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;}()&lt;/span&gt;
-    &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;defer&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ExitFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}()&lt;/span&gt;
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlkFromCond&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;defer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Shutdown&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}()&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;defer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ExitFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}()&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlkFromCond&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fib&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;defer&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ExitFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fib&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}()&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlkFromCond&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;
-        &lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;
+&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;fib&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fib&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;defer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ExitFunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fib&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}()&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlkFromCond&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;dgruntime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;EnterBlk&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;div style="text-align: center; margin-top: -1em;"&gt;
 &lt;strong&gt;Listing 2.&lt;/strong&gt; 
 The program shown in Listing 1 after the instrumentation has been inserted by
 dynagrok.
-&lt;/div&gt;</content></entry><entry><title>Frequent Subgraph Analysis and its Software Engineering Applications</title><link href="https://hackthology.com/frequent-subgraph-analysis-and-its-software-engineering-applications.html" rel="alternate"></link><published>2017-08-18T00:00:00-04:00</published><updated>2017-08-18T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-08-18:/frequent-subgraph-analysis-and-its-software-engineering-applications.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;Frequent Subgraph Analysis and its Software Engineering Applications&lt;/em&gt;.
+&lt;/div&gt;</content><category term="Paper"></category></entry><entry><title>Frequent Subgraph Analysis and its Software Engineering Applications</title><link href="https://hackthology.com/frequent-subgraph-analysis-and-its-software-engineering-applications.html" rel="alternate"></link><published>2017-08-18T00:00:00-04:00</published><updated>2017-08-18T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-08-18:/frequent-subgraph-analysis-and-its-software-engineering-applications.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;Frequent Subgraph Analysis and its Software Engineering Applications&lt;/em&gt;.
 &lt;a href="http://case.edu/"&gt;Case Western Reserve University&lt;/a&gt;. Doctoral Dissertation. 2017.
 &lt;br/&gt;
 &lt;a href="https://hackthology.com/pdfs/dissertation.pdf"&gt;PDF&lt;/a&gt;.
@@ -1738,7 +1609,7 @@ software engineering advances are built on new frequent subgraph analysis
 algorithms. The new algorithms improve code clone detection time, fault
 localization latency and accuracy, and enable analysis of larger and more
 complex programs.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/dissertation.pdf"&gt;Read the full dissertation&lt;/a&gt;.&lt;/p&gt;</content></entry><entry><title>Rethinking Dependence Clones</title><link href="https://hackthology.com/rethinking-dependence-clones.html" rel="alternate"></link><published>2017-02-21T00:00:00-05:00</published><updated>2017-02-21T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-02-21:/rethinking-dependence-clones.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
+&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/dissertation.pdf"&gt;Read the full dissertation&lt;/a&gt;.&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Rethinking Dependence Clones</title><link href="https://hackthology.com/rethinking-dependence-clones.html" rel="alternate"></link><published>2017-02-21T00:00:00-05:00</published><updated>2017-02-21T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-02-21:/rethinking-dependence-clones.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
 &lt;em&gt;Rethinking Dependence Clones&lt;/em&gt;.
 &lt;a href="https://iwsc2017.github.io/"&gt;IWSC 2017&lt;/a&gt;.
 &lt;br/&gt;
@@ -1830,7 +1701,7 @@ collected.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;p&gt;See the &lt;a href="https://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. IEEE has
 the exclusive rights to publish this paper. Follow the
-&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt; for the IEEE copy.&lt;/p&gt;</content></entry><entry><title>Frequent Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with Frequently Dysregulated Disease Pathways and Predicts Prognosis</title><link href="https://hackthology.com/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html" rel="alternate"></link><published>2017-01-03T00:00:00-05:00</published><updated>2017-01-03T00:00:00-05:00</updated><author><name>Arda Durmaz, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Doug Brubaker, and &lt;a href="http://gurkan.case.edu"&gt;Gurkan Bebek&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-01-03:/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html</id><summary type="html">&lt;p&gt;A. Durmaz*, &lt;strong&gt;T. A. D. Henderson&lt;/strong&gt;*, D.  Brubaker, and G. Bebek. &lt;em&gt;Frequent
+&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt; for the IEEE copy.&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Frequent Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with Frequently Dysregulated Disease Pathways and Predicts Prognosis</title><link href="https://hackthology.com/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html" rel="alternate"></link><published>2017-01-03T00:00:00-05:00</published><updated>2017-01-03T00:00:00-05:00</updated><author><name>Arda Durmaz, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Doug Brubaker, and &lt;a href="http://gurkan.case.edu"&gt;Gurkan Bebek&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-01-03:/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html</id><summary type="html">&lt;p&gt;A. Durmaz*, &lt;strong&gt;T. A. D. Henderson&lt;/strong&gt;*, D.  Brubaker, and G. Bebek. &lt;em&gt;Frequent
 Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with
 Frequently Dysregulated Disease Pathways and Predicts Prognosis.&lt;/em&gt;
 &lt;a href="http://psb.stanford.edu/"&gt;PSB 2017&lt;/a&gt;.  * &lt;strong&gt;Co-First Author&lt;/strong&gt;
@@ -1885,7 +1756,7 @@ disease mechanisms differentiating samples.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;p&gt;See the &lt;a href="https://hackthology.com/pdfs/psb-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. Follow the
 &lt;a href="http://dx.doi.org/10.1142/9789813207813_0038"&gt;DOI&lt;/a&gt; for the authoritative
-version.&lt;/p&gt;</content></entry><entry><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link href="https://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html" rel="alternate"></link><published>2016-11-13T00:00:00-05:00</published><updated>2016-11-13T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2016-11-13:/sampling-code-clones-from-program-dependence-graphs-with-graple.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
+version.&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link href="https://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html" rel="alternate"></link><published>2016-11-13T00:00:00-05:00</published><updated>2016-11-13T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2016-11-13:/sampling-code-clones-from-program-dependence-graphs-with-graple.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
 Dependence Graphs with GRAPLE&lt;/em&gt;.
 &lt;a href="http://softwareanalytics.ca/swan16/Home.html"&gt;SWAN 2016&lt;/a&gt;.
 &lt;br/&gt;
@@ -1968,4 +1839,4 @@ clone sampling from tokens and ASTs.&lt;/p&gt;
 &lt;p&gt;See the &lt;a href="https://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt; for the complete paper. ACM
 has the exclusive rights to publish this paper. Tim Henderson and Andy Podgurski
 own the copyright. Follow the &lt;a href="https://dx.doi.org/10.1145/2989238.2989241"&gt;DOI&lt;/a&gt;
-for the ACM copy. This copy is posted here with the permission of ACM.&lt;/p&gt;</content></entry></feed>
+for the ACM copy. This copy is posted here with the permission of ACM.&lt;/p&gt;</content><category term="Paper"></category></entry></feed>

@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -69,108 +69,103 @@
         <p>Go provides a built in way to iterate easily over built-in collection types:
 <code>maps</code>, <code>slices</code> and <code>chans</code>. Iterating with these types is much like iterating
 using for-each type loops in languages like Python, Ruby and Java.</p>
-<div class="highlight"><pre><span></span><span class="k">for</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="kd">map</span> <span class="p">{</span>
-    <span class="c1">// key, value</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="kd">map</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// key, value</span>
 <span class="p">}</span>
 
-<span class="k">for</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">slice</span> <span class="p">{</span>
-    <span class="c1">// index, item</span>
+<span class="k">for</span><span class="w"> </span><span class="nx">index</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">slice</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// index, item</span>
 <span class="p">}</span>
 
-<span class="k">for</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">channel</span> <span class="p">{</span>
-    <span class="c1">// item</span>
+<span class="k">for</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">channel</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// item</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Unfortunately, Go does not provide a way to iterate over user defined
 collections using range. I have been experimenting with how to solve this
 problem since the initial public release of Go and I have finally settled on a
 solution I like. This new solution uses a functional programming style.</p>
 <h2>Functional Iterators</h2>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Iterator</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">item</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">next</span> <span class="nx">Iterator</span><span class="p">)</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">Iterator</span><span class="w"> </span><span class="kd">func</span><span class="p">()(</span><span class="nx">item</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="nx">Iterator</span><span class="p">)</span>
+</code></pre></div>
 
 <p>This iterator is a function. Calling the function yields the next item in the
 collection and a continuation function pointer. When the continuation function
 pointer becomes nil, there are no more items left in the collection. Here's an
 example of how to use a functional iterator from a test case in my
 <a href="https://github.com/timtadh/data-structures/blob/ab3c41d91c7b569caa0e989c7787de16cca7d10b/tree/avltree_test.go#L206">data-structures repository</a>:</p>
-<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">data</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span>
-    <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span>
+<span class="w">    </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span>
-<span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">next</span> <span class="o">:=</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">Iterate</span><span class="p">()();</span> <span class="nx">next</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">;</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">!</span><span class="nx">k</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">types</span><span class="p">.</span><span class="nx">Int</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">j</span><span class="p">]))</span> <span class="p">{</span>
-        <span class="nx">t</span><span class="p">.</span><span class="nx">Error</span><span class="p">(</span><span class="s">&quot;Wrong key&quot;</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">v</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">j</span> <span class="p">{</span>
-        <span class="nx">t</span><span class="p">.</span><span class="nx">Error</span><span class="p">(</span><span class="s">&quot;Wrong value&quot;</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="nx">j</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nx">j</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span>
+<span class="k">for</span><span class="w"> </span><span class="nx">k</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">tree</span><span class="p">.</span><span class="nx">Iterate</span><span class="p">()();</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="p">;</span><span class="w"> </span><span class="nx">k</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">next</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">!</span><span class="nx">k</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">types</span><span class="p">.</span><span class="nx">Int</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">j</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">t</span><span class="p">.</span><span class="nx">Error</span><span class="p">(</span><span class="s">&quot;Wrong key&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">v</span><span class="p">.(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nx">j</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">t</span><span class="p">.</span><span class="nx">Error</span><span class="p">(</span><span class="s">&quot;Wrong value&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">j</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>The functional approach allows the user to have a nice "linked-list" style
 interface while avoiding the problems with using channels to implement
 iteration. Using channels make iterators quite easy to write, consider this
 post-order traversal:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="s">&quot;fmt&quot;</span>
 
-<span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">label</span> <span class="kt">int</span>
-    <span class="nx">children</span> <span class="p">[]</span><span class="nx">Node</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Node</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">label</span><span class="w"> </span><span class="kt">int</span>
+<span class="w">    </span><span class="nx">children</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;&lt;%v %v&gt;&quot;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span><span class="p">)</span><span class="w"> </span><span class="nx">String</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;&lt;%v %v&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">PostOrder</span><span class="p">()</span> <span class="p">(</span><span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">ch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
-    <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">yield</span> <span class="kd">chan</span><span class="o">&lt;-</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">iter</span> <span class="kd">func</span><span class="p">(</span><span class="nx">node</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span>
-        <span class="nx">iter</span> <span class="p">=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">node</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">node</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-                <span class="k">return</span>
-            <span class="p">}</span>
-            <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">child</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">node</span><span class="p">.</span><span class="nx">children</span> <span class="p">{</span>
-                <span class="nx">iter</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">child</span><span class="p">)</span>
-            <span class="p">}</span>
-            <span class="nx">yield</span><span class="o">&lt;-</span><span class="nx">node</span><span class="p">.</span><span class="nx">label</span>
-        <span class="p">}</span>
-        <span class="nx">iter</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span>
-        <span class="nb">close</span><span class="p">(</span><span class="nx">yield</span><span class="p">)</span>
-    <span class="p">}(</span><span class="nx">ch</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">ch</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span><span class="p">)</span><span class="w"> </span><span class="nx">PostOrder</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="o">&lt;-</span><span class="kd">chan</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">ch</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="kd">chan</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span>
+<span class="w">    </span><span class="k">go</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">yield</span><span class="w"> </span><span class="kd">chan</span><span class="o">&lt;-</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">iter</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">node</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">iter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">node</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">child</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">children</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">iter</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">child</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="nx">yield</span><span class="o">&lt;-</span><span class="nx">node</span><span class="p">.</span><span class="nx">label</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="nx">iter</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">close</span><span class="p">(</span><span class="nx">yield</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}(</span><span class="nx">ch</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">ch</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">root</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="nx">Node</span><span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}}},</span> <span class="nx">Node</span><span class="p">{</span><span class="mi">7</span><span class="p">,</span> <span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="nx">Node</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">8</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="nx">Node</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}}}}}}}</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">root</span><span class="p">)</span>
-    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
-    <span class="p">}</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">root</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">},</span><span class="w"> </span><span class="nx">Node</span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">}}},</span><span class="w"> </span><span class="nx">Node</span><span class="p">{</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">},</span><span class="w"> </span><span class="nx">Node</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">},</span><span class="w"> </span><span class="nx">Node</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">}}}}}}}</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">root</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>(try it on the playground <a href="http://play.golang.org/p/kUGDQvWhkb">http://play.golang.org/p/kUGDQvWhkb</a>)</p>
 <p>However, what happens if the consumer of the iterator needs to bail out early?
 Like so:</p>
-<div class="highlight"><pre><span></span><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-        <span class="k">break</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">break</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>In this case the go-routine <code>PostOrder</code> is running in will leak. Since, it will
 be blocked on sending to the consumer who will never consume the item. The fix
@@ -188,28 +183,27 @@ reference. However, functional iterators are a bit tricky to write. Let's look
 at a few from the <a href="https://github.com/timtadh/data-structures">data-structures
 repository</a>.</p>
 <h3>Hash Table Iteration.</h3>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Hash</span><span class="p">)</span> <span class="nx">Iterate</span><span class="p">()</span> <span class="nx">KVIterator</span> <span class="p">{</span>
-    <span class="nx">table</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span>
-    <span class="nx">i</span> <span class="o">:=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="kd">var</span> <span class="nx">e</span> <span class="o">*</span><span class="nx">entry</span>
-    <span class="kd">var</span> <span class="nx">kv_iterator</span> <span class="nx">KVIterator</span>
-    <span class="nx">kv_iterator</span> <span class="p">=</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">key</span> <span class="nx">Equatable</span><span class="p">,</span> <span class="nx">val</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">next</span> <span class="nx">KVIterator</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="nx">e</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">i</span><span class="o">++</span>
-            <span class="k">if</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">table</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
-            <span class="p">}</span>
-            <span class="nx">e</span> <span class="p">=</span> <span class="nx">table</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-        <span class="p">}</span>
-        <span class="nx">key</span> <span class="p">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span>
-        <span class="nx">val</span> <span class="p">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">value</span>
-        <span class="nx">e</span> <span class="p">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">next</span>
-        <span class="k">return</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">val</span><span class="p">,</span> <span class="nx">kv_iterator</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">kv_iterator</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Hash</span><span class="p">)</span><span class="w"> </span><span class="nx">Iterate</span><span class="p">()</span><span class="w"> </span><span class="nx">KVIterator</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">table</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span>
+<span class="w">    </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">*</span><span class="nx">entry</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">kv_iterator</span><span class="w"> </span><span class="nx">KVIterator</span>
+<span class="w">    </span><span class="nx">kv_iterator</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kd">func</span><span class="p">()(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Equatable</span><span class="p">,</span><span class="w"> </span><span class="nx">val</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="nx">KVIterator</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">i</span><span class="o">++</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">table</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="nx">e</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">table</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="nx">key</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span>
+<span class="w">        </span><span class="nx">val</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span>
+<span class="w">        </span><span class="nx">e</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">next</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">val</span><span class="p">,</span><span class="w"> </span><span class="nx">kv_iterator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">kv_iterator</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>How does the function work? The first thing to notice is the <code>Iterate</code> function
 returns a function <code>kv_iterator</code> which closes over some state: <code>table</code>, <code>i</code> and
@@ -228,72 +222,71 @@ just like writing a tail-recursive function in Scheme or Lisp one must write the
 iterator such that no actions need to be taken after the data is returned to the
 user. This sometimes gets tricky, for instance in post-order iteration.</p>
 <h3>Post Order Iteration</h3>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="s">&quot;fmt&quot;</span>
 
-<span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">label</span> <span class="kt">int</span>
-    <span class="nx">children</span> <span class="p">[]</span><span class="nx">Node</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Node</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">label</span><span class="w"> </span><span class="kt">int</span>
+<span class="w">    </span><span class="nx">children</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">IntIterator</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">label</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">next</span> <span class="nx">IntIterator</span><span class="p">)</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">IntIterator</span><span class="w"> </span><span class="kd">func</span><span class="p">()(</span><span class="nx">label</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="nx">IntIterator</span><span class="p">)</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;&lt;%v %v&gt;&quot;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span><span class="p">)</span><span class="w"> </span><span class="nx">String</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;&lt;%v %v&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="nx">PostOrder</span><span class="p">()</span> <span class="nx">IntIterator</span> <span class="p">{</span>
-    <span class="kd">type</span> <span class="nx">entry</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">tn</span> <span class="o">*</span><span class="nx">Node</span>
-        <span class="nx">i</span> <span class="kt">int</span>
-    <span class="p">}</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span><span class="p">)</span><span class="w"> </span><span class="nx">PostOrder</span><span class="p">()</span><span class="w"> </span><span class="nx">IntIterator</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">type</span><span class="w"> </span><span class="nx">entry</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">tn</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span>
+<span class="w">        </span><span class="nx">i</span><span class="w"> </span><span class="kt">int</span>
+<span class="w">    </span><span class="p">}</span>
 
-    <span class="nx">pop</span> <span class="o">:=</span> <span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="p">[]</span><span class="nx">entry</span><span class="p">)</span> <span class="p">([]</span><span class="nx">entry</span><span class="p">,</span> <span class="o">*</span><span class="nx">Node</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">stack</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="mi">0</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">e</span> <span class="o">:=</span> <span class="nx">stack</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">return</span> <span class="nx">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="nx">e</span><span class="p">.</span><span class="nx">tn</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">i</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="nx">pop</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">stack</span><span class="w"> </span><span class="p">[]</span><span class="nx">entry</span><span class="p">)</span><span class="w"> </span><span class="p">([]</span><span class="nx">entry</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">stack</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">e</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">stack</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">tn</span><span class="p">,</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">i</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 
-    <span class="nx">stack</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nb">make</span><span class="p">([]</span><span class="nx">entry</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">entry</span><span class="p">{</span><span class="nx">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">})</span>
+<span class="w">    </span><span class="nx">stack</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nb">make</span><span class="p">([]</span><span class="nx">entry</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="nx">entry</span><span class="p">{</span><span class="nx">self</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">})</span>
 
-    <span class="kd">var</span> <span class="nx">iterator</span> <span class="nx">IntIterator</span>
-    <span class="nx">iterator</span> <span class="p">=</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">label</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">next</span> <span class="nx">IntIterator</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">i</span> <span class="kt">int</span>
-        <span class="kd">var</span> <span class="nx">tn</span> <span class="o">*</span><span class="nx">Node</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">iterator</span><span class="w"> </span><span class="nx">IntIterator</span>
+<span class="w">    </span><span class="nx">iterator</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kd">func</span><span class="p">()(</span><span class="nx">label</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="nx">IntIterator</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="kt">int</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">tn</span><span class="w"> </span><span class="o">*</span><span class="nx">Node</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">nil</span>
-        <span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">        </span><span class="p">}</span>
 
-        <span class="nx">stack</span><span class="p">,</span> <span class="nx">tn</span><span class="p">,</span> <span class="nx">i</span> <span class="p">=</span> <span class="nx">pop</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">tn</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">nil</span>
-        <span class="p">}</span>
-        <span class="k">for</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">tn</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">kid</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">tn</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-            <span class="nx">stack</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span> <span class="nx">entry</span><span class="p">{</span><span class="nx">tn</span><span class="p">,</span> <span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">})</span>
-            <span class="nx">tn</span> <span class="p">=</span> <span class="nx">kid</span>
-            <span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">tn</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span> <span class="nx">iterator</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">iterator</span>
+<span class="w">        </span><span class="nx">stack</span><span class="p">,</span><span class="w"> </span><span class="nx">tn</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">pop</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">tn</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">tn</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">kid</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">tn</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+<span class="w">            </span><span class="nx">stack</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span><span class="w"> </span><span class="nx">entry</span><span class="p">{</span><span class="nx">tn</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">})</span>
+<span class="w">            </span><span class="nx">tn</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">kid</span>
+<span class="w">            </span><span class="nx">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">tn</span><span class="p">.</span><span class="nx">label</span><span class="p">,</span><span class="w"> </span><span class="nx">iterator</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">iterator</span>
 
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">root</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span> <span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="nx">Node</span><span class="p">{</span><span class="mi">4</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}}},</span> <span class="nx">Node</span><span class="p">{</span><span class="mi">7</span><span class="p">,</span> <span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="nx">Node</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">8</span><span class="p">,</span> <span class="kc">nil</span><span class="p">},</span> <span class="nx">Node</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span> <span class="kc">nil</span><span class="p">}}}}}}}</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">root</span><span class="p">)</span>
-    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">next</span> <span class="o">:=</span> <span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()();</span> <span class="nx">next</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">;</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
-    <span class="p">}</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">root</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">Node</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">},</span><span class="w"> </span><span class="nx">Node</span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">}}},</span><span class="w"> </span><span class="nx">Node</span><span class="p">{</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">},</span><span class="w"> </span><span class="nx">Node</span><span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nx">Node</span><span class="p">{</span><span class="nx">Node</span><span class="p">{</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">},</span><span class="w"> </span><span class="nx">Node</span><span class="p">{</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">}}}}}}}</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">root</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">root</span><span class="p">.</span><span class="nx">PostOrder</span><span class="p">()();</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">next</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>(try it out yourself on the playground <a href="http://play.golang.org/p/M4ivyGL7GM">http://play.golang.org/p/M4ivyGL7GM</a>)</p>
 <p>This time, the iterator must keep a stack of items in order to function. The
@@ -331,7 +324,7 @@ generators should be constructed.</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

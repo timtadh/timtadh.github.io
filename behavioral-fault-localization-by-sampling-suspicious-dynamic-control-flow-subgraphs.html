@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -127,10 +127,11 @@ approaches do not provide an explanation of their results. The SFL techniques
 often simply compute suspiciousness measures and rank the program elements
 accordingly.  These rankings may be helpful, but without more information
 programmers could overlook the faulty element even when it is ranked highly.</p>
-<p><img alt="Localization Process" src="/images/icst-localization-process.png">
+<p><img alt="Localization Process" src="/images/icst-localization-process.png"></p>
 <div style="text-align: center; margin-top: -2em;">
 <strong>Figure 1.</strong> Process for localizing faults  with discriminative graph mining.
-</div></p>
+</div>
+
 <p><em>Suspicious-Behavior Based Fault Localization</em> (SBBFL) is a statistical fault
 localization technique that aids the programmer in understanding suspiciousness
 scores by providing a <em>context</em> of interacting elements.
@@ -255,13 +256,11 @@ result.</p>
      text="Example Dynamic Control Flow Graph"
      style="width: 65%;"/>
 </div>
-
 <div style="text-align: center; margin-top: -1em;">
 <strong>Figure 2.</strong> 
 The dynamic control flow graph (DCFG) for the program <br>
 in  Listing 1 (see below).
 </div>
-
 <div style="width: 90%; left:05%; position: relative;">
 Each vertex is a basic block with a basic block identifer (e.g.
 <code>b1</code>) that, in conjunction with the name of the containing function,
@@ -273,66 +272,64 @@ instructions cannot be syntactically inserted in those locations.  The
 instrumented program is shown on the right.
 </div>
 
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span> <span class="p">{</span>
-        <span class="nb">println</span><span class="p">(</span><span class="nx">fib</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span>
-    <span class="p">}</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">println</span><span class="p">(</span><span class="nx">fib</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">fib</span><span class="p">(</span><span class="nx">x</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">x</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="mi">0</span>
-    <span class="p">}</span>
-    <span class="nx">p</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">x</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-        <span class="nx">n</span> <span class="o">:=</span> <span class="nx">p</span> <span class="o">+</span> <span class="nx">c</span>
-        <span class="nx">p</span><span class="p">,</span> <span class="nx">c</span> <span class="p">=</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">n</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">c</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">fib</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">p</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">x</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">n</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">c</span>
+<span class="w">        </span><span class="nx">p</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="nx">n</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">c</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <div style="text-align: center; margin-top: -1em;">
 <strong>Listing 1.</strong> 
 An example Go program to compute the Fibonacci Sequence.
 </div>
 
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="s">&quot;dgruntime&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="s">&quot;dgruntime&quot;</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span> <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">Shutdown</span><span class="p">()</span> <span class="p">}()</span>
-    <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterFunc</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">)</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span> <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">ExitFunc</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">)</span> <span class="p">}()</span>
-    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlkFromCond</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span> <span class="p">{</span>
-        <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-        <span class="nb">println</span><span class="p">(</span><span class="nx">fib</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span>
-    <span class="p">}</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">Shutdown</span><span class="p">()</span><span class="w"> </span><span class="p">}()</span>
+<span class="w">    </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterFunc</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">ExitFunc</span><span class="p">(</span><span class="s">&quot;main&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">}()</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlkFromCond</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">println</span><span class="p">(</span><span class="nx">fib</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">fib</span><span class="p">(</span><span class="nx">x</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
-    <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterFunc</span><span class="p">(</span><span class="s">&quot;fib&quot;</span><span class="p">)</span>
-    <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span> <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">ExitFunc</span><span class="p">(</span><span class="s">&quot;fib&quot;</span><span class="p">)</span> <span class="p">}()</span>
-    <span class="k">if</span> <span class="nx">x</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
-        <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="mi">0</span>
-    <span class="p">}</span>
-    <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-    <span class="nx">p</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlkFromCond</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">x</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-        <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-        <span class="nx">n</span> <span class="o">:=</span> <span class="nx">p</span> <span class="o">+</span> <span class="nx">c</span>
-        <span class="nx">p</span><span class="p">,</span> <span class="nx">c</span> <span class="p">=</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">n</span>
-    <span class="p">}</span>
-    <span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">c</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">fib</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterFunc</span><span class="p">(</span><span class="s">&quot;fib&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">ExitFunc</span><span class="p">(</span><span class="s">&quot;fib&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">}()</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">p</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlkFromCond</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">x</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">n</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">c</span>
+<span class="w">        </span><span class="nx">p</span><span class="p">,</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="nx">n</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">dgruntime</span><span class="p">.</span><span class="nx">EnterBlk</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">c</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <div style="text-align: center; margin-top: -1em;">
 <strong>Listing 2.</strong> 
@@ -356,7 +353,7 @@ dynagrok.
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -87,18 +87,16 @@ language. The first stage of the pipeline the <em>lexer</em> performs what is ca
 up into the different components as: keywords, identifiers, punctuation,
 numbers, etc... Each component is tagged with the class of component it is. So
 for this fragment of Java:</p>
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Main</span><span class="w"> </span><span class="p">{}</span>
+</code></pre></div>
 
 <p>The "components" (called <em>tokens</em>) would be:</p>
-<div class="highlight"><pre><span></span>&lt;public keyword&gt;, &quot;public&quot;
+<div class="highlight"><pre><span></span><code>&lt;public keyword&gt;, &quot;public&quot;
 &lt;class keyword&gt;, &quot;class&quot;
 &lt;idenitifier&gt;, &quot;Main&quot;
 &lt;left-bracket&gt;, &quot;{&quot;
 &lt;right-bracket&gt;, &quot;}&quot;
-</pre></div>
-
+</code></pre></div>
 
 <p>The tokens have two parts:</p>
 <ol>
@@ -106,50 +104,45 @@ for this fragment of Java:</p>
 <li>The <em>lexeme</em>, or the string the token was extracted from</li>
 </ol>
 <p>This leads to the following Java design</p>
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">TokenType</span> <span class="o">{</span>
-    <span class="n">KEYWORD</span><span class="o">,</span> <span class="n">IDENTIFIER</span><span class="o">,</span> <span class="n">LBRACKET</span><span class="o">,</span> <span class="n">RBRACKET</span><span class="o">,</span> <span class="o">...</span>
-<span class="o">}</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">enum</span><span class="w"> </span><span class="n">TokenType</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">KEYWORD</span><span class="p">,</span><span class="w"> </span><span class="n">IDENTIFIER</span><span class="p">,</span><span class="w"> </span><span class="n">LBRACKET</span><span class="p">,</span><span class="w"> </span><span class="n">RBRACKET</span><span class="p">,</span><span class="w"> </span><span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
 
-
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Token</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="n">TokenToken</span> <span class="n">type</span><span class="o">;</span>
-    <span class="kd">public</span> <span class="n">String</span> <span class="n">lexeme</span><span class="o">;</span>
-<span class="o">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Token</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">TokenToken</span><span class="w"> </span><span class="n">type</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">lexeme</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>For some tokens, such as numeric constants, it is convenient to specialize the
 <code>Token</code> object to contain some extra information. In the case of numeric
 constants the numerical value of the lexeme is convenient to store directly in
 the <code>Token</code>. The traditional way to accomplish this is to have the numeric
 tokens <em>inherit</em> from the <code>Token</code> class.</p>
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntegerConstant</span> <span class="kd">extends</span> <span class="n">Token</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kt">long</span> <span class="n">value</span><span class="o">;</span>
-<span class="o">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IntegerConstant</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Token</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>Another way this can be achieved is to use composition where the <code>IntegerConstant</code>
 instead of extending the <code>Token</code> class contains a reference to the token.</p>
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntegerConstant</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="n">Token</span> <span class="n">type</span><span class="o">;</span>
-    <span class="kd">public</span> <span class="kt">long</span> <span class="n">value</span><span class="o">;</span>
-<span class="o">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IntegerConstant</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Token</span><span class="w"> </span><span class="n">type</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>It turns out, in this particular case, inheritance is the better choice. The
 reason is the <code>Lexer</code> which produces the tokens needs to return a common type.
 Consider the interface of the Lexer:</p>
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Lexer</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="nf">Lexer</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span><span class="o">)</span>
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">EOF</span><span class="o">()</span>
-    <span class="kd">public</span> <span class="n">Token</span> <span class="nf">peek</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Error</span>
-    <span class="kd">public</span> <span class="n">Token</span> <span class="nf">next</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Error</span>
-<span class="o">}</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Lexer</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Lexer</span><span class="p">(</span><span class="n">InputStream</span><span class="w"> </span><span class="n">in</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">EOF</span><span class="p">()</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Token</span><span class="w"> </span><span class="nf">peek</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Error</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Token</span><span class="w"> </span><span class="nf">next</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Error</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>Since in the first design (which uses inheritance) a <code>IntegerConstant</code> <em>is a</em>
 <code>Token</code> it can be used in the Lexer. Now, this isn't the only design that can be
@@ -158,69 +151,67 @@ how it translates to into Go.</p>
 <h3>Inheritance and Composition in Go</h3>
 <p>Composition is very natural in Go (as it is in most languages). To compose two
 structures simply provide a pointer or embedding to the collaborating structure.</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">TokenType</span> <span class="kt">uint16</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">TokenType</span><span class="w"> </span><span class="kt">uint16</span>
 
-<span class="kd">const</span> <span class="p">(</span>
-    <span class="nx">KEYWORD</span> <span class="nx">TokenType</span> <span class="p">=</span> <span class="kc">iota</span>
-    <span class="nx">IDENTIFIER</span>
-    <span class="nx">LBRACKET</span>
-    <span class="nx">RBRACKET</span>
-    <span class="nx">INT</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="nx">KEYWORD</span><span class="w"> </span><span class="nx">TokenType</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">iota</span>
+<span class="w">    </span><span class="nx">IDENTIFIER</span>
+<span class="w">    </span><span class="nx">LBRACKET</span>
+<span class="w">    </span><span class="nx">RBRACKET</span>
+<span class="w">    </span><span class="nx">INT</span>
 <span class="p">)</span>
 
-<span class="kd">type</span> <span class="nx">Token</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Type</span>   <span class="nx">TokenType</span>
-  <span class="nx">Lexeme</span> <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Token</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">Type</span><span class="w">   </span><span class="nx">TokenType</span>
+<span class="w">  </span><span class="nx">Lexeme</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Token</span> <span class="o">*</span><span class="nx">Token</span>
-  <span class="nx">Value</span> <span class="kt">uint64</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">IntegerConstant</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">Token</span><span class="w"> </span><span class="o">*</span><span class="nx">Token</span>
+<span class="w">  </span><span class="nx">Value</span><span class="w"> </span><span class="kt">uint64</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>This would be the usual way to share code and data in Go. However, if you feel
 the need for inheritance then how can we use it?</p>
 <h4>Why would you want to use inheritance in go?</h4>
 <p>One of the obvious alternative designs for the <code>Token</code> is to make it an
 interface. This works equally well in both Java and Go:</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Token</span> <span class="kd">interface</span> <span class="p">{</span>
-  <span class="nx">Type</span><span class="p">()</span>   <span class="nx">TokenType</span>
-  <span class="nx">Lexeme</span><span class="p">()</span> <span class="kt">string</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">Token</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">Type</span><span class="p">()</span><span class="w">   </span><span class="nx">TokenType</span>
+<span class="w">  </span><span class="nx">Lexeme</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">Match</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">toktype</span> <span class="nx">TokenType</span>
-  <span class="nx">lexeme</span>  <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Match</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">toktype</span><span class="w"> </span><span class="nx">TokenType</span>
+<span class="w">  </span><span class="nx">lexeme</span><span class="w">  </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">token</span> <span class="nx">Token</span>
-  <span class="nx">value</span> <span class="kt">uint64</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">IntegerConstant</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">token</span><span class="w"> </span><span class="nx">Token</span>
+<span class="w">  </span><span class="nx">value</span><span class="w"> </span><span class="kt">uint64</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Match</span><span class="p">)</span> <span class="nx">Type</span><span class="p">()</span> <span class="nx">TokenType</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">m</span><span class="p">.</span><span class="nx">toktype</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">m</span><span class="w"> </span><span class="o">*</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="nx">Type</span><span class="p">()</span><span class="w"> </span><span class="nx">TokenType</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">m</span><span class="p">.</span><span class="nx">toktype</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Match</span><span class="p">)</span> <span class="nx">Lexeme</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">m</span><span class="p">.</span><span class="nx">lexeme</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">m</span><span class="w"> </span><span class="o">*</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="nx">Lexeme</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">m</span><span class="p">.</span><span class="nx">lexeme</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span> <span class="nx">Type</span><span class="p">()</span> <span class="nx">TokenType</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">i</span><span class="p">.</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span><span class="w"> </span><span class="nx">Type</span><span class="p">()</span><span class="w"> </span><span class="nx">TokenType</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span> <span class="nx">Lexeme</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">i</span><span class="p">.</span><span class="nx">token</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span><span class="w"> </span><span class="nx">Lexeme</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">token</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span> <span class="nx">Value</span><span class="p">()</span> <span class="kt">uint64</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">i</span><span class="p">.</span><span class="nx">value</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span><span class="w"> </span><span class="nx">Value</span><span class="p">()</span><span class="w"> </span><span class="kt">uint64</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">value</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>The Lexer can then easily return the <code>Token</code> interface which both <code>*Match</code> and
 <code>*IntegerConstant</code> satisfy.</p>
@@ -230,26 +221,24 @@ interface. This works equally well in both Java and Go:</p>
 we can use Go's built in support for
 <a href="https://twitter.com/hackthology"><em>embedding</em></a> to avoid this work. Embedding is
 a limited form of inheritance which allows types to share data and code.</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Token</span>
-  <span class="nx">value</span> <span class="kt">uint64</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">IntegerConstant</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">Token</span>
+<span class="w">  </span><span class="nx">value</span><span class="w"> </span><span class="kt">uint64</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span> <span class="nx">Value</span><span class="p">()</span> <span class="kt">uint64</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">i</span><span class="p">.</span><span class="nx">value</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="o">*</span><span class="nx">IntegerConstant</span><span class="p">)</span><span class="w"> </span><span class="nx">Value</span><span class="p">()</span><span class="w"> </span><span class="kt">uint64</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">value</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>By not giving the <code>Token</code> field a name in <code>IntegerConstant</code>, it "inherits" the
 methods (and fields if <code>Token</code> was a <code>struct</code>) from <code>Token</code>. This pretty cool!
 We can write code like this:</p>
-<div class="highlight"><pre><span></span><span class="nx">t</span> <span class="o">:=</span> <span class="nx">IntegerConstant</span><span class="p">{</span><span class="o">&amp;</span><span class="nx">Match</span><span class="p">{</span><span class="nx">KEYWORD</span><span class="p">,</span> <span class="s">&quot;wizard&quot;</span><span class="p">},</span> <span class="mi">2</span><span class="p">}</span>
-<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">Type</span><span class="p">(),</span> <span class="nx">t</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">(),</span> <span class="nx">t</span><span class="p">.</span><span class="nx">Value</span><span class="p">())</span>
-<span class="nx">x</span> <span class="o">:=</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
-<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">Type</span><span class="p">(),</span> <span class="nx">x</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">())</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="nx">t</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">IntegerConstant</span><span class="p">{</span><span class="o">&amp;</span><span class="nx">Match</span><span class="p">{</span><span class="nx">KEYWORD</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wizard&quot;</span><span class="p">},</span><span class="w"> </span><span class="mi">2</span><span class="p">}</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">Type</span><span class="p">(),</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">(),</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">Value</span><span class="p">())</span>
+<span class="nx">x</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Token</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">Type</span><span class="p">(),</span><span class="w"> </span><span class="nx">x</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">())</span>
+</code></pre></div>
 
 <p>(try it in the playground <a href="https://play.golang.org/p/PJW7VShpE0">https://play.golang.org/p/PJW7VShpE0</a>)</p>
 <p>So wow! Not only did we not have implement <code>Type()</code> and <code>Value()</code> but
@@ -262,22 +251,20 @@ choices</p>
 <ol>
 <li>
 <p>Inherit by embedding the <code>struct</code> by value</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Match</span>
-  <span class="nx">value</span> <span class="kt">uint64</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">IntegerConstant</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">Match</span>
+<span class="w">  </span><span class="nx">value</span><span class="w"> </span><span class="kt">uint64</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 </li>
 <li>
 <p>Inherit by embedding a pointer to a <code>struct</code></p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">IntegerConstant</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="o">*</span><span class="nx">Match</span>
-  <span class="nx">value</span> <span class="kt">uint64</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">IntegerConstant</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="o">*</span><span class="nx">Match</span>
+<span class="w">  </span><span class="nx">value</span><span class="w"> </span><span class="kt">uint64</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 </li>
 </ol>
@@ -295,41 +282,39 @@ comparison with Java. There is no <code>extends</code> keyword. Syntactically, i
 looks almost identical to composition. The only difference between composition
 and inheritance in Go, is a <code>struct</code> which inherits from another <code>struct</code> can
 directly access the methods and fields of the parent <code>struct</code>.</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Pet</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">name</span> <span class="kt">string</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">Pet</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">Dog</span> <span class="kd">struct</span> <span class="p">{</span>
-  <span class="nx">Pet</span>
-  <span class="nx">Breed</span> <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Dog</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">Pet</span>
+<span class="w">  </span><span class="nx">Breed</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Name</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Name</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">Dog</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">Speak</span><span class="p">(),</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">d</span><span class="w"> </span><span class="o">*</span><span class="nx">Dog</span><span class="p">)</span><span class="w"> </span><span class="nx">Speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">Speak</span><span class="p">(),</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">d</span> <span class="o">:=</span> <span class="nx">Dog</span><span class="p">{</span><span class="nx">Pet</span><span class="p">:</span> <span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&quot;spot&quot;</span><span class="p">},</span> <span class="nx">Breed</span><span class="p">:</span> <span class="s">&quot;pointer&quot;</span><span class="p">}</span>
-  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
-  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Dog</span><span class="p">{</span><span class="nx">Pet</span><span class="p">:</span><span class="w"> </span><span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;spot&quot;</span><span class="p">},</span><span class="w"> </span><span class="nx">Breed</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pointer&quot;</span><span class="p">}</span>
+<span class="w">  </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
+<span class="w">  </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>(try in the playground <a href="https://play.golang.org/p/Pmkd27Nqqy">https://play.golang.org/p/Pmkd27Nqqy</a>)</p>
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>spot
+<div class="highlight"><pre><span></span><code>spot
 my name is spot and I am a pointer
-</pre></div>
-
+</code></pre></div>
 
 <h3>Limitations of Embedding as Inheritance</h3>
 <p>In comparison to a language like Java, Go's form of inheritance is quite
@@ -339,178 +324,172 @@ which are not possible in Go. Let's look at some of them.</p>
 <p>In the pet example above, <code>Dog</code> "overrides" the <code>Speak()</code> method. However, if
 <code>Pet</code> had another method <code>Play()</code> which invokes <code>Speak()</code> that <code>Dog</code> does not
 override the <code>Dog</code>'s implementation of <code>Speak()</code> would not be used:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
 <span class="p">)</span>
 
-<span class="kd">type</span> <span class="nx">Pet</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">name</span> <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Pet</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">Dog</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">Pet</span>
-    <span class="nx">Breed</span> <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Dog</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Pet</span>
+<span class="w">    </span><span class="nx">Breed</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Play</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Play</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Name</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Name</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">Dog</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">Speak</span><span class="p">(),</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">d</span><span class="w"> </span><span class="o">*</span><span class="nx">Dog</span><span class="p">)</span><span class="w"> </span><span class="nx">Speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">Speak</span><span class="p">(),</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">d</span> <span class="o">:=</span> <span class="nx">Dog</span><span class="p">{</span><span class="nx">Pet</span><span class="p">:</span> <span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="s">&quot;spot&quot;</span><span class="p">},</span> <span class="nx">Breed</span><span class="p">:</span> <span class="s">&quot;pointer&quot;</span><span class="p">}</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
-    <span class="nx">d</span><span class="p">.</span><span class="nx">Play</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Dog</span><span class="p">{</span><span class="nx">Pet</span><span class="p">:</span><span class="w"> </span><span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;spot&quot;</span><span class="p">},</span><span class="w"> </span><span class="nx">Breed</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pointer&quot;</span><span class="p">}</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nx">Play</span><span class="p">()</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>(try it on the playground: <a href="https://play.golang.org/p/id-aDKW8L6">https://play.golang.org/p/id-aDKW8L6</a>)</p>
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>spot
+<div class="highlight"><pre><span></span><code>spot
 my name is spot and I am a pointer
 my name is spot
-</pre></div>
-
+</code></pre></div>
 
 <p>Contrast this to Java, in Java it would work as expected!</p>
-<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">Dog</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Dog</span><span class="o">(</span><span class="s">&quot;spot&quot;</span><span class="o">,</span> <span class="s">&quot;pointer&quot;</span><span class="o">);</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">d</span><span class="o">.</span><span class="na">Name</span><span class="o">());</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">d</span><span class="o">.</span><span class="na">Speak</span><span class="o">());</span>
-    <span class="n">d</span><span class="o">.</span><span class="na">Play</span><span class="o">();</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Main</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Dog</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">(</span><span class="s">&quot;spot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pointer&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="na">Name</span><span class="p">());</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="na">Speak</span><span class="p">());</span>
+<span class="w">    </span><span class="n">d</span><span class="p">.</span><span class="na">Play</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 
-<span class="kd">class</span> <span class="nc">Pet</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="kd">class</span> <span class="nc">Pet</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
 
-  <span class="kd">public</span> <span class="nf">Pet</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
-  <span class="o">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">Pet</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
 
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">Play</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Speak</span><span class="o">());</span>
-  <span class="o">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Play</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Speak</span><span class="p">());</span>
+<span class="w">  </span><span class="p">}</span>
 
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">Speak</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;my name is %s&quot;</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
-  <span class="o">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">Speak</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="s">&quot;my name is %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
 
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">Name</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">Name</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 
-<span class="kd">class</span> <span class="nc">Dog</span> <span class="kd">extends</span> <span class="n">Pet</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="n">breed</span><span class="o">;</span>
+<span class="kd">class</span> <span class="nc">Dog</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Pet</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">breed</span><span class="p">;</span>
 
-  <span class="kd">public</span> <span class="nf">Dog</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">breed</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">breed</span> <span class="o">=</span> <span class="n">breed</span><span class="o">;</span>
-  <span class="o">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">Dog</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">breed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">breed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">breed</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
 
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">Speak</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;my name is %s and I am a %s&quot;</span><span class="o">,</span> <span class="n">name</span><span class="o">,</span> <span class="n">breed</span><span class="o">);</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">Speak</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">String</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="s">&quot;my name is %s and I am a %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">breed</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p><strong>Output</strong></p>
-<div class="highlight"><pre><span></span>$ javac Main.java <span class="o">&amp;&amp;</span> java Main
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>javac<span class="w"> </span>Main.java<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>java<span class="w"> </span>Main
 spot
-my name is spot and I am a pointer
-my name is spot and I am a pointer
-</pre></div>
-
+my<span class="w"> </span>name<span class="w"> </span>is<span class="w"> </span>spot<span class="w"> </span>and<span class="w"> </span>I<span class="w"> </span>am<span class="w"> </span>a<span class="w"> </span>pointer
+my<span class="w"> </span>name<span class="w"> </span>is<span class="w"> </span>spot<span class="w"> </span>and<span class="w"> </span>I<span class="w"> </span>am<span class="w"> </span>a<span class="w"> </span>pointer
+</code></pre></div>
 
 <p>This is a pretty big difference as it essentially precludes the use of abstract
 methods as you might want to define them. However, there is a work around:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
 <span class="p">)</span>
 
-<span class="kd">type</span> <span class="nx">Pet</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">speaker</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">string</span>
-    <span class="nx">name</span>    <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Pet</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">speaker</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="nx">name</span><span class="w">    </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">Dog</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">Pet</span>
-    <span class="nx">Breed</span> <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Dog</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Pet</span>
+<span class="w">    </span><span class="nx">Breed</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">NewPet</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Pet</span> <span class="p">{</span>
-    <span class="nx">p</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Pet</span><span class="p">{</span>
-        <span class="nx">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">speak</span>
-    <span class="k">return</span> <span class="nx">p</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">NewPet</span><span class="p">(</span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">p</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">Pet</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">speak</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Play</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Play</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Name</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Name</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">NewDog</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">breed</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Dog</span> <span class="p">{</span>
-    <span class="nx">d</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Dog</span><span class="p">{</span>
-        <span class="nx">Pet</span><span class="p">:</span>   <span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">},</span>
-        <span class="nx">Breed</span><span class="p">:</span> <span class="nx">breed</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">d</span><span class="p">.</span><span class="nx">speaker</span> <span class="p">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">speak</span>
-    <span class="k">return</span> <span class="nx">d</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">NewDog</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">breed</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">Dog</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">Dog</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">Pet</span><span class="p">:</span><span class="w">   </span><span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">name</span><span class="p">},</span>
+<span class="w">        </span><span class="nx">Breed</span><span class="p">:</span><span class="w"> </span><span class="nx">breed</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nx">speaker</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">speak</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">d</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">Dog</span><span class="p">)</span> <span class="nx">speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">speak</span><span class="p">(),</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">d</span><span class="w"> </span><span class="o">*</span><span class="nx">Dog</span><span class="p">)</span><span class="w"> </span><span class="nx">speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">speak</span><span class="p">(),</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">d</span> <span class="o">:=</span> <span class="nx">NewDog</span><span class="p">(</span><span class="s">&quot;spot&quot;</span><span class="p">,</span> <span class="s">&quot;pointer&quot;</span><span class="p">)</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
-    <span class="nx">d</span><span class="p">.</span><span class="nx">Play</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">NewDog</span><span class="p">(</span><span class="s">&quot;spot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pointer&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nx">Play</span><span class="p">()</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>(try it on the playground <a href="https://play.golang.org/p/9iIb2px7jH">https://play.golang.org/p/9iIb2px7jH</a>)</p>
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>spot
+<div class="highlight"><pre><span></span><code>spot
 my name is spot and I am a pointer
 my name is spot and I am a pointer
-</pre></div>
-
+</code></pre></div>
 
 <p>Now, it works "as expected" but it is much more verbose and difficult than in
 Java. You manually have to override the method yourself. Furthermore, it is
@@ -524,164 +503,160 @@ said to <em>substitute</em> for <code>Pet</code>. This relationship is known as 
 is a <em>subtype</em> of <code>Pet</code>). This relationship is also called subtype polymorphism
 and it does not exist in the Go programming language for <code>struct</code> types.</p>
 <p>Let's look at an example:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
 <span class="p">)</span>
 
-<span class="kd">type</span> <span class="nx">Pet</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">speaker</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">string</span>
-    <span class="nx">name</span>    <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Pet</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">speaker</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="nx">name</span><span class="w">    </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">Dog</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">Pet</span>
-    <span class="nx">Breed</span> <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Dog</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Pet</span>
+<span class="w">    </span><span class="nx">Breed</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">NewPet</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Pet</span> <span class="p">{</span>
-    <span class="nx">p</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Pet</span><span class="p">{</span>
-        <span class="nx">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">speak</span>
-    <span class="k">return</span> <span class="nx">p</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">NewPet</span><span class="p">(</span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">p</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">Pet</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">speak</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Play</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Play</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="nx">Name</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Name</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">NewDog</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">breed</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Dog</span> <span class="p">{</span>
-    <span class="nx">d</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Dog</span><span class="p">{</span>
-        <span class="nx">Pet</span><span class="p">:</span>   <span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">},</span>
-        <span class="nx">Breed</span><span class="p">:</span> <span class="nx">breed</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">d</span><span class="p">.</span><span class="nx">speaker</span> <span class="p">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">speak</span>
-    <span class="k">return</span> <span class="nx">d</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">NewDog</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">breed</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">Dog</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">Dog</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">Pet</span><span class="p">:</span><span class="w">   </span><span class="nx">Pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">name</span><span class="p">},</span>
+<span class="w">        </span><span class="nx">Breed</span><span class="p">:</span><span class="w"> </span><span class="nx">breed</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nx">speaker</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">speak</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">d</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">Dog</span><span class="p">)</span> <span class="nx">speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">speak</span><span class="p">(),</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">d</span><span class="w"> </span><span class="o">*</span><span class="nx">Dog</span><span class="p">)</span><span class="w"> </span><span class="nx">speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">Pet</span><span class="p">.</span><span class="nx">speak</span><span class="p">(),</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">Breed</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">Play</span><span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Pet</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">Play</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">Play</span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">p</span><span class="p">.</span><span class="nx">Play</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">d</span> <span class="o">:=</span> <span class="nx">NewDog</span><span class="p">(</span><span class="s">&quot;spot&quot;</span><span class="p">,</span> <span class="s">&quot;pointer&quot;</span><span class="p">)</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
-    <span class="nx">Play</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">NewDog</span><span class="p">(</span><span class="s">&quot;spot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pointer&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="w">    </span><span class="nx">Play</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>(try it out on the playground <a href="https://play.golang.org/p/e1Ujx0VhwK">https://play.golang.org/p/e1Ujx0VhwK</a>)</p>
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>prog.go:62: cannot use d (type *Dog) as type *Pet in argument to Play
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="n">prog</span><span class="p">.</span><span class="k">go</span><span class="err">:</span><span class="mi">62</span><span class="err">:</span><span class="w"> </span><span class="n">cannot</span><span class="w"> </span><span class="k">use</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="p">(</span><span class="n">type</span><span class="w"> </span><span class="o">*</span><span class="n">Dog</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">*</span><span class="n">Pet</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">argument</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Play</span>
+</code></pre></div>
 
 <p>However, not all is lost because subtyping does exist for <code>interface</code> types!
 Let's try it out:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
 <span class="p">)</span>
 
-<span class="kd">type</span> <span class="nx">Pet</span> <span class="kd">interface</span> <span class="p">{</span>
-    <span class="nx">Name</span><span class="p">()</span> <span class="kt">string</span>
-    <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span>
-    <span class="nx">Play</span><span class="p">()</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Pet</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Name</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="nx">Speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="nx">Play</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">pet</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">speaker</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">string</span>
-    <span class="nx">name</span>    <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">pet</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">speaker</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="nx">name</span><span class="w">    </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">Dog</span> <span class="kd">interface</span> <span class="p">{</span>
-    <span class="nx">Pet</span>
-    <span class="nx">Breed</span><span class="p">()</span> <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Dog</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Pet</span>
+<span class="w">    </span><span class="nx">Breed</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">dog</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">pet</span>
-    <span class="nx">breed</span> <span class="kt">string</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">dog</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">pet</span>
+<span class="w">    </span><span class="nx">breed</span><span class="w"> </span><span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">NewPet</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">pet</span> <span class="p">{</span>
-    <span class="nx">p</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">pet</span><span class="p">{</span>
-        <span class="nx">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">speak</span>
-    <span class="k">return</span> <span class="nx">p</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">NewPet</span><span class="p">(</span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">pet</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">p</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">pet</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">speak</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">pet</span><span class="p">)</span> <span class="nx">Play</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Play</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">pet</span><span class="p">)</span> <span class="nx">Speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">speaker</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">pet</span><span class="p">)</span> <span class="nx">speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">pet</span><span class="p">)</span><span class="w"> </span><span class="nx">speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;my name is %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">pet</span><span class="p">)</span> <span class="nx">Name</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="o">*</span><span class="nx">pet</span><span class="p">)</span><span class="w"> </span><span class="nx">Name</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">p</span><span class="p">.</span><span class="nx">name</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">NewDog</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">breed</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">dog</span> <span class="p">{</span>
-    <span class="nx">d</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">dog</span><span class="p">{</span>
-        <span class="nx">pet</span><span class="p">:</span>   <span class="nx">pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">},</span>
-        <span class="nx">breed</span><span class="p">:</span> <span class="nx">breed</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">d</span><span class="p">.</span><span class="nx">speaker</span> <span class="p">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">speak</span>
-    <span class="k">return</span> <span class="nx">d</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">NewDog</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">breed</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">dog</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">dog</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">pet</span><span class="p">:</span><span class="w">   </span><span class="nx">pet</span><span class="p">{</span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">name</span><span class="p">},</span>
+<span class="w">        </span><span class="nx">breed</span><span class="p">:</span><span class="w"> </span><span class="nx">breed</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nx">speaker</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">speak</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">d</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">dog</span><span class="p">)</span> <span class="nx">speak</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span> <span class="nx">d</span><span class="p">.</span><span class="nx">pet</span><span class="p">.</span><span class="nx">speak</span><span class="p">(),</span> <span class="nx">d</span><span class="p">.</span><span class="nx">breed</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">d</span><span class="w"> </span><span class="o">*</span><span class="nx">dog</span><span class="p">)</span><span class="w"> </span><span class="nx">speak</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%v and I am a %v&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">pet</span><span class="p">.</span><span class="nx">speak</span><span class="p">(),</span><span class="w"> </span><span class="nx">d</span><span class="p">.</span><span class="nx">breed</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">Play</span><span class="p">(</span><span class="nx">p</span> <span class="nx">Pet</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">Play</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">Play</span><span class="p">(</span><span class="nx">p</span><span class="w"> </span><span class="nx">Pet</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">p</span><span class="p">.</span><span class="nx">Play</span><span class="p">()</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">d</span> <span class="o">:=</span> <span class="nx">NewDog</span><span class="p">(</span><span class="s">&quot;spot&quot;</span><span class="p">,</span> <span class="s">&quot;pointer&quot;</span><span class="p">)</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
-    <span class="nx">Play</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">NewDog</span><span class="p">(</span><span class="s">&quot;spot&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pointer&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Name</span><span class="p">())</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Speak</span><span class="p">())</span>
+<span class="w">    </span><span class="nx">Play</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>(try it on the playground <a href="https://play.golang.org/p/WMH-cr4AJf">https://play.golang.org/p/WMH-cr4AJf</a>)</p>
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>spot
+<div class="highlight"><pre><span></span><code>spot
 my name is spot and I am a pointer
 my name is spot and I am a pointer
-</pre></div>
-
+</code></pre></div>
 
 <p>Thus, <code>interface</code>s can be used to acheive a form of subtyping. However, if they
 do not change the equation on method overriding. If you want a method overridden
@@ -715,7 +690,7 @@ providing thoughtful feedback on this post.</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

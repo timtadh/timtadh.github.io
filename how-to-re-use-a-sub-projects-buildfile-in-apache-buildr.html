@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -71,31 +71,29 @@ other JVM langauges. It is based on Ruby's Rake system and makes it easy to
 setup a multi-project build. However, by default, there is no support for
 re-using a <code>Buildfile</code> from another project.  The intreprepid hacker can fix that
 problem by loading the sub-project's <code>Buildfile</code> like this:</p>
-<div class="highlight"><pre><span></span><span class="k">if</span> <span class="no">File</span><span class="o">::</span><span class="n">exists?</span><span class="p">(</span><span class="s1">&#39;sub-project/Buildfile&#39;</span><span class="p">)</span>
-  <span class="n">pwd</span> <span class="o">=</span> <span class="no">Dir</span><span class="o">.</span><span class="n">pwd</span>
-  <span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span> <span class="no">File</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="s1">&#39;sub-project&#39;</span><span class="p">)</span>
-  <span class="nb">load</span> <span class="s2">&quot;./Buildfile&quot;</span>
-  <span class="nb">puts</span> <span class="n">project</span><span class="p">(</span><span class="s1">&#39;sub-project&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">base_dir</span>  <span class="c1">## HACK: pins the project to the</span>
-                                        <span class="c1">## proper directory!</span>
-  <span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span> <span class="n">pwd</span>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="no">File</span><span class="o">::</span><span class="n">exists?</span><span class="p">(</span><span class="s1">&#39;sub-project/Buildfile&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="n">pwd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Dir</span><span class="o">.</span><span class="n">pwd</span>
+<span class="w">  </span><span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span><span class="w"> </span><span class="no">File</span><span class="o">::</span><span class="n">join</span><span class="p">(</span><span class="n">pwd</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;sub-project&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">load</span><span class="w"> </span><span class="s2">&quot;./Buildfile&quot;</span>
+<span class="w">  </span><span class="nb">puts</span><span class="w"> </span><span class="n">project</span><span class="p">(</span><span class="s1">&#39;sub-project&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">base_dir</span><span class="w">  </span><span class="c1">## HACK: pins the project to the</span>
+<span class="w">                                        </span><span class="c1">## proper directory!</span>
+<span class="w">  </span><span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span><span class="w"> </span><span class="n">pwd</span>
 <span class="k">end</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>If you don't access <code>base_dir</code> before you reset the current working directory
 then it will eventually get set to the wrong directory causing build failures.</p>
 <p>After you have loaded the <code>Buildfile</code> you can run:</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">pwd</span>
 /path/to/project
-$ buildr help:projects
-<span class="o">(</span>in /path/to/project, development<span class="o">)</span>
+$<span class="w"> </span>buildr<span class="w"> </span>help:projects
+<span class="o">(</span><span class="k">in</span><span class="w"> </span>/path/to/project,<span class="w"> </span>development<span class="o">)</span>
 /path/to/project/sub-project
-  main-project
-  sub-project
-  other-project
-  another-project
-</pre></div>
-
+<span class="w">  </span>main-project
+<span class="w">  </span>sub-project
+<span class="w">  </span>other-project
+<span class="w">  </span>another-project
+</code></pre></div>
 
 <p>All of the tasks from you sub-project should now work as expected from the
 parent project. Happy Buildring!</p>
@@ -116,7 +114,7 @@ parent project. Happy Buildring!</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

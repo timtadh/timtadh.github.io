@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -80,7 +80,7 @@ alphabet).</p>
 <p>The quick brown fox jumped over the lazy dog.</p>
 </blockquote>
 <p>The sentence breaks down into individual word each of which has a part of speech</p>
-<div class="highlight"><pre><span></span>&lt;article&gt;, &quot;The&quot;
+<div class="highlight"><pre><span></span><code>&lt;article&gt;, &quot;The&quot;
 &lt;adjective&gt;, &quot;quick&quot;
 &lt;adjective&gt;, &quot;brown&quot;
 &lt;noun&gt;, &quot;fox&quot;
@@ -89,8 +89,7 @@ alphabet).</p>
 &lt;article&gt;, &quot;the&quot;
 &lt;adjective&gt;, &quot;lazy&quot;
 &lt;noun&gt;, &quot;dog&quot;
-</pre></div>
-
+</code></pre></div>
 
 <p>Note, the word "over" can actually be either a preposition or an adverb. In this
 case the context of the sentence (it modifies the verb) makes it an adverb. Many
@@ -106,20 +105,19 @@ forms.</p>
 language</a>. <code>graphviz</code> is a tool to
 visualize <a href="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)">graphs</a>.
 <code>graphviz</code> takes a string such as:</p>
-<div class="highlight"><pre><span></span>digraph {
-  rankdir=LR;
-  a [label=&quot;a&quot; shape=box];
-  c [<span class="nt">&lt;label&gt;</span>=<span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt;];
-  b [label=&quot;bb&quot;];
-  a -&gt; c;
-  c -&gt; b;
-  d -&gt; c;
-  b -&gt; a;
-  b -&gt; e;
-  e -&gt; f;
+<div class="highlight"><pre><span></span><code>digraph<span class="w"> </span>{
+<span class="w">  </span>rankdir=LR;
+<span class="w">  </span>a<span class="w"> </span>[label=&quot;a&quot;<span class="w"> </span>shape=box];
+<span class="w">  </span>c<span class="w"> </span>[<span class="nt">&lt;label&gt;</span>=<span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt;];
+<span class="w">  </span>b<span class="w"> </span>[label=&quot;bb&quot;];
+<span class="w">  </span>a<span class="w"> </span>-&gt;<span class="w"> </span>c;
+<span class="w">  </span>c<span class="w"> </span>-&gt;<span class="w"> </span>b;
+<span class="w">  </span>d<span class="w"> </span>-&gt;<span class="w"> </span>c;
+<span class="w">  </span>b<span class="w"> </span>-&gt;<span class="w"> </span>a;
+<span class="w">  </span>b<span class="w"> </span>-&gt;<span class="w"> </span>e;
+<span class="w">  </span>e<span class="w"> </span>-&gt;<span class="w"> </span>f;
 }
-</pre></div>
-
+</code></pre></div>
 
 <p>And produces :</p>
 <p><a href="/images/dot-example.png"><img alt="Dot Example" src="/images/dot-example.png"></a></p>
@@ -131,38 +129,37 @@ keywords, strings, numbers, comments and so forth.</p>
 <p>When a lexer splits up a string into parts the parts are called <em>tokens</em>. The
 process of splitting up is also called <em>tokenizing</em>. Let's take a look at how
 the previous example would get tokenized:</p>
-<div class="highlight"><pre><span></span>Type    | Lexeme
+<div class="highlight"><pre><span></span><code>Type<span class="w">    </span>|<span class="w"> </span>Lexeme
 -------------------
-DIGRAPH | &quot;digraph&quot;
-LCURLY  | &quot;{&quot;
-ID      | &quot;rankdir&quot;
-EQUAL   | &quot;=&quot;
-ID      | &quot;LR&quot;
-SEMI    | &quot;;&quot;
-ID      | &quot;\&quot;a\&quot;&quot;
-LSQUARE | &quot;[&quot;
-ID      | &quot;label&quot;
-EQUAL   | &quot;=&quot;
-ID      | &quot;a&quot;
-ID      | &quot;shape&quot;
-EQUAL   | &quot;=&quot;
-ID      | &quot;box&quot;
-RSQUARE | &quot;]&quot;
-SEMI    | &quot;;&quot;
-ID      | &quot;c&quot;
-LSQUARE | &quot;[&quot;
-ID      | &quot;<span class="nt">&lt;label&gt;</span>&quot;
-EQUAL   | &quot;=&quot;
-ID      | &quot;<span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt;&quot;
-RSQUARE | &quot;]&quot;
-SEMI    | &quot;;&quot;
-ID      | &quot;b&quot;
+DIGRAPH<span class="w"> </span>|<span class="w"> </span>&quot;digraph&quot;
+LCURLY<span class="w">  </span>|<span class="w"> </span>&quot;{&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;rankdir&quot;
+EQUAL<span class="w">   </span>|<span class="w"> </span>&quot;=&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;LR&quot;
+SEMI<span class="w">    </span>|<span class="w"> </span>&quot;;&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;\&quot;a\&quot;&quot;
+LSQUARE<span class="w"> </span>|<span class="w"> </span>&quot;[&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;label&quot;
+EQUAL<span class="w">   </span>|<span class="w"> </span>&quot;=&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;a&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;shape&quot;
+EQUAL<span class="w">   </span>|<span class="w"> </span>&quot;=&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;box&quot;
+RSQUARE<span class="w"> </span>|<span class="w"> </span>&quot;]&quot;
+SEMI<span class="w">    </span>|<span class="w"> </span>&quot;;&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;c&quot;
+LSQUARE<span class="w"> </span>|<span class="w"> </span>&quot;[&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;<span class="nt">&lt;label&gt;</span>&quot;
+EQUAL<span class="w">   </span>|<span class="w"> </span>&quot;=&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;<span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt;&quot;
+RSQUARE<span class="w"> </span>|<span class="w"> </span>&quot;]&quot;
+SEMI<span class="w">    </span>|<span class="w"> </span>&quot;;&quot;
+ID<span class="w">      </span>|<span class="w"> </span>&quot;b&quot;
 .
 .
 .
-RCURLY  | &quot;}&quot;
-</pre></div>
-
+RCURLY<span class="w">  </span>|<span class="w"> </span>&quot;}&quot;
+</code></pre></div>
 
 <p>Note, that like when the English sentence was analyzed, spaces, newlines, tabs
 and other extraneous characters were dropped. Only the syntactically important
@@ -193,26 +190,25 @@ the pattern but the third string does not.</p>
 definition for identifier (called <code>ID</code>). In the listing below, the token type is
 on the left side and the regular expression or literal (in quotation marks) is
 on the right.</p>
-<div class="highlight"><pre><span></span>NODE = &quot;node&quot;
-EDGE = &quot;edge&quot;
-GRAPH = &quot;graph&quot;
-DIGRAPH = &quot;digraph&quot;
-SUBGRAPH = &quot;subgraph&quot;
-STRICT = &quot;strict&quot;
-LSQUARE = &quot;[&quot;
-RSQUARE = &quot;]&quot;
-LCURLY = &quot;{&quot;
-RCURLY = &quot;}&quot;
-EQUAL = &quot;=&quot;
-COMMA = &quot;,&quot;
-SEMI = &quot;;&quot;
-COLON = &quot;:&quot;
-ARROW = &quot;-&gt;&quot;
-DDASH = &quot;--&quot;
-COMMENT = (/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*$)
-ID = ([a-zA-Z_][a-zA-Z0-9_]*)|(&quot;([^\&quot;]|(\\.))*&quot;)|ID-HTML
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="n">NODE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;node&quot;</span>
+<span class="n">EDGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;edge&quot;</span>
+<span class="nf">GRAPH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;graph&quot;</span>
+<span class="n">DIGRAPH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;digraph&quot;</span>
+<span class="n">SUBGRAPH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;subgraph&quot;</span>
+<span class="n">STRICT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;strict&quot;</span>
+<span class="n">LSQUARE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[&quot;</span>
+<span class="n">RSQUARE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;]&quot;</span>
+<span class="n">LCURLY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;{&quot;</span>
+<span class="n">RCURLY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;}&quot;</span>
+<span class="n">EQUAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;=&quot;</span>
+<span class="n">COMMA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;,&quot;</span>
+<span class="n">SEMI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;;&quot;</span>
+<span class="n">COLON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;:&quot;</span>
+<span class="n">ARROW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-&gt;&quot;</span>
+<span class="n">DDASH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;--&quot;</span>
+<span class="n">COMMENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="p">([</span><span class="o">^*</span><span class="p">]</span><span class="o">|</span><span class="p">[</span><span class="err">\</span><span class="n">r</span><span class="err">\</span><span class="n">n</span><span class="p">]</span><span class="o">|</span><span class="p">(</span><span class="err">\</span><span class="o">*+</span><span class="p">([</span><span class="o">^*/</span><span class="p">]</span><span class="o">|</span><span class="p">[</span><span class="err">\</span><span class="n">r</span><span class="err">\</span><span class="n">n</span><span class="p">])))</span><span class="o">*</span><span class="err">\</span><span class="o">*+/</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="c1">//.*$)</span>
+<span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">([</span><span class="n">a</span><span class="o">-</span><span class="n">zA</span><span class="o">-</span><span class="n">Z_</span><span class="p">][</span><span class="n">a</span><span class="o">-</span><span class="n">zA</span><span class="o">-</span><span class="n">Z0</span><span class="o">-</span><span class="mi">9</span><span class="n">_</span><span class="p">]</span><span class="o">*</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="s">&quot;([^\&quot;</span><span class="p">]</span><span class="o">|</span><span class="p">(</span><span class="err">\\</span><span class="p">.))</span><span class="o">*</span><span class="s">&quot;)|ID-HTML</span>
+</code></pre></div>
 
 <p>Every token type but <code>ID</code> and <code>COMMENT</code> are literals: either a keyword or a
 punctuation mark. A comment is defined by a complicated regular expression which
@@ -231,7 +227,7 @@ is defined by a regular expression no nesting is allowed.</p>
 </li>
 <li>
 <p>A HTML string, which is non-regular (specified here in BNF):</p>
-<div class="highlight"><pre><span></span>CHAR = [^&lt;&gt;]
+<div class="highlight"><pre><span></span><code>CHAR = [^&lt;&gt;]
 ID-HTML = IdHTML
 
 IdHTML : Tag ;
@@ -240,8 +236,7 @@ Body : CHAR Body ;
      | Tag Body
      | e                    // denotes epsilon, the empty string
      ;
-</pre></div>
-
+</code></pre></div>
 
 <p>Thus <code>&lt;&lt;xyz&lt;xy&gt;xyz&gt;&lt;asdf&gt;&gt;</code> is valid but <code>&lt;&lt;&gt;</code> is not</p>
 </li>
@@ -278,34 +273,31 @@ with non-regular Token specifications.</p>
 <h3>The Implementation</h3>
 <p>As a reminder, the implementation is written in <a href="https://golang.org">Go</a>. In
 your workspace, create a new package called dot:</p>
-<div class="highlight"><pre><span></span>$ mkdir dot
-$ <span class="nb">cd</span> dot
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>mkdir<span class="w"> </span>dot
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>dot
+</code></pre></div>
 
 <p>Now create a file for the lexer:</p>
-<div class="highlight"><pre><span></span>$ touch lexer.go
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>touch<span class="w"> </span>lexer.go
+</code></pre></div>
 
 <p>All of the code for the lexer is going in lexer.go.</p>
 <h4>Preamble</h4>
 <p>To begin, put in the package directive and import the <code>lexmachine</code> and
 <code>machines</code> packages. I also import the standard library packages <code>fmt</code> and
 <code>strings</code>.</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">dot</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">dot</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
-    <span class="s">&quot;strings&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
+<span class="w">    </span><span class="s">&quot;strings&quot;</span>
 <span class="p">)</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="nx">lex</span> <span class="s">&quot;github.com/timtadh/lexmachine&quot;</span>
-    <span class="s">&quot;github.com/timtadh/lexmachine/machines&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="nx">lex</span><span class="w"> </span><span class="s">&quot;github.com/timtadh/lexmachine&quot;</span>
+<span class="w">    </span><span class="s">&quot;github.com/timtadh/lexmachine/machines&quot;</span>
 <span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Note how I group the imports. In general, have three groups of imports. The first
 group is for standard library packages, the second for third party, and the
@@ -315,74 +307,69 @@ third group is for other packages in your code.</p>
 tokens, the keywords, the token names, and a mapping from the names of the
 tokens to their type ids. Finally, there is a variable <code>Lexer *lex.Lexer</code> which
 will hold our <code>Lexer</code> object once constructed.</p>
-<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">Literals</span> <span class="p">[]</span><span class="kt">string</span> <span class="c1">// The tokens representing literal strings</span>
-<span class="kd">var</span> <span class="nx">Keywords</span> <span class="p">[]</span><span class="kt">string</span> <span class="c1">// The keyword tokens</span>
-<span class="kd">var</span> <span class="nx">Tokens</span> <span class="p">[]</span><span class="kt">string</span> <span class="c1">// All of the tokens (including literals and keywords)</span>
-<span class="kd">var</span> <span class="nx">TokenIds</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span> <span class="c1">// A map from the token names to their int ids</span>
-<span class="kd">var</span> <span class="nx">Lexer</span> <span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Lexer</span> <span class="c1">// The lexer object. Use this to construct a Scanner</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">Literals</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="w"> </span><span class="c1">// The tokens representing literal strings</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">Keywords</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="w"> </span><span class="c1">// The keyword tokens</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">Tokens</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="w"> </span><span class="c1">// All of the tokens (including literals and keywords)</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">TokenIds</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="w"> </span><span class="c1">// A map from the token names to their int ids</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">Lexer</span><span class="w"> </span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Lexer</span><span class="w"> </span><span class="c1">// The lexer object. Use this to construct a Scanner</span>
+</code></pre></div>
 
 <p>To initialize the lists of tokens we are going to need a function. The reason is
 although, <code>Literals</code> and <code>Keywords</code> could be defined in place the rest of the
 variables cannot be.</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">initTokens</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">Literals</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
-        <span class="s">&quot;[&quot;</span><span class="p">,</span>
-        <span class="s">&quot;]&quot;</span><span class="p">,</span>
-        <span class="s">&quot;{&quot;</span><span class="p">,</span>
-        <span class="s">&quot;}&quot;</span><span class="p">,</span>
-        <span class="s">&quot;=&quot;</span><span class="p">,</span>
-        <span class="s">&quot;,&quot;</span><span class="p">,</span>
-        <span class="s">&quot;;&quot;</span><span class="p">,</span>
-        <span class="s">&quot;:&quot;</span><span class="p">,</span>
-        <span class="s">&quot;-&gt;&quot;</span><span class="p">,</span>
-        <span class="s">&quot;--&quot;</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">Keywords</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
-        <span class="s">&quot;NODE&quot;</span><span class="p">,</span>
-        <span class="s">&quot;EDGE&quot;</span><span class="p">,</span>
-        <span class="s">&quot;GRAPH&quot;</span><span class="p">,</span>
-        <span class="s">&quot;DIGRAPH&quot;</span><span class="p">,</span>
-        <span class="s">&quot;SUBGRAPH&quot;</span><span class="p">,</span>
-        <span class="s">&quot;STRICT&quot;</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">Tokens</span> <span class="p">=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
-        <span class="s">&quot;COMMENT&quot;</span><span class="p">,</span>
-        <span class="s">&quot;ID&quot;</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nx">Tokens</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">Tokens</span><span class="p">,</span> <span class="nx">Keywords</span><span class="o">...</span><span class="p">)</span>
-    <span class="nx">Tokens</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">Tokens</span><span class="p">,</span> <span class="nx">Literals</span><span class="o">...</span><span class="p">)</span>
-    <span class="nx">TokenIds</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
-    <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">tok</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Tokens</span> <span class="p">{</span>
-        <span class="nx">TokenIds</span><span class="p">[</span><span class="nx">tok</span><span class="p">]</span> <span class="p">=</span> <span class="nx">i</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">initTokens</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Literals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;[&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;]&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;{&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;}&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;=&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;,&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;;&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;:&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;-&gt;&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;--&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">Keywords</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;NODE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;EDGE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;GRAPH&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;DIGRAPH&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;SUBGRAPH&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;STRICT&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">Tokens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;COMMENT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;ID&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">Tokens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">Tokens</span><span class="p">,</span><span class="w"> </span><span class="nx">Keywords</span><span class="o">...</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">Tokens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">Tokens</span><span class="p">,</span><span class="w"> </span><span class="nx">Literals</span><span class="o">...</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">TokenIds</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">tok</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">Tokens</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">TokenIds</span><span class="p">[</span><span class="nx">tok</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">i</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Right now, the <code>initTokens()</code> function is not being called. Later, I will show
 you how to call it on package initialization inside of an <code>init</code> function.</p>
 <h4>Defining the Lexer</h4>
 <p>Creating a new lexer object is straight forward.</p>
-<div class="highlight"><pre><span></span><span class="nx">lexer</span> <span class="o">:=</span> <span class="nx">lex</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="nx">lexer</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">lex</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
+</code></pre></div>
 
 <p>The Lexer object has three methods:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span> <span class="nx">Add</span><span class="p">(</span><span class="nx">regex</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">action</span> <span class="nx">Action</span><span class="p">)</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span> <span class="nx">Compile</span><span class="p">()</span> <span class="kt">error</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span> <span class="nx">Scanner</span><span class="p">(</span><span class="nx">text</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">Scanner</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span><span class="w"> </span><span class="nx">Add</span><span class="p">(</span><span class="nx">regex</span><span class="w"> </span><span class="p">[]</span><span class="kt">byte</span><span class="p">,</span><span class="w"> </span><span class="nx">action</span><span class="w"> </span><span class="nx">Action</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span><span class="w"> </span><span class="nx">Compile</span><span class="p">()</span><span class="w"> </span><span class="kt">error</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Lexer</span><span class="p">)</span><span class="w"> </span><span class="nx">Scanner</span><span class="p">(</span><span class="nx">text</span><span class="w"> </span><span class="p">[]</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">Scanner</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
+</code></pre></div>
 
 <p>The <code>Add</code> method is what we are interested in right now. It adds a new token to
 the lexer. The token is defined by a pattern expressed as a regular expression
 and an Action function. When the pattern is matched the <code>Action</code> function gets
 called.</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Action</span> <span class="kd">func</span><span class="p">(</span><span class="nx">scan</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">match</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="nx">token</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">Action</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">scan</span><span class="w"> </span><span class="o">*</span><span class="nx">Scanner</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="w"> </span><span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nx">token</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span>
+</code></pre></div>
 
 <p>An <code>Action</code> takes a <code>*Scanner</code> (which is a object which is scanning a particular
 string using the <code>*Lexer</code> object), and a <code>*Match</code> (which represents the string
@@ -390,46 +377,42 @@ that was matched by the Regular expression. It returns a token and an error.</p>
 <p>If the <code>token</code> return value is nil, the <code>*Match</code> is skipped. This can be used to
 skip whitespace and other things you would rather ignore. Let's go head and code
 up the the skip Action:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">skip</span><span class="p">(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">skip</span><span class="p">(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Super simple! It is a no op!</p>
 <p>However, most of the time you will want to create a token. First, we need to
 have a *Token object to construct. Luckily, <code>lexmachine</code> defines one (although
 you don't have to use it). Let's take a look at the definition:</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Token</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">Type</span>        <span class="kt">int</span> <span class="c1">// the token type</span>
-    <span class="nx">Value</span>       <span class="kd">interface</span><span class="p">{}</span> <span class="c1">// a value associate with the token</span>
-    <span class="nx">Lexeme</span>      <span class="p">[]</span><span class="kt">byte</span> <span class="c1">// the string that was matched</span>
-    <span class="nx">TC</span>          <span class="kt">int</span> <span class="c1">// the index (text counter) in the string</span>
-    <span class="nx">StartLine</span>   <span class="kt">int</span>
-    <span class="nx">StartColumn</span> <span class="kt">int</span>
-    <span class="nx">EndLine</span>     <span class="kt">int</span>
-    <span class="nx">EndColumn</span>   <span class="kt">int</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">Token</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Type</span><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="c1">// the token type</span>
+<span class="w">    </span><span class="nx">Value</span><span class="w">       </span><span class="kd">interface</span><span class="p">{}</span><span class="w"> </span><span class="c1">// a value associate with the token</span>
+<span class="w">    </span><span class="nx">Lexeme</span><span class="w">      </span><span class="p">[]</span><span class="kt">byte</span><span class="w"> </span><span class="c1">// the string that was matched</span>
+<span class="w">    </span><span class="nx">TC</span><span class="w">          </span><span class="kt">int</span><span class="w"> </span><span class="c1">// the index (text counter) in the string</span>
+<span class="w">    </span><span class="nx">StartLine</span><span class="w">   </span><span class="kt">int</span>
+<span class="w">    </span><span class="nx">StartColumn</span><span class="w"> </span><span class="kt">int</span>
+<span class="w">    </span><span class="nx">EndLine</span><span class="w">     </span><span class="kt">int</span>
+<span class="w">    </span><span class="nx">EndColumn</span><span class="w">   </span><span class="kt">int</span>
 <span class="p">}</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Token</span><span class="p">)</span> <span class="nx">Equals</span><span class="p">(</span><span class="nx">other</span> <span class="o">*</span><span class="nx">Token</span><span class="p">)</span> <span class="kt">bool</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Token</span><span class="p">)</span> <span class="nx">String</span><span class="p">()</span> <span class="kt">string</span>
-</pre></div>
-
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Token</span><span class="p">)</span><span class="w"> </span><span class="nx">Equals</span><span class="p">(</span><span class="nx">other</span><span class="w"> </span><span class="o">*</span><span class="nx">Token</span><span class="p">)</span><span class="w"> </span><span class="kt">bool</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Token</span><span class="p">)</span><span class="w"> </span><span class="nx">String</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span>
+</code></pre></div>
 
 <p>The <code>*Scanner</code> object provides a convience function <code>Token</code> which constructs a
 token for you. Here is the definition:</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">typ</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="o">*</span><span class="nx">Token</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span><span class="w"> </span><span class="nx">Token</span><span class="p">(</span><span class="nx">typ</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">m</span><span class="w"> </span><span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">Token</span>
+</code></pre></div>
 
 <p>So, with this in mind, here is a simple <code>Action</code> which will construct a Token
 with a string version of the lexeme as the <code>Value</code>.</p>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="nx">token</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">lex</span><span class="p">.</span><span class="nx">Action</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kd">func</span><span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Token</span><span class="p">(</span><span class="nx">TokenIds</span><span class="p">[</span><span class="nx">name</span><span class="p">],</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">),</span> <span class="nx">m</span><span class="p">),</span> <span class="kc">nil</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="nx">lex</span><span class="p">.</span><span class="nx">Action</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">s</span><span class="w"> </span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span><span class="w"> </span><span class="nx">m</span><span class="w"> </span><span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">Token</span><span class="p">(</span><span class="nx">TokenIds</span><span class="p">[</span><span class="nx">name</span><span class="p">],</span><span class="w"> </span><span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">Bytes</span><span class="p">),</span><span class="w"> </span><span class="nx">m</span><span class="p">),</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>The <code>name</code> paramter is the name of the token (eg. <code>COMMENT</code>, <code>ID</code>, <code>STRICT</code>,
 <code>{</code>, ...). The <code>token</code> function will constuct a <code>*Token</code> of correct type (eg.
@@ -469,15 +452,14 @@ theory patterns are matched with these priorities:</p>
 should be added first. This is important as other token's patterns (such as
 <code>ID</code>) could match them. Since, the literals and keywords are both stored in
 their own lists this is easy to do in a loop:</p>
-<div class="highlight"><pre><span></span><span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">lit</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Literals</span> <span class="p">{</span>
-    <span class="nx">r</span> <span class="o">:=</span> <span class="s">&quot;\\&quot;</span> <span class="o">+</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">lit</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="s">&quot;\\&quot;</span><span class="p">)</span>
-    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="nx">lit</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">lit</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">Literals</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">r</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;\\&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">lit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\\&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="nx">lit</span><span class="p">))</span>
 <span class="p">}</span>
-<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Keywords</span> <span class="p">{</span>
-    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">ToLower</span><span class="p">(</span><span class="nx">name</span><span class="p">)),</span> <span class="nx">token</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span>
+<span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">Keywords</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">ToLower</span><span class="p">(</span><span class="nx">name</span><span class="p">)),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Note: I add escapes to every character in the literals. So that literals like
 <code>[</code> have patterns such as <code>\[</code>. This ensures those characters (which have
@@ -491,20 +473,18 @@ distinguish token names from production names in context free grammar.</p>
 <p>The simple patterns are now added to the lexer. For the <code>COMMENT</code> and <code>ID</code>
 tokens I will add a separate pattern for each of the alternative construction
 options:</p>
-<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`//[^\n]*\n?`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
-<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`/\*([^*]|\r|\n|(\*+([^*/]|\r|\n)))*\*+/`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
-<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|_)*`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
-<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`&quot;([^\\&quot;]|(\\.))*&quot;`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`//[^\n]*\n?`</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
+<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`/\*([^*]|\r|\n|(\*+([^*/]|\r|\n)))*\*+/`</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
+<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|_)*`</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
+<span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`&quot;([^\\&quot;]|(\\.))*&quot;`</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
+</code></pre></div>
 
 <p>Note: I left out the last form of <code>ID</code> the HTML string. We will get back to that
 in a second. The final pattern to add is for whitespace: spaces, tabs, newlines,
 and carriage returns. I don't want tokens produced for these characters to I
 will use the <code>skip</code> function as the lexer <code>Action</code>:</p>
-<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;( |\t|\n|\r)+&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;( |\t|\n|\r)+&quot;</span><span class="p">),</span><span class="w"> </span><span class="nx">skip</span><span class="p">)</span>
+</code></pre></div>
 
 <h4>Using the "Escape Hatch"</h4>
 <p>Now, to deal with the third form of the <code>ID</code> token: the HTML string. I need a
@@ -516,15 +496,14 @@ state of the <code>*Scanner</code>. In particular they are allowed to change whe
 index into the string being tokenized is located. That index is called the text
 counter and is stored in the <code>TC</code> variable. Let's take a look at what <code>*Scanner</code>
 exports:</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">Scanner</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">Text</span> <span class="p">[]</span><span class="kt">byte</span>
-    <span class="nx">TC</span>   <span class="kt">int</span>
-    <span class="c1">// contains filtered or unexported fields</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">Scanner</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">Text</span><span class="w"> </span><span class="p">[]</span><span class="kt">byte</span>
+<span class="w">    </span><span class="nx">TC</span><span class="w">   </span><span class="kt">int</span>
+<span class="w">    </span><span class="c1">// contains filtered or unexported fields</span>
 <span class="p">}</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span> <span class="nx">Next</span><span class="p">()</span> <span class="p">(</span><span class="nx">tok</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">,</span> <span class="nx">eof</span> <span class="kt">bool</span><span class="p">)</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">typ</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="o">*</span><span class="nx">Token</span>
-</pre></div>
-
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span><span class="w"> </span><span class="nx">Next</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="nx">tok</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">,</span><span class="w"> </span><span class="nx">eof</span><span class="w"> </span><span class="kt">bool</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">Scanner</span><span class="p">)</span><span class="w"> </span><span class="nx">Token</span><span class="p">(</span><span class="nx">typ</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">m</span><span class="w"> </span><span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="nx">Token</span>
+</code></pre></div>
 
 <p>The <code>Text</code> variable can be read but you should not modify it. Modifying it will
 have no effect on the tokenization as the NFA simulation keeps its own pointer
@@ -537,38 +516,37 @@ bracket has been closed by a matching <code>&gt;</code> the HTML string has been
 also have to update the <code>*Match</code> object to contain the correct values for the
 end lines and columns for our token.</p>
 <p>Let's see how it works:</p>
-<div class="highlight"><pre><span></span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\&lt;`</span><span class="p">),</span>
-    <span class="kd">func</span><span class="p">(</span><span class="nx">scan</span> <span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">match</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">str</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-        <span class="nx">str</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span><span class="o">...</span><span class="p">)</span>
-        <span class="nx">brackets</span> <span class="o">:=</span> <span class="mi">1</span>
-        <span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span> <span class="p">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span>
-        <span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span> <span class="p">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span>
-        <span class="k">for</span> <span class="nx">tc</span> <span class="o">:=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span><span class="p">;</span> <span class="nx">tc</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">);</span> <span class="nx">tc</span><span class="o">++</span> <span class="p">{</span>
-            <span class="nx">str</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">])</span>
-            <span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span> <span class="p">{</span>
-                <span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&lt;&#39;</span> <span class="p">{</span>
-                <span class="nx">brackets</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&gt;&#39;</span> <span class="p">{</span>
-                <span class="nx">brackets</span> <span class="o">-=</span> <span class="mi">1</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="nx">brackets</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-                <span class="nx">match</span><span class="p">.</span><span class="nx">TC</span> <span class="p">=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span>
-                <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span> <span class="p">=</span> <span class="nx">tc</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span> <span class="p">=</span> <span class="nx">str</span>
-                <span class="k">return</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">)(</span><span class="nx">scan</span><span class="p">,</span> <span class="nx">match</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span>
-            <span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;unclosed HTML literal starting at %d, (%d, %d)&quot;</span><span class="p">,</span>
-                <span class="nx">match</span><span class="p">.</span><span class="nx">TC</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">)</span>
-    <span class="p">},</span>
+<div class="highlight"><pre><span></span><code><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\&lt;`</span><span class="p">),</span>
+<span class="w">    </span><span class="kd">func</span><span class="p">(</span><span class="nx">scan</span><span class="w"> </span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="w"> </span><span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">str</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">str</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span><span class="o">...</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">brackets</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span>
+<span class="w">        </span><span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nx">tc</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span><span class="p">;</span><span class="w"> </span><span class="nx">tc</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">);</span><span class="w"> </span><span class="nx">tc</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">str</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">])</span>
+<span class="w">            </span><span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&lt;&#39;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">brackets</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">brackets</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">brackets</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">match</span><span class="p">.</span><span class="nx">TC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span>
+<span class="w">                </span><span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">tc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">str</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">)(</span><span class="nx">scan</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;unclosed HTML literal starting at %d, (%d, %d)&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">match</span><span class="p">.</span><span class="nx">TC</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">)</span>
+<span class="w">    </span><span class="p">},</span>
 <span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Here, I defined the action in-line since it will not be reused using Go's
 support for anonymous functions. The text counter, <code>scan.TC</code>, is initially
@@ -587,107 +565,104 @@ automatically when a <code>*Scanner</code> is constructed to tokenize the string
 we can have the NFA precomputed by calling <code>Compile</code>. This is important so that
 we don't spend time parsing regular expressions every time we want to lex a
 string</p>
-<div class="highlight"><pre><span></span><span class="nx">err</span> <span class="o">:=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
-<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<div class="highlight"><pre><span></span><code><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
+<span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span>
 <span class="p">}</span>
-<span class="k">return</span> <span class="nx">lexer</span><span class="p">,</span> <span class="nx">n</span>
-</pre></div>
-
+<span class="k">return</span><span class="w"> </span><span class="nx">lexer</span><span class="p">,</span><span class="w"> </span><span class="nx">n</span>
+</code></pre></div>
 
 <h4>Putting it all Together</h4>
-<div class="highlight"><pre><span></span><span class="c1">// Creates the lexer object and compiles the NFA.</span>
-<span class="kd">func</span> <span class="nx">initLexer</span><span class="p">()</span> <span class="p">(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Lexer</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">lexer</span> <span class="o">:=</span> <span class="nx">lex</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// Creates the lexer object and compiles the NFA.</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">initLexer</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Lexer</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">lex</span><span class="p">.</span><span class="nx">NewLexer</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">lit</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Literals</span> <span class="p">{</span>
-        <span class="nx">r</span> <span class="o">:=</span> <span class="s">&quot;\\&quot;</span> <span class="o">+</span> <span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">lit</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span> <span class="s">&quot;\\&quot;</span><span class="p">)</span>
-        <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="nx">lit</span><span class="p">))</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">name</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">Keywords</span> <span class="p">{</span>
-        <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">ToLower</span><span class="p">(</span><span class="nx">name</span><span class="p">)),</span> <span class="nx">token</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">lit</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">Literals</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">r</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;\\&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">lit</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\\&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="nx">lit</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">Keywords</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">ToLower</span><span class="p">(</span><span class="nx">name</span><span class="p">)),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}</span>
 
-    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`//[^\n]*\n?`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
-    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`/\*([^*]|\r|\n|(\*+([^*/]|\r|\n)))*\*+/`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
-    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|_)*`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
-    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`&quot;([^\\&quot;]|(\\.))*&quot;`</span><span class="p">),</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
-    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;( |\t|\n|\r)+&quot;</span><span class="p">),</span> <span class="nx">skip</span><span class="p">)</span>
-    <span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\&lt;`</span><span class="p">),</span>
-        <span class="kd">func</span><span class="p">(</span><span class="nx">scan</span> <span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span> <span class="nx">match</span> <span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">str</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-            <span class="nx">str</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span><span class="o">...</span><span class="p">)</span>
-            <span class="nx">brackets</span> <span class="o">:=</span> <span class="mi">1</span>
-            <span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span> <span class="p">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span>
-            <span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span> <span class="p">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span>
-            <span class="k">for</span> <span class="nx">tc</span> <span class="o">:=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span><span class="p">;</span> <span class="nx">tc</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">);</span> <span class="nx">tc</span><span class="o">++</span> <span class="p">{</span>
-                <span class="nx">str</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">])</span>
-                <span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span> <span class="p">{</span>
-                    <span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="p">}</span>
-                <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&lt;&#39;</span> <span class="p">{</span>
-                    <span class="nx">brackets</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&gt;&#39;</span> <span class="p">{</span>
-                    <span class="nx">brackets</span> <span class="o">-=</span> <span class="mi">1</span>
-                <span class="p">}</span>
-                <span class="k">if</span> <span class="nx">brackets</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-                    <span class="nx">match</span><span class="p">.</span><span class="nx">TC</span> <span class="p">=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span>
-                    <span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span> <span class="p">=</span> <span class="nx">tc</span> <span class="o">+</span> <span class="mi">1</span>
-                    <span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span> <span class="p">=</span> <span class="nx">str</span>
-                    <span class="k">return</span> <span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">)(</span><span class="nx">scan</span><span class="p">,</span> <span class="nx">match</span><span class="p">)</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span>
-                <span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;unclosed HTML literal starting at %d, (%d, %d)&quot;</span><span class="p">,</span>
-                    <span class="nx">match</span><span class="p">.</span><span class="nx">TC</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span> <span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">)</span>
-        <span class="p">},</span>
-    <span class="p">)</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`//[^\n]*\n?`</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`/\*([^*]|\r|\n|(\*+([^*/]|\r|\n)))*\*+/`</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;COMMENT&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|_)*`</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`&quot;([^\\&quot;]|(\\.))*&quot;`</span><span class="p">),</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;( |\t|\n|\r)+&quot;</span><span class="p">),</span><span class="w"> </span><span class="nx">skip</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Add</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`\&lt;`</span><span class="p">),</span>
+<span class="w">        </span><span class="kd">func</span><span class="p">(</span><span class="nx">scan</span><span class="w"> </span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="w"> </span><span class="o">*</span><span class="nx">machines</span><span class="p">.</span><span class="nx">Match</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">str</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">            </span><span class="nx">str</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span><span class="o">...</span><span class="p">)</span>
+<span class="w">            </span><span class="nx">brackets</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span>
+<span class="w">            </span><span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="nx">tc</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span><span class="p">;</span><span class="w"> </span><span class="nx">tc</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">);</span><span class="w"> </span><span class="nx">tc</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">str</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">])</span>
+<span class="w">                </span><span class="nx">match</span><span class="p">.</span><span class="nx">EndColumn</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nx">match</span><span class="p">.</span><span class="nx">EndLine</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&lt;&#39;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nx">brackets</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">Text</span><span class="p">[</span><span class="nx">tc</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nx">brackets</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="nx">brackets</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nx">match</span><span class="p">.</span><span class="nx">TC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span>
+<span class="w">                    </span><span class="nx">scan</span><span class="p">.</span><span class="nx">TC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">tc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                    </span><span class="nx">match</span><span class="p">.</span><span class="nx">Bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">str</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="nx">token</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">)(</span><span class="nx">scan</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">)</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;unclosed HTML literal starting at %d, (%d, %d)&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nx">match</span><span class="p">.</span><span class="nx">TC</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">)</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="p">)</span>
 
-    <span class="nx">err</span> <span class="o">:=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">lexer</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="w">    </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">lexer</span><span class="p">.</span><span class="nx">Compile</span><span class="p">()</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">lexer</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h4>Initializing the Package</h4>
 <p>To ensure that the regular expressions are only compiled once, we are going to
 call <code>initLexer</code> once at the start of the program. To do this we put the call
 inside an <a href="https://golang.org/ref/spec#Package_initialization"><code>init</code> function</a>.
 Init functions get run once on program start up.</p>
-<div class="highlight"><pre><span></span><span class="c1">// Called at package initialization. Creates the lexer and populates token lists.</span>
-<span class="kd">func</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">initTokens</span><span class="p">()</span>
-    <span class="kd">var</span> <span class="nx">err</span> <span class="kt">error</span>
-    <span class="nx">Lexer</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">initLexer</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// Called at package initialization. Creates the lexer and populates token lists.</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">init</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">initTokens</span><span class="p">()</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span>
+<span class="w">    </span><span class="nx">Lexer</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">initLexer</span><span class="p">()</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>And that is it. Here is the <a href="https://github.com/timtadh/dot/blob/9b5afb350454d8e023e02a0b8b3c828869ec647e/lexer.go">source code for the full
 lexer</a>.</p>
 <h3>Using the Lexer</h3>
 <p>Let's put it all together. Here is a simple example which uses the lexer:</p>
-<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;fmt&quot;</span>
-    <span class="s">&quot;log&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span>
+<span class="w">    </span><span class="s">&quot;log&quot;</span>
 <span class="p">)</span>
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&quot;github.com/timtadh/dot&quot;</span>
-    <span class="nx">lex</span> <span class="s">&quot;github.com/timtadh/lexmachine&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;github.com/timtadh/dot&quot;</span>
+<span class="w">    </span><span class="nx">lex</span><span class="w"> </span><span class="s">&quot;github.com/timtadh/lexmachine&quot;</span>
 <span class="p">)</span>
 
-<span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">s</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">dot</span><span class="p">.</span><span class="nx">Lexer</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`digraph {</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">s</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">dot</span><span class="p">.</span><span class="nx">Lexer</span><span class="p">.</span><span class="nx">Scanner</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">`digraph {</span>
 <span class="s">  rankdir=LR;</span>
 <span class="s">  a [label=&quot;a&quot; shape=box];</span>
 <span class="s">  c [&lt;label&gt;=&lt;&lt;u&gt;C&lt;/u&gt;&gt;];</span>
@@ -699,88 +674,86 @@ lexer</a>.</p>
 <span class="s">  b -&gt; e;</span>
 <span class="s">  e -&gt; f;</span>
 <span class="s">}`</span><span class="p">))</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Type    | Lexeme     | Position&quot;</span><span class="p">)</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;--------+------------+------------&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="nx">tok</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Next</span><span class="p">();</span> <span class="p">!</span><span class="nx">eof</span><span class="p">;</span> <span class="nx">tok</span><span class="p">,</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">eof</span> <span class="p">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="nx">token</span> <span class="o">:=</span> <span class="nx">tok</span><span class="p">.(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;%-7v | %-10v | %v:%v-%v:%v\n&quot;</span><span class="p">,</span>
-            <span class="nx">dot</span><span class="p">.</span><span class="nx">Tokens</span><span class="p">[</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">],</span>
-            <span class="nb">string</span><span class="p">(</span><span class="nx">token</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">),</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">,</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">EndLine</span><span class="p">,</span>
-            <span class="nx">token</span><span class="p">.</span><span class="nx">EndColumn</span><span class="p">)</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Type    | Lexeme     | Position&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;--------+------------+------------&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">tok</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">eof</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">Next</span><span class="p">();</span><span class="w"> </span><span class="p">!</span><span class="nx">eof</span><span class="p">;</span><span class="w"> </span><span class="nx">tok</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">eof</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">Next</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="nx">token</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">tok</span><span class="p">.(</span><span class="o">*</span><span class="nx">lex</span><span class="p">.</span><span class="nx">Token</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;%-7v | %-10v | %v:%v-%v:%v\n&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">dot</span><span class="p">.</span><span class="nx">Tokens</span><span class="p">[</span><span class="nx">token</span><span class="p">.</span><span class="nx">Type</span><span class="p">],</span>
+<span class="w">            </span><span class="nb">string</span><span class="p">(</span><span class="nx">token</span><span class="p">.</span><span class="nx">Lexeme</span><span class="p">),</span>
+<span class="w">            </span><span class="nx">token</span><span class="p">.</span><span class="nx">StartLine</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">token</span><span class="p">.</span><span class="nx">StartColumn</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">token</span><span class="p">.</span><span class="nx">EndLine</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">token</span><span class="p">.</span><span class="nx">EndColumn</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><strong>Output</strong>:</p>
-<div class="highlight"><pre><span></span>Type    | Lexeme     | Position
+<div class="highlight"><pre><span></span><code>Type<span class="w">    </span>|<span class="w"> </span>Lexeme<span class="w">     </span>|<span class="w"> </span>Position
 --------+------------+------------
-DIGRAPH | digraph    | 1:1-1:7
-{       | {          | 1:9-1:9
-ID      | rankdir    | 2:3-2:9
-=       | =          | 2:10-2:10
-ID      | LR         | 2:11-2:12
-;       | ;          | 2:13-2:13
-ID      | a          | 3:3-3:3
-[       | [          | 3:5-3:5
-ID      | label      | 3:6-3:10
-=       | =          | 3:11-3:11
-ID      | &quot;a&quot;        | 3:12-3:14
-ID      | shape      | 3:16-3:20
-=       | =          | 3:21-3:21
-ID      | box        | 3:22-3:24
-]       | ]          | 3:25-3:25
-;       | ;          | 3:26-3:26
-ID      | c          | 4:3-4:3
-[       | [          | 4:5-4:5
-ID      | <span class="nt">&lt;label&gt;</span>    | 4:6-4:12
-=       | =          | 4:13-4:13
-ID      | <span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt; | 4:14-4:23
-]       | ]          | 4:24-4:24
-;       | ;          | 4:25-4:25
-ID      | b          | 5:3-5:3
-[       | [          | 5:5-5:5
-ID      | label      | 5:6-5:10
-=       | =          | 5:11-5:11
-ID      | &quot;bb&quot;       | 5:12-5:15
-]       | ]          | 5:16-5:16
-;       | ;          | 5:17-5:17
-ID      | a          | 6:3-6:3
--&gt;      | -&gt;         | 6:5-6:6
-ID      | c          | 6:8-6:8
-;       | ;          | 6:9-6:9
-ID      | c          | 7:3-7:3
--&gt;      | -&gt;         | 7:5-7:6
-ID      | b          | 7:8-7:8
-;       | ;          | 7:9-7:9
-ID      | d          | 8:3-8:3
--&gt;      | -&gt;         | 8:5-8:6
-ID      | c          | 8:8-8:8
-;       | ;          | 8:9-8:9
-ID      | b          | 9:3-9:3
--&gt;      | -&gt;         | 9:5-9:6
-ID      | a          | 9:8-9:8
-;       | ;          | 9:9-9:9
-ID      | b          | 10:3-10:3
--&gt;      | -&gt;         | 10:5-10:6
-ID      | e          | 10:8-10:8
-;       | ;          | 10:9-10:9
-ID      | e          | 11:3-11:3
--&gt;      | -&gt;         | 11:5-11:6
-ID      | f          | 11:8-11:8
-;       | ;          | 11:9-11:9
-}       | }          | 12:1-12:1
-</pre></div>
-
+DIGRAPH<span class="w"> </span>|<span class="w"> </span>digraph<span class="w">    </span>|<span class="w"> </span>1:1-1:7
+{<span class="w">       </span>|<span class="w"> </span>{<span class="w">          </span>|<span class="w"> </span>1:9-1:9
+ID<span class="w">      </span>|<span class="w"> </span>rankdir<span class="w">    </span>|<span class="w"> </span>2:3-2:9
+=<span class="w">       </span>|<span class="w"> </span>=<span class="w">          </span>|<span class="w"> </span>2:10-2:10
+ID<span class="w">      </span>|<span class="w"> </span>LR<span class="w">         </span>|<span class="w"> </span>2:11-2:12
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>2:13-2:13
+ID<span class="w">      </span>|<span class="w"> </span>a<span class="w">          </span>|<span class="w"> </span>3:3-3:3
+[<span class="w">       </span>|<span class="w"> </span>[<span class="w">          </span>|<span class="w"> </span>3:5-3:5
+ID<span class="w">      </span>|<span class="w"> </span>label<span class="w">      </span>|<span class="w"> </span>3:6-3:10
+=<span class="w">       </span>|<span class="w"> </span>=<span class="w">          </span>|<span class="w"> </span>3:11-3:11
+ID<span class="w">      </span>|<span class="w"> </span>&quot;a&quot;<span class="w">        </span>|<span class="w"> </span>3:12-3:14
+ID<span class="w">      </span>|<span class="w"> </span>shape<span class="w">      </span>|<span class="w"> </span>3:16-3:20
+=<span class="w">       </span>|<span class="w"> </span>=<span class="w">          </span>|<span class="w"> </span>3:21-3:21
+ID<span class="w">      </span>|<span class="w"> </span>box<span class="w">        </span>|<span class="w"> </span>3:22-3:24
+]<span class="w">       </span>|<span class="w"> </span>]<span class="w">          </span>|<span class="w"> </span>3:25-3:25
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>3:26-3:26
+ID<span class="w">      </span>|<span class="w"> </span>c<span class="w">          </span>|<span class="w"> </span>4:3-4:3
+[<span class="w">       </span>|<span class="w"> </span>[<span class="w">          </span>|<span class="w"> </span>4:5-4:5
+ID<span class="w">      </span>|<span class="w"> </span><span class="nt">&lt;label&gt;</span><span class="w">    </span>|<span class="w"> </span>4:6-4:12
+=<span class="w">       </span>|<span class="w"> </span>=<span class="w">          </span>|<span class="w"> </span>4:13-4:13
+ID<span class="w">      </span>|<span class="w"> </span><span class="err">&lt;</span><span class="nt">&lt;u&gt;</span>C<span class="nt">&lt;/u&gt;</span>&gt;<span class="w"> </span>|<span class="w"> </span>4:14-4:23
+]<span class="w">       </span>|<span class="w"> </span>]<span class="w">          </span>|<span class="w"> </span>4:24-4:24
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>4:25-4:25
+ID<span class="w">      </span>|<span class="w"> </span>b<span class="w">          </span>|<span class="w"> </span>5:3-5:3
+[<span class="w">       </span>|<span class="w"> </span>[<span class="w">          </span>|<span class="w"> </span>5:5-5:5
+ID<span class="w">      </span>|<span class="w"> </span>label<span class="w">      </span>|<span class="w"> </span>5:6-5:10
+=<span class="w">       </span>|<span class="w"> </span>=<span class="w">          </span>|<span class="w"> </span>5:11-5:11
+ID<span class="w">      </span>|<span class="w"> </span>&quot;bb&quot;<span class="w">       </span>|<span class="w"> </span>5:12-5:15
+]<span class="w">       </span>|<span class="w"> </span>]<span class="w">          </span>|<span class="w"> </span>5:16-5:16
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>5:17-5:17
+ID<span class="w">      </span>|<span class="w"> </span>a<span class="w">          </span>|<span class="w"> </span>6:3-6:3
+-&gt;<span class="w">      </span>|<span class="w"> </span>-&gt;<span class="w">         </span>|<span class="w"> </span>6:5-6:6
+ID<span class="w">      </span>|<span class="w"> </span>c<span class="w">          </span>|<span class="w"> </span>6:8-6:8
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>6:9-6:9
+ID<span class="w">      </span>|<span class="w"> </span>c<span class="w">          </span>|<span class="w"> </span>7:3-7:3
+-&gt;<span class="w">      </span>|<span class="w"> </span>-&gt;<span class="w">         </span>|<span class="w"> </span>7:5-7:6
+ID<span class="w">      </span>|<span class="w"> </span>b<span class="w">          </span>|<span class="w"> </span>7:8-7:8
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>7:9-7:9
+ID<span class="w">      </span>|<span class="w"> </span>d<span class="w">          </span>|<span class="w"> </span>8:3-8:3
+-&gt;<span class="w">      </span>|<span class="w"> </span>-&gt;<span class="w">         </span>|<span class="w"> </span>8:5-8:6
+ID<span class="w">      </span>|<span class="w"> </span>c<span class="w">          </span>|<span class="w"> </span>8:8-8:8
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>8:9-8:9
+ID<span class="w">      </span>|<span class="w"> </span>b<span class="w">          </span>|<span class="w"> </span>9:3-9:3
+-&gt;<span class="w">      </span>|<span class="w"> </span>-&gt;<span class="w">         </span>|<span class="w"> </span>9:5-9:6
+ID<span class="w">      </span>|<span class="w"> </span>a<span class="w">          </span>|<span class="w"> </span>9:8-9:8
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>9:9-9:9
+ID<span class="w">      </span>|<span class="w"> </span>b<span class="w">          </span>|<span class="w"> </span>10:3-10:3
+-&gt;<span class="w">      </span>|<span class="w"> </span>-&gt;<span class="w">         </span>|<span class="w"> </span>10:5-10:6
+ID<span class="w">      </span>|<span class="w"> </span>e<span class="w">          </span>|<span class="w"> </span>10:8-10:8
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>10:9-10:9
+ID<span class="w">      </span>|<span class="w"> </span>e<span class="w">          </span>|<span class="w"> </span>11:3-11:3
+-&gt;<span class="w">      </span>|<span class="w"> </span>-&gt;<span class="w">         </span>|<span class="w"> </span>11:5-11:6
+ID<span class="w">      </span>|<span class="w"> </span>f<span class="w">          </span>|<span class="w"> </span>11:8-11:8
+;<span class="w">       </span>|<span class="w"> </span>;<span class="w">          </span>|<span class="w"> </span>11:9-11:9
+}<span class="w">       </span>|<span class="w"> </span>}<span class="w">          </span>|<span class="w"> </span>12:1-12:1
+</code></pre></div>
 
 <h1>Conclusion</h1>
 <p>Believe it or not 3500 words later, we have only scratched the surface on this
@@ -805,7 +778,7 @@ helpful for constructing lexers whatever language you are using.</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

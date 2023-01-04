@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -77,101 +77,96 @@ and slightly improved version is available in my <a href="http://github.com/timt
 repository</a> along with several other
 interesting algorithms.</p>
 <h2>Profiling Results</h2>
-<div class="highlight"><pre><span></span>              iterations, ns per operation
+<div class="highlight"><pre><span></span><code>              iterations, ns per operation
 BenchmarkGoMap    100000,      26292 ns/op -- native map
 BenchmarkHash      20000,      79526 ns/op -- classical separate chaining
 BenchmarkMLHash    20000,      80820 ns/op -- in memory LH
 BenchmarkLHash       500,    5733882 ns/op -- disk based LH, LRU cached in memory
-</pre></div>
-
+</code></pre></div>
 
 <h2>Structs</h2>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">bst</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">hash</span> <span class="kt">int</span>
-    <span class="nx">key</span> <span class="nx">Hashable</span>
-    <span class="nx">value</span> <span class="kd">interface</span><span class="p">{}</span>
-    <span class="nx">left</span> <span class="o">*</span><span class="nx">bst</span>
-    <span class="nx">right</span> <span class="o">*</span><span class="nx">bst</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">bst</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">hash</span><span class="w"> </span><span class="kt">int</span>
+<span class="w">    </span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span>
+<span class="w">    </span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{}</span>
+<span class="w">    </span><span class="nx">left</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span>
+<span class="w">    </span><span class="nx">right</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">linearhash</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">table</span> <span class="p">[]</span><span class="o">*</span><span class="nx">bst</span>
-    <span class="nx">n</span> <span class="kt">uint</span>
-    <span class="nx">r</span> <span class="kt">uint</span>
-    <span class="nx">i</span> <span class="kt">uint</span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">linearhash</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">table</span><span class="w"> </span><span class="p">[]</span><span class="o">*</span><span class="nx">bst</span>
+<span class="w">    </span><span class="nx">n</span><span class="w"> </span><span class="kt">uint</span>
+<span class="w">    </span><span class="nx">r</span><span class="w"> </span><span class="kt">uint</span>
+<span class="w">    </span><span class="nx">i</span><span class="w"> </span><span class="kt">uint</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2>Bucket</h2>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="kt">uint</span> <span class="p">{</span>
-    <span class="nx">m</span> <span class="o">:=</span> <span class="nb">uint</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">Hash</span><span class="p">()</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="k">if</span> <span class="nx">m</span> <span class="p">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">n</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">m</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">m</span> <span class="p">^</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span><span class="w"> </span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">)</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">m</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">uint</span><span class="p">(</span><span class="nx">key</span><span class="p">.</span><span class="nx">Hash</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">((</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">m</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">n</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">m</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">m</span><span class="w"> </span><span class="p">^</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2>Has, Put, Get and Remove</h2>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">Put</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">updated</span> <span class="kt">bool</span>
-    <span class="nx">bkt_idx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">],</span> <span class="nx">updated</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">!</span><span class="nx">updated</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">r</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span> <span class="p">&gt;</span> <span class="nx">UTILIZATION</span> <span class="o">*</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">n</span><span class="p">)</span> <span class="o">*</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">RECORDS_PER_BLOCK</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">split</span><span class="p">()</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kc">nil</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span><span class="w"> </span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">updated</span><span class="w"> </span><span class="kt">bool</span>
+<span class="w">    </span><span class="nx">bkt_idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">],</span><span class="w"> </span><span class="nx">updated</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">!</span><span class="nx">updated</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">self</span><span class="p">.</span><span class="nx">r</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">float64</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="nx">UTILIZATION</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">float64</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">n</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">float64</span><span class="p">(</span><span class="nx">RECORDS_PER_BLOCK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">split</span><span class="p">()</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">Get</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">bkt_idx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Get</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span><span class="w"> </span><span class="nx">Get</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">bkt_idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Get</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">Has</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="p">(</span><span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">bkt_idx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Has</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span><span class="w"> </span><span class="nx">Has</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">bkt_idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Has</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">bkt_idx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">],</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">r</span> <span class="o">-=</span> <span class="mi">1</span>
-    <span class="p">}</span>
-    <span class="k">return</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span><span class="w"> </span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">bkt_idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">],</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">].</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">self</span><span class="p">.</span><span class="nx">r</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2>Split</h2>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span> <span class="nx">split</span><span class="p">()</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">bkt_idx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">n</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="nx">old_bkt</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">]</span>
-    <span class="kd">var</span> <span class="nx">bkt_a</span><span class="p">,</span> <span class="nx">bkt_b</span> <span class="o">*</span><span class="nx">bst</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">n</span> <span class="p">&gt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">next</span> <span class="o">:=</span> <span class="nx">old_bkt</span><span class="p">.</span><span class="nx">Iterate</span><span class="p">()();</span> <span class="nx">next</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">;</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">k</span><span class="p">)</span> <span class="o">==</span> <span class="nx">bkt_idx</span> <span class="p">{</span>
-            <span class="nx">bkt_a</span><span class="p">,</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">bkt_a</span><span class="p">.</span><span class="nx">Put</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">bkt_b</span><span class="p">,</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">bkt_b</span><span class="p">.</span><span class="nx">Put</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">]</span> <span class="p">=</span> <span class="nx">bkt_a</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">table</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">,</span> <span class="nx">bkt_b</span><span class="p">)</span>
-    <span class="k">return</span> <span class="kc">nil</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">linearhash</span><span class="p">)</span><span class="w"> </span><span class="nx">split</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">bkt_idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+<span class="w">    </span><span class="nx">old_bkt</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">]</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">bkt_a</span><span class="p">,</span><span class="w"> </span><span class="nx">bkt_b</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span>
+<span class="w">    </span><span class="nx">self</span><span class="p">.</span><span class="nx">n</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">n</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">self</span><span class="p">.</span><span class="nx">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">k</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">old_bkt</span><span class="p">.</span><span class="nx">Iterate</span><span class="p">()();</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="p">;</span><span class="w"> </span><span class="nx">k</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">next</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="nx">k</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">bkt_idx</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">bkt_a</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">bkt_a</span><span class="p">.</span><span class="nx">Put</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">bkt_b</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">bkt_b</span><span class="p">.</span><span class="nx">Put</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">[</span><span class="nx">bkt_idx</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">bkt_a</span>
+<span class="w">    </span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">table</span><span class="p">,</span><span class="w"> </span><span class="nx">bkt_b</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2>Buckets</h2>
 <p>One cool thing about my BST implementation is it has a functional iterator. As
@@ -182,151 +177,149 @@ pair and a function which provides the next item. You iterate by calling <code>n
 over and over again until the function pointer is nil. I hadn't written an
 iterator like this before but I like the way it works so I will probably re-use
 this pattern for future Go iterators.</p>
-<div class="highlight"><pre><span></span><span class="kd">type</span> <span class="nx">BSTIterator</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">next</span> <span class="nx">BSTIterator</span><span class="p">)</span>
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Iterate</span><span class="p">()</span> <span class="nx">BSTIterator</span> <span class="p">{</span>
-    <span class="nx">pop</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">stack</span> <span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="p">([]</span><span class="o">*</span><span class="nx">bst</span><span class="p">,</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">stack</span><span class="p">,</span> <span class="kc">nil</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="nx">stack</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="nx">procnode</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">stack</span> <span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">,</span> <span class="nx">node</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="p">[]</span><span class="o">*</span><span class="nx">bst</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nx">node</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">stack</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="nx">node</span><span class="p">.</span><span class="nx">right</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">stack</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span> <span class="nx">node</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="nx">node</span><span class="p">.</span><span class="nx">left</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">stack</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span> <span class="nx">node</span><span class="p">.</span><span class="nx">left</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">stack</span>
-    <span class="p">}</span>
-    <span class="kd">var</span> <span class="nx">make_iterator</span> <span class="kd">func</span><span class="p">(</span><span class="nx">stack</span> <span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">BSTIterator</span>
-    <span class="nx">make_iterator</span> <span class="p">=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">stack</span> <span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">BSTIterator</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kd">func</span><span class="p">()(</span><span class="nx">Hashable</span><span class="p">,</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">BSTIterator</span><span class="p">){</span>
+<div class="highlight"><pre><span></span><code><span class="kd">type</span><span class="w"> </span><span class="nx">BSTIterator</span><span class="w"> </span><span class="kd">func</span><span class="p">()(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="nx">BSTIterator</span><span class="p">)</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="nx">Iterate</span><span class="p">()</span><span class="w"> </span><span class="nx">BSTIterator</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">pop</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">stack</span><span class="w"> </span><span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="p">([]</span><span class="o">*</span><span class="nx">bst</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">stack</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nx">stack</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">procnode</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">stack</span><span class="w"> </span><span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">,</span><span class="w"> </span><span class="nx">node</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">stack</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">right</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">stack</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">left</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">stack</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">left</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">stack</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">make_iterator</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">stack</span><span class="w"> </span><span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="nx">BSTIterator</span>
+<span class="w">    </span><span class="nx">make_iterator</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">stack</span><span class="w"> </span><span class="p">[]</span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="nx">BSTIterator</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kd">func</span><span class="p">()(</span><span class="nx">Hashable</span><span class="p">,</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">BSTIterator</span><span class="p">){</span>
 
-            <span class="kd">var</span> <span class="nx">node</span> <span class="o">*</span><span class="nx">bst</span>
-            <span class="nx">stack</span><span class="p">,</span> <span class="nx">node</span> <span class="p">=</span> <span class="nx">pop</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nx">node</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
-            <span class="p">}</span>
-            <span class="nx">stack</span> <span class="p">=</span> <span class="nx">procnode</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">node</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">make_iterator</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">make_iterator</span><span class="p">([]</span><span class="o">*</span><span class="nx">bst</span><span class="p">{</span><span class="nx">self</span><span class="p">})</span>
+<span class="w">            </span><span class="kd">var</span><span class="w"> </span><span class="nx">node</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span>
+<span class="w">            </span><span class="nx">stack</span><span class="p">,</span><span class="w"> </span><span class="nx">node</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">pop</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">node</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="nx">stack</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">procnode</span><span class="p">(</span><span class="nx">stack</span><span class="p">,</span><span class="w"> </span><span class="nx">node</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">node</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">make_iterator</span><span class="p">(</span><span class="nx">stack</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">make_iterator</span><span class="p">([]</span><span class="o">*</span><span class="nx">bst</span><span class="p">{</span><span class="nx">self</span><span class="p">})</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h3>Standard Has, Get, Put, Remove, Size</h3>
-<div class="highlight"><pre><span></span><span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Has</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="p">(</span><span class="nx">has</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">self</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">false</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">true</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Has</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Has</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="nx">Has</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nx">has</span><span class="w"> </span><span class="kt">bool</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Has</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Has</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Get</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">self</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">Errors</span><span class="p">[</span><span class="s">&quot;not-found&quot;</span><span class="p">]</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">nil</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Get</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Get</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="p">}</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="nx">Get</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nx">Errors</span><span class="p">[</span><span class="s">&quot;not-found&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Get</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Get</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Put</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">_</span> <span class="o">*</span><span class="nx">bst</span><span class="p">,</span> <span class="nx">updated</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">self</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="o">&amp;</span><span class="nx">bst</span><span class="p">{</span><span class="nx">hash</span><span class="p">:</span> <span class="nx">key</span><span class="p">.</span><span class="nx">Hash</span><span class="p">(),</span> <span class="nx">key</span><span class="p">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">:</span> <span class="nx">value</span><span class="p">},</span> <span class="kc">false</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">value</span> <span class="p">=</span> <span class="nx">value</span>
-        <span class="k">return</span> <span class="nx">self</span><span class="p">,</span> <span class="kc">true</span>
-    <span class="p">}</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span><span class="w"> </span><span class="p">(</span><span class="nx">_</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">,</span><span class="w"> </span><span class="nx">updated</span><span class="w"> </span><span class="kt">bool</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">bst</span><span class="p">{</span><span class="nx">hash</span><span class="p">:</span><span class="w"> </span><span class="nx">key</span><span class="p">.</span><span class="nx">Hash</span><span class="p">(),</span><span class="w"> </span><span class="nx">key</span><span class="p">:</span><span class="w"> </span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">:</span><span class="w"> </span><span class="nx">value</span><span class="p">},</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">value</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
 
-    <span class="k">if</span> <span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">updated</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">updated</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">self</span><span class="p">,</span> <span class="nx">updated</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span><span class="w"> </span><span class="nx">updated</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span><span class="w"> </span><span class="nx">updated</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">,</span><span class="w"> </span><span class="nx">updated</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span> <span class="nx">Hashable</span><span class="p">)</span> <span class="p">(</span><span class="nx">_</span> <span class="o">*</span><span class="nx">bst</span><span class="p">,</span> <span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">self</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">Errors</span><span class="p">[</span><span class="s">&quot;not-found&quot;</span><span class="p">]</span>
-    <span class="p">}</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="nx">Hashable</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nx">_</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="kd">interface</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nx">Errors</span><span class="p">[</span><span class="s">&quot;not-found&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
 
-    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="o">&amp;&amp;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span> <span class="p">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span> <span class="p">{</span>
-                <span class="nx">lmd</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">lmd</span><span class="p">()</span>
-                <span class="nx">lmd</span><span class="p">.</span><span class="nx">left</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span>
-                <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">nil</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">rmd</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">rmd</span><span class="p">()</span>
-                <span class="nx">rmd</span><span class="p">.</span><span class="nx">right</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span>
-                <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">nil</span>
-            <span class="p">}</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">nil</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">nil</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">nil</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">self</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">err</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">lmd</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">lmd</span><span class="p">()</span>
+<span class="w">                </span><span class="nx">lmd</span><span class="p">.</span><span class="nx">left</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">rmd</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">rmd</span><span class="p">()</span>
+<span class="w">                </span><span class="nx">rmd</span><span class="p">.</span><span class="nx">right</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">key</span><span class="p">.</span><span class="nx">Less</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">self</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">self</span> <span class="o">*</span><span class="nx">bst</span><span class="p">)</span> <span class="nx">Size</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">self</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="mi">0</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">self</span><span class="w"> </span><span class="o">*</span><span class="nx">bst</span><span class="p">)</span><span class="w"> </span><span class="nx">Size</span><span class="p">()</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">self</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">Size</span><span class="p">()</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h3>The _md, lmr, rmd</h3>
 <p>These implement "left most descendent" and "right most descendent". Used by
 remove to hook up the nodes correctly.</p>
-<div class="highlight"><pre><span></span>func (self *bst) _md(side func(*bst)*bst) (*bst) {
-    if self == nil {
-        return nil
-    } else if side(self) != nil {
-        return side(self)._md(side)
-    } else {
-        return self
-    }
-}
+<div class="highlight"><pre><span></span><code><span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="bp">self</span><span class="w"> </span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="w"> </span><span class="n">_md</span><span class="p">(</span><span class="n">side</span><span class="w"> </span><span class="k">func</span><span class="p">(</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">nil</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">side</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">side</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_md</span><span class="p">(</span><span class="n">side</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-func (self *bst) lmd() (*bst) {
-    return self._md(func(node *bst)*bst { return node.left })
-}
+<span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="bp">self</span><span class="w"> </span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="w"> </span><span class="n">lmd</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_md</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">node</span><span class="w"> </span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="o">*</span><span class="n">bst</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="w"> </span><span class="p">})</span>
+<span class="p">}</span>
 
-func (self *bst) rmd() (*bst) {
-    return self._md(func(node *bst)*bst { return node.right })
-}
-</pre></div>
+<span class="k">func</span><span class="w"> </span><span class="p">(</span><span class="bp">self</span><span class="w"> </span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="w"> </span><span class="n">rmd</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_md</span><span class="p">(</span><span class="k">func</span><span class="p">(</span><span class="n">node</span><span class="w"> </span><span class="o">*</span><span class="n">bst</span><span class="p">)</span><span class="o">*</span><span class="n">bst</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="w"> </span><span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div>
       </div>
       </article> <!-- /#page-main -->
 
@@ -344,7 +337,7 @@ func (self *bst) rmd() (*bst) {
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

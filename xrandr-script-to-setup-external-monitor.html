@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -69,7 +69,7 @@
         <p>I have a quirky adapter for my external monitor. The adapter doesn't correctly
 report the display's size or refresh rate to the laptop. To solve this problem,
 I wrote the following script to automatically setup the external monitor:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
 
 <span class="c1">## size and refresh rate of the screen</span>
 <span class="nv">X</span><span class="o">=</span><span class="m">1920</span>
@@ -80,26 +80,25 @@ I wrote the following script to automatically setup the external monitor:</p>
 <span class="nv">MODE</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$X</span><span class="s2">&quot;</span>x<span class="s2">&quot;</span><span class="nv">$Y</span><span class="s2">&quot;</span>_<span class="s2">&quot;</span><span class="nv">$R</span><span class="s2">&quot;</span>.00
 
 <span class="c1">## turn the output off in case it is on</span>
-xrandr --output DP1 --off
+xrandr<span class="w"> </span>--output<span class="w"> </span>DP1<span class="w"> </span>--off
 
 <span class="c1">## delete the mode from the output in case it exists</span>
-xrandr --delmode DP1 <span class="s2">&quot;</span><span class="nv">$MODE</span><span class="s2">&quot;</span>
+xrandr<span class="w"> </span>--delmode<span class="w"> </span>DP1<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MODE</span><span class="s2">&quot;</span>
 
 <span class="c1">## delete the mode</span>
-xrandr --rmmode <span class="s2">&quot;</span><span class="nv">$MODE</span><span class="s2">&quot;</span>
+xrandr<span class="w"> </span>--rmmode<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MODE</span><span class="s2">&quot;</span>
 
 <span class="c1">## create the mode, you need to compute the actual mode line using the `gtf`</span>
 <span class="c1">## program which computes VESA GTF mode lines from size and refresh rates</span>
-gtf <span class="nv">$X</span> <span class="nv">$Y</span> <span class="nv">$R</span> <span class="p">|</span> grep Modeline <span class="p">|</span> sed <span class="s1">&#39;s/ *Modeline *//&#39;</span> <span class="p">|</span> xargs xrandr --newmode
+gtf<span class="w"> </span><span class="nv">$X</span><span class="w"> </span><span class="nv">$Y</span><span class="w"> </span><span class="nv">$R</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Modeline<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/ *Modeline *//&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>xrandr<span class="w"> </span>--newmode
 
 <span class="c1">## add your newly created mode to the output</span>
-xrandr --addmode DP1 <span class="s2">&quot;</span><span class="nv">$MODE</span><span class="s2">&quot;</span>
+xrandr<span class="w"> </span>--addmode<span class="w"> </span>DP1<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MODE</span><span class="s2">&quot;</span>
 
 <span class="c1">## turn on the output with the new mode. Place it to the right of the laptop</span>
 <span class="c1">## display but displaced -600 pixels above the laptop display</span>
-xrandr --output DP1 --mode <span class="nv">$MODE</span> --pos 1920x-600
-</pre></div>
-
+xrandr<span class="w"> </span>--output<span class="w"> </span>DP1<span class="w"> </span>--mode<span class="w"> </span><span class="nv">$MODE</span><span class="w"> </span>--pos<span class="w"> </span>1920x-600
+</code></pre></div>
 
 <p>This script also has the advantage that I never have to run the GUI tool to
 change the position of the monitor in relationship to my laptop's monitor.</p>
@@ -120,7 +119,7 @@ change the position of the monitor in relationship to my laptop's monitor.</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -83,120 +83,120 @@ as it relies on the BASH <a href="http://tldp.org/LDP/Bash-Beginners-Guide/html/
 <code>read</code></a>. You
 will need to consult the man pages for your shell to determine if this will work
 for you.</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
 
 <span class="c1">## this is the &quot;job&quot; function which is does whatever work</span>
 <span class="c1">## the queue workers are supposed to be doing</span>
-job<span class="o">()</span> <span class="o">{</span>
-  <span class="nv">i</span><span class="o">=</span><span class="nv">$1</span>
-  <span class="nv">work</span><span class="o">=</span><span class="nv">$2</span>
-  <span class="c1">## run the work ....</span>
+job<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="nv">i</span><span class="o">=</span><span class="nv">$1</span>
+<span class="w">  </span><span class="nv">work</span><span class="o">=</span><span class="nv">$2</span>
+<span class="w">  </span><span class="c1">## run the work ....</span>
 <span class="o">}</span>
 
 <span class="c1"># make the files</span>
-<span class="nv">START</span><span class="o">=</span><span class="k">$(</span>mktemp -t start-XXXX<span class="k">)</span>
-<span class="nv">FIFO</span><span class="o">=</span><span class="k">$(</span>mktemp -t fifo-XXXX<span class="k">)</span>
-<span class="nv">FIFO_LOCK</span><span class="o">=</span><span class="k">$(</span>mktemp -t lock-XXXX<span class="k">)</span>
-<span class="nv">START_LOCK</span><span class="o">=</span><span class="k">$(</span>mktemp -t lock-XXXX<span class="k">)</span>
+<span class="nv">START</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-t<span class="w"> </span>start-XXXX<span class="k">)</span>
+<span class="nv">FIFO</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-t<span class="w"> </span>fifo-XXXX<span class="k">)</span>
+<span class="nv">FIFO_LOCK</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-t<span class="w"> </span>lock-XXXX<span class="k">)</span>
+<span class="nv">START_LOCK</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-t<span class="w"> </span>lock-XXXX<span class="k">)</span>
 
 <span class="c1">## mktemp makes a regular file. Delete that an make a fifo.</span>
-rm <span class="nv">$FIFO</span>
-mkfifo <span class="nv">$FIFO</span>
-<span class="nb">echo</span> <span class="nv">$FIFO</span>
+rm<span class="w"> </span><span class="nv">$FIFO</span>
+mkfifo<span class="w"> </span><span class="nv">$FIFO</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$FIFO</span>
 
 <span class="c1">## create a trap to cleanup on exit if we fail in the middle.</span>
-cleanup<span class="o">()</span> <span class="o">{</span>
-  rm <span class="nv">$FIFO</span>
-  rm <span class="nv">$START</span>
-  rm <span class="nv">$FIFO_LOCK</span>
-  rm <span class="nv">$START_LOCK</span>
+cleanup<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span>rm<span class="w"> </span><span class="nv">$FIFO</span>
+<span class="w">  </span>rm<span class="w"> </span><span class="nv">$START</span>
+<span class="w">  </span>rm<span class="w"> </span><span class="nv">$FIFO_LOCK</span>
+<span class="w">  </span>rm<span class="w"> </span><span class="nv">$START_LOCK</span>
 <span class="o">}</span>
-<span class="nb">trap</span> cleanup <span class="m">0</span>
+<span class="nb">trap</span><span class="w"> </span>cleanup<span class="w"> </span><span class="m">0</span>
 
 <span class="c1">## This is the worker to read from the queue.</span>
-work<span class="o">()</span> <span class="o">{</span>
-  <span class="nv">ID</span><span class="o">=</span><span class="nv">$1</span>
-  <span class="c1">## first open the fifo and locks for reading.</span>
-  <span class="nb">exec</span> <span class="m">3</span>&lt;<span class="nv">$FIFO</span>
-  <span class="nb">exec</span> <span class="m">4</span>&lt;<span class="nv">$FIFO_LOCK</span>
-  <span class="nb">exec</span> <span class="m">5</span>&lt;<span class="nv">$START_LOCK</span>
+work<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="nv">ID</span><span class="o">=</span><span class="nv">$1</span>
+<span class="w">  </span><span class="c1">## first open the fifo and locks for reading.</span>
+<span class="w">  </span><span class="nb">exec</span><span class="w"> </span><span class="m">3</span>&lt;<span class="nv">$FIFO</span>
+<span class="w">  </span><span class="nb">exec</span><span class="w"> </span><span class="m">4</span>&lt;<span class="nv">$FIFO_LOCK</span>
+<span class="w">  </span><span class="nb">exec</span><span class="w"> </span><span class="m">5</span>&lt;<span class="nv">$START_LOCK</span>
 
-  <span class="c1">## signal the worker has started.</span>
-  flock <span class="m">5</span>                 <span class="c1"># obtain the start lock</span>
-  <span class="nb">echo</span> <span class="nv">$ID</span> &gt;&gt; <span class="nv">$START</span>      <span class="c1"># put my worker ID in the start file</span>
-  flock -u <span class="m">5</span>              <span class="c1"># release the start lock</span>
-  <span class="nb">exec</span> <span class="m">5</span>&lt;<span class="p">&amp;</span>-               <span class="c1"># close the start lock file</span>
-  <span class="nb">echo</span> worker <span class="nv">$ID</span> started
+<span class="w">  </span><span class="c1">## signal the worker has started.</span>
+<span class="w">  </span>flock<span class="w"> </span><span class="m">5</span><span class="w">                 </span><span class="c1"># obtain the start lock</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$ID</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$START</span><span class="w">      </span><span class="c1"># put my worker ID in the start file</span>
+<span class="w">  </span>flock<span class="w"> </span>-u<span class="w"> </span><span class="m">5</span><span class="w">              </span><span class="c1"># release the start lock</span>
+<span class="w">  </span><span class="nb">exec</span><span class="w"> </span><span class="m">5</span>&lt;<span class="p">&amp;</span>-<span class="w">               </span><span class="c1"># close the start lock file</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span>worker<span class="w"> </span><span class="nv">$ID</span><span class="w"> </span>started
 
-  <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
-    <span class="c1">## try to read the queue</span>
-    flock <span class="m">4</span>                      <span class="c1"># obtain the fifo lock</span>
-    <span class="nb">read</span> -su <span class="m">3</span> work_id work_item <span class="c1"># read into work_id and work_item</span>
-    <span class="nv">read_status</span><span class="o">=</span><span class="nv">$?</span>               <span class="c1"># save the exit status of read</span>
-    flock -u <span class="m">4</span>                   <span class="c1"># release the fifo lock</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="c1">## try to read the queue</span>
+<span class="w">    </span>flock<span class="w"> </span><span class="m">4</span><span class="w">                      </span><span class="c1"># obtain the fifo lock</span>
+<span class="w">    </span><span class="nb">read</span><span class="w"> </span>-su<span class="w"> </span><span class="m">3</span><span class="w"> </span>work_id<span class="w"> </span>work_item<span class="w"> </span><span class="c1"># read into work_id and work_item</span>
+<span class="w">    </span><span class="nv">read_status</span><span class="o">=</span><span class="nv">$?</span><span class="w">               </span><span class="c1"># save the exit status of read</span>
+<span class="w">    </span>flock<span class="w"> </span>-u<span class="w"> </span><span class="m">4</span><span class="w">                   </span><span class="c1"># release the fifo lock</span>
 
-    <span class="c1">## check the line read.</span>
-    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$read_status</span> -eq <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
-      <span class="c1">## If read gives an exit code of 0 the read succeeded.</span>
-      <span class="c1"># got a work item. do the work</span>
-      <span class="nb">echo</span> <span class="nv">$ID</span> got <span class="nv">work_id</span><span class="o">=</span><span class="nv">$work_id</span> <span class="nv">work_item</span><span class="o">=</span><span class="nv">$work_item</span>
-      <span class="c1">## Run the job in a subshell. That way any exit calls do not kill</span>
-      <span class="c1">## the worker process.</span>
-      <span class="o">(</span> job <span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span> <span class="o">)</span>
-    <span class="k">else</span>
-      <span class="c1">## Any other exit code indicates an EOF.</span>
-      <span class="nb">break</span>
-    <span class="k">fi</span>
-  <span class="k">done</span>
-  <span class="c1"># clean up the fd(s)</span>
-  <span class="nb">exec</span> <span class="m">3</span>&lt;<span class="p">&amp;</span>-
-  <span class="nb">exec</span> <span class="m">4</span>&lt;<span class="p">&amp;</span>-
-  <span class="nb">echo</span> <span class="nv">$ID</span> <span class="s2">&quot;done working&quot;</span>
+<span class="w">    </span><span class="c1">## check the line read.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$read_status</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">      </span><span class="c1">## If read gives an exit code of 0 the read succeeded.</span>
+<span class="w">      </span><span class="c1"># got a work item. do the work</span>
+<span class="w">      </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$ID</span><span class="w"> </span>got<span class="w"> </span><span class="nv">work_id</span><span class="o">=</span><span class="nv">$work_id</span><span class="w"> </span><span class="nv">work_item</span><span class="o">=</span><span class="nv">$work_item</span>
+<span class="w">      </span><span class="c1">## Run the job in a subshell. That way any exit calls do not kill</span>
+<span class="w">      </span><span class="c1">## the worker process.</span>
+<span class="w">      </span><span class="o">(</span><span class="w"> </span>job<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">)</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">      </span><span class="c1">## Any other exit code indicates an EOF.</span>
+<span class="w">      </span><span class="nb">break</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="w">  </span><span class="k">done</span>
+<span class="w">  </span><span class="c1"># clean up the fd(s)</span>
+<span class="w">  </span><span class="nb">exec</span><span class="w"> </span><span class="m">3</span>&lt;<span class="p">&amp;</span>-
+<span class="w">  </span><span class="nb">exec</span><span class="w"> </span><span class="m">4</span>&lt;<span class="p">&amp;</span>-
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$ID</span><span class="w"> </span><span class="s2">&quot;done working&quot;</span>
 <span class="o">}</span>
 
 <span class="c1">## Start the workers.</span>
 <span class="nv">WORKERS</span><span class="o">=</span><span class="m">4</span>
-<span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span><span class="m">1</span><span class="p">;</span>i&lt;<span class="o">=</span><span class="nv">$WORKERS</span><span class="p">;</span>i++<span class="o">))</span><span class="p">;</span> <span class="k">do</span>
-  <span class="nb">echo</span> will start <span class="nv">$i</span>
-  work <span class="nv">$i</span> <span class="p">&amp;</span>
+<span class="k">for</span><span class="w"> </span><span class="o">((</span><span class="nv">i</span><span class="o">=</span><span class="m">1</span><span class="p">;</span>i&lt;<span class="o">=</span><span class="nv">$WORKERS</span><span class="p">;</span>i++<span class="o">))</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span>will<span class="w"> </span>start<span class="w"> </span><span class="nv">$i</span>
+<span class="w">  </span>work<span class="w"> </span><span class="nv">$i</span><span class="w"> </span><span class="p">&amp;</span>
 <span class="k">done</span>
 
 <span class="c1">## Open the fifo for writing.</span>
-<span class="nb">exec</span> <span class="m">3</span>&gt;<span class="nv">$FIFO</span>
+<span class="nb">exec</span><span class="w"> </span><span class="m">3</span>&gt;<span class="nv">$FIFO</span>
 <span class="c1">## Open the start lock for reading</span>
-<span class="nb">exec</span> <span class="m">4</span>&lt;<span class="nv">$START_LOCK</span>
+<span class="nb">exec</span><span class="w"> </span><span class="m">4</span>&lt;<span class="nv">$START_LOCK</span>
 
 <span class="c1">## Wait for the workers to start</span>
-<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
-  flock <span class="m">4</span>
-  <span class="nv">started</span><span class="o">=</span><span class="k">$(</span>wc -l <span class="nv">$START</span> <span class="p">|</span> cut -d <span class="se">\ </span> -f <span class="m">1</span><span class="k">)</span>
-  flock -u <span class="m">4</span>
-  <span class="k">if</span> <span class="o">[[</span> <span class="nv">$started</span> -eq <span class="nv">$WORKERS</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">break</span>
-  <span class="k">else</span>
-    <span class="nb">echo</span> waiting, started <span class="nv">$started</span> of <span class="nv">$WORKERS</span>
-  <span class="k">fi</span>
+<span class="k">while</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>flock<span class="w"> </span><span class="m">4</span>
+<span class="w">  </span><span class="nv">started</span><span class="o">=</span><span class="k">$(</span>wc<span class="w"> </span>-l<span class="w"> </span><span class="nv">$START</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="w"> </span><span class="se">\ </span><span class="w"> </span>-f<span class="w"> </span><span class="m">1</span><span class="k">)</span>
+<span class="w">  </span>flock<span class="w"> </span>-u<span class="w"> </span><span class="m">4</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$started</span><span class="w"> </span>-eq<span class="w"> </span><span class="nv">$WORKERS</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">break</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>waiting,<span class="w"> </span>started<span class="w"> </span><span class="nv">$started</span><span class="w"> </span>of<span class="w"> </span><span class="nv">$WORKERS</span>
+<span class="w">  </span><span class="k">fi</span>
 <span class="k">done</span>
-<span class="nb">exec</span> <span class="m">4</span>&lt;<span class="p">&amp;</span>-
+<span class="nb">exec</span><span class="w"> </span><span class="m">4</span>&lt;<span class="p">&amp;</span>-
 
 <span class="c1">## utility function to send the jobs to the workers</span>
-send<span class="o">()</span> <span class="o">{</span>
-  <span class="nv">work_id</span><span class="o">=</span><span class="nv">$1</span>
-  <span class="nv">work_item</span><span class="o">=</span><span class="nv">$2</span>
-  <span class="nb">echo</span> sending <span class="nv">$work_id</span> <span class="nv">$work_item</span>
-  <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span> <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">3</span> <span class="c1">## the fifo is fd 3</span>
+send<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="nv">work_id</span><span class="o">=</span><span class="nv">$1</span>
+<span class="w">  </span><span class="nv">work_item</span><span class="o">=</span><span class="nv">$2</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span>sending<span class="w"> </span><span class="nv">$work_id</span><span class="w"> </span><span class="nv">$work_item</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">3</span><span class="w"> </span><span class="c1">## the fifo is fd 3</span>
 <span class="o">}</span>
 
 <span class="c1">## Produce the jobs to run.</span>
 <span class="nv">i</span><span class="o">=</span><span class="m">0</span>
-<span class="k">for</span> item in <span class="o">{</span>dataset-A,dataset-B,dataset-C,dataset-D<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
-  send <span class="nv">$i</span> <span class="nv">$data</span>
-  <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
+<span class="k">for</span><span class="w"> </span>item<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span>dataset-A,dataset-B,dataset-C,dataset-D<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>send<span class="w"> </span><span class="nv">$i</span><span class="w"> </span><span class="nv">$data</span>
+<span class="w">  </span><span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
 <span class="k">done</span>
 <span class="c1">## close the filo</span>
-<span class="nb">exec</span> <span class="m">3</span>&lt;<span class="p">&amp;</span>-
+<span class="nb">exec</span><span class="w"> </span><span class="m">3</span>&lt;<span class="p">&amp;</span>-
 <span class="c1">## disable the cleanup trap</span>
-<span class="nb">trap</span> <span class="s1">&#39;&#39;</span> <span class="m">0</span>
+<span class="nb">trap</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="m">0</span>
 <span class="c1">## It is safe to delete the files because the workers</span>
 <span class="c1">## already opened them. Thus, only the names are going away</span>
 <span class="c1">## the actual files will stay there until the workers</span>
@@ -204,8 +204,7 @@ send<span class="o">()</span> <span class="o">{</span>
 cleanup
 <span class="c1">## now wait for all the workers.</span>
 <span class="nb">wait</span>
-</pre></div>
-
+</code></pre></div>
 
 <h4>References</h4>
 <ul>
@@ -231,7 +230,7 @@ cleanup
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -66,7 +66,7 @@
 <br/> <time datetime="2011-05-23T00:00:00-04:00">Mon 23 May 2011</time></div>        </div>
       </header>
       <div class="post-content"> 
-        <p>If you are a pip<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup> and virtualenv user you already know how easy it is
+        <p>If you are a pip<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> and virtualenv user you already know how easy it is
 to install python packages. Unlike the bad old days when I started
 programming in Python, 9 years ago, it is now easy to add, remove and
 manage python modules. In fact we can leverage pip to create an <code>update</code>
@@ -98,9 +98,8 @@ including tracking the master branch.</p>
 <p>Use Pip and the <code>-e</code> option plus a base URL to automatically update your
 software. eg. Have you software run pip for the user.</p>
 <p>example command:</p>
-<div class="highlight"><pre><span></span>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+&lt;URL&gt;@&lt;REV&gt;#egg=PACKAGE_NAME
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+&lt;URL&gt;@&lt;REV&gt;#egg=PACKAGE_NAME
+</code></pre></div>
 
 <h4>Tracking Major Versions</h4>
 <p>To track major version updates some care must be taken in setting up the
@@ -128,25 +127,21 @@ version.</p>
 <h4>Pip Gotcha</h4>
 <p>When checking out branches using pip you have to supply
 <code>origin/branchname</code> ex:</p>
-<div class="highlight"><pre><span></span>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@origin/branch#egg=PACKAGE_NAME
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="n">pip</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="c1">--upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@origin/branch#egg=PACKAGE_NAME</span>
+</code></pre></div>
 
 <p>While when checking out a commit you should not supply origin</p>
-<div class="highlight"><pre><span></span>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@COMMIT_ID#egg=PACKAGE_NAME
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="n">pip</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="c1">--upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@COMMIT_ID#egg=PACKAGE_NAME</span>
+</code></pre></div>
 
 <p>Why does pip work like this? Because of the commands it executes. For
 the command:</p>
-<div class="highlight"><pre><span></span>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@&lt;VERSION&gt;#egg=PACKAGE_NAME
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>pip install --upgrade --src=&quot;$HOME/.src&quot; -e git+https://github.com/user/repo.git@&lt;VERSION&gt;#egg=PACKAGE_NAME
+</code></pre></div>
 
 <p>pip runs</p>
-<div class="highlight"><pre><span></span>git fetch -q git reset --hard -q &lt;VERSION&gt;
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>git fetch -q git reset --hard -q &lt;VERSION&gt;
+</code></pre></div>
 
 <h4>Store the tracked version in the source</h4>
 <p>To ensure the update command installs the correct updates I put which
@@ -158,7 +153,7 @@ point the name of the branch.</p>
 stability of your enviroment.</p>
 <p>Note: I didn't include virtualenv support in this code but it is trivial
 to add.</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span> <span class="k">as</span> <span class="n">run</span> 
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span> <span class="k">as</span> <span class="n">run</span> 
 <span class="kn">from</span> <span class="nn">getopt</span> <span class="kn">import</span> <span class="n">getopt</span><span class="p">,</span> <span class="n">GetoptError</span> 
 <span class="n">RELEASE</span> <span class="o">=</span> <span class="s1">&#39;master&#39;</span> <span class="c1"># default release </span>
 <span class="n">SRC_DIR</span> <span class="o">=</span> <span class="s2">&quot;$HOME/.src&quot;</span> <span class="c1"># checkout directory </span>
@@ -175,13 +170,13 @@ to add.</p>
         <span class="n">log</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> 
         <span class="n">usage</span><span class="p">(</span><span class="n">error_codes</span><span class="p">[</span><span class="s1">&#39;option&#39;</span><span class="p">])</span>
 
-    <span class="n">sudo</span> <span class="o">=</span> <span class="bp">False</span> 
+    <span class="n">sudo</span> <span class="o">=</span> <span class="kc">False</span> 
     <span class="n">src_dir</span> <span class="o">=</span> <span class="n">SRC_DIR</span> 
     <span class="n">release</span> <span class="o">=</span> <span class="n">RELEASE</span> 
-    <span class="n">commit</span> <span class="o">=</span> <span class="bp">None</span> 
+    <span class="n">commit</span> <span class="o">=</span> <span class="kc">None</span> 
     <span class="k">for</span> <span class="n">opt</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">opts</span><span class="p">:</span> 
         <span class="k">if</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;--sudo&#39;</span><span class="p">):</span> 
-            <span class="n">sudo</span> <span class="o">=</span> <span class="bp">True</span> 
+            <span class="n">sudo</span> <span class="o">=</span> <span class="kc">True</span> 
         <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="s1">&#39;--release&#39;</span><span class="p">):</span> 
             <span class="n">release</span> <span class="o">=</span> <span class="n">arg</span> 
         <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;--src&#39;</span><span class="p">,):</span> 
@@ -193,7 +188,7 @@ to add.</p>
         <span class="n">release</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span> <span class="o">+</span> <span class="n">release</span> 
     <span class="n">release</span> <span class="o">=</span> <span class="s1">&#39;origin/&#39;</span> <span class="o">+</span> <span class="n">release</span> <span class="c1">## assume it is a branch</span>
 
-    <span class="k">if</span> <span class="n">commit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span> <span class="c1">## if a commit is supplied use that </span>
+    <span class="k">if</span> <span class="n">commit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1">## if a commit is supplied use that </span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">UPDATE_CMD</span> <span class="o">%</span> <span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">commit</span><span class="p">)</span> 
     <span class="k">else</span><span class="p">:</span> 
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">UPDATE_CMD</span> <span class="o">%</span> <span class="p">(</span><span class="n">src_dir</span><span class="p">,</span> <span class="n">release</span><span class="p">)</span>
@@ -202,14 +197,13 @@ to add.</p>
         <span class="n">run</span><span class="p">(</span><span class="s1">&#39;sudo </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span> 
     <span class="k">else</span><span class="p">:</span> 
         <span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <div class="footnote">
 <hr>
 <ol>
-<li id="fn-1">
-<p><a href="http://www.pip-installer.org/en/latest/index.html">http://www.pip-installer.org/en/latest/index.html</a> "A Python package installer."&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn:1">
+<p><a href="http://www.pip-installer.org/en/latest/index.html">http://www.pip-installer.org/en/latest/index.html</a> "A Python package installer."&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -230,7 +224,7 @@ to add.</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>

@@ -9,8 +9,8 @@
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
-    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="theme/css/theme.css" />
     <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
     <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
     <link rel="alternate" type="application/atom+xml"
@@ -43,7 +43,7 @@
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
       </header>
@@ -96,7 +96,6 @@ div.dfa-scroller img {
     }
 }
 </style>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 <p><a href="https://github.com/timtadh/lexmachine">Lexmachine</a> is a lexical analysis (or
@@ -115,7 +114,7 @@ file format.  For instance,
 should translate the raw readings hardware monitoring chips to real-world values
 -- such as voltage and temperature. The first part of my laptop's <code>sensors.conf</code>
 file begins with the following:</p>
-<div class="highlight"><pre><span></span># It is recommended not to modify this file, but to drop your local
+<div class="highlight"><pre><span></span><code># It is recommended not to modify this file, but to drop your local
 # changes in /etc/sensors.d/. File with names that start with a dot
 # are ignored.
 
@@ -138,15 +137,14 @@ chip &quot;w83792d-*&quot;
     set in7_max  5.0 * 1.10
     set in8_min  3.0 * 0.90
     set in8_max  3.0 * 1.10
-</pre></div>
-
+</code></pre></div>
 
 <p>According to the <a href="https://linux.die.net/man/5/sensors.conf">man page</a>, there are
 several syntactic elements in this file: keywords (<code>chip</code>, <code>label</code>, <code>set</code>, ...),
 names (<code>in0</code>, <code>in6_min</code>, ..., <code>"lm78-*"</code>, <code>"VcoreA"</code>, ...), floats (<code>5.0</code>,
 <code>0.90</code>, ...), operators (<code>+</code>, <code>-</code>, <code>*</code>, ...), and comments which start with <code>#</code>.
 A lexical analysis would break down the file as follows:</p>
-<div class="highlight"><pre><span></span>Type    | Lexeme
+<div class="highlight"><pre><span></span><code>Type    | Lexeme
 -------------------
 COMMENT | # It is recommended not to modify this file, but to drop your local
 COMMENT | # changes in /etc/sensors.d/. File with names that start with a dot
@@ -168,8 +166,7 @@ NAME    | in8_max
 FLOAT   | 3.0
 STAR    | *
 FLOAT   | 1.10
-</pre></div>
-
+</code></pre></div>
 
 <p>The categories are defined by <em>patterns</em> which are expressed as <a href="https://github.com/timtadh/lexmachine#regular-expressions">regular
 expressions</a>.  As a
@@ -251,12 +248,13 @@ machine that reads a string, character by character, and decides whether it is
 in some <em>language</em> or not (see Figure 1). The language is a type of formal
 language called a <em>regular</em> language or a Type-3 language in the Chomsky Formal
 Language Hierarchy.</p>
-<p><img alt="Finite Automata" src="/images/regex-machine.png">
+<p><img alt="Finite Automata" src="/images/regex-machine.png"></p>
 <div style="text-align: center; margin-top: -2em;">
 <strong>Figure 1.</strong> A Simple Finite State Automaton.<br/>
 If the string matches the Accept light lights up, otherwise the error light
 lights up.
-</div></p>
+</div>
+
 <p> Finite state automatons encode their matching "program" as a set of states
 <span class="math">\(S\)</span>, an alphabet <span
 class="math">\(\Sigma\)</span>, and a transition function which maps the current
@@ -283,13 +281,14 @@ has <span class="math">\(m\)</span> characters it can be matched in <span
 class="math">\(\mathcal{O}(n \cdot m)\)</span> steps.
 </p>
 
-<p><img alt="Non-deterministic Finite Automata" src="/images/nfa.png">
+<p><img alt="Non-deterministic Finite Automata" src="/images/nfa.png"></p>
 <div style="text-align: center; margin-top: -2em;">
 <strong>Figure 2.</strong> A Non-deterministic Finite Automaton for
 <code>sensors.conf</code>.<br/>
 States with double circles are accepting states. Each accepting state is labeled
 with the category it corresponds to. The starting state is marked.
-</div></p>
+</div>
+
 <p>To use an NFA for the lexical analysis problem several adjustments need to be
 made.</p>
 <ol>
@@ -353,62 +352,60 @@ with the category it corresponds to. The starting state is marked.
 strings? The answer is yes. As an quick (non-rigorous) example, let's tokenize
 my <code>sensors.conf</code> file 1000 times using both the NFA backend and the DFA backend.</p>
 <p><strong>Using the NFA backend</strong></p>
-<div class="highlight"><pre><span></span>$ go install github.com/timtadh/lexmachine/examples/sensors <span class="o">&amp;&amp;</span>
-&gt; cat /etc/sensors*.conf <span class="p">|</span> <span class="o">(</span>/usr/bin/time -v sensors --nfa <span class="o">)</span>
-        Command being timed: <span class="s2">&quot;sensors --nfa&quot;</span>
-        User <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: <span class="m">3</span>.0
-        System <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: <span class="m">0</span>.00
-        Percent of CPU this job got: <span class="m">102</span>%
-        Elapsed <span class="o">(</span>wall clock<span class="o">)</span> <span class="nb">time</span> <span class="o">(</span>h:mm:ss or m:ss<span class="o">)</span>: <span class="m">0</span>:02.97
-        Average shared text size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Average unshared data size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Average stack size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Average total size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Maximum resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">6564</span>
-        Average resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Major <span class="o">(</span>requiring I/O<span class="o">)</span> page faults: <span class="m">0</span>
-        Minor <span class="o">(</span>reclaiming a frame<span class="o">)</span> page faults: <span class="m">1749</span>
-        Voluntary context switches: <span class="m">1866</span>
-        Involuntary context switches: <span class="m">473</span>
-        Swaps: <span class="m">0</span>
-        File system inputs: <span class="m">0</span>
-        File system outputs: <span class="m">0</span>
-        Socket messages sent: <span class="m">0</span>
-        Socket messages received: <span class="m">0</span>
-        Signals delivered: <span class="m">0</span>
-        Page size <span class="o">(</span>bytes<span class="o">)</span>: <span class="m">4096</span>
-        Exit status: <span class="m">0</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>go<span class="w"> </span>install<span class="w"> </span>github.com/timtadh/lexmachine/examples/sensors<span class="w"> </span><span class="o">&amp;&amp;</span>
+&gt;<span class="w"> </span>cat<span class="w"> </span>/etc/sensors*.conf<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="o">(</span>/usr/bin/time<span class="w"> </span>-v<span class="w"> </span>sensors<span class="w"> </span>--nfa<span class="w"> </span><span class="o">)</span>
+<span class="w">        </span>Command<span class="w"> </span>being<span class="w"> </span>timed:<span class="w"> </span><span class="s2">&quot;sensors --nfa&quot;</span>
+<span class="w">        </span>User<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>seconds<span class="o">)</span>:<span class="w"> </span><span class="m">3</span>.0
+<span class="w">        </span>System<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>seconds<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>.00
+<span class="w">        </span>Percent<span class="w"> </span>of<span class="w"> </span>CPU<span class="w"> </span>this<span class="w"> </span>job<span class="w"> </span>got:<span class="w"> </span><span class="m">102</span>%
+<span class="w">        </span>Elapsed<span class="w"> </span><span class="o">(</span>wall<span class="w"> </span>clock<span class="o">)</span><span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>h:mm:ss<span class="w"> </span>or<span class="w"> </span>m:ss<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>:02.97
+<span class="w">        </span>Average<span class="w"> </span>shared<span class="w"> </span>text<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Average<span class="w"> </span>unshared<span class="w"> </span>data<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Average<span class="w"> </span>stack<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Average<span class="w"> </span>total<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Maximum<span class="w"> </span>resident<span class="w"> </span><span class="nb">set</span><span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">6564</span>
+<span class="w">        </span>Average<span class="w"> </span>resident<span class="w"> </span><span class="nb">set</span><span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Major<span class="w"> </span><span class="o">(</span>requiring<span class="w"> </span>I/O<span class="o">)</span><span class="w"> </span>page<span class="w"> </span>faults:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Minor<span class="w"> </span><span class="o">(</span>reclaiming<span class="w"> </span>a<span class="w"> </span>frame<span class="o">)</span><span class="w"> </span>page<span class="w"> </span>faults:<span class="w"> </span><span class="m">1749</span>
+<span class="w">        </span>Voluntary<span class="w"> </span>context<span class="w"> </span>switches:<span class="w"> </span><span class="m">1866</span>
+<span class="w">        </span>Involuntary<span class="w"> </span>context<span class="w"> </span>switches:<span class="w"> </span><span class="m">473</span>
+<span class="w">        </span>Swaps:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>File<span class="w"> </span>system<span class="w"> </span>inputs:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>File<span class="w"> </span>system<span class="w"> </span>outputs:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Socket<span class="w"> </span>messages<span class="w"> </span>sent:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Socket<span class="w"> </span>messages<span class="w"> </span>received:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Signals<span class="w"> </span>delivered:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Page<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>bytes<span class="o">)</span>:<span class="w"> </span><span class="m">4096</span>
+<span class="w">        </span>Exit<span class="w"> </span>status:<span class="w"> </span><span class="m">0</span>
+</code></pre></div>
 
 <p><strong>Using the DFA backend</strong></p>
-<div class="highlight"><pre><span></span>$ go install github.com/timtadh/lexmachine/examples/sensors <span class="o">&amp;&amp;</span>
-&gt; cat /etc/sensors*.conf <span class="p">|</span> <span class="o">(</span>/usr/bin/time -v sensors --dfa <span class="o">)</span>
-        Command being timed: <span class="s2">&quot;sensors --dfa&quot;</span>
-        User <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: <span class="m">2</span>.01
-        System <span class="nb">time</span> <span class="o">(</span>seconds<span class="o">)</span>: <span class="m">0</span>.00
-        Percent of CPU this job got: <span class="m">104</span>%
-        Elapsed <span class="o">(</span>wall clock<span class="o">)</span> <span class="nb">time</span> <span class="o">(</span>h:mm:ss or m:ss<span class="o">)</span>: <span class="m">0</span>:01.93
-        Average shared text size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Average unshared data size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Average stack size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Average total size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Maximum resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">7680</span>
-        Average resident <span class="nb">set</span> size <span class="o">(</span>kbytes<span class="o">)</span>: <span class="m">0</span>
-        Major <span class="o">(</span>requiring I/O<span class="o">)</span> page faults: <span class="m">0</span>
-        Minor <span class="o">(</span>reclaiming a frame<span class="o">)</span> page faults: <span class="m">2172</span>
-        Voluntary context switches: <span class="m">2231</span>
-        Involuntary context switches: <span class="m">359</span>
-        Swaps: <span class="m">0</span>
-        File system inputs: <span class="m">0</span>
-        File system outputs: <span class="m">0</span>
-        Socket messages sent: <span class="m">0</span>
-        Socket messages received: <span class="m">0</span>
-        Signals delivered: <span class="m">0</span>
-        Page size <span class="o">(</span>bytes<span class="o">)</span>: <span class="m">4096</span>
-        Exit status: <span class="m">0</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>go<span class="w"> </span>install<span class="w"> </span>github.com/timtadh/lexmachine/examples/sensors<span class="w"> </span><span class="o">&amp;&amp;</span>
+&gt;<span class="w"> </span>cat<span class="w"> </span>/etc/sensors*.conf<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="o">(</span>/usr/bin/time<span class="w"> </span>-v<span class="w"> </span>sensors<span class="w"> </span>--dfa<span class="w"> </span><span class="o">)</span>
+<span class="w">        </span>Command<span class="w"> </span>being<span class="w"> </span>timed:<span class="w"> </span><span class="s2">&quot;sensors --dfa&quot;</span>
+<span class="w">        </span>User<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>seconds<span class="o">)</span>:<span class="w"> </span><span class="m">2</span>.01
+<span class="w">        </span>System<span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>seconds<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>.00
+<span class="w">        </span>Percent<span class="w"> </span>of<span class="w"> </span>CPU<span class="w"> </span>this<span class="w"> </span>job<span class="w"> </span>got:<span class="w"> </span><span class="m">104</span>%
+<span class="w">        </span>Elapsed<span class="w"> </span><span class="o">(</span>wall<span class="w"> </span>clock<span class="o">)</span><span class="w"> </span><span class="nb">time</span><span class="w"> </span><span class="o">(</span>h:mm:ss<span class="w"> </span>or<span class="w"> </span>m:ss<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>:01.93
+<span class="w">        </span>Average<span class="w"> </span>shared<span class="w"> </span>text<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Average<span class="w"> </span>unshared<span class="w"> </span>data<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Average<span class="w"> </span>stack<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Average<span class="w"> </span>total<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Maximum<span class="w"> </span>resident<span class="w"> </span><span class="nb">set</span><span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">7680</span>
+<span class="w">        </span>Average<span class="w"> </span>resident<span class="w"> </span><span class="nb">set</span><span class="w"> </span>size<span class="w"> </span><span class="o">(</span>kbytes<span class="o">)</span>:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Major<span class="w"> </span><span class="o">(</span>requiring<span class="w"> </span>I/O<span class="o">)</span><span class="w"> </span>page<span class="w"> </span>faults:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Minor<span class="w"> </span><span class="o">(</span>reclaiming<span class="w"> </span>a<span class="w"> </span>frame<span class="o">)</span><span class="w"> </span>page<span class="w"> </span>faults:<span class="w"> </span><span class="m">2172</span>
+<span class="w">        </span>Voluntary<span class="w"> </span>context<span class="w"> </span>switches:<span class="w"> </span><span class="m">2231</span>
+<span class="w">        </span>Involuntary<span class="w"> </span>context<span class="w"> </span>switches:<span class="w"> </span><span class="m">359</span>
+<span class="w">        </span>Swaps:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>File<span class="w"> </span>system<span class="w"> </span>inputs:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>File<span class="w"> </span>system<span class="w"> </span>outputs:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Socket<span class="w"> </span>messages<span class="w"> </span>sent:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Socket<span class="w"> </span>messages<span class="w"> </span>received:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Signals<span class="w"> </span>delivered:<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span>Page<span class="w"> </span>size<span class="w"> </span><span class="o">(</span>bytes<span class="o">)</span>:<span class="w"> </span><span class="m">4096</span>
+<span class="w">        </span>Exit<span class="w"> </span>status:<span class="w"> </span><span class="m">0</span>
+</code></pre></div>
 
 <p>Note as predicted by the theory presented above, the NFA backend used less
 memory but took longer to tokenize the file 1000 times. The DFA backend used
@@ -432,7 +429,7 @@ backend.</p>
     <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
     <li><a href="https://github.com/timtadh">github</a></li>
     <li><a href="https://twitter.com/timtadh">twitter</a></li>
-    <li><a href="https://plus.google.com/109232399292705173597">google+</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
     <li><a href="https://keybase.io/tadh">keybase</a></li>
 </ul></div>
         <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>
