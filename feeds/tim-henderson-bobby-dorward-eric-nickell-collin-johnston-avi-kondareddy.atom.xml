@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology - Tim Henderson, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/tim-henderson-bobby-dorward-eric-nickell-collin-johnston-avi-kondareddy.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2023-04-17T00:00:00-04:00</updated><entry><title>Flake Aware Culprit Finding</title><link href="https://hackthology.com/flake-aware-culprit-finding.html" rel="alternate"></link><published>2023-04-17T00:00:00-04:00</published><updated>2023-04-17T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</name></author><id>tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
+&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/home/icst-2023"&gt;ICST Industry 2023&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;When a change introduces a bug into a large software repository, there is
+often a delay between when the change is committed and when bug is …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
+&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/home/icst-2023"&gt;ICST Industry 2023&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;When a change introduces a bug into a large software repository, there is
+often a delay between when the change is committed and when bug is detected.
+This is true even when the bug causes an existing test to fail! These delays
+are caused by resource constraints which prevent the organization from running
+all of the tests on every change. Due to the delay, a Continuous Integration
+system needs to locate buggy commits. Locating them is complicated by flaky
+tests that pass and fail non-deterministically. The flaky tests introduce
+noise into the CI system requiring costly reruns to determine if a failure was
+caused by a bad code change or caused by non-deterministic test behavior. This
+paper presents an algorithm, &lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;, that locates
+buggy commits more accurately than a traditional bisection search. The
+algorithm is based on Bayesian inference and noisy binary search, utilizing
+prior information about which changes are most likely to contain the bug. A
+large scale empirical study was conducted at Google on 13,000+ test breakages.
+The study evaluates the accuracy and cost of the new algorithm versus a
+traditional deflaked bisection search.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;Read the paper&lt;/a&gt;&lt;/p&gt;</content><category term="Paper"></category></entry></feed>

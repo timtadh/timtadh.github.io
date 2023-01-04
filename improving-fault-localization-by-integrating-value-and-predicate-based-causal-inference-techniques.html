@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+        <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
     <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
-    <title>Hackthology - Articles by Yiğit Küçük, <a href="http://hackthology.com">Tim Henderson</a>, and <a href="http://engineering.case.edu/profiles/hap">Andy Podgurski</a></title>
+    <title> Improving fault localization by integrating value and predicate based causal inference techniques </title>
     <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
@@ -19,7 +19,9 @@
     <link rel ="alternate" type="application/rss+xml"
                            title="Hackthology — Flux RSS"
                            href="https://hackthology.com/feeds/rss.xml" /> 
-    <link rel="canonical" href="https://hackthology.com/author/yigit-kucuk-tim-henderson-and-andy-podgurski.html"/>
+    <link rel="canonical" href="https://hackthology.com/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html"/>
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://hackthology.com/theme/css/pygments.css" /> 
   </head>
   <body>
     <div id="page">
@@ -48,29 +50,47 @@
       
       <div id="page-body">
 
-        <section id="page-main" role="main">
-   <p class="first">
-   </p>
-   <h1>Short Biography</h1>
-   <p>
-      Tim Henderson is a software engineer and researcher. He specializes in
-      testing, fault localization, duplicate code detection, program analysis,
-      graph mining, and databases. Dr.  Henderson recieved a Ph.D. at Case
-      Western Reserve University and was advised by Professor Andy Podgurksi.
-   </p>
-   <h1>Selected Publications</h1>
-      <article class="post">
-        <header class="post-header">
-            Yiğit Küçük, <strong>Tim A. D. Henderson</strong>, and Andy Podgurski.
-              <a
-               href="improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html"
-               title="perm link Improving fault localization by integrating value and predicate based causal inference techniques"
-              >Improving fault localization by integrating value and predicate based causal inference techniques</a>.
-            ICSE 2021.
-        </header>
-      </article>
-   <h1>Articles</h1>
-      </section> <!-- /#page-main -->
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="https://hackthology.com/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html"
+             title="perm link Improving fault localization by integrating value and predicate based causal inference techniques">
+             Improving fault localization by integrating value and predicate based causal inference techniques
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by &nbsp;Yiğit Küçük, <a href="http://hackthology.com">Tim Henderson</a>, and <a href="http://engineering.case.edu/profiles/hap">Andy Podgurski</a>
+<br/> <time datetime="2023-05-26T00:00:00-04:00">Fri 26 May 2023</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>Yiğit Küçük, <strong>Tim A. D. Henderson</strong>, and Andy Podgurski
+<em>Improving fault localization by integrating value and predicate based causal inference techniques</em>.  <a href="https://conf.researchr.org/details/icse-2021/icse-2021-papers/72/Improving-Fault-Localization-by-Integrating-Value-and-Predicate-Based-Causal-Inferenc">ICSE 2021</a>.
+<br/>
+<a href="https://doi.org/10.1109/ICSE43902.2021.00066">DOI</a>.
+<a href="https://hackthology.com/pdfs/icse-2021.pdf">PDF</a>.
+<a href="https://hackthology.com/pdfs/icse-2021-supplement.pdf">SUPPLEMENT</a>.
+<a href="https://doi.org/10.5281/zenodo.4441439">ARTIFACT</a>.
+<a href="https://hackthology.com/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html">WEB</a>.</p>
+<h4>Abstract</h4>
+<p>Statistical fault localization (SFL) techniques use execution profiles and
+success/failure information from software executions, in conjunction with
+statistical inference, to automatically score program elements based on how
+likely they are to be faulty. SFL techniques typically employ one type of
+profile data: either coverage data, predicate outcomes, or variable values. Most
+SFL techniques actually measure correlation, not causation, between profile
+values and success/failure, and so they are subject to confounding bias that
+distorts the scores they produce. This paper presents a new SFL technique, named
+UniVal, that uses causal inference techniques and machine learning to integrate
+information about both predicate outcomes and variable values to more accurately
+estimate the true failure-causing effect of program statements. UniVal was
+empirically compared to several coverage-based, predicate-based, and value-based
+SFL techniques on 800 program versions with real faults.</p>
+<p><a href="https://hackthology.com/pdfs/icse-2021.pdf">Read the paper</a></p>
+      </div>
+      </article> <!-- /#page-main -->
 
       </div>  <!-- /#page-body -->
 
