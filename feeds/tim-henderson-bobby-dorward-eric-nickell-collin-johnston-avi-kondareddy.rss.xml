@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0"><channel><title>Hackthology - Tim Henderson, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Mon, 17 Apr 2023 00:00:00 -0400</lastBuildDate><item><title>Flake Aware Culprit Finding</title><link>https://hackthology.com/flake-aware-culprit-finding.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
-&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/home/icst-2023"&gt;ICST Industry Track 2023&lt;/a&gt;.
+&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2023/icst-2023-industry/46/Flake-Aware-Culprit-Finding"&gt;ICST Industry Track 2023&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.
+&lt;a href="https://research.google/pubs/pub52048/"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;blockquote&gt;
 &lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
 correct you should read the
-&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h4&gt;Abstract&lt;/h4&gt;
-&lt;p&gt;When a …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</dc:creator><pubDate>Mon, 17 Apr 2023 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</guid><category>Paper</category></item></channel></rss>
+&lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;pdf version …&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</dc:creator><pubDate>Mon, 17 Apr 2023 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</guid><category>Paper</category></item></channel></rss>
