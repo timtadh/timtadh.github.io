@@ -145,7 +145,7 @@ work<span class="o">()</span><span class="w"> </span><span class="o">{</span>
 <span class="w">      </span><span class="o">(</span><span class="w"> </span>job<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$work_id</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$work_item</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">)</span>
 <span class="w">    </span><span class="k">else</span>
 <span class="w">      </span><span class="c1">## Any other exit code indicates an EOF.</span>
-<span class="w">      </span><span class="nb">break</span>
+<span class="w">      </span><span class="k">break</span>
 <span class="w">    </span><span class="k">fi</span>
 <span class="w">  </span><span class="k">done</span>
 <span class="w">  </span><span class="c1"># clean up the fd(s)</span>
@@ -172,7 +172,7 @@ work<span class="o">()</span><span class="w"> </span><span class="o">{</span>
 <span class="w">  </span><span class="nv">started</span><span class="o">=</span><span class="k">$(</span>wc<span class="w"> </span>-l<span class="w"> </span><span class="nv">$START</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="w"> </span><span class="se">\ </span><span class="w"> </span>-f<span class="w"> </span><span class="m">1</span><span class="k">)</span>
 <span class="w">  </span>flock<span class="w"> </span>-u<span class="w"> </span><span class="m">4</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$started</span><span class="w"> </span>-eq<span class="w"> </span><span class="nv">$WORKERS</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">    </span><span class="nb">break</span>
+<span class="w">    </span><span class="k">break</span>
 <span class="w">  </span><span class="k">else</span>
 <span class="w">    </span><span class="nb">echo</span><span class="w"> </span>waiting,<span class="w"> </span>started<span class="w"> </span><span class="nv">$started</span><span class="w"> </span>of<span class="w"> </span><span class="nv">$WORKERS</span>
 <span class="w">  </span><span class="k">fi</span>
@@ -191,7 +191,7 @@ send<span class="o">()</span><span class="w"> </span><span class="o">{</span>
 <span class="nv">i</span><span class="o">=</span><span class="m">0</span>
 <span class="k">for</span><span class="w"> </span>item<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span>dataset-A,dataset-B,dataset-C,dataset-D<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
 <span class="w">  </span>send<span class="w"> </span><span class="nv">$i</span><span class="w"> </span><span class="nv">$data</span>
-<span class="w">  </span><span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
+<span class="w">  </span><span class="nv">i</span><span class="o">=</span><span class="k">$((</span><span class="nv">i</span><span class="o">+</span><span class="m">1</span><span class="k">))</span>
 <span class="k">done</span>
 <span class="c1">## close the filo</span>
 <span class="nb">exec</span><span class="w"> </span><span class="m">3</span>&lt;<span class="p">&amp;</span>-

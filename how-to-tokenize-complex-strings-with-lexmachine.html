@@ -147,9 +147,9 @@ temperature probes). It has a custom configuration file format,
 Linux should translate the raw readings hardware monitoring chips to real-world
 values -- such as voltage and temperature. The first part of my laptop's
 <code>sensors.conf</code> file begins with the following:</p>
-<div class="highlight"><pre><span></span><code># It is recommended not to modify this file, but to drop your local
-# changes in /etc/sensors.d/. File with names that start with a dot
-# are ignored.
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> It is recommended not to modify this file, but to drop your local
+<span class="gh">#</span> changes in /etc/sensors.d/. File with names that start with a dot
+<span class="gh">#</span> are ignored.
 
 chip &quot;lm78-*&quot; &quot;lm79-*&quot; &quot;lm80-*&quot; &quot;lm96080-*&quot;
 
@@ -164,12 +164,12 @@ chip &quot;w83792d-*&quot;
     label in7 &quot;5VSB&quot;
     label in8 &quot;Vbat&quot;
 
-    set in6_min  5.0 * 0.90
-    set in6_max  5.0 * 1.10
-    set in7_min  5.0 * 0.90
-    set in7_max  5.0 * 1.10
-    set in8_min  3.0 * 0.90
-    set in8_max  3.0 * 1.10
+    set in6_min  5.0 <span class="gs">* 0.90</span>
+<span class="gs">    set in6_max  5.0 *</span> 1.10
+    set in7_min  5.0 <span class="gs">* 0.90</span>
+<span class="gs">    set in7_max  5.0 *</span> 1.10
+    set in8_min  3.0 <span class="gs">* 0.90</span>
+<span class="gs">    set in8_max  3.0 *</span> 1.10
 </code></pre></div>
 
 <p>Let's pretend we want to extract some information from <code>sensors.conf</code> files. For

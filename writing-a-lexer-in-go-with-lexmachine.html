@@ -190,24 +190,24 @@ the pattern but the third string does not.</p>
 definition for identifier (called <code>ID</code>). In the listing below, the token type is
 on the left side and the regular expression or literal (in quotation marks) is
 on the right.</p>
-<div class="highlight"><pre><span></span><code><span class="n">NODE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;node&quot;</span>
-<span class="n">EDGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;edge&quot;</span>
-<span class="nf">GRAPH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;graph&quot;</span>
-<span class="n">DIGRAPH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;digraph&quot;</span>
-<span class="n">SUBGRAPH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;subgraph&quot;</span>
-<span class="n">STRICT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;strict&quot;</span>
-<span class="n">LSQUARE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[&quot;</span>
-<span class="n">RSQUARE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;]&quot;</span>
-<span class="n">LCURLY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;{&quot;</span>
-<span class="n">RCURLY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;}&quot;</span>
-<span class="n">EQUAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;=&quot;</span>
-<span class="n">COMMA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;,&quot;</span>
-<span class="n">SEMI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;;&quot;</span>
-<span class="n">COLON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;:&quot;</span>
-<span class="n">ARROW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-&gt;&quot;</span>
-<span class="n">DDASH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;--&quot;</span>
-<span class="n">COMMENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="p">([</span><span class="o">^*</span><span class="p">]</span><span class="o">|</span><span class="p">[</span><span class="err">\</span><span class="n">r</span><span class="err">\</span><span class="n">n</span><span class="p">]</span><span class="o">|</span><span class="p">(</span><span class="err">\</span><span class="o">*+</span><span class="p">([</span><span class="o">^*/</span><span class="p">]</span><span class="o">|</span><span class="p">[</span><span class="err">\</span><span class="n">r</span><span class="err">\</span><span class="n">n</span><span class="p">])))</span><span class="o">*</span><span class="err">\</span><span class="o">*+/</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="c1">//.*$)</span>
-<span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">([</span><span class="n">a</span><span class="o">-</span><span class="n">zA</span><span class="o">-</span><span class="n">Z_</span><span class="p">][</span><span class="n">a</span><span class="o">-</span><span class="n">zA</span><span class="o">-</span><span class="n">Z0</span><span class="o">-</span><span class="mi">9</span><span class="n">_</span><span class="p">]</span><span class="o">*</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="s">&quot;([^\&quot;</span><span class="p">]</span><span class="o">|</span><span class="p">(</span><span class="err">\\</span><span class="p">.))</span><span class="o">*</span><span class="s">&quot;)|ID-HTML</span>
+<div class="highlight"><pre><span></span><code>NODE = &quot;node&quot;
+EDGE = &quot;edge&quot;
+GRAPH = &quot;graph&quot;
+DIGRAPH = &quot;digraph&quot;
+SUBGRAPH = &quot;subgraph&quot;
+STRICT = &quot;strict&quot;
+LSQUARE = &quot;[&quot;
+RSQUARE = &quot;]&quot;
+LCURLY = &quot;{&quot;
+RCURLY = &quot;}&quot;
+EQUAL = &quot;=&quot;
+COMMA = &quot;,&quot;
+SEMI = &quot;;&quot;
+COLON = &quot;:&quot;
+ARROW = &quot;-&gt;&quot;
+DDASH = &quot;--&quot;
+COMMENT = (/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*$)
+ID = ([a-zA-Z_][a-zA-Z0-9_]*)|(&quot;([^\&quot;]|(\\.))*&quot;)|ID-HTML
 </code></pre></div>
 
 <p>Every token type but <code>ID</code> and <code>COMMENT</code> are literals: either a keyword or a
