@@ -18,7 +18,7 @@ add:
 	git add .
 
 commit: add
-	git commit -s
+	git commit -s --gpg-sign
 
 publish: commit
 	git push
