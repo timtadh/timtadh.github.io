@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Hackthology</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Mon, 17 Apr 2023 00:00:00 -0400</lastBuildDate><item><title>Flake Aware Culprit Finding</title><link>https://hackthology.com/flake-aware-culprit-finding.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
-&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2023/icst-2023-industry/46/Flake-Aware-Culprit-Finding"&gt;ICST Industry Track 2023&lt;/a&gt;.
+<rss version="2.0"><channel><title>Hackthology</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Mon, 27 May 2024 00:00:00 -0400</lastBuildDate><item><title>SafeRevert: When Can Breaking Changes be Automatically Reverted?</title><link>https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
+&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.
+&lt;a href="http://tba"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the …&lt;/p&gt;&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;,  Avi Kondareddy, Sushmita Azad, Eric Nickell</dc:creator><pubDate>Mon, 27 May 2024 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2024-05-27:/saferevert-when-can-breaking-changes-be-automatically-reverted.html</guid><category>Paper</category></item><item><title>Flake Aware Culprit Finding</title><link>https://hackthology.com/flake-aware-culprit-finding.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
+&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2023/icst-2023-industry/46/Flake-Aware-Culprit-Finding"&gt;ICST Industry Track 2023&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="https://doi.dx.org/10.1109/ICST57152.2023.00041"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.
 &lt;a href="https://research.google/pubs/pub52048/"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;

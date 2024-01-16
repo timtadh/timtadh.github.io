@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title> SafeRevert: When Can Breaking Changes be Automatically Reverted? </title>
+    <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Share+Tech+Mono' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://hackthology.com/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://hackthology.com/theme/css/theme.css" />
+    <link rel="shortcut icon" type="image/png" href="https://hackthology.com/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://hackthology.com/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="Hackthology — Flux Atom"
+                           href="https://hackthology.com/" /> 
+    <link rel ="alternate" type="application/rss+xml"
+                           title="Hackthology — Flux RSS"
+                           href="https://hackthology.com/feeds/rss.xml" /> 
+    <link rel="canonical" href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"/>
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://hackthology.com/theme/css/pygments.css" /> 
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://hackthology.com/index.html">Hackthology</a>
+        </h1>
+        <h3>
+          The Discourses of Tim Henderson
+        </h3>
+        <div class="top-nav">
+<ul>
+    <li><a href="https://hackthology.com/articles.html">articles</a></li>
+    <li><a href="https://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="https://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="https://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+      </header>
+      
+      <div id="page-body">
+
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h1 class="full">
+          <a rel="bookmark"
+             href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"
+             title="perm link SafeRevert: When Can Breaking Changes be Automatically Reverted?">
+             SafeRevert: When Can Breaking Changes be Automatically Reverted?
+          </a>
+        </h1>
+        <div class="meta">
+<!-- includes/article_meta.html -->
+          <div class="meta">
+            by &nbsp;<a href="http://hackthology.com">Tim Henderson</a>,  Avi Kondareddy, Sushmita Azad, Eric Nickell
+<br/> <time datetime="2024-05-27T00:00:00-04:00">Mon 27 May 2024</time></div>        </div>
+      </header>
+      <div class="post-content"> 
+        <p><strong>Tim A. D. Henderson</strong>, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
+<em>SafeRevert: When Can Breaking Changes be Automatically Reverted?</em>.  <a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-">ICST Industry Track 2024</a>.
+<br/>
+<a href="http://tba">DOI</a>.
+<a href="https://hackthology.com/pdfs/icst-2024.pdf">PDF</a>.
+<a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html">WEB</a>.
+<a href="http://tba">Google Research Preprint</a>.</p>
+<h4>Note</h4>
+<blockquote>
+<p>This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+<a href="https://hackthology.com/pdfs/icst-2024.pdf">pdf version</a>.</p>
+</blockquote>
+<h4>Abstract</h4>
+<p>When bugs or defects are introduced into a large scale software repository,
+they reduce productivity. Programmers working on related areas of the code
+will encounter test failures, compile breakages, or other anomalous behavior.
+On encountering these issues, they will need to troubleshoot and determine
+that their changes were not the cause of the error and that another change is
+at fault. They must then find that change and <em>revert it</em> to return the
+repository to a healthy state. In the past, our group has identified ways to
+identify the root cause (or culprit) change that introduced a test failure
+even when the test is flaky. This paper focuses on a related issue: at what
+point does the Continuous Integration system have enough evidence to support
+<em>automatically reverting a change</em>? We will motivate the problem, provide
+several methods to address it, and empirically evaluate our solution on a
+large set (25,137) of real-world breaking changes that occurred at
+Google. SafeRevert improved recall (number of changes recommend for reversion)
+by 2x over the baseline method while meeting our safety criterion.</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+      </div>
+      </article> <!-- /#page-main -->
+
+      </div>  <!-- /#page-body -->
+
+      <footer id="page-foot">
+        <div class="bottom-nav">
+<ul>
+    <li><a href="https://hackthology.com/articles.html">articles</a></li>
+    <li><a href="https://hackthology.com/pages/about.html">about</a></li>
+    <li><a href="https://hackthology.com/pages/publications.html">publications</a></li>
+    <li><a href="https://hackthology.com/pages/teaching.html">teaching</a></li>
+</ul>
+<ul>
+    <li><a href="https://hackthology.com/feeds/rss.xml">rss-feed</a></li>
+    <li><a href="https://github.com/timtadh">github</a></li>
+    <li><a href="https://twitter.com/timtadh">twitter</a></li>
+    <li><a href="https://www.linkedin.com/in/tadh">linkedin</a></li>
+    <li><a href="https://keybase.io/tadh">keybase</a></li>
+</ul></div>
+        <p>Copyright 2016 Tim Henderson. All Rights Reserved.</p>
+      </footer>
+    </div> <!-- /#page -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JETPQFYXEB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JETPQFYXEB');
+    </script>
+  </body>
+</html>

@@ -1,8 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2023-04-17T00:00:00-04:00</updated><entry><title>Flake Aware Culprit Finding</title><link href="https://hackthology.com/flake-aware-culprit-finding.html" rel="alternate"></link><published>2023-04-17T00:00:00-04:00</published><updated>2023-04-17T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</name></author><id>tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
-&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2023/icst-2023-industry/46/Flake-Aware-Culprit-Finding"&gt;ICST Industry Track 2023&lt;/a&gt;.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2024-05-27T00:00:00-04:00</updated><entry><title>SafeRevert: When Can Breaking Changes be Automatically Reverted?</title><link href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html" rel="alternate"></link><published>2024-05-27T00:00:00-04:00</published><updated>2024-05-27T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;,  Avi Kondareddy, Sushmita Azad, Eric Nickell</name></author><id>tag:hackthology.com,2024-05-27:/saferevert-when-can-breaking-changes-be-automatically-reverted.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
+&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.
+&lt;a href="http://tba"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the …&lt;/p&gt;&lt;/blockquote&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
+&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.
+&lt;a href="http://tba"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;When bugs or defects are introduced into a large scale software repository,
+they reduce productivity. Programmers working on related areas of the code
+will encounter test failures, compile breakages, or other anomalous behavior.
+On encountering these issues, they will need to troubleshoot and determine
+that their changes were not the cause of the error and that another change is
+at fault. They must then find that change and &lt;em&gt;revert it&lt;/em&gt; to return the
+repository to a healthy state. In the past, our group has identified ways to
+identify the root cause (or culprit) change that introduced a test failure
+even when the test is flaky. This paper focuses on a related issue: at what
+point does the Continuous Integration system have enough evidence to support
+&lt;em&gt;automatically reverting a change&lt;/em&gt;? We will motivate the problem, provide
+several methods to address it, and empirically evaluate our solution on a
+large set (25,137) of real-world breaking changes that occurred at
+Google. SafeRevert improved recall (number of changes recommend for reversion)
+by 2x over the baseline method while meeting our safety criterion.&lt;/p&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;</content><category term="Paper"></category></entry><entry><title>Flake Aware Culprit Finding</title><link href="https://hackthology.com/flake-aware-culprit-finding.html" rel="alternate"></link><published>2023-04-17T00:00:00-04:00</published><updated>2023-04-17T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</name></author><id>tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
+&lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2023/icst-2023-industry/46/Flake-Aware-Culprit-Finding"&gt;ICST Industry Track 2023&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="https://doi.dx.org/10.1109/ICST57152.2023.00041"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.
 &lt;a href="https://research.google/pubs/pub52048/"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
@@ -13,7 +52,7 @@ correct you should read the
 &lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;pdf version …&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
 &lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2023/icst-2023-industry/46/Flake-Aware-Culprit-Finding"&gt;ICST Industry Track 2023&lt;/a&gt;.
 &lt;br/&gt;
-&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://doi.dx.org/10.1109/ICST57152.2023.00041"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2023.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;WEB&lt;/a&gt;.
 &lt;a href="https://research.google/pubs/pub52048/"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
