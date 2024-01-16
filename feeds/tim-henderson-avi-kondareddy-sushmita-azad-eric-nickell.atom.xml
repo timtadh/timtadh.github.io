@@ -38,4 +38,1684 @@ several methods to address it, and empirically evaluate our solution on a
 large set (25,137) of real-world breaking changes that occurred at
 Google. SafeRevert improved recall (number of changes recommend for reversion)
 by 2x over the baseline method while meeting our safety criterion.&lt;/p&gt;
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;</content><category term="Paper"></category></entry></feed>
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+
+&lt;h1 id="sec:introduction"&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Large scale software development is enabled by automatically
+executing tests in a continuous integration environment. Continuous
+integration (CI) &lt;span class="citation" data-cites="Fowler2006"&gt;(&lt;a
+href="#ref-Fowler2006" role="doc-biblioref"&gt;Fowler 2006&lt;/a&gt;)&lt;/span&gt; is
+the industrial practice of using automated systems to automatically
+integrate changes into the source of truth for the software system or
+repository. This improves collaboration by helping software developers
+avoid breaking compilation, tests, or structure of the system that
+others are relying on.&lt;/p&gt;
+&lt;p&gt;Corporations and teams may engage in CI using adhoc tools across many
+independent software repositories. For instance Github (github.com)
+supports CI “Actions" which can be integrated into any repository.
+However, many organizations are recognizing the value of using a
+“mono-repository" (monorepo) development model where many or all teams
+in the organization use a single shared software repository &lt;span
+class="citation" data-cites="Potvin2016"&gt;(&lt;a href="#ref-Potvin2016"
+role="doc-biblioref"&gt;Potvin and Levenberg 2016&lt;/a&gt;)&lt;/span&gt;. At the
+largest organizations such as Google &lt;span class="citation"
+data-cites="Potvin2016 Memon2017 Henderson2023"&gt;(&lt;a
+href="#ref-Potvin2016" role="doc-biblioref"&gt;Potvin and Levenberg
+2016&lt;/a&gt;; &lt;a href="#ref-Memon2017" role="doc-biblioref"&gt;Memon et al.
+2017&lt;/a&gt;; &lt;a href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et
+al. 2023&lt;/a&gt;)&lt;/span&gt;, Microsoft &lt;span class="citation"
+data-cites="Herzig2015a"&gt;(&lt;a href="#ref-Herzig2015a"
+role="doc-biblioref"&gt;Herzig and Nagappan 2015&lt;/a&gt;)&lt;/span&gt;, and Facebook
+&lt;span class="citation" data-cites="Machalica2019"&gt;(&lt;a
+href="#ref-Machalica2019" role="doc-biblioref"&gt;Machalica et al.
+2019&lt;/a&gt;)&lt;/span&gt; large repositories are complimented by advanced
+centralized CI systems.&lt;/p&gt;
+&lt;p&gt;In these large, modern CI systems, the integration goes beyond just
+ensuring the code textually merges. Compilations are invoked, tests are
+executed, and additional static and dynamic verification steps are
+performed. The demand for machine resources can exceed capacity for
+build, test, and verification tasks desired by a large-scale CI system.
+To combat this problem, test case selection or prioritization is used
+&lt;span class="citation"
+data-cites="Gupta2011 Micco2013 Machalica2019"&gt;(&lt;a href="#ref-Gupta2011"
+role="doc-biblioref"&gt;Gupta, Ivey, and Penix 2011&lt;/a&gt;; &lt;a
+href="#ref-Micco2013" role="doc-biblioref"&gt;Micco 2013&lt;/a&gt;; &lt;a
+href="#ref-Machalica2019" role="doc-biblioref"&gt;Machalica et al.
+2019&lt;/a&gt;)&lt;/span&gt; to select fewer tests to run.&lt;/p&gt;
+&lt;p&gt;Additionally, CI steps are often invoked at multiple points in the
+Software Development Life Cycle. In the past, it may have been assumed
+that the tests were executed by the CI system once, at the time a commit
+was created in the version control. Today, CI may execute tests multiple
+times during development: when a change is sent for code review,
+immediately prior to submission or integration into the main development
+branch, after one or more changes has been integrated into the
+development branch, and when a new release is created. &lt;em&gt;This paper is
+primary concerned with testing that occurs after the code has been
+integrated into the main development branch.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id="why-is-testing-necessary-after-code-integration"&gt;Why is Testing
+Necessary After Code Integration?&lt;/h2&gt;
+&lt;p&gt;When deploying CI for the first time, many organizations primarily
+focus on conducting testing at the time a change is merged into the main
+branch. For instance, they may test when a Pull Request (PR) on Github
+is going to be merged into the main branch. The PR is merged if the
+tests pass and no changes have been made to the main branch since the
+testing started. This strategy works well until the rate of PR
+submission exceeds the average amount of time it takes to run all the
+tests.&lt;/p&gt;
+&lt;p&gt;At this point, organizations may do a stop gap fix such as adding
+more machines to run tests in parallel or reducing the size of the test
+suite. However, at some point, these measures will prove ineffective and
+the rate that testing can be conducted will become a impediment to an
+organization’s engineering velocity. To address this, one common
+solution is to introduce a “submission queue" which batches changes
+together for testing and merges them all if the tests pass &lt;span
+class="citation" data-cites="Ananthanarayanan2019"&gt;(&lt;a
+href="#ref-Ananthanarayanan2019" role="doc-biblioref"&gt;Ananthanarayanan
+et al. 2019&lt;/a&gt;)&lt;/span&gt;. If the tests fail, the offending change must be
+identified and the remaining changes in the batch must be retested (at
+least doubling the total testing time) &lt;span class="citation"
+data-cites="Najafi2019"&gt;(&lt;a href="#ref-Najafi2019"
+role="doc-biblioref"&gt;Najafi, Shang, and Rigby 2019&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;As the submission rate continues to increase, the organization may
+add conservative test selection based on file-level dependence analysis
+&lt;span class="citation" data-cites="Ananthanarayanan2019"&gt;(&lt;a
+href="#ref-Ananthanarayanan2019" role="doc-biblioref"&gt;Ananthanarayanan
+et al. 2019&lt;/a&gt;)&lt;/span&gt;. But at this point, the organization will be
+reaching the limit of what can be done to completely prevent any
+breaking changes from being integrated into the main development branch
+beyond just buying more and more machines to further parallelize the
+testing.&lt;/p&gt;
+&lt;p&gt;And what about just buying more machines? Won’t this effectively
+solve the problem? It would until the submission rate exceeds the time
+it takes to run the slowest test. At this point, the number of machines
+purchased can only partially control impact to developer productivity.
+Even with a very large budget for testing, the number of changes per
+batch will continue to grow as increases in the number of machines will
+not reduce the batch size but only keep the testing time per batch
+relatively constant. The larger the batch size, the more likely that a
+developer will experience conflicts with another change when attempting
+to submit. These conflicts (either at the syntactical or semantic level)
+will make it difficult for developers to reliably submit their changes
+and require them to constantly monitor the submission process. This
+monitoring will hurt overall developer productivity.&lt;/p&gt;
+&lt;p&gt;At the highest submission rates seen in industry today, using
+submission queues that guarantee zero breaking changes becomes
+infeasible both from a machine cost perspective and from a developer
+productivity perspective. Therefore, many organizations relax the
+requirement that an integrated change will never break a test. Even
+while using submit queues to gate contributions for a single team,
+Google has relied on postsubmit testing for mission-critical software
+since the early 2000s as documented by Mike Bland &lt;span class="citation"
+data-cites="Bland2012"&gt;(&lt;a href="#ref-Bland2012"
+role="doc-biblioref"&gt;Bland 2012&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;h2 id="post-submission-testing"&gt;Post Submission Testing&lt;/h2&gt;
+&lt;p&gt;The purpose of testing after a change has been integrated (called
+&lt;em&gt;Post-Submission&lt;/em&gt; Testing or &lt;em&gt;Postsubmit&lt;/em&gt; Testing
+hereafter) is to identify defects that slipped through testing that
+occurred prior to integration. Typically, organizations are unable to
+run all tests at every integrated change. Instead, testing is conducted
+periodically. In this paper we will refer to this periodic testing as
+&lt;em&gt;Testing Cycles&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Figure &lt;a href="#fig:ci-timeline" data-reference-type="ref"
+data-reference="fig:ci-timeline"&gt;[fig:ci-timeline]&lt;/a&gt; is a simplified
+view of the postsubmit testing strategy used at Google. The test
+scheduler waits until our Build System &lt;span class="citation"
+data-cites="Wang2020"&gt;(&lt;a href="#ref-Wang2020" role="doc-biblioref"&gt;Wang
+et al. 2020&lt;/a&gt;)&lt;/span&gt; has capacity to start a test cycle. It then
+schedules tests and then waits until the system has capacity again. When
+scheduling tests, certain tests may be temporarily skipped or throttled
+to conserve resources. As shown in Figure &lt;a href="#fig:ci-timeline"
+data-reference-type="ref"
+data-reference="fig:ci-timeline"&gt;[fig:ci-timeline]&lt;/a&gt;, this leads to
+the system usually detecting new failures some time after the version
+that introduced them had been integrated. This leads to the problem of
+“Culprit Finding."&lt;/p&gt;
+&lt;h2 id="culprit-finding"&gt;Culprit Finding&lt;/h2&gt;
+&lt;p&gt;Culprit finding is conceptually simple: given a list of versions that
+may have introduced a fault, locate the offending change. One may solve
+this problem with a variety of techniques: Zeller’s Delta Debugging
+&lt;span class="citation" data-cites="Zeller1999"&gt;(&lt;a
+href="#ref-Zeller1999" role="doc-biblioref"&gt;Zeller 1999&lt;/a&gt;)&lt;/span&gt;,
+Git’s bisection algorithm &lt;span class="citation"
+data-cites="Couder2008"&gt;(&lt;a href="#ref-Couder2008"
+role="doc-biblioref"&gt;Couder 2008&lt;/a&gt;)&lt;/span&gt;, or Google’s Flake Aware
+Culprit Finding (FACF) algorithm &lt;span class="citation"
+data-cites="Henderson2023"&gt;(&lt;a href="#ref-Henderson2023"
+role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;)&lt;/span&gt;. Every technique
+used to identify the offending change will have some error rate in
+industrial practice.&lt;/p&gt;
+&lt;p&gt;But wait! How can a binary search or delta debugging have an “error
+rate"? The answer is that old nemesis of industrial practice: flaky or
+non-deterministic test behavior &lt;span class="citation"
+data-cites="parry2022"&gt;(&lt;a href="#ref-parry2022"
+role="doc-biblioref"&gt;Parry et al. 2022&lt;/a&gt;)&lt;/span&gt;. Flaky tests can be
+caused both by problems in the production code (ex: race conditions
+causing rare errors), in the test code (ex: use of “sleep") and by
+infrastructure problems (ex: unreliable machine with bad ram or network
+congestion). All of these problems behave in &lt;em&gt;version
+non-hermetic&lt;/em&gt; ways, where failures may not be strictly linked to the
+version of code executed. Furthermore, even when the test is fully
+&lt;em&gt;version hermetic&lt;/em&gt; the flakiness may not obey a Bernoulli
+distribution as subsequent executions may not be fully independent of
+the prior ones.&lt;/p&gt;
+&lt;p&gt;The above issues mean that even culprit finding algorithms such as
+FACF &lt;span class="citation" data-cites="Henderson2023"&gt;(&lt;a
+href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al.
+2023&lt;/a&gt;)&lt;/span&gt; that have been purpose-built to mitigate flakiness will
+have some error rate. While that error rate will be much less than a
+naive algorithm, it may still be high enough to cause problems when
+deployed in certain environments.&lt;/p&gt;
+&lt;h2 id="intro:auto-revert"&gt;Automatically Reverting Changes&lt;/h2&gt;
+&lt;p&gt;Once an organization has a reliable and high performance culprit
+finding system, it is natural to use it to automatically revert (undo,
+roll back) changes that introduce defects into the main development
+branch. By automatically undoing these changes, the system decreases the
+amount of time developers working with impacted tests will experience
+breakages that are unrelated to the changes they are working on. It will
+also increase the number of versions that are viable to be used to make
+software releases. Reducing development friction and increasing the
+number of release candidates improves developer productivity by reducing
+the amount of time developers spend troubleshooting tests that were
+broken by someone else.&lt;/p&gt;
+&lt;p&gt;Unfortunately, naively integrating FACF directly into a system that
+immediately reverts all changes it identifies will lead to unhappy
+developers. This is because even though Google’s FACF has a measured
+&lt;em&gt;per-test accuracy&lt;/em&gt; of 99.54%, when aggregated (grouped) by
+blamed change, the accuracy &lt;em&gt;per-change&lt;/em&gt; is only 77.37% in the
+last 28 day window as of this writing.&lt;a href="#fn1"
+class="footnote-ref" id="fnref1" role="doc-noteref"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;
+This would translate into &lt;em&gt;incorrectly reverting&lt;/em&gt; approximately
+20-130 changes per day out of an approximately of 300-500 total changes
+per day reverted (see Figure &lt;a href="#fig:baseline"
+data-reference-type="ref"
+data-reference="fig:baseline"&gt;[fig:baseline]&lt;/a&gt;). At Google, we find
+the cost of incorrectly reverting a change is extremely high in terms of
+developer toil and frustration. Therefore, we need to reduce the rate of
+bad reversions as much as possible. In this work, we aim to incorrectly
+revert fewer than one change per day on average.&lt;/p&gt;
+&lt;h2 id="our-contributions-and-findings"&gt;Our Contributions and
+Findings&lt;/h2&gt;
+&lt;p&gt;In this paper we propose a shallow machine-learning based method for
+using the output of a culprit finding algorithm to automatically revert
+(undo, rollback) a change that controls for potential errors from the
+culprit finding algorithm. Our method is generic and can be used with
+any culprit finding algorithm.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;SafeRevert: a method for using the output of any culprit finding
+algorithm to automatically revert (undo) a change. SafeRevert controls
+for the error rate while increasing total number of reversions over
+baseline methods.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;An ablation study on the models, designs and features used by the
+machine learning system used in SafeRevert to identify the most
+impactful features and best models.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A large scale study on SafeRevert’s efficacy using &lt;span
+class="math inline"&gt;\(\thicksim\)&lt;/span&gt;25,137 potential culprit changes
+identified by Google’s production culprit finder over a &lt;span
+class="math inline"&gt;\(\sim\)&lt;/span&gt;3 month window yields a recall of
+55.7%, &lt;span class="math inline"&gt;\(\sim2.1 \times\)&lt;/span&gt; higher than
+the baseline method.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id="background"&gt;Background&lt;/h1&gt;
+
+&lt;p&gt;&lt;span id="fig:ci-timeline" label="fig:ci-timeline"&gt;
+&lt;a href="images/icst-2024/fig1.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 1&lt;/strong&gt;&lt;/em&gt;
+&lt;img alt="Figure 1" src="images/icst-2024/fig1.png"&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The Test Automation Platform (TAP) is a proprietary Continuous
+Integration (CI) system at Google. It runs tests that execute on a
+single machine without the use of the network or external resources.&lt;a
+href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt; All tests on TAP are required to run
+in under 15 minutes and exceeding that limit is considered a test
+failure. TAP executes tests both before a user submits their changes and
+after the user has submitted their change. This paper is only concerned
+with the testing that has occurred after a user has submitted a change.
+At Google, this is referred to as “Postsubmit Testing". The part of TAP
+that does Postsubmit Testing is called TAP Postsubmit.&lt;/p&gt;
+&lt;p&gt;TAP has appeared in the literature several times &lt;span
+class="citation"
+data-cites="Gupta2011 Micco2012 Micco2013 Memon2017 Leong2019 Wang2020 Henderson2023"&gt;(&lt;a
+href="#ref-Gupta2011" role="doc-biblioref"&gt;Gupta, Ivey, and Penix
+2011&lt;/a&gt;; &lt;a href="#ref-Micco2012" role="doc-biblioref"&gt;Micco 2012&lt;/a&gt;,
+&lt;a href="#ref-Micco2013" role="doc-biblioref"&gt;2013&lt;/a&gt;; &lt;a
+href="#ref-Memon2017" role="doc-biblioref"&gt;Memon et al. 2017&lt;/a&gt;; &lt;a
+href="#ref-Leong2019" role="doc-biblioref"&gt;Leong et al. 2019&lt;/a&gt;; &lt;a
+href="#ref-Wang2020" role="doc-biblioref"&gt;Wang et al. 2020&lt;/a&gt;; &lt;a
+href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al.
+2023&lt;/a&gt;)&lt;/span&gt; and there has been gradual evolution its testing
+strategy over the years. However, in general TAP uses a combination of
+static and dynamic Test Selection, execution throttling, and
+just-in-time scheduling to control testing load. A simplified diagram of
+TAP Postsubmit testing is visualized in Figure &lt;a
+href="#fig:ci-timeline" data-reference-type="ref"
+data-reference="fig:ci-timeline"&gt;[fig:ci-timeline]&lt;/a&gt;. Tests are
+periodically run in Testing Cycles.&lt;a href="#fn3" class="footnote-ref"
+id="fnref3" role="doc-noteref"&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt; During a cycle, Projects
+that are eligible to run their test in the cycle are selected. Tests
+from those projects are included if some file was modified since that
+test’s last execution can influence their behavior via inspection of a
+dependence graph at the Build Target and File level granularity &lt;span
+class="citation" data-cites="Gupta2011 Micco2012"&gt;(&lt;a
+href="#ref-Gupta2011" role="doc-biblioref"&gt;Gupta, Ivey, and Penix
+2011&lt;/a&gt;; &lt;a href="#ref-Micco2012" role="doc-biblioref"&gt;Micco
+2012&lt;/a&gt;)&lt;/span&gt;. When breakages inevitably occur culprit finding is
+conducted using the FACF algorithm to locate the offending change &lt;span
+class="citation" data-cites="Henderson2023"&gt;(&lt;a
+href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al.
+2023&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;FACF operates on a single test target at a time. For simplicity, we
+use the term “test” both for a target which executes test code or for a
+“build targets” which verifies that a binary can compile. Conceptually,
+FACF performs a “Noisy Binary Search” &lt;span class="citation"
+data-cites="Rivest1978"&gt;(&lt;a href="#ref-Rivest1978"
+role="doc-biblioref"&gt;Rivest, Meyer, and Kleitman 1978&lt;/a&gt;)&lt;/span&gt; (also
+called a Rényi-Ulam game &lt;span class="citation"
+data-cites="Pelc2002"&gt;(&lt;a href="#ref-Pelc2002" role="doc-biblioref"&gt;Pelc
+2002&lt;/a&gt;)&lt;/span&gt;) which FACF models under the Bayesian Search Framework
+&lt;span class="citation" data-cites="Ben-Or2008"&gt;(&lt;a
+href="#ref-Ben-Or2008" role="doc-biblioref"&gt;Ben-Or and Hassidim
+2008&lt;/a&gt;)&lt;/span&gt;. The input to FACF includes the suspect changes
+(“suspects”) that may have broken the test and an estimate collected by
+an independent system of how likely it is to fail non-deterministically
+without the presence of a deterministic bug, it’s “flakiness”. Much like
+a normal binary search, it then divides the search space, executes
+tests, and updates a probability distribution based on the outcomes.
+Eventually, the system will determine that one of the suspects is above
+a set probability threshold (.9999) and is the source of the test
+failure, or that none of the suspects is at fault and the original
+failure was spurious, due to a flake (non-deterministic failure).&lt;/p&gt;
+&lt;h2 id="culprit-finding-accuracy"&gt;Culprit Finding Accuracy&lt;/h2&gt;
+&lt;p&gt;Now some caveats: The math behind FACF &lt;span class="citation"
+data-cites="Henderson2023"&gt;(&lt;a href="#ref-Henderson2023"
+role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;)&lt;/span&gt; assumes that
+individual test executions of the same test at either the same version
+or different versions are independent statistical events. That is, a
+prior or concurrent execution of a test cannot influence a subsequent
+execution. Unfortunately, while this assumption is theoretically sound,
+in practice this property does not always hold. External factors outside
+a program’s code can also influence a test’s execution behavior. For
+example, the time of day, day of year, load on the machine, etc., can
+all influence the outcome of certain tests. Thus, while we have
+configured FACF to have an accuracy of 99.99%, in practice we do not
+observe this level of accuracy. As noted in the Introduction, our
+observed accuracy was 99.54% in the last 28 day window as of this
+writing. This level of accuracy is consistent with the empirical study
+conducted in the 2023 paper &lt;span class="citation"
+data-cites="Henderson2023"&gt;(&lt;a href="#ref-Henderson2023"
+role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;How was accuracy “observed”? What was the ground truth used? By what
+measurement technique? At Google, we continuously randomly sample a
+subset of culprit finding execution results as they are completed. The
+selected sample is then cross checked by performing extensive reruns
+that demand a higher level of accuracy and assume a worse flakiness rate
+for the test than used for culprit finding. Additionally, more reruns
+are scheduled for a later time to control for time-based effects.
+Finally, execution ordering effects are controlled for by ensuring that
+executions at versions that should fail can fail both before and after
+versions that should pass are executed. Full details on our methods for
+verification can be found in the FACF paper &lt;span class="citation"
+data-cites="Henderson2023"&gt;(&lt;a href="#ref-Henderson2023"
+role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;)&lt;/span&gt;. Even with
+extensive reruns there remains a small probability of error. While our
+method of verification is imperfect, it allows for continuously
+computing a statistical estimate on the accuracy of the culprit
+finder.&lt;/p&gt;
+&lt;p&gt;Measurements of FACF accuracy reported in the 2023 paper were
+performed per test breakage. That is, culprit finding is performed on a
+test &lt;span class="math inline"&gt;\(t\)&lt;/span&gt; when it has an observed
+failure at some version &lt;span class="math inline"&gt;\(\beta\)&lt;/span&gt; when
+it was previously passing at a prior version &lt;span
+class="math inline"&gt;\(\alpha\)&lt;/span&gt;. The range &lt;span
+class="math inline"&gt;\((\alpha, \beta]\)&lt;/span&gt; is referred to as the
+&lt;em&gt;search-range&lt;/em&gt; and the key &lt;span class="math inline"&gt;\(\{t \times
+(\alpha, \beta]\}\)&lt;/span&gt; is the &lt;em&gt;search-key&lt;/em&gt;. For a given
+search-key, the culprit finder first filters the search-range to changes
+on which &lt;span class="math inline"&gt;\(t\)&lt;/span&gt; has a transitive build
+dependence, which we call the &lt;em&gt;suspect-set&lt;/em&gt;. A culprit &lt;span
+class="math inline"&gt;\(\kappa\)&lt;/span&gt; is identified somewhere between
+&lt;span class="math inline"&gt;\(\beta\)&lt;/span&gt; and &lt;span
+class="math inline"&gt;\(\alpha\)&lt;/span&gt; (e.g. &lt;span
+class="math inline"&gt;\(\alpha \sqsubset \kappa \sqsubseteq \beta\)&lt;/span&gt;
+where &lt;span class="math inline"&gt;\(a
+\sqsubset b\)&lt;/span&gt; indicates version &lt;span
+class="math inline"&gt;\(a\)&lt;/span&gt; is before version &lt;span
+class="math inline"&gt;\(b\)&lt;/span&gt;). It is possible that there are
+multiple &lt;span class="math inline"&gt;\(\kappa_t\)&lt;/span&gt; for different
+&lt;span class="math inline"&gt;\(t\)&lt;/span&gt; w.r.t. the same search range,
+which we can call the &lt;em&gt;culprit-set&lt;/em&gt; of the search range. What is
+measured is whether or not &lt;span class="math inline"&gt;\(\kappa\)&lt;/span&gt;
+is correct (true or false) for a given &lt;span
+class="math inline"&gt;\(t\)&lt;/span&gt; and search range &lt;span
+class="math inline"&gt;\(\alpha \sqsubset \beta\)&lt;/span&gt;. Accuracy is the
+total correct measurements over the total number of measurements
+taken.&lt;/p&gt;
+&lt;h2 id="applying-culprit-finding-results-to-change-reversion"&gt;Applying
+Culprit Finding Results to Change Reversion&lt;/h2&gt;
+&lt;p&gt;When breaking changes get merged into the main development branch
+they impede development productivity. At Google we term impediments to
+productivity as “friction.” Breaking changes impact three types of
+friction tracked at Google: Release Friction, Presubmit Friction and
+Development Friction. Release Friction occurs when breaking changes that
+merge into the main development branch impede automated releases and
+require manual intervention by the primary team’s on-duty engineer.
+Presubmit Friction occurs when pre-submission (“presubmit”) testing in
+TAP fails due to a broken test in the main development branch.
+Development Friction occurs when a developer manually triggers the
+execution of a test broken on the main branch during active code
+development. All three types of friction can steal time from developers
+and reduce productivity.&lt;/p&gt;
+&lt;p&gt;To reduce friction, changes that break tests can be automatically
+reverted (“rolled back”). However, auto-revert (“auto-rollback”) only
+improves developer productivity if the changes reverted actually broke
+tests. Let’s consider for a moment what happens when a change is
+incorrectly reverted. The developer who authored the change now needs to
+go on a wholly different troubleshooting journey to determine why their
+change didn’t stay submitted, and they are faced with the same
+damning-but-incorrect evidence used to revert their change. The
+developer is frustrated and must now debug tests that their team doesn’t
+own and which their changes should not affect.&lt;/p&gt;
+&lt;p&gt;Some changes are particularly difficult to submit with a buggy
+auto-revert system: those that change core libraries. These changes have
+the potential to break a large number of tests and impact a large number
+of other developers. But, at the same time they are also more likely to
+be incorrectly blamed (as TAP tracks what tests are affected by each
+change and uses this as an input to culprit finding). Past auto-revert
+systems that have been too inaccurate have caused core library authors
+to opt their changes out of auto reversion as the productivity cost to
+the core library teams has been too great to bear.&lt;/p&gt;
+&lt;h2 id="accuracy-of-auto-revert-versus-culprit-finding"&gt;Accuracy of
+Auto-Revert versus Culprit Finding&lt;/h2&gt;
+&lt;p&gt;A change &lt;span class="math inline"&gt;\(\kappa\)&lt;/span&gt; that breaks a
+test may have broken more than one. If so, then multiple independent
+executions of the culprit finding algorithm (one for each broken test)
+will blame the version &lt;span class="math inline"&gt;\(\kappa\)&lt;/span&gt; as
+the culprit. As explored above, the algorithms have an error rate. A
+change &lt;span class="math inline"&gt;\(\kappa\)&lt;/span&gt; that breaks &lt;span
+class="math inline"&gt;\(n\)&lt;/span&gt; tests will have &lt;span
+class="math inline"&gt;\(m \le n\)&lt;/span&gt; culprit finding conclusions that
+correctly identify &lt;span class="math inline"&gt;\(\kappa\)&lt;/span&gt; as the
+culprit.&lt;/p&gt;
+&lt;p&gt;Our concern with auto-revert isn’t the accuracy of culprit finding
+per search-key &lt;span class="math inline"&gt;\(\{t \times (\alpha,
+\beta]\}\)&lt;/span&gt; but rather per culprit change &lt;span
+class="math inline"&gt;\(\kappa\)&lt;/span&gt;. Let &lt;span
+class="math inline"&gt;\(K\)&lt;/span&gt; be the set of all changes in the
+repository blamed as culprits by the culprit finding system. Let &lt;span
+class="math inline"&gt;\(c \subseteq K\)&lt;/span&gt; be the subset of the
+culprits that are correct and &lt;span class="math inline"&gt;\(\overline{c}
+\subseteq K\)&lt;/span&gt; be the subset of culprits that are incorrect. Then
+if every culprit in &lt;span class="math inline"&gt;\(K\)&lt;/span&gt; was
+automatically reverted, the accuracy of the auto-revert system would be
+&lt;span class="math inline"&gt;\({\left|{c}\right|} /
+{\left|{K}\right|}\)&lt;/span&gt;. In the introduction, we noted that the
+accuracy &lt;em&gt;per change&lt;/em&gt; was 77.37% which equals &lt;span
+class="math inline"&gt;\({\left|{c}\right|} /
+{\left|{K}\right|}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Why is the auto-revert accuracy (77.37%) lower than the culprit
+finding accuracy (99.54%)? Because there are many more tests than
+culprits and because correctly identified culprit changes may have
+broken more than one test. The chance of finding that culprit is higher
+because there are more chances to find it. Additionally, all of the
+culprit finding conclusions that identify one of those changes that
+break many tests will be correct. The set of incorrectly identified
+culprit &lt;span class="math inline"&gt;\(\overline{c}\)&lt;/span&gt; tends to
+contain mostly changes that are blamed by a fewer number of tests than
+those in set &lt;span class="math inline"&gt;\(c\)&lt;/span&gt;.&lt;/p&gt;
+&lt;h2 id="problem-statement"&gt;Problem Statement&lt;/h2&gt;
+&lt;p&gt;Identify a method for selecting as many as possible changes from the
+set of culprits &lt;span class="math inline"&gt;\(K\)&lt;/span&gt; that can be
+safely reverted. A change is safe to revert if it is a true culprit.
+Safety can be defined in terms of probability as well: A change is safe
+to revert if the chance it is a true culprit is &lt;span
+class="math inline"&gt;\(&amp;gt;99\%\)&lt;/span&gt;. The number of changes selected
+should be maximized (while maintaining safety) to ensure the methods
+performs reversions rather than safely doing nothing at all.&lt;/p&gt;
+&lt;h1 id="automatically-reverting-changes"&gt;Automatically Reverting
+Changes&lt;/h1&gt;
+
+&lt;p&gt;&lt;span id="fig:baseline" label="fig:baseline"&gt;
+&lt;a href="images/icst-2024/fig2.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 2&lt;/strong&gt;&lt;/em&gt;
+&lt;img alt="Figure 2" src="images/icst-2024/fig2.png"&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We will describe several methods for selecting changes to revert
+while maintaining the intended safety property. The first method is a
+simple “baseline” method that the more complex methods will be evaluated
+against. The other methods use shallow machine learning systems to take
+advantage of metadata available at revert time.&lt;/p&gt;
+&lt;p&gt;&lt;span id="sec:baseline" label="sec:baseline"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Our baseline method is based on a single observation: a change &lt;span
+class="math inline"&gt;\(\kappa_0\)&lt;/span&gt; that is identified as the
+culprit by culprit finding on many tests is more likely to be a culprit
+than a change &lt;span class="math inline"&gt;\(\kappa_1\)&lt;/span&gt; that is only
+blamed by a few tests. Therefore, the simplest heuristic approach to
+selecting changes to revert is to threshold on a minimum number of tests
+identifying the change. BASELINE(N) will refer to this method with
+selecting changes with at least N blaming targets. Figure &lt;a
+href="#fig:baseline" data-reference-type="ref"
+data-reference="fig:baseline"&gt;[fig:baseline]&lt;/a&gt; shows the performance
+of this method at various minimum number of targets. The most
+conservative, BASELINE(50) can avoid most false positives while
+reverting only a &lt;span class="math inline"&gt;\(\sim\)&lt;/span&gt;13% of true
+culprits. We choose BASELINE(10) for our final evaluation as this is the
+heuristic Google has historically used. Additionally, 10 is the lowest
+configuration of BASELINE that generally (although not always) meets the
+desired safety criteria.&lt;/p&gt;
+&lt;h2 id="subsec:ml-models"&gt;Predicting Auto-Revert Correctness using
+Machine Learning&lt;/h2&gt;
+&lt;p&gt;Instead of choosing just one suggestive feature – the number of
+blaming tests – to decide on a reversion, our proposed method uses
+multiple features and shallow machine learning models to improve
+performance relative to the baseline method. A selection of easily
+obtainable coarse-grained metadata on the changes, tests, and culprit
+finding process are used as features to the models. As these features
+are mainly simple numerical, categorical, and textual features about the
+code, we use simple model architectures to control for over-fitting.
+Architectures examined are: Random Forests (RF) and AdaBoost (ADA) (both
+provided by scikit-learn&lt;a href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt; &lt;span class="citation"
+data-cites="scikit-learn"&gt;(&lt;a href="#ref-scikit-learn"
+role="doc-biblioref"&gt;Pedregosa et al. 2011&lt;/a&gt;)&lt;/span&gt;), and XGBoost
+(XGB)&lt;a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt; &lt;span class="citation"
+data-cites="Chen2016a"&gt;(&lt;a href="#ref-Chen2016a"
+role="doc-biblioref"&gt;Chen and Guestrin 2016&lt;/a&gt;)&lt;/span&gt;. These
+tree-based model architectures are easy to use, have low computational
+costs, and are robust to the feature representation versus alternatives
+that require more preprocessing.&lt;/p&gt;
+&lt;h2 id="features-used"&gt;Features Used&lt;/h2&gt;
+&lt;p&gt;A suspect change is one that has been identified by at least one
+culprit-finder in the process of culprit finding a test. We can consider
+this the test &lt;em&gt;blaming&lt;/em&gt; the change. For any suspect, we have one
+or more blaming tests. Then, we have a few sources of information that
+may be valuable for predicting a true breakage: characteristics of the
+change itself and characteristics of the blaming tests or culprit
+finding results. Table &lt;a href="#table:features-table"
+data-reference-type="ref" data-reference="table:features-table"&gt;1&lt;/a&gt;
+contains the grouping of the features against their logical feature
+category, arrived at using the Pearson correlation between numerical
+features and lift analysis for non-numeric features.&lt;/p&gt;
+&lt;h2 id="feature-representation"&gt;Feature Representation&lt;/h2&gt;
+&lt;h3 id="categorical-features"&gt;Categorical Features&lt;/h3&gt;
+&lt;p&gt;Given a set of categories, we can create a fixed length
+representation by encoding a choice of category as a one-hot vector.
+When we have a variable number of categories per instance, such as
+language per test, this trivially becomes a multi-hot representation by
+summing the vectors.&lt;/p&gt;
+&lt;h3 id="numerical-features"&gt;Numerical Features&lt;/h3&gt;
+&lt;p&gt;Singular numerical fields are integrated without preprocessing or
+normalization, as we expect decision trees to be robust to
+value-scaling. Variable-length numerical fields are turned into
+variable-length categorical fields by generating bins representing
+quantiles of the training set distribution of that value. Then,
+bin-mapped values can be condensed into a fixed-length multi-hot
+encoding as above.&lt;/p&gt;
+&lt;h3 id="token-set-features"&gt;Token Set Features&lt;/h3&gt;
+&lt;p&gt;Token Sets correspond to variable-length categorical features where
+the list of categories is not known in advance. A good example of such a
+feature is compiler flags which should be dealt with adaptively by the
+model. We handle this issue by building a vocabulary per token-set
+feature on the training set parameterized by a minimum and maximum
+across-instance frequency. The change description, while potentially
+better dealt with through doc2vec or a more sophisticated NLP embedding
+approach, is treated like a token set and the resulting multi-hot
+encoding, having each field normalized by document frequency
+(TF-IDF).&lt;/p&gt;
+&lt;p&gt; &lt;span id="table:features-table"
+label="table:features-table"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div class="center"&gt;
+&lt;div id="table:features-table"&gt;
+&lt;table&gt;
+&lt;caption&gt; &lt;span class="smallcaps"&gt;Features for Machine Learning
+Model.&lt;/span&gt; &lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr class="header"&gt;
+&lt;th style="text-align: left;"&gt;Category&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Features&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;BASE&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;# of Blaming Tests&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td rowspan="3" style="text-align: left;"&gt;CHANGE_CONTENT&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;LOC (changed, added, deleted, total)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;# of Files Changed&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td style="text-align: left;"&gt;File Extensions&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td rowspan="3" style="text-align: left;"&gt;CHANGE_METADATA&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Reviewer/Approver Count&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td style="text-align: left;"&gt;Issue/Bug Count&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;Robot Author&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td rowspan="2" style="text-align: left;"&gt;CHANGE_TOKENS&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Directory Tokens&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;Description&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td rowspan="2" style="text-align: left;"&gt;CULPRIT_FINDER&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;&lt;span
+class="math inline"&gt;\(|\)&lt;/span&gt;Suspect-Set&lt;span
+class="math inline"&gt;\(|\)&lt;/span&gt; of Search-Key&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;&lt;span
+class="math inline"&gt;\(|\)&lt;/span&gt;Culprit-Set&lt;span
+class="math inline"&gt;\(|\)&lt;/span&gt; of Search-Range&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td rowspan="2" style="text-align: left;"&gt;FLAKINESS&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Historical Flaky Identification Count
+(Build/Test)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;Historical Execution Flake Rate&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td rowspan="6" style="text-align: left;"&gt;TEST_ATTRIBUTES&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;Type of Test (Test vs Build)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;Bazel Rule (Ex: “java_test”)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td style="text-align: left;"&gt;Machine Types (Ex: gpu)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;Test Language (Ex: java, c++, etc)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td style="text-align: left;"&gt;Compiler Flags (ex: sanitizers)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td style="text-align: left;"&gt;Average Machine Cost&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;h2 id="feature-grouping"&gt;Feature Grouping&lt;/h2&gt;
+&lt;h3 id="logical-sub-grouping-for-feature-lift-analysis"&gt;Logical
+Sub-Grouping for Feature Lift Analysis&lt;/h3&gt;
+&lt;p&gt;In order to avoid crowding out the evaluation and analysis with too
+many combinations of features, we’ve grouped them in Table &lt;a
+href="#table:features-table" data-reference-type="ref"
+data-reference="table:features-table"&gt;1&lt;/a&gt; into logical groups of
+features based off of conceptual categories and to reflect cross-feature
+correlations for numerical features, computed via pearsons correlation
+coefficient. As our “Token Set" features represent a distinct class of
+features both in terms of encoding method and granularity (highly
+specific to individual changes), we separate them from the coarse-grain
+change features. These logical groups will allow us to clearly convey
+the individual signal being provided by each class of feature during our
+feature analysis.&lt;/p&gt;
+&lt;h3 id="subsec:avail-group-features"&gt;Availability Sub-Grouping for Model
+Comparison Analysis&lt;/h3&gt;
+&lt;p&gt;Separately, we define the feature sets F = {&lt;em&gt;BASE&lt;/em&gt;,
+&lt;em&gt;AHEAD-OF-TIME&lt;/em&gt;, &lt;em&gt;REAL-TIME&lt;/em&gt;, &lt;em&gt;ALL&lt;/em&gt;} to distinguish
+between features available at any potential inference time&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;BASE&lt;/em&gt; is just the number of blaming tests. This
+corresponds to the BASELINE heuristic method.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;AHEAD-OF-TIME&lt;/em&gt; features are properties of the change
+under suspicion, and are therefore available immediately. Features under
+CHANGE_CONTENT, CHANGE_METADATA, and CHANGE_TOKENS from Table &lt;a
+href="#table:features-table" data-reference-type="ref"
+data-reference="table:features-table"&gt;1&lt;/a&gt; belong here.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;REAL-TIME&lt;/em&gt; features are available only as a result of
+culprit finding processes at play continuously during the decision
+window, and can become available at different times based on different
+sources of generation, often after a change has already been suspected
+by a culprit finder – all other features from Table &lt;a
+href="#table:features-table" data-reference-type="ref"
+data-reference="table:features-table"&gt;1&lt;/a&gt; fall in this set.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;ALL&lt;/em&gt; features is the union of &lt;em&gt;AHEAD-OF-TIME&lt;/em&gt; and
+&lt;em&gt;REAL-TIME&lt;/em&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This distinction is important: the usefulness of automatically
+reverting changes is critically dependent on its latency from the point
+of discovering that a breakage exists. The longer we take to
+automatically revert the change, the more friction experienced by
+developers, and the more likely a developer would have had to manually
+intervene.&lt;/p&gt;
+&lt;h3 id="subsubsec:feature-min"&gt;Feature Minimization&lt;/h3&gt;
+&lt;p&gt;Given the demonstrated feature lift, we’re also interested in
+minimizing the features needed to achieve similar performance levels
+without over-fitting on redundant features. We’ll elaborate on the exact
+minimized feature sets in the evaluation section for feature analysis,
+where we use representative features from each logical sub-groups that
+provide significant lift individually. Thus we have 3 further feature
+sets, MIN(f) for &lt;span class="math inline"&gt;\(f \in F\)&lt;/span&gt;.
+Representative features are determined over the test set based on
+individual feature comparison, left out for brevity in the analysis,
+rather than the logical category evaluation presented here. We evaluate
+RF(f), ADA(f), XGB(f), RF(MIN(f)), ADA(MIN(f)), and XGB(MIN(f)) for each
+feature set &lt;span class="math inline"&gt;\(f \in F\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;h2
+id="thresholding-to-use-model-prediction-score-for-selection"&gt;Thresholding
+to use Model Prediction Score for Selection&lt;/h2&gt;&lt;/p&gt;
+&lt;p&gt;Models produce an output probability score from 0 to 1. To discretize
+these scores into actual change selections. We dynamically pick a
+threshold using the TEST dataset to select the threshold that minimizes
+the bad revert rate while maximizing a positive, non-zero recall.&lt;/p&gt;
+&lt;h2 id="hyperparams-for-ml-models"&gt;Hyperparams for ML Models&lt;/h2&gt;
+&lt;p&gt;Using scikit-learn, we define RF as the RandomForestClassifier
+parameterized with a depth of 16 and ADA as the AdaBoostClassifier with
+default parameters, each of which provide discretized predictions with
+the above threshold selection procedure. XGBoost is configured with:
+objective=‘binary:logistic’, eta=0.05, and max_delta_step = 1.&lt;/p&gt;
+&lt;h1 id="sec:evaluation"&gt;Empirical Evaluation&lt;/h1&gt;
+&lt;p&gt;We empirically evaluated SafeRevert (the ML based method) against the
+BASELINE heuristic method. We evaluate: the overall performance of the
+different ML models considered, the importance features used, and
+compare the BASELINE method to a selected ML model.&lt;/p&gt;
+&lt;h2 id="research-questions"&gt;Research Questions&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;What is the safety and performance of studied methods in the
+context of the developer workflow?&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;What is the marginal benefit provided by each feature?&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Did the chosen method significantly improve performance over the
+baseline method while maintaining required safety levels?&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="sec:safety"&gt;Measuring Safety&lt;/h2&gt;
+&lt;p&gt;As mentioned in section &lt;a href="#intro:auto-revert"
+data-reference-type="ref" data-reference="intro:auto-revert"&gt;1.4&lt;/a&gt;, an
+incorrectly reverted change causes unacceptably high developer toil.
+Safety is the likelihood that a method will produce a false positive
+result by incorrectly categorizing a change as being a culprit and
+reverting it. This is a referred to as a &lt;em&gt;Bad Revert&lt;/em&gt; while
+correctly reverting a change that introduced a bug is a &lt;em&gt;Good
+Revert&lt;/em&gt;. The total number of reverts is &lt;em&gt;Bad Reverts&lt;/em&gt; +
+&lt;em&gt;Good Reverts&lt;/em&gt;. A change that should have been reverted but
+wasn’t is a &lt;em&gt;Missed Good Revert&lt;/em&gt; and a change that was correctly
+not reverted is a &lt;em&gt;Avoided Bad Revert&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;In terms of classic terminology for evaluating binary
+classifiers:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Good Revert&lt;/em&gt; = True Positive (TP)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Bad Revert&lt;/em&gt; = False Positive (FP)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Avoided Bad Revert&lt;/em&gt; = True Negative (TN)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Missed Good Revert&lt;/em&gt; = False Negative (FN)&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The safety properties we are most interested are (a) the total number
+of bad reverts, (b) total number of bad reverts per day, and (c) the bad
+revert rate. The bad revert rate (BRR) is the percentage of bad reverts
+out of the total number of reverts &lt;span class="math inline"&gt;\(=
+\frac{FP}{TP + FP}\)&lt;/span&gt;. This is otherwise known as the False
+Discovery Rate (FDR). Note, that &lt;span class="math inline"&gt;\(FDR = 1 -
+Precision = 1 - \frac{TP}{TP + FP}\)&lt;/span&gt;. Thus, safety can either be
+stated in terms of precision (ex. precision must be above 99%) or in
+terms of bad revert rate (ex. bad revert rate must be below 1%).&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;In this evaluation we will consider a method safe if its bad
+revert rate is below 1%, there are fewer than 14 bad reverts in the
+final validation set, and there are no more than 5 bad reverts per
+day.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Why these numbers?&lt;/em&gt; Our end goal is a production SafeRevert.
+Our small team supports a large number of services and users of TAP. We
+need to minimize toil for the 2 engineers per week who are “oncall” for
+them. The numbers above were selected to be manageable for us in terms
+of the overhead required for communicating with our users and
+investigating the root cause of bad reverts. While these numbers are
+subjective and dependent on our context, they are meaningful to our
+team. We expect other teams supporting central CI systems would make
+similar choices.&lt;/p&gt;
+&lt;h2 id="sec:performance"&gt;Measuring Performance&lt;/h2&gt;
+&lt;p&gt;If a method is deemed safe (meets above criteria) then it is an
+eligible method to be used to pick changes to revert. To determine
+whether one safe reversion method is better than another we look at the
+how many &lt;em&gt;Good Reverts&lt;/em&gt; a method is able to achieve out of the
+total possible good reverts. This corresponds to the metric known as
+recall &lt;span class="math inline"&gt;\(= \frac{TP}{TP + FN}\)&lt;/span&gt;. The
+higher a safe method’s recall the better it performs. As with safety, we
+prefer methods that are consistent and have low variability in their
+reversion recall per day. We then define performance as the number of
+breaking changes successfully reverted both in total and per-day.&lt;/p&gt;
+&lt;h2 id="sec:dataset"&gt;Evaluation Dataset&lt;/h2&gt;
+&lt;p&gt;Our evaluation dataset consists of roughly 3.5 months of data split
+between a training, test, and validation set and contains &lt;span
+class="math inline"&gt;\(\thicksim\)&lt;/span&gt;25,137 unique changes identified
+by the production culprit finder as culprits. Each row has a boolean
+indicating whether followup verification confirmed the change was indeed
+a culprit. This verification continues to be done in the manner
+described in our 2023 paper &lt;span class="citation"
+data-cites="Henderson2023"&gt;(&lt;a href="#ref-Henderson2023"
+role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;For training and evaluation we produce a time-based split: TRAIN
+consists of the first 2.5 months, TEST the next &lt;span
+class="math inline"&gt;\(\sim\)&lt;/span&gt;2 weeks, and VALIDATION the final
+&lt;span class="math inline"&gt;\(\sim\)&lt;/span&gt;2 weeks. Time based splits
+avoid cross-contaminating our training with diffuse information about
+types of breakages that may be based on time-dependent attributes of the
+codebase. It is important that the training data is uncontaminated with
+any data from the time period where the evaluation occurs. If it is, the
+evaluation will not reflect the performance observed in production.&lt;/p&gt;
+&lt;p&gt;All comparative model and feature evaluation was performed against
+the TEST set in order to determine our optimal ML model configuration,
+OPTIMAL. We then evaluate OPTIMAL and BASELINE against the VALIDATION
+set.&lt;/p&gt;
+
+&lt;h1 id="sec:results"&gt;Results&lt;/h1&gt;
+
+&lt;p&gt;&lt;span id="table:feature-ablation" label="table:feature-ablation"&gt;
+&lt;span id="table:model-comparison" label="table:model-comparison"&gt;
+&lt;span id="table:featureMinimization" label="table:featureMinimization"&gt;
+&lt;span id="table:validation-evaluation" label="table:validation-evaluation"&gt;
+&lt;a href="images/icst-2024/tables2-5.png"&gt;&lt;em&gt;&lt;strong&gt;Tables 2-5&lt;/strong&gt;&lt;/em&gt;
+&lt;img alt="Tables 2-5" src="images/icst-2024/tables2-5.png"&gt;&lt;/a&gt;
+&lt;/span&gt;
+&lt;/span&gt;
+&lt;/span&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;RQ1&lt;/strong&gt;: What is the safety and performance of
+studied methods in the context of the developer workflow?&lt;/em&gt; &lt;span
+id="result:rq1" label="result:rq1"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div class="tcolorbox"&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Summary&lt;/strong&gt;&lt;/em&gt;: The XGB(ALL) was best overall,
+with a recall of 61.2%, and a bad revert rate of .3%.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="tcolorbox"&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Note&lt;/strong&gt;&lt;/em&gt;: This experiment was conducted on the
+TEST data set as the VALIDATION set was reserved for RQ3.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Table &lt;a href="#table:model-comparison" data-reference-type="ref"
+data-reference="table:model-comparison"&gt;[table:model-comparison]&lt;/a&gt;
+summarizes the critical metrics for safety (bad revert rate) and
+performance (recall) for the three model types considered: RandomForest
+[RF], AdaBoost [ADA], and XGBoost [XGB]. Figure &lt;a
+href="#fig:model-comparison" data-reference-type="ref"
+data-reference="fig:model-comparison"&gt;[fig:model-comparison]&lt;/a&gt; shows
+the Receiver Operator Curves (ROC) for all 3 model types and their
+associated area under the curve (AUC) values. The ROC curve better
+summarizes model performance over a wider range of target objectives
+than the table which is focused on the safest configuration (minimizing
+Bad Revert Rate). For instance if a different application had a higher
+tolerance for bad reversion/false positives the ROC curves show that you
+could achieve a 90% true positive rate with a 20% false positive
+rate.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Safety&lt;/strong&gt;: In general, XGB and ADA both outperformed
+the RF in terms of safety. Under none of the test configurations did the
+RF have a safe configuration. XGB and ADA are safe (under our criteria,
+see Section &lt;a href="#sec:safety" data-reference-type="ref"
+data-reference="sec:safety"&gt;4.2&lt;/a&gt;) using all the features or the
+REAL-TIME subset. The safest configuration was XGB(ALL) which had only 5
+bad reverts and a bad revert rate of 0.003. XGB(REAL-TIME) and ADA(ALL)
+has the same or smaller number of bad reverts but a worse rate due to
+their lower recall.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Performance&lt;/strong&gt;: The highest performing configuration
+was XGB(ALL) which had 1980 Good Reverts in the Test set and a recall of
+63.2%. The recall rate of XGB(REAL-TIME) was 52.2% indicating that most
+of the model performance is gained from the REAL-TIME features, not from
+the AHEAD-OF-TIME features which performed much worse while being
+unsafe. ADA(ALL) was safe but its recall rate was only 42.2% which lower
+than both safe XGB configurations.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt; &lt;em&gt;&lt;strong&gt;RQ2&lt;/strong&gt;: What is the marginal
+benefit provided by each feature group&lt;/em&gt;? &lt;span id="result:rq2"
+label="result:rq2"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div class="tcolorbox"&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Summary&lt;/strong&gt;&lt;/em&gt;: Historical flakiness data was the
+most valuable feature set, boosting model recall by 17%, while change
+metadata was the least important.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="tcolorbox"&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Note&lt;/strong&gt;&lt;/em&gt;: This experiment was conducted on the
+TEST data set as the VALIDATION set was reserved for RQ3.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;To determine marginal benefit we perform an ablation study to look at
+the marginal benefit provided by each feature (as grouped in Table &lt;a
+href="#table:features-table" data-reference-type="ref"
+data-reference="table:features-table"&gt;1&lt;/a&gt;). The ablation study was
+performed using the XGBoost model which was chosen over AdaBoost due to
+its higher recall as seen in Table &lt;a href="#table:model-comparison"
+data-reference-type="ref"
+data-reference="table:model-comparison"&gt;[table:model-comparison]&lt;/a&gt;.
+Three marginal benefit experiments were performed:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Measure the performance of the model trained against
+&lt;strong&gt;only&lt;/strong&gt; the features in a single feature set. We visualize
+the results in Figure &lt;a href="#fig:feature-group-contrib"
+data-reference-type="ref"
+data-reference="fig:feature-group-contrib"&gt;[fig:feature-group-contrib]&lt;/a&gt;
+as an ROC curve. Table &lt;a href="#table:feature-ablation"
+data-reference-type="ref"
+data-reference="table:feature-ablation"&gt;[table:feature-ablation]&lt;/a&gt;
+contains the critical safety and performance metrics of Bad Reverts
+(safety) and Recall (performance) as well as the AUC which summarizes
+overall model predictive performance – generally a model with a higher
+AUC will be more performant than one with a lower AUC.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Measure the &lt;strong&gt;Positive(+) &lt;em&gt;Lift&lt;/em&gt;&lt;/strong&gt; provided
+by adding a single feature group to our BASE feature (the number of
+blaming tests). For instance, we would add the features in
+CHANGE_CONTENT to create a XGB(CHANGE_CONTENT + BASE) model. The
+&lt;strong&gt;+Lift&lt;/strong&gt; for Recall is computed as
+Recall[XGB(CHANGE_CONTENT + BASE)] - Recall[XGB(BASE)] and similar for
+AUC of the ROC curve. The results of this analysis are shown in Table &lt;a
+href="#table:feature-ablation" data-reference-type="ref"
+data-reference="table:feature-ablation"&gt;[table:feature-ablation]&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Measure the &lt;strong&gt;Negative(–) &lt;em&gt;Lift&lt;/em&gt;&lt;/strong&gt; provided
+by removing a single feature group from out ALL feature set. For
+instance we would remove the features in CHANGE_CONTENT to create a
+XGB(ALL - CHANGE_CONTENT) model. The &lt;strong&gt;–Lift&lt;/strong&gt; for Recall
+is computed as Recall[XGB(ALL)] - Recall[XGB(ALL - CHANGE_CONTENT)] and
+similar for AUC of the ROC curve. The results of this analysis are shown
+in Table &lt;a href="#table:feature-ablation" data-reference-type="ref"
+data-reference="table:feature-ablation"&gt;[table:feature-ablation]&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;As discussed in section &lt;a href="#subsubsec:feature-min"
+data-reference-type="ref"
+data-reference="subsubsec:feature-min"&gt;3.4.3&lt;/a&gt;, we attempted to
+minimize the feature subsets while providing comparable performance to
+the full feature sets. Table &lt;a href="#table:featureMinimization"
+data-reference-type="ref"
+data-reference="table:featureMinimization"&gt;[table:featureMinimization]&lt;/a&gt;
+contains a breakdown of the performance for these minimal subsets.&lt;/p&gt;
+&lt;p&gt; &lt;em&gt;&lt;strong&gt;RQ3&lt;/strong&gt;:Did the chosen method
+improve performance over the baseline method while maintaining required
+safety levels?&lt;/em&gt; &lt;span id="result:rq3" label="result:rq3"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div class="tcolorbox"&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Summary&lt;/strong&gt;&lt;/em&gt;: XGB(ALL) improved overall recall
+while meeting our safety requirements with a Bad Revert Rate under 1%
+and an average of 0.6 Bad Reverts per Day. BASELINE(10) had a recall of
+26.3% while XGB(ALL) had a recall of 55.7% – an improvement of &lt;span
+class="math inline"&gt;\(\sim 2.1\times\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="tcolorbox"&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Note&lt;/strong&gt;&lt;/em&gt;: We used the reserved VALIDATION data
+set for this research question.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Table &lt;a href="#table:validation-evaluation"
+data-reference-type="ref"
+data-reference="table:validation-evaluation"&gt;[table:validation-evaluation]&lt;/a&gt;
+shows per day metrics comparing XGB(ALL) against the heuristic
+BASELINE(10) method. XGB(ALL) was selected as our “OPTIMAL” model to
+compare against the BASELINE method given its performance in the TEST
+set as evaluated in RQ1. As a reminder the BASELINE method thresholds
+the number of blaming tests to a fixed number. BASELINE(10)’s average
+bad reverts per day is 0.86 and its total Bad Revert Rate (BRR) is 1.5%.
+XGB(ALL) achieves the overall safety limit with a BRR of 0.5% and has an
+average bad reverts per day of 0.6 which meets our safety threshold.&lt;/p&gt;
+&lt;p&gt;XGB(ALL)’s bad revert rate outperforms BASELINE(10), with a recall
+ 2.1 times higher than BASELINE(10). XGB(ALL) made 1,823 total good
+reverts in the validation set while BASELINE(10) performed 860 good
+reverts. Based on the data in Table &lt;a
+href="#table:validation-evaluation" data-reference-type="ref"
+data-reference="table:validation-evaluation"&gt;[table:validation-evaluation]&lt;/a&gt;
+XGB(ALL) is both safer and more performant than BASELINE(10) on the
+validation data set.&lt;/p&gt;
+&lt;h2 id="discussion"&gt;Discussion&lt;/h2&gt;
+&lt;p&gt;The proposed method, SafeRevert, is generic and can be used with any
+culprit finding algorithm. By grouping individual features from
+different sources of data into logical feature sets (Table &lt;a
+href="#table:features-table" data-reference-type="ref"
+data-reference="table:features-table"&gt;1&lt;/a&gt;), performing a detailed
+feature ablation study (Fig &lt;a href="#fig:feature-group-contrib"
+data-reference-type="ref"
+data-reference="fig:feature-group-contrib"&gt;[fig:feature-group-contrib]&lt;/a&gt;),
+and running the model on a minimal set of features (Table &lt;a
+href="#table:featureMinimization" data-reference-type="ref"
+data-reference="table:featureMinimization"&gt;[table:featureMinimization]&lt;/a&gt;),
+we hope to provide a template via which teams in other contexts build on
+when adopting the approach we outline. In particular, while some
+features used may be Google specific, our feature ablation study can be
+replicated on different features in other software development
+organizations. While we don’t expect a team implementing SafeRevert to
+achieve the exact Recall and Bad Revert Rates we report we do expect
+this method to out perform the BASELINE method once an appropriate set
+of features is identified.&lt;/p&gt;
+&lt;h2 id="threats-to-validity"&gt;Threats to Validity&lt;/h2&gt;
+&lt;p&gt;Our dataset may misrepresent information available at inference time
+in the forthcoming service as it may include information not available
+to us at our decision time. This is due to using offline data in the
+dataset as the production system based on this paper is currently under
+construction. We adjust this threat by evaluating performance restricted
+to features available independent of any culprit finding event and
+restricting our real-time data to a time bound relative to change
+submission time.&lt;/p&gt;
+&lt;p&gt;The data presented in this final manuscript differs slightly than the
+reviewed manuscript. At the time of review approximated 15% of the
+dataset was lacking verification results (collected using the method
+described by Henderson &lt;span class="citation"
+data-cites="Henderson2023"&gt;(&lt;a href="#ref-Henderson2023"
+role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;)&lt;/span&gt;). This was
+disclosed in this section to the reviewers and we made two conservative
+assumptions: 1) any culprit change lacking verification results was
+considered a false positive and 2) we assumed the BASELINE method was
+correct for those changes (inflating the BASELINE methods performance
+versus the studied ML methods for SafeRevert). Since the peer review was
+completed, a bug in the verification system was identified and fixed.
+The bug caused a proportion of incorrect culprit changes to “get stuck”
+in a queue waiting for an additional test execution due to a typo in a
+comparison (using &lt;code&gt;&amp;gt;&lt;/code&gt; instead of &lt;code&gt;&amp;gt;=&lt;/code&gt;). Once
+the bug was fixed, the research team was able to rerun the study with
+the additional label data.&lt;/p&gt;
+&lt;p&gt;Post-rerun we observed: 1) the BASELINE method performed worse and 2)
+the studied methods were robust to the change in labeling data. In the
+reviewed manuscript, XGB(ALL) had the following results in RQ3: 13 Total
+Bad Reverts, 1817 Good Reverts, 0.7% Bad Revert Rate, and 55.8% Recall;
+BASELINE(5) was compared against and had 8 Total Bad Reverts, 1286 Good
+Reverts, 0.6% Bad Revert Rate, and 39.4% Recall. Compare against Table
+&lt;a href="#table:validation-evaluation" data-reference-type="ref"
+data-reference="table:validation-evaluation"&gt;[table:validation-evaluation]&lt;/a&gt;
+and Figure &lt;a href="#fig:baseline" data-reference-type="ref"
+data-reference="fig:baseline"&gt;[fig:baseline]&lt;/a&gt;. We switched to using
+BASELINE(10) for this final manuscript as it is the production method
+currently used at Google.&lt;/p&gt;
+&lt;h1 id="related-work"&gt;Related Work&lt;/h1&gt;
+&lt;p&gt;In this paper, we are presenting what we believe to be a novel
+problem to the wider software engineering community: how to safely
+choose changes to revert with incomplete but suggestive evidence. This
+problem relies on identifying these problematic changes. In our case we
+identify the problematic changes to revert via automated culprit finding
+&lt;span class="citation"
+data-cites="Couder2008 Ziftci2013a Ziftci2017 Saha2017 Najafi2019a Beheshtian2022 keenan2019 An2021 Ocariza2022 Henderson2023"&gt;(&lt;a
+href="#ref-Couder2008" role="doc-biblioref"&gt;Couder 2008&lt;/a&gt;; &lt;a
+href="#ref-Ziftci2013a" role="doc-biblioref"&gt;Ziftci and Ramavajjala
+2013&lt;/a&gt;; &lt;a href="#ref-Ziftci2017" role="doc-biblioref"&gt;Ziftci and
+Reardon 2017&lt;/a&gt;; &lt;a href="#ref-Saha2017" role="doc-biblioref"&gt;Saha and
+Gligoric 2017&lt;/a&gt;; &lt;a href="#ref-Najafi2019a"
+role="doc-biblioref"&gt;Najafi, Rigby, and Shang 2019&lt;/a&gt;; &lt;a
+href="#ref-Beheshtian2022" role="doc-biblioref"&gt;Beheshtian, Bavand, and
+Rigby 2022&lt;/a&gt;; &lt;a href="#ref-keenan2019" role="doc-biblioref"&gt;Keenan
+2019&lt;/a&gt;; &lt;a href="#ref-An2021" role="doc-biblioref"&gt;An and Yoo
+2021&lt;/a&gt;; &lt;a href="#ref-Ocariza2022" role="doc-biblioref"&gt;Ocariza
+2022&lt;/a&gt;; &lt;a href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et
+al. 2023&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Culprit finding’s development has often occurred outside of the
+academic literature. The first reference to the process of using binary
+search to identify a bug was in Yourdon’s 1975 book on Program Design:
+Page 286, Figure 8.3 titled “A binary search for bugs” &lt;span
+class="citation" data-cites="Yourdon1975"&gt;(&lt;a href="#ref-Yourdon1975"
+role="doc-biblioref"&gt;Yourdon 1975&lt;/a&gt;)&lt;/span&gt;. The process is explained
+in detail in the &lt;code&gt;BUG-HUNTING&lt;/code&gt; file in the Linux source tree
+in 1996 by Larry McVoy &lt;span class="citation"
+data-cites="McVoy1996 Cox2023"&gt;(&lt;a href="#ref-McVoy1996"
+role="doc-biblioref"&gt;McVoy 1996&lt;/a&gt;; &lt;a href="#ref-Cox2023"
+role="doc-biblioref"&gt;Cox, Ness, and McVoy 2023&lt;/a&gt;)&lt;/span&gt;. By 1997,
+Brian Ness had created a binary search based system for use at Cray with
+their “Unicos Source Manager” version control system &lt;span
+class="citation" data-cites="Ness1997 Cox2023"&gt;(&lt;a href="#ref-Ness1997"
+role="doc-biblioref"&gt;Ness and Ngo 1997&lt;/a&gt;; &lt;a href="#ref-Cox2023"
+role="doc-biblioref"&gt;Cox, Ness, and McVoy 2023&lt;/a&gt;)&lt;/span&gt;. Previously
+in &lt;span class="citation" data-cites="Henderson2023"&gt;(&lt;a
+href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al.
+2023&lt;/a&gt;)&lt;/span&gt; we had credited Linus Torvalds for the invention based
+on lack of findable antecedent for his work on the
+&lt;code&gt;git bisect&lt;/code&gt; command &lt;span class="citation"
+data-cites="Couder2008"&gt;(&lt;a href="#ref-Couder2008"
+role="doc-biblioref"&gt;Couder 2008&lt;/a&gt;)&lt;/span&gt;. We regret the error and
+recognize the above individuals for their important contributions.&lt;/p&gt;
+&lt;p&gt;Other methods for identifying buggy code or breaking changes have
+been studied (some widely) in the literature. Fault Localization looks
+to identify the buggy code that is causing either operational failure or
+test failures &lt;span class="citation"
+data-cites="Agarwal2014 Wong2016"&gt;(&lt;a href="#ref-Agarwal2014"
+role="doc-biblioref"&gt;Agarwal and Agrawal 2014&lt;/a&gt;; &lt;a
+href="#ref-Wong2016" role="doc-biblioref"&gt;Wong et al. 2016&lt;/a&gt;)&lt;/span&gt;.
+Methods for fault localization include: delta debugging &lt;span
+class="citation" data-cites="Zeller1999"&gt;(&lt;a href="#ref-Zeller1999"
+role="doc-biblioref"&gt;Zeller 1999&lt;/a&gt;)&lt;/span&gt;, statistical coverage based
+fault localization &lt;span class="citation"
+data-cites="Jones2002 Jones2005 Lucia2014 Henderson2018 Henderson2019 Kucuk2021"&gt;(&lt;a
+href="#ref-Jones2002" role="doc-biblioref"&gt;J. a. Jones, Harrold, and
+Stasko 2002&lt;/a&gt;; &lt;a href="#ref-Jones2005" role="doc-biblioref"&gt;J. A.
+Jones and Harrold 2005&lt;/a&gt;; &lt;a href="#ref-Lucia2014"
+role="doc-biblioref"&gt;Lucia et al. 2014&lt;/a&gt;; &lt;a href="#ref-Henderson2018"
+role="doc-biblioref"&gt;Henderson and Podgurski 2018&lt;/a&gt;; &lt;a
+href="#ref-Henderson2019" role="doc-biblioref"&gt;Henderson, Podgurski, and
+Kucuk 2019&lt;/a&gt;; &lt;a href="#ref-Kucuk2021" role="doc-biblioref"&gt;Kucuk,
+Henderson, and Podgurski 2021&lt;/a&gt;)&lt;/span&gt;, information retrieval (which
+may include historical information) &lt;span class="citation"
+data-cites="Zhou2012 Youm2015 Ciborowska2022"&gt;(&lt;a href="#ref-Zhou2012"
+role="doc-biblioref"&gt;J. Zhou, Zhang, and Lo 2012&lt;/a&gt;; &lt;a
+href="#ref-Youm2015" role="doc-biblioref"&gt;Youm et al. 2015&lt;/a&gt;; &lt;a
+href="#ref-Ciborowska2022" role="doc-biblioref"&gt;Ciborowska and Damevski
+2022&lt;/a&gt;)&lt;/span&gt;, and program slicing &lt;span class="citation"
+data-cites="Podgurski1990 Horwitz1992 Ren2004"&gt;(&lt;a
+href="#ref-Podgurski1990" role="doc-biblioref"&gt;Podgurski and Clarke
+1990&lt;/a&gt;; &lt;a href="#ref-Horwitz1992" role="doc-biblioref"&gt;Horwitz and
+Reps 1992&lt;/a&gt;; &lt;a href="#ref-Ren2004" role="doc-biblioref"&gt;Ren et al.
+2004&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Bug Prediction attempts to predict if a change, method, class, or
+file is likely to contain a bug &lt;span class="citation"
+data-cites="Lewis2013 Punitha2013 Osman2017"&gt;(&lt;a href="#ref-Lewis2013"
+role="doc-biblioref"&gt;Lewis et al. 2013&lt;/a&gt;; &lt;a href="#ref-Punitha2013"
+role="doc-biblioref"&gt;Punitha and Chitra 2013&lt;/a&gt;; &lt;a
+href="#ref-Osman2017" role="doc-biblioref"&gt;Osman et al.
+2017&lt;/a&gt;)&lt;/span&gt;. This idea has conceptual similarities to the work we
+are doing in this paper where we are using similar metrics to predict
+whether or not a change which has been implicated by culprit finding is
+in fact the change that introduced the bug. Our methods could be
+potentially improved by incorporating the additional features used in
+the bug prediction work such as the change complexity, code complexity,
+and object-oriented complexity metrics.&lt;/p&gt;
+&lt;p&gt;Test Case Selection &lt;span class="citation"
+data-cites="Leon2003 Engstrom2010 Zhou2010 Mondal2015 Musa2015 pan2022"&gt;(&lt;a
+href="#ref-Leon2003" role="doc-biblioref"&gt;Leon and Podgurski 2003&lt;/a&gt;;
+&lt;a href="#ref-Engstrom2010" role="doc-biblioref"&gt;Engström, Runeson, and
+Skoglund 2010&lt;/a&gt;; &lt;a href="#ref-Zhou2010" role="doc-biblioref"&gt;Z. Q.
+Zhou 2010&lt;/a&gt;; &lt;a href="#ref-Mondal2015" role="doc-biblioref"&gt;Mondal,
+Hemmati, and Durocher 2015&lt;/a&gt;; &lt;a href="#ref-Musa2015"
+role="doc-biblioref"&gt;Musa et al. 2015&lt;/a&gt;; &lt;a href="#ref-pan2022"
+role="doc-biblioref"&gt;Pan et al. 2022&lt;/a&gt;)&lt;/span&gt; and Test Case
+Prioritization &lt;span class="citation"
+data-cites="Singh2012 DeS.CamposJunior2017 DeCastro-Cabrera2020 pan2022"&gt;(&lt;a
+href="#ref-Singh2012" role="doc-biblioref"&gt;Singh et al. 2012&lt;/a&gt;; &lt;a
+href="#ref-DeS.CamposJunior2017" role="doc-biblioref"&gt;de S. Campos
+Junior et al. 2017&lt;/a&gt;; &lt;a href="#ref-DeCastro-Cabrera2020"
+role="doc-biblioref"&gt;De Castro-Cabrera, García-Dominguez, and
+Medina-Bulo 2020&lt;/a&gt;; &lt;a href="#ref-pan2022" role="doc-biblioref"&gt;Pan et
+al. 2022&lt;/a&gt;)&lt;/span&gt; are related problems to the change reversion
+problem we study. Instead of predicting whether or not a change caused a
+known test failure in Test Case Selection/Prioritization often the
+change is used to predict whether a given test will fail before it is
+run. There is a large body work in that uses dynamic information from
+past test executions (such as code coverage) to inform the selection
+process. We believe this hints that such information could be highly
+informative for the change reversion problem as well.&lt;/p&gt;
+&lt;p&gt;Finally, there are a family of methods for finding bug inducing
+commits for the purpose of supporting studies that data mine software
+repositories &lt;span class="citation"
+data-cites="Sliwerski2005 Rodriguez-Perez2018 Borg2019 Wen2019 An2023"&gt;(&lt;a
+href="#ref-Sliwerski2005" role="doc-biblioref"&gt;Śliwerski, Zimmermann,
+and Zeller 2005&lt;/a&gt;; &lt;a href="#ref-Rodriguez-Perez2018"
+role="doc-biblioref"&gt;Rodríguez-Pérez, Robles, and González-Barahona
+2018&lt;/a&gt;; &lt;a href="#ref-Borg2019" role="doc-biblioref"&gt;Borg et al.
+2019&lt;/a&gt;; &lt;a href="#ref-Wen2019" role="doc-biblioref"&gt;Wen et al.
+2019&lt;/a&gt;; &lt;a href="#ref-An2023" role="doc-biblioref"&gt;An et al.
+2023&lt;/a&gt;)&lt;/span&gt;. These methods typically used to conduct a historical
+analysis of a repository rather than as an online detection as in
+culprit finding.&lt;/p&gt;
+&lt;h1 id="sec:conclusion"&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;We presented: SafeRevert a method for improving systems that
+automatically revert changes that break tests. SafeRevert was developed
+as a way to improve the number bad changes automatically reverted while
+maintaining safety (rarely reverting good changes). To evaluate
+SafeRevert, we performed an empirical evaluation comparing the
+performance of SafeRevert against the baseline method that is currently
+utilized in production which utilizes a simple heuristic to determine if
+a change is safe to revert: the number of tests which “blame” the
+culprit change. When evaluating RQ3 in Section &lt;a href="#sec:results"
+data-reference-type="ref" data-reference="sec:results"&gt;5&lt;/a&gt;, it was
+observed that the XGB(ALL) configuration of SafeRevert doubled the
+number changes reverted while reducing the number of bad reverts
+performed (see Table &lt;a href="#table:validation-evaluation"
+data-reference-type="ref"
+data-reference="table:validation-evaluation"&gt;[table:validation-evaluation]&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;While it is unlikely that a replication study in a different
+development environment would reproduce our exact results we do expect
+based on the robust difference observed between SafeRevert and BASELINE
+that SafeRevert (or similar ML based method) will be able to improve the
+number of changes eligible for automatic reversion. We hope that by
+introducing this problem to the larger software engineering community
+that new and innovative approaches to solving it will be developed.&lt;/p&gt;
+
+&lt;h1 id="sec:References"&gt;References&lt;/h1&gt;
+&lt;div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography"&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;div id="ref-Agarwal2014" class="csl-entry" role="doc-biblioentry"&gt;
+Agarwal, Pragya, and Arun Prakash Agrawal. 2014.
+&lt;span&gt;“Fault-Localization &lt;span&gt;Techniques&lt;/span&gt; for &lt;span&gt;Software
+Systems&lt;/span&gt;: &lt;span&gt;A Literature Review&lt;/span&gt;.”&lt;/span&gt; &lt;em&gt;SIGSOFT
+Softw. Eng. Notes&lt;/em&gt; 39 (5): 1–8. &lt;a
+href="https://doi.org/10.1145/2659118.2659125"&gt;https://doi.org/10.1145/2659118.2659125&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-An2023" class="csl-entry" role="doc-biblioentry"&gt;
+An, Gabin, Jingun Hong, Naryeong Kim, and Shin Yoo. 2023. &lt;span&gt;“Fonte:
+&lt;span&gt;Finding Bug Inducing Commits&lt;/span&gt; from
+&lt;span&gt;Failures&lt;/span&gt;.”&lt;/span&gt; &lt;span&gt;arXiv&lt;/span&gt;. &lt;a
+href="http://arxiv.org/abs/2212.06376"&gt;http://arxiv.org/abs/2212.06376&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-An2021" class="csl-entry" role="doc-biblioentry"&gt;
+An, Gabin, and Shin Yoo. 2021. &lt;span&gt;“Reducing the Search Space of Bug
+Inducing Commits Using Failure Coverage.”&lt;/span&gt; In &lt;em&gt;Proceedings of
+the 29th &lt;span&gt;ACM Joint Meeting&lt;/span&gt; on &lt;span&gt;European Software
+Engineering Conference&lt;/span&gt; and &lt;span&gt;Symposium&lt;/span&gt; on the
+&lt;span&gt;Foundations&lt;/span&gt; of &lt;span&gt;Software Engineering&lt;/span&gt;&lt;/em&gt;,
+1459–62. &lt;span&gt;Athens Greece&lt;/span&gt;: &lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/3468264.3473129"&gt;https://doi.org/10.1145/3468264.3473129&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Ananthanarayanan2019" class="csl-entry"
+role="doc-biblioentry"&gt;
+Ananthanarayanan, Sundaram, Masoud Saeida Ardekani, Denis Haenikel,
+Balaji Varadarajan, Simon Soriano, Dhaval Patel, and Ali Reza
+Adl-Tabatabai. 2019. &lt;span&gt;“Keeping Master Green at Scale.”&lt;/span&gt;
+&lt;em&gt;Proceedings of the 14th EuroSys Conference 2019&lt;/em&gt;. &lt;a
+href="https://doi.org/10.1145/3302424.3303970"&gt;https://doi.org/10.1145/3302424.3303970&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Beheshtian2022" class="csl-entry" role="doc-biblioentry"&gt;
+Beheshtian, Mohammad Javad, Amir Hossein Bavand, and Peter C. Rigby.
+2022. &lt;span&gt;“Software &lt;span&gt;Batch Testing&lt;/span&gt; to &lt;span&gt;Save Build
+Test Resources&lt;/span&gt; and to &lt;span&gt;Reduce Feedback Time&lt;/span&gt;.”&lt;/span&gt;
+&lt;em&gt;IEEE Transactions on Software Engineering&lt;/em&gt; 48 (8): 2784–2801. &lt;a
+href="https://doi.org/10.1109/TSE.2021.3070269"&gt;https://doi.org/10.1109/TSE.2021.3070269&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Ben-Or2008" class="csl-entry" role="doc-biblioentry"&gt;
+Ben-Or, Michael, and Avinatan Hassidim. 2008. &lt;span&gt;“The &lt;span&gt;Bayesian
+Learner&lt;/span&gt; Is &lt;span&gt;Optimal&lt;/span&gt; for &lt;span&gt;Noisy Binary
+Search&lt;/span&gt; (and &lt;span&gt;Pretty Good&lt;/span&gt; for &lt;span&gt;Quantum&lt;/span&gt; as
+&lt;span&gt;Well&lt;/span&gt;).”&lt;/span&gt; In &lt;em&gt;2008 49th &lt;span&gt;Annual IEEE
+Symposium&lt;/span&gt; on &lt;span&gt;Foundations&lt;/span&gt; of &lt;span&gt;Computer
+Science&lt;/span&gt;&lt;/em&gt;, 221–30. &lt;span&gt;Philadelphia, PA, USA&lt;/span&gt;:
+&lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/FOCS.2008.58"&gt;https://doi.org/10.1109/FOCS.2008.58&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Bland2012" class="csl-entry" role="doc-biblioentry"&gt;
+Bland, Mike. 2012. &lt;span&gt;“The &lt;span&gt;Chris&lt;/span&gt;/&lt;span&gt;Jay Continuous
+Build&lt;/span&gt;.”&lt;/span&gt; Personal {{Website}}. &lt;em&gt;Mike Bland’s Blog&lt;/em&gt;.
+&lt;a href="https://mike-bland.com/2012/06/21/chris-jay-continuous-
+                  build.html"&gt;https://mike-bland.com/2012/06/21/chris-jay-continuous-
+build.html&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Borg2019" class="csl-entry" role="doc-biblioentry"&gt;
+Borg, Markus, Oscar Svensson, Kristian Berg, and Daniel Hansson. 2019.
+&lt;span&gt;“&lt;span&gt;SZZ&lt;/span&gt; Unleashed: An Open Implementation of the
+&lt;span&gt;SZZ&lt;/span&gt; Algorithm - Featuring Example Usage in a Study of
+Just-in-Time Bug Prediction for the &lt;span&gt;Jenkins&lt;/span&gt;
+Project.”&lt;/span&gt; In &lt;em&gt;Proceedings of the 3rd &lt;span&gt;ACM SIGSOFT
+International Workshop&lt;/span&gt; on &lt;span&gt;Machine Learning
+Techniques&lt;/span&gt; for &lt;span&gt;Software Quality Evaluation&lt;/span&gt; -
+&lt;span&gt;MaLTeSQuE&lt;/span&gt; 2019&lt;/em&gt;, 7–12. &lt;span&gt;Tallinn, Estonia&lt;/span&gt;:
+&lt;span&gt;ACM Press&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/3340482.3342742"&gt;https://doi.org/10.1145/3340482.3342742&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Chen2016a" class="csl-entry" role="doc-biblioentry"&gt;
+Chen, Tianqi, and Carlos Guestrin. 2016. &lt;span&gt;“&lt;span&gt;XGBoost&lt;/span&gt;:
+&lt;span&gt;A Scalable Tree Boosting System&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;Proceedings
+of the 22nd &lt;span&gt;ACM SIGKDD International Conference&lt;/span&gt; on
+&lt;span&gt;Knowledge Discovery&lt;/span&gt; and &lt;span&gt;Data Mining&lt;/span&gt;&lt;/em&gt;,
+785–94. &lt;span&gt;San Francisco California USA&lt;/span&gt;: &lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/2939672.2939785"&gt;https://doi.org/10.1145/2939672.2939785&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Ciborowska2022" class="csl-entry" role="doc-biblioentry"&gt;
+Ciborowska, Agnieszka, and Kostadin Damevski. 2022. &lt;span&gt;“Fast
+Changeset-Based Bug Localization with &lt;span&gt;BERT&lt;/span&gt;.”&lt;/span&gt; In
+&lt;em&gt;Proceedings of the 44th &lt;span&gt;International Conference&lt;/span&gt; on
+&lt;span&gt;Software Engineering&lt;/span&gt;&lt;/em&gt;, 946–57. &lt;span&gt;Pittsburgh
+Pennsylvania&lt;/span&gt;: &lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/3510003.3510042"&gt;https://doi.org/10.1145/3510003.3510042&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Couder2008" class="csl-entry" role="doc-biblioentry"&gt;
+Couder, Christian. 2008. &lt;span&gt;“Fighting Regressions with Git
+Bisect.”&lt;/span&gt; &lt;em&gt;The Linux Kernel Archives&lt;/em&gt; 4 (5). &lt;a
+href="https://www. kernel. org/pub/software/scm/git/doc s/git-
+                  bisect-lk2009.html"&gt;https://www. kernel.
+org/pub/software/scm/git/doc s/git- bisect-lk2009.html&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Cox2023" class="csl-entry" role="doc-biblioentry"&gt;
+Cox, Russ, Brian Ness, and Larry McVoy. 2023. &lt;span&gt;“Comp.lang.compilers
+"Binary Search Debugging of Compilers".”&lt;/span&gt; &lt;a
+href="https://groups.google.com/g/comp.compilers/c/vGh4s3HBQ-s/m/
+                  Chvpu7vTAgAJ"&gt;https://groups.google.com/g/comp.compilers/c/vGh4s3HBQ-s/m/
+Chvpu7vTAgAJ&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-DeCastro-Cabrera2020" class="csl-entry"
+role="doc-biblioentry"&gt;
+De Castro-Cabrera, M. Del Carmen, Antonio García-Dominguez, and
+Inmaculada Medina-Bulo. 2020. &lt;span&gt;“Trends in Prioritization of Test
+Cases: 2017-2019.”&lt;/span&gt; &lt;em&gt;Proceedings of the ACM Symposium on
+Applied Computing&lt;/em&gt;, 2005–11. &lt;a
+href="https://doi.org/10.1145/3341105.3374036"&gt;https://doi.org/10.1145/3341105.3374036&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-DeS.CamposJunior2017" class="csl-entry"
+role="doc-biblioentry"&gt;
+de S. Campos Junior, Heleno, Marco Antônio P Araújo, José Maria N David,
+Regina Braga, Fernanda Campos, and Victor Ströele. 2017. &lt;span&gt;“Test
+&lt;span&gt;Case Prioritization&lt;/span&gt;: &lt;span&gt;A Systematic Review&lt;/span&gt; and
+&lt;span&gt;Mapping&lt;/span&gt; of the &lt;span&gt;Literature&lt;/span&gt;.”&lt;/span&gt; In
+&lt;em&gt;Proceedings of the 31st &lt;span&gt;Brazilian Symposium&lt;/span&gt; on
+&lt;span&gt;Software Engineering&lt;/span&gt;&lt;/em&gt;, 34–43. &lt;span&gt;New York, NY,
+USA&lt;/span&gt;: &lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/3131151.3131170"&gt;https://doi.org/10.1145/3131151.3131170&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Engstrom2010" class="csl-entry" role="doc-biblioentry"&gt;
+Engström, Emelie, Per Runeson, and Mats Skoglund. 2010. &lt;span&gt;“A
+Systematic Review on Regression Test Selection Techniques.”&lt;/span&gt;
+&lt;em&gt;Information and Software Technology&lt;/em&gt; 52 (1): 14–30. &lt;a
+href="https://doi.org/10.1016/j.infsof.2009.07.001"&gt;https://doi.org/10.1016/j.infsof.2009.07.001&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Fowler2006" class="csl-entry" role="doc-biblioentry"&gt;
+Fowler, Martin. 2006. &lt;span&gt;“Continuous
+&lt;span&gt;Integration&lt;/span&gt;.”&lt;/span&gt; &lt;a
+href="https://martinfowler.com/articles/
+                  continuousIntegration.html"&gt;https://martinfowler.com/articles/
+continuousIntegration.html&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Gupta2011" class="csl-entry" role="doc-biblioentry"&gt;
+Gupta, Pooja, Mark Ivey, and John Penix. 2011. &lt;span&gt;“Testing at the
+Speed and Scale of &lt;span&gt;Google&lt;/span&gt;.”&lt;/span&gt; &lt;a
+href="http://google-engtools.blogspot.com/2011/06/testing-at-
+                  speed-and-scale-of-google.html"&gt;http://google-engtools.blogspot.com/2011/06/testing-at-
+speed-and-scale-of-google.html&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Henderson2023" class="csl-entry" role="doc-biblioentry"&gt;
+Henderson, Tim A. D., Bobby Dorward, Eric Nickell, Collin Johnston, and
+Avi Kondareddy. 2023. &lt;span&gt;“Flake &lt;span&gt;Aware Culprit
+Finding&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2023 &lt;span&gt;IEEE Conference&lt;/span&gt; on
+&lt;span&gt;Software Testing&lt;/span&gt;, &lt;span&gt;Verification&lt;/span&gt; and
+&lt;span&gt;Validation&lt;/span&gt; (&lt;span&gt;ICST&lt;/span&gt;)&lt;/em&gt;. &lt;span&gt;IEEE&lt;/span&gt;. 
+&lt;a href="https://hackthology.com/flake-aware-culprit-finding.html"&gt;https://hackthology.com/flake-aware-culprit-finding.html&lt;/a&gt;.
+&lt;a href="https://doi.org/10.1109/ICST57152.2023.00041"&gt;https://doi.org/10.1109/ICST57152.2023.00041&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Henderson2018" class="csl-entry" role="doc-biblioentry"&gt;
+Henderson, Tim A. D., and Andy Podgurski. 2018. &lt;span&gt;“Behavioral
+&lt;span&gt;Fault Localization&lt;/span&gt; by &lt;span&gt;Sampling Suspicious Dynamic
+Control Flow Subgraphs&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2018 &lt;span&gt;IEEE&lt;/span&gt;
+11th &lt;span&gt;International Conference&lt;/span&gt; on &lt;span&gt;Software
+Testing&lt;/span&gt;, &lt;span&gt;Verification&lt;/span&gt; and &lt;span&gt;Validation&lt;/span&gt;
+(&lt;span&gt;ICST&lt;/span&gt;)&lt;/em&gt;, 93–104. &lt;span&gt;Vasteras&lt;/span&gt;:
+&lt;span&gt;IEEE&lt;/span&gt;. 
+&lt;a href="https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html"&gt;https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html&lt;/a&gt;.
+&lt;a href="https://doi.org/10.1109/ICST.2018.00019"&gt;https://doi.org/10.1109/ICST.2018.00019&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Henderson2019" class="csl-entry" role="doc-biblioentry"&gt;
+Henderson, Tim A. D., Andy Podgurski, and Yigit Kucuk. 2019.
+&lt;span&gt;“Evaluating &lt;span&gt;Automatic Fault Localization Using Markov
+Processes&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2019 19th &lt;span&gt;International Working
+Conference&lt;/span&gt; on &lt;span&gt;Source Code Analysis&lt;/span&gt; and
+&lt;span&gt;Manipulation&lt;/span&gt; (&lt;span&gt;SCAM&lt;/span&gt;)&lt;/em&gt;, 115–26.
+&lt;span&gt;Cleveland, OH, USA&lt;/span&gt;: &lt;span&gt;IEEE&lt;/span&gt;.
+&lt;a href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html"&gt;https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html&lt;/a&gt;
+&lt;a href="https://doi.org/10.1109/SCAM.2019.00021"&gt;https://doi.org/10.1109/SCAM.2019.00021&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Herzig2015a" class="csl-entry" role="doc-biblioentry"&gt;
+Herzig, Kim, and Nachiappan Nagappan. 2015. &lt;span&gt;“Empirically
+&lt;span&gt;Detecting False Test Alarms Using Association
+Rules&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2015 &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt;
+37th &lt;span&gt;IEEE International Conference&lt;/span&gt; on &lt;span&gt;Software
+Engineering&lt;/span&gt;&lt;/em&gt;, 39–48. &lt;span&gt;Florence, Italy&lt;/span&gt;:
+&lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/ICSE.2015.133"&gt;https://doi.org/10.1109/ICSE.2015.133&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Horwitz1992" class="csl-entry" role="doc-biblioentry"&gt;
+Horwitz, S, and T Reps. 1992. &lt;span&gt;“The Use of Program Dependence
+Graphs in Software Engineering.”&lt;/span&gt; In &lt;em&gt;International
+&lt;span&gt;Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;&lt;/em&gt;,
+9:349. &lt;span&gt;Springer&lt;/span&gt;. &lt;a
+href="http://portal.acm.org/citation.cfm?id=24041&amp;amp;amp;dl="&gt;http://portal.acm.org/citation.cfm?id=24041&amp;amp;amp;dl=&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Jones2002" class="csl-entry" role="doc-biblioentry"&gt;
+Jones, J.a., M. J. Harrold, and J. Stasko. 2002. &lt;span&gt;“Visualization of
+Test Information to Assist Fault Localization.”&lt;/span&gt; &lt;em&gt;Proceedings
+of the 24th International Conference on Software Engineering. ICSE
+2002&lt;/em&gt;. &lt;a
+href="https://doi.org/10.1145/581339.581397"&gt;https://doi.org/10.1145/581339.581397&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Jones2005" class="csl-entry" role="doc-biblioentry"&gt;
+Jones, James A., and Mary Jean Harrold. 2005. &lt;span&gt;“Empirical
+&lt;span&gt;Evaluation&lt;/span&gt; of the &lt;span class="nocase"&gt;Tarantula Automatic
+Fault-localization Technique&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;Proceedings of the
+20th &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM International Conference&lt;/span&gt; on
+&lt;span&gt;Automated Software Engineering&lt;/span&gt;&lt;/em&gt;, 273–82. &lt;span&gt;New
+York, NY, USA&lt;/span&gt;: &lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/1101908.1101949"&gt;https://doi.org/10.1145/1101908.1101949&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-keenan2019" class="csl-entry" role="doc-biblioentry"&gt;
+Keenan, James. 2019. &lt;span&gt;“James &lt;span&gt;E&lt;/span&gt;. &lt;span&gt;Keenan&lt;/span&gt; -
+"&lt;span&gt;Multisection&lt;/span&gt;: &lt;span&gt;When Bisection Isn&lt;/span&gt;’t
+&lt;span&gt;Enough&lt;/span&gt; to &lt;span&gt;Debug&lt;/span&gt; a
+&lt;span&gt;Problem&lt;/span&gt;".”&lt;/span&gt; &lt;a
+href="https://www.youtube.com/watch?v=05CwdTRt6AM"&gt;https://www.youtube.com/watch?v=05CwdTRt6AM&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Kucuk2021" class="csl-entry" role="doc-biblioentry"&gt;
+Kucuk, Yigit, Tim A. D. Henderson, and Andy Podgurski. 2021.
+&lt;span&gt;“Improving &lt;span&gt;Fault Localization&lt;/span&gt; by &lt;span&gt;Integrating
+Value&lt;/span&gt; and &lt;span&gt;Predicate Based Causal Inference
+Techniques&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2021
+&lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 43rd &lt;span&gt;International
+Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;
+(&lt;span&gt;ICSE&lt;/span&gt;)&lt;/em&gt;, 649–60. &lt;span&gt;Madrid, ES&lt;/span&gt;:
+&lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/ICSE43902.2021.00066"&gt;https://doi.org/10.1109/ICSE43902.2021.00066&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Leon2003" class="csl-entry" role="doc-biblioentry"&gt;
+Leon, D., and A. Podgurski. 2003. &lt;span&gt;“A Comparison of Coverage-Based
+and Distribution-Based Techniques for Filtering and Prioritizing Test
+Cases.”&lt;/span&gt; In &lt;em&gt;14th &lt;span&gt;International Symposium&lt;/span&gt; on
+&lt;span&gt;Software Reliability Engineering&lt;/span&gt;, 2003. &lt;span&gt;ISSRE&lt;/span&gt;
+2003.&lt;/em&gt;, 2003-Janua:442–53. &lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/ISSRE.2003.1251065"&gt;https://doi.org/10.1109/ISSRE.2003.1251065&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Leong2019" class="csl-entry" role="doc-biblioentry"&gt;
+Leong, Claire, Abhayendra Singh, Mike Papadakis, Yves Le Traon, and John
+Micco. 2019. &lt;span&gt;“Assessing &lt;span&gt;Transition-Based Test Selection
+Algorithms&lt;/span&gt; at &lt;span&gt;Google&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2019
+&lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 41st &lt;span&gt;International
+Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software
+Engineering&lt;/span&gt; in &lt;span&gt;Practice&lt;/span&gt;
+(&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 101–10. &lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/ICSE-SEIP.2019.00019"&gt;https://doi.org/10.1109/ICSE-SEIP.2019.00019&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Lewis2013" class="csl-entry" role="doc-biblioentry"&gt;
+Lewis, Chris, Zhongpeng Lin, Caitlin Sadowski, and Xiaoyan Zhu. 2013.
+&lt;span&gt;“Does Bug Prediction Support Human Developers? Findings from a
+Google Case Study.”&lt;/span&gt; In &lt;em&gt;Proceedings of the …&lt;/em&gt;, 372–81. &lt;a
+href="http://dl.acm.org/citation.cfm?id=2486838"&gt;http://dl.acm.org/citation.cfm?id=2486838&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Lucia2014" class="csl-entry" role="doc-biblioentry"&gt;
+Lucia, David Lo, Lingxiao Jiang, Ferdian Thung, and Aditya Budi. 2014.
+&lt;span&gt;“Extended Comprehensive Study of Association Measures for Fault
+Localization.”&lt;/span&gt; &lt;em&gt;Journal of Software: Evolution and
+Process&lt;/em&gt; 26 (2): 172–219. &lt;a
+href="https://doi.org/10.1002/smr.1616"&gt;https://doi.org/10.1002/smr.1616&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Machalica2019" class="csl-entry" role="doc-biblioentry"&gt;
+Machalica, Mateusz, Alex Samylkin, Meredith Porth, and Satish Chandra.
+2019. &lt;span&gt;“Predictive &lt;span&gt;Test Selection&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2019
+&lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 41st &lt;span&gt;International
+Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software
+Engineering&lt;/span&gt; in &lt;span&gt;Practice&lt;/span&gt;
+(&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 91–100. &lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/ICSE-SEIP.2019.00018"&gt;https://doi.org/10.1109/ICSE-SEIP.2019.00018&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-McVoy1996" class="csl-entry" role="doc-biblioentry"&gt;
+McVoy, Larry. 1996. &lt;span&gt;“&lt;span&gt;BUG-HUNTING&lt;/span&gt;.”&lt;/span&gt;
+&lt;span&gt;linux/1.3.73&lt;/span&gt;. &lt;a
+href="https://elixir.bootlin.com/linux/1.3.73/source/
+                  Documentation/BUG-HUNTING"&gt;https://elixir.bootlin.com/linux/1.3.73/source/
+Documentation/BUG-HUNTING&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Memon2017" class="csl-entry" role="doc-biblioentry"&gt;
+Memon, Atif, Zebao Gao, Bao Nguyen, Sanjeev Dhanda, Eric Nickell, Rob
+Siemborski, and John Micco. 2017. &lt;span&gt;“Taming &lt;span
+class="nocase"&gt;Google-scale&lt;/span&gt; Continuous Testing.”&lt;/span&gt; In
+&lt;em&gt;2017 &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 39th &lt;span&gt;International
+Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software
+Engineering&lt;/span&gt; in &lt;span&gt;Practice Track&lt;/span&gt;
+(&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 233–42. &lt;span&gt;Piscataway, NJ, USA&lt;/span&gt;:
+&lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/ICSE-SEIP.2017.16"&gt;https://doi.org/10.1109/ICSE-SEIP.2017.16&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Micco2012" class="csl-entry" role="doc-biblioentry"&gt;
+Micco, John. 2012. &lt;span&gt;“Tools for &lt;span&gt;Continuous Integration&lt;/span&gt;
+at &lt;span&gt;Google Scale&lt;/span&gt;.”&lt;/span&gt; Tech {{Talk}}. &lt;span&gt;Google
+NYC&lt;/span&gt;. &lt;a
+href="https://youtu.be/KH2_sB1A6lA"&gt;https://youtu.be/KH2_sB1A6lA&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Micco2013" class="csl-entry" role="doc-biblioentry"&gt;
+———. 2013. &lt;span&gt;“Continuous &lt;span&gt;Integration&lt;/span&gt; at &lt;span&gt;Google
+Scale&lt;/span&gt;.”&lt;/span&gt; Lecture. &lt;span&gt;EclipseCon 2013&lt;/span&gt;. &lt;a
+href="https://web.archive.org/web/20140705215747/https://
+                  www.eclipsecon.org/2013/sites/eclipsecon.org.2013/files/2013-
+                  03-24%20Continuous%20Integration%20at%20Google%20Scale.pdf"&gt;https://web.archive.org/web/20140705215747/https://
+www.eclipsecon.org/2013/sites/eclipsecon.org.2013/files/2013-
+03-24%20Continuous%20Integration%20at%20Google%20Scale.pdf&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Mondal2015" class="csl-entry" role="doc-biblioentry"&gt;
+Mondal, Debajyoti, Hadi Hemmati, and Stephane Durocher. 2015.
+&lt;span&gt;“Exploring Test Suite Diversification and Code Coverage in
+Multi-Objective Test Case Selection.”&lt;/span&gt; &lt;em&gt;2015 IEEE 8th
+International Conference on Software Testing, Verification and
+Validation, ICST 2015 - Proceedings&lt;/em&gt;, 1–10. &lt;a
+href="https://doi.org/10.1109/ICST.2015.7102588"&gt;https://doi.org/10.1109/ICST.2015.7102588&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Musa2015" class="csl-entry" role="doc-biblioentry"&gt;
+Musa, Samaila, Abu Bakar Md Sultan, Abdul Azim Bin Abd-Ghani, and Salmi
+Baharom. 2015. &lt;span&gt;“Regression &lt;span&gt;Test Cases&lt;/span&gt; Selection for
+&lt;span&gt;Object-Oriented Programs&lt;/span&gt; Based on &lt;span&gt;Affected
+Statements&lt;/span&gt;.”&lt;/span&gt; &lt;em&gt;International Journal of Software
+Engineering and Its Applications&lt;/em&gt; 9 (10): 91–108. &lt;a
+href="https://doi.org/10.14257/ijseia.2015.9.10.10"&gt;https://doi.org/10.14257/ijseia.2015.9.10.10&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Najafi2019a" class="csl-entry" role="doc-biblioentry"&gt;
+Najafi, Armin, Peter C. Rigby, and Weiyi Shang. 2019. &lt;span&gt;“Bisecting
+Commits and Modeling Commit Risk During Testing.”&lt;/span&gt; In
+&lt;em&gt;Proceedings of the 2019 27th &lt;span&gt;ACM Joint Meeting&lt;/span&gt; on
+&lt;span&gt;European Software Engineering Conference&lt;/span&gt; and
+&lt;span&gt;Symposium&lt;/span&gt; on the &lt;span&gt;Foundations&lt;/span&gt; of &lt;span&gt;Software
+Engineering&lt;/span&gt;&lt;/em&gt;, 279–89. &lt;span&gt;New York, NY, USA&lt;/span&gt;:
+&lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/3338906.3338944"&gt;https://doi.org/10.1145/3338906.3338944&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Najafi2019" class="csl-entry" role="doc-biblioentry"&gt;
+Najafi, Armin, Weiyi Shang, and Peter C. Rigby. 2019. &lt;span&gt;“Improving
+&lt;span&gt;Test Effectiveness Using Test Executions History&lt;/span&gt;: &lt;span&gt;An
+Industrial Experience Report&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2019
+&lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 41st &lt;span&gt;International
+Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software
+Engineering&lt;/span&gt; in &lt;span&gt;Practice&lt;/span&gt;
+(&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 213–22. &lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/ICSE-SEIP.2019.00031"&gt;https://doi.org/10.1109/ICSE-SEIP.2019.00031&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Ness1997" class="csl-entry" role="doc-biblioentry"&gt;
+Ness, B., and V. Ngo. 1997. &lt;span&gt;“Regression Containment Through Source
+Change Isolation.”&lt;/span&gt; In &lt;em&gt;Proceedings &lt;span&gt;Twenty-First Annual
+International Computer Software&lt;/span&gt; and &lt;span&gt;Applications
+Conference&lt;/span&gt; (&lt;span&gt;COMPSAC&lt;/span&gt;’97)&lt;/em&gt;, 616–21.
+&lt;span&gt;Washington, DC, USA&lt;/span&gt;: &lt;span&gt;IEEE Comput. Soc&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/CMPSAC.1997.625082"&gt;https://doi.org/10.1109/CMPSAC.1997.625082&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Ocariza2022" class="csl-entry" role="doc-biblioentry"&gt;
+Ocariza, Frolin S. 2022. &lt;span&gt;“On the &lt;span&gt;Effectiveness&lt;/span&gt; of
+&lt;span&gt;Bisection&lt;/span&gt; in &lt;span&gt;Performance Regression
+Localization&lt;/span&gt;.”&lt;/span&gt; &lt;em&gt;Empirical Software Engineering&lt;/em&gt; 27
+(4): 95. &lt;a
+href="https://doi.org/10.1007/s10664-022-10152-3"&gt;https://doi.org/10.1007/s10664-022-10152-3&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Osman2017" class="csl-entry" role="doc-biblioentry"&gt;
+Osman, Haidar, Mohammad Ghafari, Oscar Nierstrasz, and Mircea Lungu.
+2017. &lt;span&gt;“An &lt;span&gt;Extensive Analysis&lt;/span&gt; of &lt;span&gt;Efficient Bug
+Prediction Configurations&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;Proceedings of the 13th
+&lt;span&gt;International Conference&lt;/span&gt; on &lt;span&gt;Predictive Models&lt;/span&gt;
+and &lt;span&gt;Data Analytics&lt;/span&gt; in &lt;span&gt;Software
+Engineering&lt;/span&gt;&lt;/em&gt;, 107–16. &lt;span&gt;Toronto Canada&lt;/span&gt;:
+&lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/3127005.3127017"&gt;https://doi.org/10.1145/3127005.3127017&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-pan2022" class="csl-entry" role="doc-biblioentry"&gt;
+Pan, Rongqi, Mojtaba Bagherzadeh, Taher A. Ghaleb, and Lionel Briand.
+2022. &lt;span&gt;“Test Case Selection and Prioritization Using Machine
+Learning: A Systematic Literature Review.”&lt;/span&gt; &lt;em&gt;Empirical Software
+Engineering&lt;/em&gt; 27 (2): 29. &lt;a
+href="https://doi.org/10.1007/s10664-021-10066-6"&gt;https://doi.org/10.1007/s10664-021-10066-6&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-parry2022" class="csl-entry" role="doc-biblioentry"&gt;
+Parry, Owain, Gregory M. Kapfhammer, Michael Hilton, and Phil McMinn.
+2022. &lt;span&gt;“A &lt;span&gt;Survey&lt;/span&gt; of &lt;span&gt;Flaky Tests&lt;/span&gt;.”&lt;/span&gt;
+&lt;em&gt;ACM Transactions on Software Engineering and Methodology&lt;/em&gt; 31
+(1): 1–74. &lt;a
+href="https://doi.org/10.1145/3476105"&gt;https://doi.org/10.1145/3476105&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-scikit-learn" class="csl-entry" role="doc-biblioentry"&gt;
+Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O.
+Grisel, M. Blondel, et al. 2011. &lt;span&gt;“Scikit-Learn:
+&lt;span&gt;Machine&lt;/span&gt; Learning in &lt;span&gt;Python&lt;/span&gt;.”&lt;/span&gt;
+&lt;em&gt;Journal of Machine Learning Research&lt;/em&gt; 12: 2825–30.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Pelc2002" class="csl-entry" role="doc-biblioentry"&gt;
+Pelc, Andrzej. 2002. &lt;span&gt;“Searching Games with Errorsfifty Years of
+Coping with Liars.”&lt;/span&gt; &lt;em&gt;Theoretical Computer Science&lt;/em&gt; 270
+(1-2): 71–109. &lt;a
+href="https://doi.org/10.1016/S0304-3975(01)00303-6"&gt;https://doi.org/10.1016/S0304-3975(01)00303-6&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Podgurski1990" class="csl-entry" role="doc-biblioentry"&gt;
+Podgurski, A, and L A Clarke. 1990. &lt;span&gt;“A &lt;span&gt;Formal Model&lt;/span&gt;
+of &lt;span&gt;Program Dependences&lt;/span&gt; and &lt;span&gt;Its Implications&lt;/span&gt;
+for &lt;span&gt;Software Testing&lt;/span&gt;, &lt;span&gt;Debugging&lt;/span&gt;, and
+&lt;span&gt;Maintenance&lt;/span&gt;.”&lt;/span&gt; &lt;em&gt;IEEE Transactions of Software
+Engineering&lt;/em&gt; 16 (9): 965–79. &lt;a
+href="https://doi.org/10.1109/32.58784"&gt;https://doi.org/10.1109/32.58784&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Potvin2016" class="csl-entry" role="doc-biblioentry"&gt;
+Potvin, Rachel, and Josh Levenberg. 2016. &lt;span&gt;“Why Google Stores
+Billions of Lines of Code in a Single Repository.”&lt;/span&gt;
+&lt;em&gt;Communications of the ACM&lt;/em&gt; 59 (7): 78–87. &lt;a
+href="https://doi.org/10.1145/2854146"&gt;https://doi.org/10.1145/2854146&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Punitha2013" class="csl-entry" role="doc-biblioentry"&gt;
+Punitha, K., and S. Chitra. 2013. &lt;span&gt;“Software Defect Prediction
+Using Software Metrics - &lt;span&gt;A&lt;/span&gt; Survey.”&lt;/span&gt; In &lt;em&gt;2013
+&lt;span&gt;International Conference&lt;/span&gt; on &lt;span&gt;Information
+Communication&lt;/span&gt; and &lt;span&gt;Embedded Systems&lt;/span&gt;
+(&lt;span&gt;ICICES&lt;/span&gt;)&lt;/em&gt;, 555–58. &lt;span&gt;Chennai&lt;/span&gt;:
+&lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/ICICES.2013.6508369"&gt;https://doi.org/10.1109/ICICES.2013.6508369&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Ren2004" class="csl-entry" role="doc-biblioentry"&gt;
+Ren, Xiaoxia, Fenil Shah, Frank Tip, Barbara G. Ryder, and Ophelia
+Chesley. 2004. &lt;span&gt;“Chianti: A Tool for Change Impact Analysis of Java
+Programs.”&lt;/span&gt; In &lt;em&gt;Proceedings of the 19th Annual &lt;span&gt;ACM
+SIGPLAN&lt;/span&gt; Conference on &lt;span class="nocase"&gt;Object-oriented&lt;/span&gt;
+Programming, Systems, Languages, and Applications&lt;/em&gt;, 432–48.
+&lt;span&gt;Vancouver BC Canada&lt;/span&gt;: &lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/1028976.1029012"&gt;https://doi.org/10.1145/1028976.1029012&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Rivest1978" class="csl-entry" role="doc-biblioentry"&gt;
+Rivest, R. L., A. R. Meyer, and D. J. Kleitman. 1978. &lt;span&gt;“Coping with
+Errors in Binary Search Procedures (&lt;span&gt;Preliminary
+Report&lt;/span&gt;).”&lt;/span&gt; In &lt;em&gt;Proceedings of the Tenth Annual
+&lt;span&gt;ACM&lt;/span&gt; Symposium on &lt;span&gt;Theory&lt;/span&gt; of Computing -
+&lt;span&gt;STOC&lt;/span&gt; ’78&lt;/em&gt;, 227–32. &lt;span&gt;San Diego, California, United
+States&lt;/span&gt;: &lt;span&gt;ACM Press&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/800133.804351"&gt;https://doi.org/10.1145/800133.804351&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Rodriguez-Perez2018" class="csl-entry"
+role="doc-biblioentry"&gt;
+Rodríguez-Pérez, Gema, Gregorio Robles, and Jesús M. González-Barahona.
+2018. &lt;span&gt;“Reproducibility and Credibility in Empirical Software
+Engineering: &lt;span&gt;A&lt;/span&gt; Case Study Based on a Systematic Literature
+Review of the Use of the &lt;span&gt;SZZ&lt;/span&gt; Algorithm.”&lt;/span&gt;
+&lt;em&gt;Information and Software Technology&lt;/em&gt; 99 (July): 164–76. &lt;a
+href="https://doi.org/10.1016/j.infsof.2018.03.009"&gt;https://doi.org/10.1016/j.infsof.2018.03.009&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Saha2017" class="csl-entry" role="doc-biblioentry"&gt;
+Saha, Ripon, and Milos Gligoric. 2017. &lt;span&gt;“Selective &lt;span&gt;Bisection
+Debugging&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;Fundamental &lt;span&gt;Approaches&lt;/span&gt; to
+&lt;span&gt;Software Engineering&lt;/span&gt;&lt;/em&gt;, edited by Marieke Huisman and
+Julia Rubin, 10202:60–77. &lt;span&gt;Berlin, Heidelberg&lt;/span&gt;:
+&lt;span&gt;Springer Berlin Heidelberg&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1007/978-3-662-54494-5_4"&gt;https://doi.org/10.1007/978-3-662-54494-5_4&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Singh2012" class="csl-entry" role="doc-biblioentry"&gt;
+Singh, Yogesh, Arvinder Kaur, Bharti Suri, and Shweta Singhal. 2012.
+&lt;span&gt;“Systematic Literature Review on Regression Test Prioritization
+Techniques.”&lt;/span&gt; &lt;em&gt;Informatica (Slovenia)&lt;/em&gt; 36 (4): 379–408. &lt;a
+href="https://doi.org/10.31449/inf.v36i4.420"&gt;https://doi.org/10.31449/inf.v36i4.420&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Sliwerski2005" class="csl-entry" role="doc-biblioentry"&gt;
+Śliwerski, Jacek, Thomas Zimmermann, and Andreas Zeller. 2005.
+&lt;span&gt;“When Do Changes Induce Fixes?”&lt;/span&gt; &lt;em&gt;ACM SIGSOFT Software
+Engineering Notes&lt;/em&gt; 30 (4): 1. &lt;a
+href="https://doi.org/10.1145/1082983.1083147"&gt;https://doi.org/10.1145/1082983.1083147&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Wang2020" class="csl-entry" role="doc-biblioentry"&gt;
+Wang, Kaiyuan, Greg Tener, Vijay Gullapalli, Xin Huang, Ahmed Gad, and
+Daniel Rall. 2020. &lt;span&gt;“Scalable Build Service System with Smart
+Scheduling Service.”&lt;/span&gt; In &lt;em&gt;Proceedings of the 29th &lt;span&gt;ACM
+SIGSOFT International Symposium&lt;/span&gt; on &lt;span&gt;Software Testing&lt;/span&gt;
+and &lt;span&gt;Analysis&lt;/span&gt;&lt;/em&gt;, 452–62. &lt;span&gt;Virtual Event USA&lt;/span&gt;:
+&lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/3395363.3397371"&gt;https://doi.org/10.1145/3395363.3397371&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Wen2019" class="csl-entry" role="doc-biblioentry"&gt;
+Wen, Ming, Rongxin Wu, Yepang Liu, Yongqiang Tian, Xuan Xie, Shing-Chi
+Cheung, and Zhendong Su. 2019. &lt;span&gt;“Exploring and Exploiting the
+Correlations Between Bug-Inducing and Bug-Fixing Commits.”&lt;/span&gt; In
+&lt;em&gt;Proceedings of the 2019 27th &lt;span&gt;ACM Joint Meeting&lt;/span&gt; on
+&lt;span&gt;European Software Engineering Conference&lt;/span&gt; and
+&lt;span&gt;Symposium&lt;/span&gt; on the &lt;span&gt;Foundations&lt;/span&gt; of &lt;span&gt;Software
+Engineering&lt;/span&gt;&lt;/em&gt;, 326–37. &lt;span&gt;Tallinn Estonia&lt;/span&gt;:
+&lt;span&gt;ACM&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1145/3338906.3338962"&gt;https://doi.org/10.1145/3338906.3338962&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Wong2016" class="csl-entry" role="doc-biblioentry"&gt;
+Wong, W. Eric, Ruizhi Gao, Yihao Li, Rui Abreu, and Franz Wotawa. 2016.
+&lt;span&gt;“A &lt;span&gt;Survey&lt;/span&gt; on &lt;span&gt;Software Fault
+Localization&lt;/span&gt;.”&lt;/span&gt; &lt;em&gt;IEEE Transactions on Software
+Engineering&lt;/em&gt; 42 (8): 707–40. &lt;a
+href="https://doi.org/10.1109/TSE.2016.2521368"&gt;https://doi.org/10.1109/TSE.2016.2521368&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Youm2015" class="csl-entry" role="doc-biblioentry"&gt;
+Youm, Klaus Changsun, June Ahn, Jeongho Kim, and Eunseok Lee. 2015.
+&lt;span&gt;“Bug &lt;span&gt;Localization Based&lt;/span&gt; on &lt;span&gt;Code Change
+Histories&lt;/span&gt; and &lt;span&gt;Bug Reports&lt;/span&gt;.”&lt;/span&gt; In &lt;em&gt;2015
+&lt;span&gt;Asia-Pacific Software Engineering Conference&lt;/span&gt;
+(&lt;span&gt;APSEC&lt;/span&gt;)&lt;/em&gt;, 190–97. &lt;span&gt;New Delhi&lt;/span&gt;:
+&lt;span&gt;IEEE&lt;/span&gt;. &lt;a
+href="https://doi.org/10.1109/APSEC.2015.23"&gt;https://doi.org/10.1109/APSEC.2015.23&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Yourdon1975" class="csl-entry" role="doc-biblioentry"&gt;
+Yourdon, E. 1975. &lt;em&gt;Techniques of &lt;span&gt;Program Design&lt;/span&gt;&lt;/em&gt;.
+&lt;span&gt;New Jersey&lt;/span&gt;: &lt;span&gt;Prentice-Hall&lt;/span&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Zeller1999" class="csl-entry" role="doc-biblioentry"&gt;
+Zeller, Andreas. 1999. &lt;span&gt;“Yesterday, &lt;span&gt;My Program Worked&lt;/span&gt;.
+&lt;span&gt;Today&lt;/span&gt;, &lt;span&gt;It Does Not&lt;/span&gt;. &lt;span&gt;Why&lt;/span&gt;?”&lt;/span&gt;
+&lt;em&gt;SIGSOFT Softw. Eng. Notes&lt;/em&gt; 24 (6): 253–67. &lt;a
+href="https://doi.org/10.1145/318774.318946"&gt;https://doi.org/10.1145/318774.318946&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Zhou2012" class="csl-entry" role="doc-biblioentry"&gt;
+Zhou, Jian, Hongyu Zhang, and David Lo. 2012. &lt;span&gt;“Where Should the
+Bugs Be Fixed? &lt;span&gt;More&lt;/span&gt; Accurate Information Retrieval-Based
+Bug Localization Based on Bug Reports.”&lt;/span&gt; &lt;em&gt;Proceedings -
+International Conference on Software Engineering&lt;/em&gt;, 14–24. &lt;a
+href="https://doi.org/10.1109/ICSE.2012.6227210"&gt;https://doi.org/10.1109/ICSE.2012.6227210&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Zhou2010" class="csl-entry" role="doc-biblioentry"&gt;
+Zhou, Zhi Quan. 2010. &lt;span&gt;“Using Coverage Information to Guide Test
+Case Selection in &lt;span&gt;Adaptive Random Testing&lt;/span&gt;.”&lt;/span&gt;
+&lt;em&gt;Proceedings - International Computer Software and Applications
+Conference&lt;/em&gt;, 208–13. &lt;a
+href="https://doi.org/10.1109/COMPSACW.2010.43"&gt;https://doi.org/10.1109/COMPSACW.2010.43&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Ziftci2013a" class="csl-entry" role="doc-biblioentry"&gt;
+Ziftci, Celal, and Vivek Ramavajjala. 2013. &lt;span&gt;“Finding
+&lt;span&gt;Culprits Automatically&lt;/span&gt; in &lt;span&gt;Failing Builds&lt;/span&gt; -
+i.e. &lt;span&gt;Who Broke&lt;/span&gt; the &lt;span&gt;Build&lt;/span&gt;?”&lt;/span&gt; &lt;a
+href="https://www.youtube.com/watch?v=SZLuBYlq3OM"&gt;https://www.youtube.com/watch?v=SZLuBYlq3OM&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;div id="ref-Ziftci2017" class="csl-entry" role="doc-biblioentry"&gt;
+Ziftci, Celal, and Jim Reardon. 2017. &lt;span&gt;“Who Broke the Build?
+&lt;span&gt;Automatically&lt;/span&gt; Identifying Changes That Induce Test Failures
+in Continuous Integration at Google Scale.”&lt;/span&gt; &lt;em&gt;Proceedings -
+2017 IEEE/ACM 39th International Conference on Software Engineering:
+Software Engineering in Practice Track, ICSE-SEIP 2017&lt;/em&gt;, 113–22. &lt;a
+href="https://doi.org/10.1109/ICSE-SEIP.2017.13"&gt;https://doi.org/10.1109/ICSE-SEIP.2017.13&lt;/a&gt;.
+&lt;/div&gt;&lt;/li&gt;
+&lt;/div&gt;
+&lt;section class="footnotes footnotes-end-of-document"
+role="doc-endnotes"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn1" role="doc-endnote"&gt;&lt;p&gt;Both the &lt;em&gt;per-test&lt;/em&gt; error rate
+and the &lt;em&gt;per-change&lt;/em&gt; error rates quoted above are drawn from the
+same 28 day window. The Postsubmit result which triggers culprit finding
+may itself have been a flake, so there were spurious suspect ranges in
+the same period. These rates may differ slightly from the numbers
+reported in &lt;span class="citation" data-cites="Henderson2023"&gt;(&lt;a
+href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al.
+2023&lt;/a&gt;)&lt;/span&gt; as they reflect our most recent data as of
+2023-11-12.&lt;a href="#fnref1" class="footnote-back"
+role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id="fn2" role="doc-endnote"&gt;&lt;p&gt;There are some legacy tests which are
+allowed to use the network but there is an on-going effort to clean up
+their usage.&lt;a href="#fnref2" class="footnote-back"
+role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id="fn3" role="doc-endnote"&gt;&lt;p&gt;Previously, we referred to these
+cycles as “Milestones” in most of the previous literature but we are
+gradually changing our internal nomenclature as we evolve TAP
+Postsubmit’s testing model.&lt;a href="#fnref3" class="footnote-back"
+role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id="fn4" role="doc-endnote"&gt;&lt;p&gt;https://scikit-learn.org/&lt;a
+href="#fnref4" class="footnote-back" role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id="fn5" role="doc-endnote"&gt;&lt;p&gt;&lt;a
+href="https://xgboost.readthedocs.io/en/stable/index.html"
+class="uri"&gt;https://xgboost.readthedocs.io/en/stable/index.html&lt;/a&gt;&lt;a
+href="#fnref5" class="footnote-back" role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;</content><category term="Paper"></category></entry></feed>
