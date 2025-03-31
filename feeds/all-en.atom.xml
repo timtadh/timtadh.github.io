@@ -1,21 +1,1501 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all-en.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2024-05-27T00:00:00-04:00</updated><entry><title>SafeRevert: When Can Breaking Changes be Automatically Reverted?</title><link href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html" rel="alternate"></link><published>2024-05-27T00:00:00-04:00</published><updated>2024-05-27T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;,  Avi Kondareddy, Sushmita Azad, Eric Nickell</name></author><id>tag:hackthology.com,2024-05-27:/saferevert-when-can-breaking-changes-be-automatically-reverted.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
-&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/all-en.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2025-04-02T00:00:00-04:00</updated><entry><title>Speculative Testing at Google with Transition Prediction</title><link href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html" rel="alternate"></link><published>2025-04-02T00:00:00-04:00</published><updated>2025-04-02T00:00:00-04:00</updated><author><name>Avi Kondareddy, Sushmita Azad, Eric Nickell, and &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2025-04-02:/speculative-testing-at-google-with-transition-prediction.html</id><summary type="html">&lt;p&gt;Avi Kondareddy, Sushmita Azad, Eric Nickell, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
+&lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href=""&gt;ICST Industry Track 2025&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
-&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.
-&lt;a href="http://tba"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;blockquote&gt;
 &lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
-correct you should read the …&lt;/p&gt;&lt;/blockquote&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
-&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;Google's …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Avi Kondareddy, Sushmita Azad, Eric Nickell, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
+&lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href=""&gt;ICST Industry Track 2025&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;Google's approach to testing includes both testing prior to code submission
+(for fast validation) and after code submission (for comprehensive
+validation). However, Google's ever growing testing demand has lead to
+increased continuous integration cycle latency and machine costs. When the
+post code submission continuous integration cycles get longer, it delays
+detecting breakages in the main repository which increases developer friction
+and lowers productivity. To mitigate this without increasing resource demand,
+Google is implementing Postsubmit Speculative Cycles in their Test Automation
+Platform (TAP). Speculative Cycles prioritize finding novel breakages faster.
+In this paper we present our new test scheduling architecture and the machine
+learning system (Transition Prediction) driving it. Both the ML system and the
+end-to-end test scheduling system are empirically evaluated on 3-months of our
+production data (120 billion test$\times$cycle pairs, 7.7 million breaking
+targets, with $\sim$20 thousand unique breakages). Using Speculative Cycles we
+observed a median (p50) reduction of approximately 65\% (from 107 to 37 
+minutes) in the time taken to detect novel breaking targets.&lt;/p&gt;
+&lt;h1 id="sec:introduction"&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Continuous integration (CI) coordinates the development activity of large numbers of
+  developers &lt;span class="citation" data-cites="Fowler2006"&gt;(&lt;a href="#ref-Fowler2006" role=
+  "doc-biblioref"&gt;Fowler 2006&lt;/a&gt;)&lt;/span&gt;. When two developers are working in the same portion of
+  the code base, continuous integration ensures that conflicting changes combine into a
+  conflict-free version before reaching the end user. In general, adopters of CI execute builds and
+  tests to ensure that the final release artifact (server binary, mobile application, etc...)
+  passes all relevant tests. These build and tests are executed frequently to reduce the amount of
+  time conflicts are present in the code base. Continuous integration is both a system and a
+  practice of automatically merging changes into a source of truth for an organization's source
+  code and related artifacts.&lt;/p&gt;
+&lt;p&gt;For small software repositories and organizations, the implementation of continuous
+  integration is well supported by off-the-shelf software such as Github Actions, CircleCI,
+  Jenkins, and numerous other tools. However, as the repository and organization scales up
+  challenges emerge.&lt;/p&gt;
+&lt;p&gt;As an organization adds projects and engineers, there are two distinct paths that emerge: the
+  many-small-repository path and the single-mono-repository path. Both paths have distinct
+  challenges and advantages. Neither path will enable organizations to use vanilla off-the-shelf
+  solutions for their development environment. This paper is focused on a particular challenge
+  faced in a mono-repository environment at Google, but similar problems arise in organizations
+  with many small repositories that are strongly coupled together.&lt;/p&gt;
+&lt;p&gt;Google, an early adopter of mono-repositories and continuous integration &lt;span class=
+  "citation" data-cites="Potvin2016"&gt;(&lt;a href="#ref-Potvin2016" role="doc-biblioref"&gt;Potvin and
+  Levenberg 2016&lt;/a&gt;)&lt;/span&gt;, faces an enormous ever expanding code base that is centrally tested
+  by the Test Automation Platform (TAP) &lt;span class="citation" data-cites="Micco2012"&gt;(&lt;a href=
+  "#ref-Micco2012" role="doc-biblioref"&gt;Micco 2012&lt;/a&gt;)&lt;/span&gt;. As the code base and company grows,
+  so does the &lt;em&gt;demand&lt;/em&gt; for compute resources for continuous testing. Left unchecked, we have
+  observed a double digit percentage organic demand growth rate year-over-year (compounding). Such
+  a growth rate is untenable even for a large company like Google. To prevent this unchecked growth
+  in resource demand, TAP has long had features that reduce demand by skipping some tests (before
+  submission) and batching many versions together (after submission) to amortize the cost
+  &lt;span class="citation" data-cites=
+  "Gupta2011 Bland2012 Micco2012 Micco2013 Memon2017 Leong2019 Wang2020 Wang2021 Henderson2023 Henderson2024 Hoang2024"&gt;
+  (&lt;a href="#ref-Gupta2011" role="doc-biblioref"&gt;Gupta, Ivey, and Penix 2011&lt;/a&gt;; &lt;a href=
+  "#ref-Bland2012" role="doc-biblioref"&gt;Bland 2012&lt;/a&gt;; &lt;a href="#ref-Micco2012" role=
+  "doc-biblioref"&gt;Micco 2012&lt;/a&gt;, &lt;a href="#ref-Micco2013" role="doc-biblioref"&gt;2013&lt;/a&gt;; &lt;a href=
+  "#ref-Memon2017" role="doc-biblioref"&gt;Memon et al. 2017&lt;/a&gt;; &lt;a href="#ref-Leong2019" role=
+  "doc-biblioref"&gt;Leong et al. 2019&lt;/a&gt;; &lt;a href="#ref-Wang2020" role="doc-biblioref"&gt;K. Wang et
+  al. 2020&lt;/a&gt;, &lt;a href="#ref-Wang2021" role="doc-biblioref"&gt;2021&lt;/a&gt;; &lt;a href="#ref-Henderson2023"
+  role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;, &lt;a href="#ref-Henderson2024" role=
+  "doc-biblioref"&gt;2024&lt;/a&gt;; &lt;a href="#ref-Hoang2024" role="doc-biblioref"&gt;Hoang and Berding
+  2024&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;In this paper, we are primarily concerned with testing that occurs after the code has been
+  submitted. We examine how to improve the developer experience by finding novel build/test
+  breakages faster while continuing to control our resource footprint growth rate.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id="the-google-development-environment"&gt;The Google Development Environment&lt;/h2&gt;
+&lt;p&gt;Google's development environment uses a centralized repository &lt;span class="citation"
+  data-cites="Potvin2016"&gt;(&lt;a href="#ref-Potvin2016" role="doc-biblioref"&gt;Potvin and Levenberg
+  2016&lt;/a&gt;)&lt;/span&gt; where code changes are managed with Blaze/Bazel&lt;a href="#fn1" class=
+  "footnote-ref" id="fnref1" role="doc-noteref"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; and automatically tested,
+  primarily by TAP. Developers write code, build and test locally, then submit it for review via
+  Critique &lt;span class="citation" data-cites="Sadowski2018"&gt;(&lt;a href="#ref-Sadowski2018" role=
+  "doc-biblioref"&gt;Sadowski et al. 2018&lt;/a&gt;)&lt;/span&gt;, triggering Presubmit checks. After review and
+  approval, changes undergo further checks before merging. Due to high submission rates, Presubmit
+  testing is limited to avoid excessive resource consumption and delays.&lt;/p&gt;
+&lt;h2 id="tap-postsubmit"&gt;TAP Postsubmit&lt;/h2&gt;
+&lt;p&gt;When a developer's change gets submitted it may still have a bug that breaks an existing test
+  or causes a compile breakage in another part of the repository. To find these bugs that have
+  slipped through the pre-submission testing and validation process, TAP also has a
+  "post-submission" mode (TAP Postsubmit).&lt;/p&gt;
+&lt;p&gt;In Postsubmit, TAP periodically (subject to compute resource availability in the Build system)
+  schedules &lt;em&gt;all&lt;/em&gt; tests that have been &lt;em&gt;affected&lt;/em&gt; (based on build dependencies) since
+  the last run. We refer this execution cycle as &lt;em&gt;Comprehensive Testing Cycle&lt;/em&gt;. Previously,
+  this cycle has also been referred as Milestones &lt;span class="citation" data-cites=
+  "Memon2017"&gt;(&lt;a href="#ref-Memon2017" role="doc-biblioref"&gt;Memon et al. 2017&lt;/a&gt;)&lt;/span&gt;. There
+  are two primary objectives for the Comprehensive Cycle:&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;Uncover all test failures at the version comprehensive testing was conducted at.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Provide project health signals for downstream services to trigger more expensive testing
+      and/or start production rollout by triggering release automation&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;p&gt;As of today's writing, it takes &lt;span class="math inline"&gt;∼&lt;/span&gt;1-2 hours for a test broken
+  by a developer's change to start failing in TAP Postsubmit. Once the failure is detected
+  automatic culprit finders &lt;span class="citation" data-cites="Henderson2023"&gt;(&lt;a href=
+  "#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;)&lt;/span&gt; and rollback system
+  &lt;span class="citation" data-cites="Henderson2024"&gt;(&lt;a href="#ref-Henderson2024" role=
+  "doc-biblioref"&gt;Henderson et al. 2024&lt;/a&gt;)&lt;/span&gt; will spring into action to help keep the
+  repository healthy and our developers productive. Automatically rolling back the change (after
+  the first breakage was detected) might take as little as 30 minutes or as long as several hours
+  depending on a number of factors. Thus, it could be 4 hours or more before our developer learns
+  they have broken a test and either been notified or automatically had their change rolled
+  back.&lt;/p&gt;
+&lt;h2 id="cost-of-breakages"&gt;Cost of Breakages&lt;/h2&gt;
+&lt;p&gt;The longer it takes to identify and fix a code breakage, the more challenging and expensive
+  the remediation process becomes. This delay can lead to a loss of context for the original
+  developer, potentially requiring teammates to resolve the issue. Additionally, a bad change can
+  affect other developers, especially if it occurs in widely used parts of the code base. When
+  interrupted by such a failure programmers need to distinguish between the change they are making
+  and existing fault in the repository. Ultimately, prolonged breakages can disrupt release
+  automation and even delay production releases.&lt;/p&gt;
+&lt;h2 id="our-contributions-and-findings"&gt;Our Contributions and Findings&lt;/h2&gt;
+&lt;p&gt;In this paper we are looking to increase developer productivity by reducing their friction
+  with respect to broken code in the main code base. Specifically we are solving the following
+  problem.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How can CI minimize the time between the submission of a faulty change and its
+  identification within a continuous integration (CI) system to accelerate the detection and
+  mitigation of bugs?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To solve the problem, we propose a new scheduling mode to our CI system, Speculative Testing
+  Cycles, that opportunistically runs a small subset of tests to uncover novel failures and reduce
+  the mean time to detection (MTTD) for new failures. Speculative Cycle prioritizes finding novel
+  breakages by identifying tests that are very likely to fail. The new scheduling mode is driven by
+  a &lt;em&gt;Transition Prediction&lt;/em&gt; model that predicts when tests are likely to (newly) fail. It
+  utilizes shallow machine-learning to run a smaller batch of tests predicted to be more likely to
+  be broken at higher frequency in order to find breakages faster. We discuss both the design and
+  constraints on the production Speculative Cycle system and the shallow machine-learning model
+  (Transition Prediction) that powers this predictive test selection.&lt;/p&gt;
+&lt;p&gt;While the production system is highly tied to Google's unique development environment and
+  organizational constraints (i.e.: large monorepos with centralized CI infrastructure), our ML
+  model presents a very coarse-grain approach to prediction for test selection using test and
+  code-under-test metadata that has equivalents in most development environments and is
+  language/framework agnostic.&lt;/p&gt;
+&lt;p&gt;Our contributions in this paper are therefore:&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;Speculative Cycles: A system for frequent / cost-aware batch testing.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Transition Prediction (TRANSPRED): Predicting target status transitions (Pass to Fail) for
+      arbitrary build &amp;amp; test targets. With a budget of 25% of the total targets, Transition
+      Prediction achieves a 85% recall rate in detecting breakages.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A very large scale study (utilizing 3-months of production data: 120 billion
+      test&lt;span class="math inline"&gt;×&lt;/span&gt;cycle pairs, 7.7 million breaking targets, and
+      &lt;span class="math inline"&gt;∼&lt;/span&gt;20,000 unique breakages) on the efficacy of Speculative
+      Testing using Transition Prediction evaluating its performance against randomized
+      testing.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;A comparative assessment of dataset and training configurations for Transition Prediction,
+      determining that the selection of features and the length of the training window
+      substantially influence the system's performance.&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;h1 id="background"&gt;Background&lt;/h1&gt;
+&lt;h2 id="developer-services"&gt;Developer Services&lt;/h2&gt;
+&lt;h3 id="bazel"&gt;Bazel&lt;/h3&gt;
+&lt;p&gt;Google uses Bazel as its build system monorepo wide. Bazel allows specifying build/test
+  "targets" that depend on other targets. Each target is comprised of a set of "actions" to be
+  executed. Therefore, the execution of a target corresponds to a Directed Acyclic Graph (DAG) of
+  actions. Given Bazel makes dependency management declarative and all dependencies are built at
+  the same version of the codebase, builds are ostensibly held to be hermetic - builds at the same
+  version of the codebase should produce the same output for each action. This opens up the
+  possibility for massive compute savings through caching of intermediate actions across multiple
+  builds.&lt;/p&gt;
+&lt;h3 id="forge"&gt;Forge&lt;/h3&gt;
+&lt;p&gt;Build/Test actions at Google run under a centralized compute cluster called Forge which
+  attempts to cache these intermediate actions to avoid recomputation at the same version of the
+  codebase. For Postsubmit testing, we make use of this caching by batching builds/tests at single
+  versions every hour or so.&lt;/p&gt;
+&lt;h2 id="comprehensive-testing-cycles"&gt;Comprehensive Testing Cycles&lt;/h2&gt;
+&lt;p&gt;In the standard case, TAP Postsubmit performs each Comprehensive Testing Cycle once the
+  previous cycle's active consumption of resources drops below a threshold of their allocated build
+  system resources. This cycle consists of picking a recent change(snapshot of the repository), at
+  which we batch and run a "comprehensive" set of tests. Comprehensive cycles run all tests that
+  are "affected" since the previous cycle. "Affected" is our term for dependence as implied by the
+  build system's package graph, allowing us to perform a degree of static test selection at a
+  coarse granularity.&lt;/p&gt;
+&lt;h2 id="ancillary-systems-for-build-gardening"&gt;Ancillary Systems For Build Gardening&lt;/h2&gt;
+&lt;p&gt;The development life cycle explained above relies on Postsubmit testing to make up for the
+  lack of comprehensive testing prior to submission. This introduces the concept of &lt;em&gt;Postsubmit
+  breakages&lt;/em&gt; which are caught sometime after submission. The process of detecting the breakage,
+  identifying the cause of the breakage (culprit finding), and fixing the breakage (sometimes via a
+  rollback) is called "Build Gardening" at Google.&lt;/p&gt;
+&lt;h3 id="culprit-finding"&gt;Culprit Finding&lt;/h3&gt;
+&lt;p&gt;We have previously outlined Google's culprit finding approach in &lt;span class="citation"
+  data-cites="Henderson2023 Henderson2024"&gt;(&lt;a href="#ref-Henderson2023" role=
+  "doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;, &lt;a href="#ref-Henderson2024" role=
+  "doc-biblioref"&gt;2024&lt;/a&gt;)&lt;/span&gt;. To formulate the problem, we are given a test/build "target"
+  and must determine at which change &lt;span class="math inline"&gt;&lt;em&gt;C&lt;/em&gt;&lt;/span&gt; over a range of
+  sequential changes &lt;span class="math inline"&gt;[&lt;em&gt;A&lt;/em&gt;, &lt;em&gt;B&lt;/em&gt;]&lt;/span&gt; did the target start
+  breaking. The change &lt;em&gt;C&lt;/em&gt; is referred as a &lt;em&gt;Culprit Change&lt;/em&gt; or simply
+  &lt;em&gt;Culprit&lt;/em&gt;. Given the presence of build/test non-determinism ("flakes"), we want to find
+  the change at which the test was "truly" failing but "truly" passing at the previous change. Our
+  previous work explores how we do this in a time and run-efficient manner using a historical flake
+  rate aware Bayesian model to sample runs.&lt;/p&gt;
+&lt;h3 id="sec:verifier"&gt;Culprit Verifier&lt;/h3&gt;
+&lt;p&gt;Unfortunately, persistent flakiness and non-determinism can still slip by the culprit finders.
+  The pathological case is that of build system non-determinism. Google's build system Bazel
+  assumes that builds are hermetic and should produce the same output at the same version. This
+  assumption means that unlike tests, failed actions are cached by the build system so immediate
+  reruns will continue to assert what could potentially be a flaky build failure. The culprit
+  verifier does extensive reruns on a subset of culprit conclusions produced by the culprit
+  finders. We sample from two different sampling frames: (1) a simple random sample of all
+  conclusions produced and (2) the first conclusion produced for each uniquely blamed culprit. For
+  details on the design of the verification system, see the Flake Aware Culprit Finding paper
+  &lt;span class="citation" data-cites="Henderson2023"&gt;(&lt;a href="#ref-Henderson2023" role=
+  "doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;)&lt;/span&gt; and the SafeRevert paper &lt;span class="citation"
+  data-cites="Henderson2024"&gt;(&lt;a href="#ref-Henderson2024" role="doc-biblioref"&gt;Henderson et al.
+  2024&lt;/a&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Although the verifier is fallible, the dataset it produces is still the most accurate
+  representation of true breakages at Google. We know it fails because we have seen specific
+  examples of its failures. But, from a measurement perspective, bounding its accuracy is
+  challenging because its failure rate is low enough that it exceeds our ability to accurately
+  measure. We have recently conducted manual verification while launching a new version of our Auto
+  Rollback system on all culprits rolled back during the "dogfood" phase (an opt-in beta). Out of
+  250+ hand verified culprits: 5 were incorrect culprits from the culprit finder, 2 incorrect
+  culprits were incorrectly verified correct by the verifier. This gives us an estimated culprit
+  finding accuracy of 98% (matching verifier produced accuracy dashboard) and a verifier accuracy
+  of 99.2%. Given the low sample size the confidence interval on that measurement is &lt;span class=
+  "math inline"&gt;99.2 ± 3.3%&lt;/span&gt; which is too wide. To get sufficient power to accurately
+  estimate the verifier accuracy, we would need to hand verify at least 5000 culprits.&lt;/p&gt;
+&lt;p&gt;Thus, while we are confident in the overall accuracy measurements provided by the verifier, we
+  acknowledge that "ground truth" is difficult to obtain. We utilize the dataset produced by the
+  verifier to label the culprits to train our prediction model (detailed below). This approach
+  vastly reduces the impact of flakiness on our model training data.&lt;/p&gt;
+&lt;h3 id="sec:autorollback"&gt;Autorollback&lt;/h3&gt;
+&lt;p&gt;At Google, there is a developer guideline to prefer rollbacks to fix forwards. Given this
+  context, it is appropriate to automatically roll back a change if someone is confident that the
+  change broke the build. Unfortunately, given the accuracy issue of the culprit finder described
+  above, we can't immediately rollback upon a culprit finding completion for one target. In the
+  SafeRevert paper &lt;span class="citation" data-cites="Henderson2024"&gt;(&lt;a href="#ref-Henderson2024"
+  role="doc-biblioref"&gt;Henderson et al. 2024&lt;/a&gt;)&lt;/span&gt;, we discussed how we attempt to determine
+  the amount of evidence needed to proceed with a rollback. In practice, we currently restrict
+  rollbacks to changes that break at least 10 targets.&lt;/p&gt;
+&lt;h2 id="the-evolution-of-tap"&gt;The Evolution of TAP&lt;/h2&gt;
+&lt;p&gt;Prior to development of TAP, Google had a more traditional continuous integration system.
+  Primarily, the decision to run continuous integration was left up to individual teams and the
+  system that existed was federated: teams brought their own capacity (machines, possibly under
+  their desks) and had to configure and run the CI system(s). TAP, upon launch in 2009, was a
+  massive improvement from setup and continuous maintenance perspective alone. Unlike the previous
+  systems, TAP ran all builds centrally and only required a small amount of configuration: it
+  simply required users to specify which paths they would like to test and where the (failure)
+  notifications should go.&lt;/p&gt;
+&lt;p&gt;The central builds and low configuration overhead made TAP immediately successful. Within a
+  few years it had completely displaced the prior system. But, success came at a price: it was
+  plagued by build capacity limitations and scalability challenges stemming from design decisions
+  of running tests on each change in the initial implementation. By 2012 (following a full launch
+  in 2010) Google was running low on machine capacity to run TAP. The testing model had naively
+  assumed that the build dependence based test selection would be enough to control demand; It was
+  not.&lt;/p&gt;
+&lt;p&gt;TAP both pre- and post-submit were thus rewritten (multiple times). TAP Presubmit now has
+  several different modes, adapts to resource availability, uses machine learning driven test
+  selection, and has "advisors" which can ignore or rerun tests on failure &lt;span class="citation"
+  data-cites="Hoang2024"&gt;(&lt;a href="#ref-Hoang2024" role="doc-biblioref"&gt;Hoang and Berding
+  2024&lt;/a&gt;)&lt;/span&gt;. Unfortunately for you (the reader) discussing these innovations is out of scope
+  for this manuscript.&lt;/p&gt;
+&lt;p&gt;Today, TAP Postsubmit no longer runs on every change. It waits for there to be capacity in the
+  Build System &lt;span class="citation" data-cites="Wang2020 Wang2021"&gt;(&lt;a href="#ref-Wang2020" role=
+  "doc-biblioref"&gt;K. Wang et al. 2020&lt;/a&gt;, &lt;a href="#ref-Wang2021" role=
+  "doc-biblioref"&gt;2021&lt;/a&gt;)&lt;/span&gt; and then enqueues all tests that have been affected since their
+  last definitive status. At Google's scale and growth rate, we have had to continuously innovate
+  and rewrite core parts of TAP just to maintain this model. However, we have long known that just
+  using build-graph dependency based test selection in Postsubmit was untenable in the long term
+  &lt;span class="citation" data-cites="Memon2017 Leong2019"&gt;(&lt;a href="#ref-Memon2017" role=
+  "doc-biblioref"&gt;Memon et al. 2017&lt;/a&gt;; &lt;a href="#ref-Leong2019" role="doc-biblioref"&gt;Leong et al.
+  2019&lt;/a&gt;)&lt;/span&gt;. It is only now that we have both the high-accuracy culprit finding
+  infrastructure &lt;span class="citation" data-cites="Henderson2023 Henderson2024"&gt;(&lt;a href=
+  "#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;, &lt;a href="#ref-Henderson2024"
+  role="doc-biblioref"&gt;2024&lt;/a&gt;)&lt;/span&gt; and the organizational will to fundamentally change (again)
+  core assumptions for how TAP works.&lt;/p&gt;
+&lt;h2 id="the-current-dilemma"&gt;The Current Dilemma&lt;/h2&gt;
+&lt;p&gt;The cost of TAP Postsubmit's &lt;em&gt;comprehensive&lt;/em&gt; testing continues to rise due to
+  ever-increasing compute demand, increasing fleet machine diversity, and evolving development
+  practices. This means that with no systemic changes in our approach towards Postsubmit
+  testing:&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;Teams start needing to wait longer and longer for signal on their projects' health (or
+      "greenness") from TAP blocking their releases which has significant monetary impact&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Developers are now alerted hours after they submit of a breaking change, creating
+      developer toil&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;h1 id="speculative-testing-cycles"&gt;Speculative Testing Cycles&lt;/h1&gt;
+&lt;p&gt;In order to protect release quality and improve developer productivity, TAP is introducing
+  &lt;em&gt;Speculative Testing Cycles&lt;/em&gt; - a process by which we non-deterministically select a
+  smaller subset of targets that we deem more likely to fail, and run this smaller set more
+  frequently than traditional comprehensive cycles. For traditional comprehensive test cycles, we
+  attempt to batch as many builds/tests together at the same change as possible to get the caching
+  benefits from Forge. We do the same here for Speculative Cycles, picking a single change
+  approximately every 20 minutes, Forge build resources allowing. As with Comprehensive Cycles, we
+  first perform static build system level dependency analysis to find all targets which could have
+  a status change.&lt;/p&gt;
+&lt;h2 id="determining-breakage-likelihood"&gt;Determining Breakage Likelihood&lt;/h2&gt;
+&lt;p&gt;We now have a set of statically-filtered targets &lt;span class="math inline"&gt;{&lt;em&gt;T&lt;/em&gt;}&lt;/span&gt;
+  and a sequence of commits &lt;span class="math inline"&gt;{&lt;em&gt;C&lt;/em&gt;}&lt;/span&gt; consisting of all commits
+  since the last Speculative Cycle. Our problem is then to determine for a given target
+  &lt;span class="math inline"&gt;&lt;em&gt;t&lt;/em&gt; ∈ &lt;em&gt;T&lt;/em&gt;&lt;/span&gt;: what is the likelihood it was broken by
+  a change &lt;span class="math inline"&gt;&lt;em&gt;c&lt;/em&gt; ∈ &lt;em&gt;C&lt;/em&gt;&lt;/span&gt; affecting it? For compute
+  tractability, given the frequency of change submissions and number of targets in our codebase, we
+  simplify by choosing to aggregate across C and ask: "Was target &lt;span class=
+  "math inline"&gt;&lt;em&gt;t&lt;/em&gt;&lt;/span&gt; broken by any change in &lt;span class=
+  "math inline"&gt;&lt;em&gt;C&lt;/em&gt;&lt;/span&gt;?" We identify this problem formulation and approaches to answer
+  it as &lt;em&gt;Transition Prediction&lt;/em&gt;, and discuss it in detail in the next section.&lt;/p&gt;
+&lt;h2 id="making-scheduling-decisions"&gt;Making Scheduling Decisions&lt;/h2&gt;
+&lt;p&gt;Our Transition Prediction model gives us "scores" from 0 to 1 indicating the propensity of
+  this target to be newly broken. Given that we rely on machine learning models for these
+  predictions, we must be careful to note that these scores do not meaningfully represent
+  probabilities. They are the product of an algorithm attempting to minimize a loss function
+  relative to its training dataset. While they can be colloquially understood to imply likelihood
+  and allow relative comparison, moving the threshold at which scores map onto decisions to (not)
+  schedule will produce non-linear changes to the actual observed probability of finding a breakage
+  ("recall") or scheduling false positives ("false positive rate").&lt;/p&gt;
+&lt;p&gt;Given this fact and our desire to have stable execution cost/latency under our scheduling
+  scheme, we choose to primarily rank targets and schedule the top-k highest ranking targets under
+  some top K parameter. For the purpose of this paper, this is our main parameter for tuning the
+  Speculative Cycle system while the remaining knobs exist in feature selection and training
+  configuration for the Transition Prediction ML model.&lt;/p&gt;
+&lt;h2 id="goal-of-finding-test-breakages"&gt;Goal of Finding Test Breakages&lt;/h2&gt;
+&lt;p&gt;As we've discussed, Postsubmit testing feeds into both Release pipelines and the breakage
+  triage/fixing workflow (what we call "Build Gardening"). Release implications of Speculative
+  Cycle(s) depend on many several other projects at play which are outside the scope of this paper.
+  The direct outcome is that newly detected build/test failures will now propagate to Build
+  Gardening consumers faster, namely:&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;Developers directly through emails sent upon detection of a failure&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Automated Culprit Finders that attempt to identify the specific culprit change&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Auto-Rollback reverts changes once it acquires enough evidence from culprit finders&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+
+&lt;p&gt;&lt;span id="fig:culprit-prop" label="fig:culprit-prop"&gt;
+    &lt;a href="images/icst-2025/fig1.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 1&lt;/strong&gt;&lt;/em&gt;
+    &lt;img alt="Figure 1" src="images/icst-2025/fig1.png"&gt;&lt;/a&gt;
+  &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;A developer or the automated culprit finders may only need a single target breakage (We will
+  denote this criterion as &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(1)&lt;/span&gt;)
+  to consider investigating and to identify a breaking change that needs to be reverted. But given
+  the non-determinism issues discussed above, auto-rollback requires a stronger signal - at least
+  &lt;span class="math inline"&gt;&lt;em&gt;N&lt;/em&gt;&lt;/span&gt; distinct targets were culprit-found to the same
+  change (&lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(&lt;em&gt;N&lt;/em&gt;)&lt;/span&gt;).
+  Both these goals are important to the health of the codebase, and while the former is a simple
+  and more intuitive metric, there is a strong argument to be made for the latter - in that the
+  number of distinct broken targets is a good proxy for the cost of that bad commit. The larger the
+  number of broken targets, the larger the likelihood that it falls under a configured Presubmit
+  testing directory, impacting developer productivity like we discussed above. Targets could belong
+  to multiple release-level project groups, and more targets being broken is a higher cost to
+  overall release health with more automation and production pushes being delayed or blocked.
+  Figure &lt;a href="#fig:culprit-prop" data-reference-type="ref" data-reference=
+  "fig:culprit-prop"&gt;[fig:culprit-prop]&lt;/a&gt; presents the total proportion of culprits remaining as
+  we increase &lt;span class="math inline"&gt;&lt;em&gt;N&lt;/em&gt;&lt;/span&gt; which follows a power law
+  distribution.&lt;/p&gt;
+&lt;h2 id="evaluating-performance"&gt;Evaluating Performance&lt;/h2&gt;
+&lt;p&gt;Culprit detection is then split between Comprehensive and Speculative Cycles. Under a specific
+  scheduling scheme, Speculative Cycles successfully detect some proportion of culprits before
+  Comprehensive Cycles. This proportion is the recall of the system. This recall in combination
+  with the actual run frequency and execution runtime of the two cycles determines the actual
+  reduction in culprit detection latency, where latency is defined relative to the submission time
+  of the culprit change. Depending on the consumer, latency improvements will have non-linear
+  marginal payoffs. For example, reduction from half a day to an hour may have measurable impacts
+  on development friction caused by failing tests, but reduction from a half hour to 10 minutes may
+  be negligible. Therefore, both metrics can be compared to the cost of a specific scheme in order
+  to justify value / viability of the system.&lt;/p&gt;
+&lt;h1 id="transition-prediction"&gt;Transition Prediction&lt;/h1&gt;
+&lt;p&gt;Transition Prediction (or &lt;em&gt;TRANSPRED&lt;/em&gt; for short) attempts to predict transition
+  likelihood every 20 minutes for millions of targets with a submission rate of over tens of
+  thousands of changes per day. In order to make this tractable and most importantly
+  cost-beneficial relative to simply running more tests, our predictions must be cheap and low
+  latency. This informs using simple tree-based model techniques like Gradient Boosted Decision
+  Trees and Random Forests. Tree-based models are used across industry for being low cost for
+  inference, avoid over-fitting, and achieve high performance with simple coarse grained features
+  like change and target metadata. We have found consistently throughout our work that Gradient
+  Boosted Tree models perform best for Google's coarse grained test selection problems.&lt;/p&gt;
+&lt;h2 id="features"&gt;Features&lt;/h2&gt;
+
+&lt;p&gt;&lt;span id="fig:feature-collection" label="fig:feature-collection"&gt;
+    &lt;a href="images/icst-2025/fig2.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 2&lt;/strong&gt;&lt;/em&gt;
+    &lt;img alt="Figure 2" src="images/icst-2025/fig2.png"&gt;&lt;/a&gt;
+  &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Figure &lt;a href="#fig:feature-collection" data-reference-type="ref" data-reference=
+  "fig:feature-collection"&gt;[fig:feature-collection]&lt;/a&gt; shows an overview of the structure of the
+  feature vector. In a production system, only features that can be acquired quickly and reliably
+  at scale can be used. The end-to-end latency of deciding which tests to run (including fetching
+  the data, assembling the feature vectors, and running the prediction) needs to be well under 20
+  minutes such that the current Speculative Cycle finishes before the next one begins. Thus, we are
+  using simple, cheap to compute, coarse grained metadata features from targets and commits. The
+  predictions are done per target so the features for one target are included in each feature
+  vector. However, the predictions are not done for a single commit but across a range of commits.
+  To increase the robustness of the commit based features, we only include commits that
+  &lt;em&gt;affect&lt;/em&gt; the target. A commit affects a target if the target is reachable in the build
+  graph from the files modified in the change.&lt;/p&gt;
+&lt;p&gt;Target level features include static and dynamic characteristics. The static items are
+  unchanging (or very rarely changing) and include target's programming language, whether it is a
+  test or build target, and its Bazel rule type, etc. The dynamic items are based on historical
+  execution data, such as the failure count in Postsubmit and Presubmit over several different time
+  windows. Commit level features include: change metadata like lines of code modified, number of
+  reviewers, number of linked bugs, description, etc. Finally, some features correspond to the
+  relationship between the target and the changes in this specific cycle - specifically its build
+  graph distance to the files modified and whether the target was run at Presubmit time.&lt;/p&gt;
+
+&lt;p&gt;&lt;span id="table:featureDescription" label="table:featureDescription"&gt;
+    &lt;a href="images/icst-2025/table1.png"&gt;&lt;em&gt;&lt;strong&gt;Table 1&lt;/strong&gt;&lt;/em&gt;
+    &lt;img alt="Table 1" src="images/icst-2025/table1.png"&gt;&lt;/a&gt;
+  &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Table &lt;a href="#table:featureDescription" data-reference-type="ref" data-reference=
+  "table:featureDescription"&gt;[table:featureDescription]&lt;/a&gt; contains details on the features used
+  in the production model ('BASE') and those added for this paper ('AUG'), for augmented).&lt;/p&gt;
+&lt;h2 id="labeling"&gt;Labeling&lt;/h2&gt;
+&lt;p&gt;Our data set has a row/vector for each target in each Speculative Cycle. In order to train the
+  model, we need to label each vector with whether or not that target should be run in the given
+  Speculative Cycle. Optimally the targets should only be run when a new failure is introduced into
+  the repository. We use the verified culprits data set described previously &lt;span class="citation"
+  data-cites="Henderson2023 Henderson2024"&gt;(&lt;a href="#ref-Henderson2023" role=
+  "doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;, &lt;a href="#ref-Henderson2024" role=
+  "doc-biblioref"&gt;2024&lt;/a&gt;)&lt;/span&gt; as our source of truth on which commits introduced breakages.
+  Unfortunately, the automated culprit finders de-prioritize comprehensiveness in favor of finding
+  results quickly for active breakages blocking developers. This can leave some target level
+  breakages with no culprit-identifying labels for up to two weeks after the failures was
+  detected.&lt;/p&gt;
+&lt;p&gt;In addition, some flakiness in tests and builds may be caused by something outside of the code
+  and configuration checked into the repository. For example, a buggy compiler action may
+  non-deterministically miscompile a file causing the linker to fail when it happens. Because the
+  compile action "succeeds" (produces an output and no error code), the output of the compiler (the
+  object file) will be cached. Subsequent builds will re-use the cached output and fail when
+  attempting to link. However, if the cached item expires or the build happens in a different data
+  center with a different cache the linker action may succeed (when the compiler behaved
+  correctly). This type of flakiness is difficult to diagnose real-time with only build
+  re-executions due to the multiple layers of caching. However, build executions separated in time
+  have a better chance of identifying the flaky behavior.&lt;/p&gt;
+&lt;p&gt;In order to protect against unavailability of data, we perform labeling a full week after the
+  inference examples are acquired. As we've described, this still does not completely shield us
+  from both incorrect positives and lack of coverage but is the best ground truth we have.&lt;/p&gt;
+&lt;h2 id="super-extreme-class-imbalance"&gt;Super Extreme Class Imbalance&lt;/h2&gt;
+&lt;p&gt;Postsubmit breakages are exceedingly rare. The only target-vector rows in our dataset that
+  need to be scheduled are targets that are newly broken. This only occurs 0.0001% of the time. In
+  model training, we refer to the class with fewer examples at the &lt;em&gt;minority class&lt;/em&gt; while
+  the class with more examples is the &lt;em&gt;majority class&lt;/em&gt;. In our problem, the minority class
+  is these newly broken targets just described.&lt;/p&gt;
+&lt;p&gt;When there are too few examples in the minority class, the effectiveness of the many training
+  algorithms is reduced. The "loss" (e.g. the function model training is optimizing) becomes biased
+  towards the majority class. A classic pathological case is a model that trivially predicts the
+  majority class - that is, predicts the majority class every time and never predicts the minority
+  class. These models will actually minimize the loss function even though they never make useful
+  predictions. Our approach must guard against these biases if we want to usefully predict which
+  tests to run during a Speculative Cycle.&lt;/p&gt;
+&lt;p&gt;For our system, we downsample the negative class (targets that are not newly failing). This
+  reduces the imbalance between the classes. It also implicitly values the True Positives (new
+  breakages) higher than the True Negatives. Every false negative (missed breakage) leads to
+  developer toil as the detection of the breakage is delayed. Given the super extreme imbalance
+  between the classes, we expect most targets run during a Speculative Cycle are to be False
+  Negatives (and not indicate a new breakage).&lt;/p&gt;
+&lt;h2 id="training-configuration"&gt;Training Configuration&lt;/h2&gt;
+&lt;p&gt;For our model, we use the Yggdrasil Decision Forest library (YDF) &lt;span class="citation"
+  data-cites="Guillame-Bert2023"&gt;(&lt;a href="#ref-Guillame-Bert2023" role=
+  "doc-biblioref"&gt;Guillame-Bert et al. 2023&lt;/a&gt;)&lt;/span&gt;. YDF touts superior decision tree sampling
+  and splitting algorithms over prior algorithms (such as XGBoost &lt;span class="citation"
+  data-cites="chen2016xgboost"&gt;(&lt;a href="#ref-chen2016xgboost" role=
+  "doc-biblioref"&gt;&lt;strong&gt;chen2016xgboost?&lt;/strong&gt;&lt;/a&gt;)&lt;/span&gt;) and provides better integration
+  with Google's machine learning infrastructure.&lt;/p&gt;
+&lt;p&gt;Conventional training schemes randomly shard their dataset between train, validation, and test
+  splits or perhaps perform cross-validation with a set of parallel splits. For our problem,
+  randomized splits are harmful and lead to us overestimating our performance as we leak
+  time-dependent attributes of the repository across sets. Instead, we create time-ordered splits
+  where the train set consists of the first &lt;span class="math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;/span&gt; days, the
+  validation set the next &lt;span class="math inline"&gt;&lt;em&gt;B&lt;/em&gt;&lt;/span&gt; days, and the test set the
+  final &lt;span class="math inline"&gt;&lt;em&gt;C&lt;/em&gt;&lt;/span&gt; days.&lt;/p&gt;
+&lt;h1 id="sec:evaluation"&gt;Empirical Evaluation&lt;/h1&gt;
+&lt;h2 id="evaluation"&gt;Evaluation&lt;/h2&gt;
+&lt;p&gt;We empirically evaluated Speculative Cycles against a baseline random scheduler on
+  culprit-detection recall and against an optimal algorithm for evaluating culprit detection
+  latency improvements. We evaluated different dataset pruning/selection and training
+  configurations to discover important hyper-parameters for the Transition Prediction model on a
+  standard set of features. We examined three research questions:&lt;/p&gt;
+&lt;h2 id="research-questions"&gt;Research Questions&lt;/h2&gt;
+&lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;What is the performance of Speculative Cycles with Transition Prediction in terms of
+      percentage of novel breakages detected (recall) in comparison to a baseline randomized
+      testing approach?&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Speculative cycles compete with full testing cycles for machine resources. Do speculative
+      cycles improve productivity outcomes for Google developers?&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;What aspects of the model design most impact system performance? Considered aspects
+      include features selected, super-extreme class imbalance corrections, and training
+      environment.&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;h2 id="measuring-performance-recall"&gt;Measuring Performance (Recall)&lt;/h2&gt;
+&lt;p&gt;Speculative Cycles as a system attempts to detect bug introducing changes (culprits) through
+  running and surfacing at least &lt;span class="math inline"&gt;&lt;em&gt;N&lt;/em&gt;&lt;/span&gt; newly failing targets.
+  Specifically, the goal is to capture the majority of (newly failing) target results that detect
+  novel bugs introduced into the repository with the faster Speculative Cycles instead of the
+  slower Comprehensive Cycles. This naturally lends itself to measurement in the form of recall -
+  the percentage of these events we capture.&lt;/p&gt;
+&lt;p&gt;We additionally observe that our dataset is imperfect. Not every commit labeled as a "culprit"
+  is indeed a bug introducing change. As discussed above, our datasets contains some inaccuracies
+  particularly when a particular culprit commit only a few targets "blaming" it.&lt;a href="#fn2"
+  class="footnote-ref" id="fnref2" role="doc-noteref"&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt; The distribution in the
+  number of targets blaming a culprit follows a power law distribution. The majority of culprits
+  are blamed by fewer than 10 targets. However, the lower the number of blamed targets the more
+  likely it is that the culprit finding was inaccurate and that the commit does not in fact
+  introduce a bug. In our labels, the signal is highest for culprits with many targets blaming them
+  and lowest when there is only a single target. To protect our system from the noise these "small"
+  culprits are filtered out during training.&lt;/p&gt;
+&lt;p&gt;We use &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(&lt;em&gt;n&lt;/em&gt;)&lt;/span&gt;
+  to denote the subset of culprits that have at least &lt;span class="math inline"&gt;&lt;em&gt;n&lt;/em&gt;&lt;/span&gt;
+  targets blaming each culprit. In our evaluation, we provide recall over both (a) &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(1)&lt;/span&gt; -
+  the set of all culprits and (b) &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(10)&lt;/span&gt; -
+  the set of culprits causing at least 10 target breakages where we successfully detect 10
+  breakages. &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(10)&lt;/span&gt;
+  also ensures that we meet the (traditional) minimum required threshold (i.e. 10 failing targets)
+  to trigger an automatic rollback. Speculative Cycles sees its highest value in terms of mean
+  time-to-fix when automatic rollbacks are correctly triggered (especially for commits that have
+  wider impact radius). Therefore, by assessing Recall using &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(10)&lt;/span&gt;
+  we also assess whether or not the Speculative Cycle can find enough evidence to trigger
+  rollbacks.&lt;/p&gt;
+&lt;h2 id="measuring-productivity-outcomes-latency-improvement"&gt;Measuring Productivity Outcomes
+  (Latency Improvement)&lt;/h2&gt;
+&lt;p&gt;Although recall is a concrete metric, our true goal is to improve productivity by reducing
+  &lt;em&gt;friction&lt;/em&gt; caused by breakages that slipped into Postsubmit. Speculative Cycles focuses on
+  early detection of breakages (and their culprit detection and fix) to reduce the friction caused
+  by bad commits in Postsubmit. Its impact is measured by the reduction in "breakage detection
+  latency". Early detection and fix also improves the mean time to fix latency for bad commits. We
+  will evaluate the "breakage detection latency" decrease as a percentage relative to the current
+  latency using empirically observed timings for running both Speculative and Comprehensive over
+  the days present in our test dataset.&lt;/p&gt;
+&lt;h2 id="high-priority-configuration-of-training-scheme"&gt;High Priority Configuration of Training
+  Scheme&lt;/h2&gt;
+&lt;p&gt;In general, it is considered good practice in machine learning to prioritize dataset quality
+  over attempting to fine tune model level hyper-parameters. We have similarly observed little
+  value in specific training parameters and use YDF's defaults for Gradient Boosted Trees for this
+  work to show the general case performance expected. The more interesting questions that pertain
+  to our dataset configuration are:&lt;/p&gt;
+&lt;h3 id="training-split-window-size"&gt;Training Split / Window Size&lt;/h3&gt;
+&lt;p&gt;As we use time based splitting to avoid the issue of "time-traveling" across the datasets, our
+  training split configuration determines both the training "window size" and the "delay" between
+  the training and test datasets.&lt;/p&gt;
+&lt;p&gt;We hypothesized that the training data may have some recency bias. A shorter/ more recent
+  look-back horizon on the training data may contain more useful signal for predicting the
+  likelihood of a target transitioning. A longer window could dilute the usefulness of more recent
+  breakages, while introducing noise from old breakages that have since been fixed and are less
+  likely to reoccur. In order to test this hypothesis, we ran the model five times using the same
+  feature set and configuration, only changing the number of weeks of data used during training.
+  Note that our production pipeline uses a 3:1:1 week split for training:test:validation.&lt;/p&gt;
+&lt;h3 id="downsampling-and-upweighting"&gt;Downsampling and Upweighting&lt;/h3&gt;
+&lt;p&gt;Our extreme class imbalance of &lt;span class="math inline"&gt;40, 000 : 1&lt;/span&gt; necessitates
+  downsampling our negative class to a ratio that is compute-efficient, but also avoids trivially
+  predicting 0. Upweighting the positive class can be useful to appropriately value positive
+  examples with respect to the loss function of the training algorithm. The ratios of down-sampling
+  listed above reduced our class imbalance ratio to &lt;span class="math inline"&gt;400 : 1&lt;/span&gt;,
+  &lt;span class="math inline"&gt;200 : 1&lt;/span&gt;, and &lt;span class="math inline"&gt;40 : 1&lt;/span&gt;
+  respectively. For each case, we then upweighted the positive samples of target breaking commits
+  by the new class imbalance ratio to see what effect, if any, it had on improving model
+  performance.&lt;/p&gt;
+&lt;h2 id="dataset"&gt;Dataset&lt;/h2&gt;
+&lt;p&gt;Our evaluation dataset consists of roughly 3 months of Transition Prediction data split across
+  Train, Validation, and Test sets. In total, the dataset consisted of 120 Billion target-cycle
+  pairs, 7.7 million of which were breaking targets. This corresponds to &lt;span class=
+  "math inline"&gt;∼&lt;/span&gt;20 thousand unique culprits. As mentioned above, we ensure that our splits
+  are entirely sequential and disjoint to avoid cross contamination. The exact split and training
+  configuration is varied while answering RQ3. We then fix our most performant model for evaluating
+  RQ1 against the BASELINE random prediction and for RQ2 against latency in the CI environment with
+  only Comprehensive Cycles.&lt;/p&gt;
+&lt;h1 id="sec:results"&gt;Results&lt;/h1&gt;
+&lt;h2 id="summary-of-results"&gt;Summary of Results&lt;/h2&gt;
+&lt;li&gt;
+  &lt;div class="tcolorbox"&gt;
+    &lt;p&gt;&lt;em&gt;&lt;strong&gt;Note&lt;/strong&gt;&lt;/em&gt;: For RQ1 and RQ2, the model was trained using the 'AUG'
+    feature set (Table &lt;a href="#table:featureDescription" data-reference-type="ref"
+    data-reference="table:featureDescription"&gt;[table:featureDescription]&lt;/a&gt;), a 3-week training
+    window, a 0.01 downsampling rate for the majority class, and no upweighting for the minority
+    class. This configuration matches our production model, except for the feature set. RQ3
+    explores performance across configurations.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;/li&gt;
+&lt;h2 class="unnumbered" id=
+  "rq1-what-is-the-performance-of-speculative-cycles-with-transition-prediction-in-terms-of-percentage-of-novel-breakages-detected-recall-in-comparison-to-a-baseline-randomized-testing-approach"&gt;
+  &lt;strong&gt;RQ1&lt;/strong&gt;: What is the performance of Speculative Cycles with Transition Prediction in
+  terms of percentage of novel breakages detected (recall) in comparison to a baseline randomized
+  testing approach?&lt;/h2&gt;
+
+&lt;p&gt;&lt;span id="fig:cl-level-recall" label="fig:cl-level-recall"&gt;
+    &lt;a href="images/icst-2025/fig3.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 3&lt;/strong&gt;&lt;/em&gt;
+    &lt;img alt="Figure 3" src="images/icst-2025/fig3.png"&gt;&lt;/a&gt;
+  &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;TRANSPRED demonstrates superior recall compared to the BASELINE model across all
+  budgets (see Figure &lt;a href="#fig:cl-level-recall" data-reference-type="ref" data-reference=
+  "fig:cl-level-recall"&gt;[fig:cl-level-recall]&lt;/a&gt;). At a budget of 25% of the total targets,
+  TRANSPRED achieves a recall of 85%, greater than the BASELINE model's recall of 56%. This
+  highlights the model's effectiveness in identifying breaking changes with limited
+  resources.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In the context of Transition Prediction, recall measures the percentage of breaking changes
+  identified using a given budget. The budget parameterizes the recall metric as shown in Figure
+  &lt;a href="#fig:cl-level-recall" data-reference-type="ref" data-reference=
+  "fig:cl-level-recall"&gt;[fig:cl-level-recall]&lt;/a&gt;. To simplify the complex accounting of machine
+  and test costs, we use the percentage of targets scheduled by TRANSPRED (versus a Comprehensive
+  Cycle). Our budget for this assessment is 25% of the targets that would have been used by a
+  Comprehensive Cycle. Recall is then defined as percentage of culprits identified out of the total
+  set of culprits.&lt;/p&gt;
+&lt;p&gt;Figure &lt;a href="#fig:cl-level-recall" data-reference-type="ref" data-reference=
+  "fig:cl-level-recall"&gt;[fig:cl-level-recall]&lt;/a&gt; provides a visual representation of how recall
+  changes as the percentage of scheduled targets varies, comparing the performance of TRANSPRED
+  against the BASELINE model. For each model the figure shows the recall of both &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(1)&lt;/span&gt;
+  and &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(10)&lt;/span&gt;.
+  &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(1)&lt;/span&gt;
+  corresponds to finding any target for a breakage or informally, that breakages are at least
+  "identified". The recall for &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(10)&lt;/span&gt;
+  concentrates on finding breakages with at least 10 targets broken - including scheduling at least
+  10 of those broken targets to ensure auto rollback has enough evidence to trigger.&lt;/p&gt;
+&lt;p&gt;For TRANSPRED, the &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(10)&lt;/span&gt;
+  recall is higher than the &lt;span class=
+  "math inline"&gt;&lt;em&gt;A&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;&lt;em&gt;L&lt;/em&gt;&lt;em&gt;e&lt;/em&gt;&lt;em&gt;a&lt;/em&gt;&lt;em&gt;s&lt;/em&gt;&lt;em&gt;t&lt;/em&gt;(1)&lt;/span&gt;
+  recall. This indicates the model is better at catching bad commits that break 10 or more targets.
+  It's intuitive that larger breakages would be better handled by the model as they are much better
+  represented in the dataset, but an interesting result that we have is better coverage of them,
+  i.e., consistently finding more individual targets broken by such commits. Culprits that only
+  break a few tests are arguably less consequential than the few culprits that break a large number
+  of tests. This strong performance on commits that break at least 10 targets indicates that when
+  TRANSPRED does find a break, it has a good chance to be rolled back automatically.&lt;/p&gt;
+&lt;p&gt;Both configurations for TRANSPRED outperform the BASELINE random model, indicating that the
+  model is learning something useful from metadata and that the metadata alone (without considering
+  the content of the changes) can be predictive of breakages. We look forward to future experiments
+  utilizing the content of commits that compare both the efficacy and the model costs.&lt;/p&gt;
+&lt;h2 class="unnumbered" id=
+  "rq2-speculative-cycles-compete-with-full-testing-cycles-for-machine-resources-what-configurations-of-speculative-cycles-improve-productivity-outcomes-for-google-developers"&gt;
+  &lt;strong&gt;RQ2&lt;/strong&gt;: Speculative Cycles compete with full testing cycles for machine resources,
+  what configurations of Speculative Cycles improve productivity outcomes for Google
+  developers?&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Speculative Cycles reduce the median (p50) breakage detection latency by 65% (70
+  minutes) over the existing Comprehensive Cycles.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span id="fig:detection-latency" label="fig:detection-latency"&gt;
+    &lt;a href="images/icst-2025/fig4.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 4&lt;/strong&gt;&lt;/em&gt;
+    &lt;img alt="Figure 4" src="images/icst-2025/fig4.png"&gt;&lt;/a&gt;
+  &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Figure &lt;a href="#fig:detection-latency" data-reference-type="ref" data-reference=
+  "fig:detection-latency"&gt;[fig:detection-latency]&lt;/a&gt; visualizes a histogram of the performance of
+  the model in terms of &lt;em&gt;breakage detection latency&lt;/em&gt;. We consider this metric to be the
+  "outcome metric" for this work as it is a proxy for improving overall developer productivity. It
+  is known from internal work that developer productivity degrades when they need to debug build
+  and test breakages they did not cause during interactive development. Productivity also degrades
+  when they are interrupted to troubleshoot releases stalled due to breakages. By reducing the
+  total time from culprit commit submission to detection, the model reduces the amount of friction
+  developers experience from breakages.&lt;/p&gt;
+&lt;p&gt;As with RQ1, we have fixed TRANSPRED to represent Speculative Cycles using the same Transition
+  Prediction model and scheduling 25% of targets. In the visualization, the model (in black) is
+  compared against two alternatives. The first labeled "Only Comprehensive" shows the distribution
+  of time (in minutes) it takes the current TAP Postsubmit scheduling algorithm (Comprehensive
+  Cycles) to detect breakages. The second alternative, "Optimal" imagines a perfect model that
+  always correctly predicts which target need to be scheduled. Our model, TRANSPRED, falls between
+  these two extremes of no-improvement to full-improvement. Observe that in comparison to "Only
+  Comprehensive" the variance of breakage detection latency for TRANSPRED is substantially reduced.
+  While, the new model isn't perfect (as shown in the figure), it is a welcome result that the
+  Speculative Cycles reliably finds culprit commits in 37 minutes in the median case (p50), a 65%
+  latency reduction over traditional Comprehensive Cycles that (p50) take 107 minutes.&lt;/p&gt;
+&lt;h2 class="unnumbered" id=
+  "rq3what-aspects-of-the-model-design-most-impact-performance-considered-aspects-include-features-selected-super-extreme-class-imbalance-corrections-and-training-environment."&gt;
+  &lt;strong&gt;RQ3&lt;/strong&gt;:What aspects of the model design most impact performance? Considered aspects
+  include features selected, super-extreme class imbalance corrections, and training
+  environment.&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;The feature set used and the training window length had the greatest impact on model
+  performance as measured by ROC AUC. Downsampling is critical for training speed but further
+  downsampling hurts performance while upweighting has negligible impact.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To better understand how model design impacts performance, we ran multiple experiments across
+  the different axes of decision making, including 1) feature selection, 2) training environment.
+  and 3) different ways to correct for the super-extreme class imbalance&lt;/p&gt;
+&lt;h3 id="feature-selection"&gt;Feature Selection&lt;/h3&gt;
+
+&lt;p&gt;&lt;span id="table:samplingAndWeightTable" label="table:training-length"&gt;
+  &lt;span id="table:training-length" label="table:training-length"&gt;
+    &lt;a href="images/icst-2025/table2-3.png"&gt;&lt;em&gt;&lt;strong&gt;Tables 2 and 3&lt;/strong&gt;&lt;/em&gt;
+    &lt;img alt="Tables 2 and 3" src="images/icst-2025/table2-3.png"&gt;&lt;/a&gt;
+  &lt;/span&gt;
+  &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Table &lt;a href="#table:training-length" data-reference-type="ref" data-reference=
+  "table:training-length"&gt;[table:training-length]&lt;/a&gt; shows an improvement in performance when the
+  model is trained on the 'AUGMENTED' feature set vs 'BASE' set, regardless of number of weeks
+  considered for the training window. Critically, we see a lot of signal coming from the added
+  target history features over longer time intervals.&lt;/p&gt;
+&lt;h3 id="training-environment"&gt;Training Environment&lt;/h3&gt;
+&lt;p&gt;Table &lt;a href="#table:training-length" data-reference-type="ref" data-reference=
+  "table:training-length"&gt;[table:training-length]&lt;/a&gt; indicates our hypothesis was correct -
+  performance starts to degrade as we increase or decrease the training window length from the
+  optimal 3 weeks.&lt;/p&gt;
+&lt;h3 id="correcting-for-super-extreme-class-imbalance"&gt;Correcting for Super-Extreme Class
+  Imbalance&lt;/h3&gt;
+&lt;p&gt;Production systems exhibit extremely low Postsubmit breakage rates (40,000:1 in our case).
+  This class imbalance can hinder model training by biasing it towards the majority class. However,
+  due to the asymmetric cost of false positives (unnecessary execution) versus false negatives
+  (late breakage detection), prioritizing catching newly breaking targets at the cost of
+  incorrectly scheduling some healthy targets is acceptable. This lets us experiment with some
+  imbalance-correction techniques without being strictly bound to the true breakage rate, as shown
+  in Table &lt;a href="#table:samplingAndWeightTable" data-reference-type="ref" data-reference=
+  "table:samplingAndWeightTable"&gt;[table:samplingAndWeightTable]&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id="related-work"&gt;Related Work&lt;/h1&gt;
+&lt;p&gt;This paper explored the problem of reducing the time to discovery of novel test failures in
+  continuous integration. This is a variation of the well studied problem of Test Case
+  Prioritization and Selection &lt;span class="citation" data-cites=
+  "Bates1993 Rothermel1997 Elbaum2000 Leon2003 Engstrom2010 Zhou2010 Singh2012 Gligoric2014 Mondal2015 Musa2015 DeS.CamposJunior2017 Najafi2019 Machalica2019 DeCastro-Cabrera2020 pan2022 Jin2023"&gt;
+  (&lt;a href="#ref-Bates1993" role="doc-biblioref"&gt;Bates and Horwitz 1993&lt;/a&gt;; &lt;a href=
+  "#ref-Rothermel1997" role="doc-biblioref"&gt;Rothermel and Harrold 1997&lt;/a&gt;; &lt;a href=
+  "#ref-Elbaum2000" role="doc-biblioref"&gt;Elbaum, Malishevsky, and Rothermel 2000&lt;/a&gt;; &lt;a href=
+  "#ref-Leon2003" role="doc-biblioref"&gt;Leon and Podgurski 2003&lt;/a&gt;; &lt;a href="#ref-Engstrom2010"
+  role="doc-biblioref"&gt;Engström, Runeson, and Skoglund 2010&lt;/a&gt;; &lt;a href="#ref-Zhou2010" role=
+  "doc-biblioref"&gt;Zhou 2010&lt;/a&gt;; &lt;a href="#ref-Singh2012" role="doc-biblioref"&gt;Singh et al.
+  2012&lt;/a&gt;; &lt;a href="#ref-Gligoric2014" role="doc-biblioref"&gt;Gligoric et al. 2014&lt;/a&gt;; &lt;a href=
+  "#ref-Mondal2015" role="doc-biblioref"&gt;Mondal, Hemmati, and Durocher 2015&lt;/a&gt;; &lt;a href=
+  "#ref-Musa2015" role="doc-biblioref"&gt;Musa et al. 2015&lt;/a&gt;; &lt;a href="#ref-DeS.CamposJunior2017"
+  role="doc-biblioref"&gt;de S. Campos Junior et al. 2017&lt;/a&gt;; &lt;a href="#ref-Najafi2019" role=
+  "doc-biblioref"&gt;Najafi, Shang, and Rigby 2019&lt;/a&gt;; &lt;a href="#ref-Machalica2019" role=
+  "doc-biblioref"&gt;Machalica et al. 2019&lt;/a&gt;; &lt;a href="#ref-DeCastro-Cabrera2020" role=
+  "doc-biblioref"&gt;De Castro-Cabrera, García-Dominguez, and Medina-Bulo 2020&lt;/a&gt;; &lt;a href=
+  "#ref-pan2022" role="doc-biblioref"&gt;Pan et al. 2022&lt;/a&gt;; &lt;a href="#ref-Jin2023" role=
+  "doc-biblioref"&gt;Jin and Servant 2023&lt;/a&gt;)&lt;/span&gt; adapted to the CI environment &lt;span class=
+  "citation" data-cites=
+  "Chen2020 Saidani2020 Abdalkareem2021 Abdalkareem2021a Al-Sabbagh2022 Saidani2022 Saidani2022a Jin2023 Jin2024 Liu2023 Hong2024 Sun2024 Wang2024 Zeng2024"&gt;
+  (&lt;a href="#ref-Chen2020" role="doc-biblioref"&gt;Chen et al. 2020&lt;/a&gt;; &lt;a href="#ref-Saidani2020"
+  role="doc-biblioref"&gt;Saidani et al. 2020&lt;/a&gt;; &lt;a href="#ref-Abdalkareem2021" role=
+  "doc-biblioref"&gt;Abdalkareem, Mujahid, and Shihab 2021&lt;/a&gt;; &lt;a href="#ref-Abdalkareem2021a" role=
+  "doc-biblioref"&gt;Abdalkareem et al. 2021&lt;/a&gt;; &lt;a href="#ref-Al-Sabbagh2022" role=
+  "doc-biblioref"&gt;Al-Sabbagh, Staron, and Hebig 2022&lt;/a&gt;; &lt;a href="#ref-Saidani2022" role=
+  "doc-biblioref"&gt;Saidani, Ouni, and Mkaouer 2022a&lt;/a&gt;, &lt;a href="#ref-Saidani2022a" role=
+  "doc-biblioref"&gt;2022b&lt;/a&gt;; &lt;a href="#ref-Jin2023" role="doc-biblioref"&gt;Jin and Servant 2023&lt;/a&gt;;
+  &lt;a href="#ref-Jin2024" role="doc-biblioref"&gt;Jin et al. 2024&lt;/a&gt;; &lt;a href="#ref-Liu2023" role=
+  "doc-biblioref"&gt;Liu et al. 2023&lt;/a&gt;; &lt;a href="#ref-Hong2024" role="doc-biblioref"&gt;Hong et al.
+  2024&lt;/a&gt;; &lt;a href="#ref-Sun2024" role="doc-biblioref"&gt;Sun, Habchi, and McIntosh 2024&lt;/a&gt;;
+  &lt;a href="#ref-Wang2024" role="doc-biblioref"&gt;G. Wang et al. 2024&lt;/a&gt;; &lt;a href="#ref-Zeng2024"
+  role="doc-biblioref"&gt;Zeng et al. 2024&lt;/a&gt;)&lt;/span&gt;. Our approach is predicated on having highly
+  accurate historical information on what causes breakages in the Google environment. We achieve
+  this through culprit finding and verification &lt;span class="citation" data-cites=
+  "Henderson2023 Henderson2024"&gt;(&lt;a href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al.
+  2023&lt;/a&gt;, &lt;a href="#ref-Henderson2024" role="doc-biblioref"&gt;2024&lt;/a&gt;)&lt;/span&gt;. Culprit finding
+  &lt;span class="citation" data-cites=
+  "Couder2008 Ziftci2013a Ziftci2017 Saha2017 Najafi2019a Beheshtian2022 keenan2019 An2021 Ocariza2022"&gt;
+  (&lt;a href="#ref-Couder2008" role="doc-biblioref"&gt;Couder 2008&lt;/a&gt;; &lt;a href="#ref-Ziftci2013a" role=
+  "doc-biblioref"&gt;Ziftci and Ramavajjala 2013&lt;/a&gt;; &lt;a href="#ref-Ziftci2017" role=
+  "doc-biblioref"&gt;Ziftci and Reardon 2017&lt;/a&gt;; &lt;a href="#ref-Saha2017" role="doc-biblioref"&gt;Saha
+  and Gligoric 2017&lt;/a&gt;; &lt;a href="#ref-Najafi2019a" role="doc-biblioref"&gt;Najafi, Rigby, and Shang
+  2019&lt;/a&gt;; &lt;a href="#ref-Beheshtian2022" role="doc-biblioref"&gt;Beheshtian, Bavand, and Rigby
+  2022&lt;/a&gt;; &lt;a href="#ref-keenan2019" role="doc-biblioref"&gt;Keenan 2019&lt;/a&gt;; &lt;a href="#ref-An2021"
+  role="doc-biblioref"&gt;An and Yoo 2021&lt;/a&gt;; &lt;a href="#ref-Ocariza2022" role="doc-biblioref"&gt;Ocariza
+  2022&lt;/a&gt;)&lt;/span&gt; aims to identify the true "bug introducing commits" (BICs) &lt;span class=
+  "citation" data-cites="Sliwerski2005 Rodriguez-Perez2018 Borg2019 Wen2019 An2023"&gt;(&lt;a href=
+  "#ref-Sliwerski2005" role="doc-biblioref"&gt;Śliwerski, Zimmermann, and Zeller 2005&lt;/a&gt;; &lt;a href=
+  "#ref-Rodriguez-Perez2018" role="doc-biblioref"&gt;Rodríguez-Pérez, Robles, and González-Barahona
+  2018&lt;/a&gt;; &lt;a href="#ref-Borg2019" role="doc-biblioref"&gt;Borg et al. 2019&lt;/a&gt;; &lt;a href=
+  "#ref-Wen2019" role="doc-biblioref"&gt;Wen et al. 2019&lt;/a&gt;; &lt;a href="#ref-An2023" role=
+  "doc-biblioref"&gt;An et al. 2023&lt;/a&gt;)&lt;/span&gt; by rerunning tests over the search space of possible
+  versions.&lt;/p&gt;
+&lt;p&gt;The extensive amount of work on test selection and prioritization makes it difficult to fully
+  summarize outside of a survey &lt;span class="citation" data-cites=
+  "Engstrom2010 Singh2012 DeS.CamposJunior2017 DeCastro-Cabrera2020 pan2022"&gt;(&lt;a href=
+  "#ref-Engstrom2010" role="doc-biblioref"&gt;Engström, Runeson, and Skoglund 2010&lt;/a&gt;; &lt;a href=
+  "#ref-Singh2012" role="doc-biblioref"&gt;Singh et al. 2012&lt;/a&gt;; &lt;a href="#ref-DeS.CamposJunior2017"
+  role="doc-biblioref"&gt;de S. Campos Junior et al. 2017&lt;/a&gt;; &lt;a href="#ref-DeCastro-Cabrera2020"
+  role="doc-biblioref"&gt;De Castro-Cabrera, García-Dominguez, and Medina-Bulo 2020&lt;/a&gt;; &lt;a href=
+  "#ref-pan2022" role="doc-biblioref"&gt;Pan et al. 2022&lt;/a&gt;)&lt;/span&gt;. Here are some highlights. Early
+  work in test selection focused on selecting tests while maintaining test suite "adequacy"
+  according to some (usually coverage based) criterion. For instance Bates and Horwitz &lt;span class=
+  "citation" data-cites="Bates1993"&gt;(&lt;a href="#ref-Bates1993" role="doc-biblioref"&gt;Bates and
+  Horwitz 1993&lt;/a&gt;)&lt;/span&gt; define a coverage criterion based on coverage of elements in the Program
+  Dependence Graph (PDG) &lt;span class="citation" data-cites="Horwitz1988 Podgurski1989"&gt;(&lt;a href=
+  "#ref-Horwitz1988" role="doc-biblioref"&gt;Horwitz, Prins, and Reps 1988&lt;/a&gt;; &lt;a href=
+  "#ref-Podgurski1989" role="doc-biblioref"&gt;Podgurski and Clarke 1989&lt;/a&gt;)&lt;/span&gt; and Rothermel and
+  Harrold developed a regression selection technique based on the PDG &lt;span class="citation"
+  data-cites="Rothermel1997"&gt;(&lt;a href="#ref-Rothermel1997" role="doc-biblioref"&gt;Rothermel and
+  Harrold 1997&lt;/a&gt;)&lt;/span&gt;. By 2000 papers such as Elbaum &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation"
+  data-cites="Elbaum2000"&gt;(&lt;a href="#ref-Elbaum2000" role="doc-biblioref"&gt;Elbaum, Malishevsky, and
+  Rothermel 2000&lt;/a&gt;)&lt;/span&gt;'s were looking at prioritizing test cases based statement coverage to
+  speed up test suite execution and evaluating performance based on the now standard &lt;em&gt;average
+  percentage of faults detected&lt;/em&gt; (APFD) metric. By 2003, the community was starting to look for
+  other sources of data to prioritize and filter test cases. For instance, Leon and Podgurski
+  &lt;span class="citation" data-cites="Leon2003"&gt;(&lt;a href="#ref-Leon2003" role="doc-biblioref"&gt;Leon
+  and Podgurski 2003&lt;/a&gt;)&lt;/span&gt; compared the bug finding efficacy (APFD) of coverage techniques
+  versus techniques that prioritized diversity of basic block execution profiles (that included
+  execution counts). In 2010 Engstrom &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation" data-cites=
+  "Engstrom2010"&gt;(&lt;a href="#ref-Engstrom2010" role="doc-biblioref"&gt;Engström, Runeson, and Skoglund
+  2010&lt;/a&gt;)&lt;/span&gt; surveyed the state of the test selection and documented 28 techniques.&lt;/p&gt;
+&lt;p&gt;In 2017 the TAP team at Google began publishing on the problem &lt;span class="citation"
+  data-cites="Memon2017 Leong2019"&gt;(&lt;a href="#ref-Memon2017" role="doc-biblioref"&gt;Memon et al.
+  2017&lt;/a&gt;; &lt;a href="#ref-Leong2019" role="doc-biblioref"&gt;Leong et al. 2019&lt;/a&gt;)&lt;/span&gt; and
+  separately a partner team had put into production an ML based test filtering system for TAP
+  Presubmit. In contrast to this prior work by TAP, our current work is better grounded because of
+  the verified culprits dataset we created in the last several years. For Memon &lt;em&gt;et al.&lt;/em&gt;
+  &lt;span class="citation" data-cites="Memon2017"&gt;(&lt;a href="#ref-Memon2017" role=
+  "doc-biblioref"&gt;Memon et al. 2017&lt;/a&gt;)&lt;/span&gt; TAP did not yet have a robust culprit finding
+  system to precisely identify the bug introducing changes. Instead, that paper attempted to infer
+  what commits might be the culprit. In Leong &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation" data-cites=
+  "Leong2019"&gt;(&lt;a href="#ref-Leong2019" role="doc-biblioref"&gt;Leong et al. 2019&lt;/a&gt;)&lt;/span&gt; TAP did
+  have a culprit finder but it was not as robust against flakiness and non-determinism as our
+  current system. Our current culprit finder uses the Flake Aware algorithm (FACF) that adaptively
+  deflakes the tests while performing culprit finding. Additionally, we further &lt;em&gt;verify&lt;/em&gt; all
+  culprit commits by doing additional executions in patterns designed to catch flaky behavior
+  &lt;span class="citation" data-cites="Henderson2023 Henderson2024"&gt;(&lt;a href="#ref-Henderson2023"
+  role="doc-biblioref"&gt;Henderson et al. 2023&lt;/a&gt;, &lt;a href="#ref-Henderson2024" role=
+  "doc-biblioref"&gt;2024&lt;/a&gt;)&lt;/span&gt;. The FACF paper &lt;span class="citation" data-cites=
+  "Henderson2023"&gt;(&lt;a href="#ref-Henderson2023" role="doc-biblioref"&gt;Henderson et al.
+  2023&lt;/a&gt;)&lt;/span&gt; performed experiments that show the FACF algorithm is statistically
+  significantly more accurate than the "deflaked variant" of the standard "bisect" algorithm used
+  in the Leong paper. Specifically the experiments indicate FACF is &lt;span class=
+  "math inline"&gt;&amp;gt;&lt;/span&gt;10% more accurate at identifying flaky breakages than Bisect with 8
+  additional deflaking runs. By properly deflaking our training and evaluation labels, our model is
+  much less likely to prioritize flaky tests and our evaluation more accurately reflects our
+  desired productivity outcomes.&lt;/p&gt;
+&lt;p&gt;Meanwhile in 2019, Machalica &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation" data-cites=
+  "Machalica2019"&gt;(&lt;a href="#ref-Machalica2019" role="doc-biblioref"&gt;Machalica et al.
+  2019&lt;/a&gt;)&lt;/span&gt; reported on a similar effort at Facebook in 2019 to develop a test selection
+  system for their version of Presubmit testing. Conceptually, the Presubmit selection system at
+  Facebook and the Presubmit selection system at Google have similarities. Both use shallow machine
+  learning models with sets of features not dissimilar to the features presented in this work. Both
+  systems (like this work) take a systematic approach to reducing the effect of flaky failures on
+  developer productivity. The primary contribution of this paper versus this past work is the
+  application and evaluation of selection techniques to the Postsubmit environment. In Postsubmit,
+  the features must be necessarily adjusted as the prediction of whether or not a test will change
+  behavior is not against a single commit but against a sequence of commits. Evaluation also
+  changes: the concern is not just about recall but also latency of breakage detection and
+  time-to-fix.&lt;/p&gt;
+&lt;p&gt;Recently the wider field (outside of Google and Facebook) has produced compelling work
+  &lt;span class="citation" data-cites=
+  "Jin2023 Jin2024 Liu2023 Hong2024 Sun2024 Wang2024 Zeng2024"&gt;(&lt;a href="#ref-Jin2023" role=
+  "doc-biblioref"&gt;Jin and Servant 2023&lt;/a&gt;; &lt;a href="#ref-Jin2024" role="doc-biblioref"&gt;Jin et al.
+  2024&lt;/a&gt;; &lt;a href="#ref-Liu2023" role="doc-biblioref"&gt;Liu et al. 2023&lt;/a&gt;; &lt;a href=
+  "#ref-Hong2024" role="doc-biblioref"&gt;Hong et al. 2024&lt;/a&gt;; &lt;a href="#ref-Sun2024" role=
+  "doc-biblioref"&gt;Sun, Habchi, and McIntosh 2024&lt;/a&gt;; &lt;a href="#ref-Wang2024" role=
+  "doc-biblioref"&gt;G. Wang et al. 2024&lt;/a&gt;; &lt;a href="#ref-Zeng2024" role="doc-biblioref"&gt;Zeng et al.
+  2024&lt;/a&gt;)&lt;/span&gt;. We will note a few items here. Jin and Servant &lt;span class="citation"
+  data-cites="Jin2023"&gt;(&lt;a href="#ref-Jin2023" role="doc-biblioref"&gt;Jin and Servant
+  2023&lt;/a&gt;)&lt;/span&gt; presented HybridCISave which uses a shallow machine learning based approach to
+  do both fine-grained (individual tests) and coarse grained (CI workflow builds) selection. By
+  combining both selection types both cost savings and safety are improved. The authors evaluate
+  their results using TravisTorrent &lt;span class="citation" data-cites="Beller2022"&gt;(&lt;a href=
+  "#ref-Beller2022" role="doc-biblioref"&gt;Beller, Gousios, and Zaidman 2022&lt;/a&gt;)&lt;/span&gt;. This work
+  is a good representative of the general approach of using shallow machine learning for selection
+  outside of the mega-corp environment. Wang &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation" data-cites=
+  "Wang2024"&gt;(&lt;a href="#ref-Wang2024" role="doc-biblioref"&gt;G. Wang et al. 2024&lt;/a&gt;)&lt;/span&gt; address
+  the problem of feature selection by using a transformer based language model, GitSense, that
+  automates statistic feature extraction. The authors evaluate their results using the dataset from
+  Chen &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation" data-cites="Chen2020"&gt;(&lt;a href="#ref-Chen2020" role=
+  "doc-biblioref"&gt;Chen et al. 2020&lt;/a&gt;)&lt;/span&gt;. Zeng &lt;em&gt;et al.&lt;/em&gt; &lt;span class="citation"
+  data-cites="Zeng2024"&gt;(&lt;a href="#ref-Zeng2024" role="doc-biblioref"&gt;Zeng et al. 2024&lt;/a&gt;)&lt;/span&gt;
+  use mutation testing to better assess the safety of a commercial CI system (YourBase) that skips
+  tests based on inferred dependencies. This use of mutation testing highlights one weakness of
+  traditional safety evaluation, they only use historical faults and may miss novel bugs. By
+  injecting mutation faults a more holistic view of the performance of the model can be obtained.
+  Determining how to apply mutation testing to shallow machine learning approaches that use
+  metadata features (such as ours) is an open problem.&lt;/p&gt;
+&lt;h1 id="sec:conclusion"&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;In this paper, we presented a new scheduling system for Google's main test automation platform
+  (TAP). The new scheduling system, Speculative Cycles, prioritizes finding novel test breakages
+  faster. Speculative Cycles are powered by a new machine learning model, Transition Prediction,
+  that predicts when tests are likely to fail. While the results are not perfect, they indicate
+  that the new system reduces the breakage detection latency by 65% (70 minutes) on average. This
+  reduction in breakage detection time leads to a reduction in developer friction and increased
+  productivity. In terms of model design, the most impactful choice made was total amount of prior
+  history used to train the model. As the training set size went from 1 week to 3 weeks model
+  performance improved. But as the training set size further increased the model performance
+  actually began to degrade. Only high level metadata features were used in this paper. In the
+  future we look forward to experimenting with more complex models.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list"&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Abdalkareem2021" class="csl-entry" role="listitem"&gt;
+      Abdalkareem, Rabe, Suhaib Mujahid, and Emad Shihab. 2021. &lt;span&gt;"A &lt;span&gt;Machine Learning
+      Approach&lt;/span&gt; to &lt;span&gt;Improve&lt;/span&gt; the &lt;span&gt;Detection&lt;/span&gt; of &lt;span&gt;CI Skip
+      Commits&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;IEEE Transactions on Software Engineering&lt;/em&gt; 47 (12): 2740-54.
+      &lt;a href=
+      "https://doi.org/10.1109/TSE.2020.2967380"&gt;https://doi.org/10.1109/TSE.2020.2967380&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Abdalkareem2021a" class="csl-entry" role="listitem"&gt;
+      Abdalkareem, Rabe, Suhaib Mujahid, Emad Shihab, and Juergen Rilling. 2021. &lt;span&gt;"Which
+      &lt;span&gt;Commits Can Be CI Skipped&lt;/span&gt;?"&lt;/span&gt; &lt;em&gt;IEEE Transactions on Software
+      Engineering&lt;/em&gt; 47 (3): 448-63. &lt;a href=
+      "https://doi.org/10.1109/TSE.2019.2897300"&gt;https://doi.org/10.1109/TSE.2019.2897300&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Al-Sabbagh2022" class="csl-entry" role="listitem"&gt;
+      Al-Sabbagh, Khaled, Miroslaw Staron, and Regina Hebig. 2022. &lt;span&gt;"Predicting Build Outcomes
+      in Continuous Integration Using Textual Analysis of Source Code Commits."&lt;/span&gt; In
+      &lt;em&gt;Proceedings of the 18th &lt;span&gt;International Conference&lt;/span&gt; on &lt;span&gt;Predictive
+      Models&lt;/span&gt; and &lt;span&gt;Data Analytics&lt;/span&gt; in &lt;span&gt;Software Engineering&lt;/span&gt;&lt;/em&gt;,
+      42-51. Singapore Singapore: ACM. &lt;a href=
+      "https://doi.org/10.1145/3558489.3559070"&gt;https://doi.org/10.1145/3558489.3559070&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-An2023" class="csl-entry" role="listitem"&gt;
+      An, Gabin, Jingun Hong, Naryeong Kim, and Shin Yoo. 2023. &lt;span&gt;"Fonte: &lt;span&gt;Finding Bug
+      Inducing Commits&lt;/span&gt; from &lt;span&gt;Failures&lt;/span&gt;."&lt;/span&gt; arXiv. &lt;a href=
+      "http://arxiv.org/abs/2212.06376"&gt;http://arxiv.org/abs/2212.06376&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-An2021" class="csl-entry" role="listitem"&gt;
+      An, Gabin, and Shin Yoo. 2021. &lt;span&gt;"Reducing the Search Space of Bug Inducing Commits Using
+      Failure Coverage."&lt;/span&gt; In &lt;em&gt;Proceedings of the 29th &lt;span&gt;ACM Joint Meeting&lt;/span&gt; on
+      &lt;span&gt;European Software Engineering Conference&lt;/span&gt; and &lt;span&gt;Symposium&lt;/span&gt; on the
+      &lt;span&gt;Foundations&lt;/span&gt; of &lt;span&gt;Software Engineering&lt;/span&gt;&lt;/em&gt;, 1459-62. Athens Greece:
+      ACM. &lt;a href=
+      "https://doi.org/10.1145/3468264.3473129"&gt;https://doi.org/10.1145/3468264.3473129&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Bates1993" class="csl-entry" role="listitem"&gt;
+      Bates, Samuel, and Susan Horwitz. 1993. &lt;span&gt;"Incremental Program Testing Using Program
+      Dependence Graphs."&lt;/span&gt; In &lt;em&gt;Proceedings of the 20th &lt;span&gt;ACM SIGPLAN-SIGACT&lt;/span&gt;
+      Symposium on &lt;span&gt;Principles&lt;/span&gt; of Programming Languages - &lt;span&gt;POPL&lt;/span&gt; '93&lt;/em&gt;,
+      384-96. Charleston, South Carolina, United States: ACM Press. &lt;a href=
+      "https://doi.org/10.1145/158511.158694"&gt;https://doi.org/10.1145/158511.158694&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Beheshtian2022" class="csl-entry" role="listitem"&gt;
+      Beheshtian, Mohammad Javad, Amir Hossein Bavand, and Peter C. Rigby. 2022. &lt;span&gt;"Software
+      &lt;span&gt;Batch Testing&lt;/span&gt; to &lt;span&gt;Save Build Test Resources&lt;/span&gt; and to &lt;span&gt;Reduce
+      Feedback Time&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;IEEE Transactions on Software Engineering&lt;/em&gt; 48 (8):
+      2784-2801. &lt;a href=
+      "https://doi.org/10.1109/TSE.2021.3070269"&gt;https://doi.org/10.1109/TSE.2021.3070269&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Beller2022" class="csl-entry" role="listitem"&gt;
+      Beller, Moritz, Georgios Gousios, and Andy Zaidman. 2022.
+      &lt;span&gt;"&lt;span&gt;TravisTorrent&lt;/span&gt;."&lt;/span&gt; figshare. &lt;a href=
+      "https://doi.org/10.6084/M9.FIGSHARE.19314170.V1"&gt;https://doi.org/10.6084/M9.FIGSHARE.19314170.V1&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Bland2012" class="csl-entry" role="listitem"&gt;
+      Bland, Mike. 2012. &lt;span&gt;"The &lt;span&gt;Chris&lt;/span&gt;/&lt;span&gt;Jay Continuous Build&lt;/span&gt;."&lt;/span&gt;
+      Personal {{Website}}. &lt;em&gt;Mike Bland's Blog&lt;/em&gt;. &lt;a href=
+      "https://mike-bland.com/2012/06/21/chris-jay-continuous-%20build.html"&gt;https://mike-bland.com/2012/06/21/chris-jay-continuous-
+      build.html&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Borg2019" class="csl-entry" role="listitem"&gt;
+      Borg, Markus, Oscar Svensson, Kristian Berg, and Daniel Hansson. 2019.
+      &lt;span&gt;"&lt;span&gt;SZZ&lt;/span&gt; Unleashed: An Open Implementation of the &lt;span&gt;SZZ&lt;/span&gt; Algorithm -
+      Featuring Example Usage in a Study of Just-in-Time Bug Prediction for the
+      &lt;span&gt;Jenkins&lt;/span&gt; Project."&lt;/span&gt; In &lt;em&gt;Proceedings of the 3rd &lt;span&gt;ACM SIGSOFT
+      International Workshop&lt;/span&gt; on &lt;span&gt;Machine Learning Techniques&lt;/span&gt; for &lt;span&gt;Software
+      Quality Evaluation&lt;/span&gt; - &lt;span&gt;MaLTeSQuE&lt;/span&gt; 2019&lt;/em&gt;, 7-12. Tallinn, Estonia: ACM
+      Press. &lt;a href=
+      "https://doi.org/10.1145/3340482.3342742"&gt;https://doi.org/10.1145/3340482.3342742&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Chen2020" class="csl-entry" role="listitem"&gt;
+      Chen, Bihuan, Linlin Chen, Chen Zhang, and Xin Peng. 2020. &lt;span&gt;"&lt;span&gt;BUILDFAST&lt;/span&gt;:
+      &lt;span class="nocase"&gt;History-aware&lt;/span&gt; Build Outcome Prediction for Fast Feedback and
+      Reduced Cost in Continuous Integration."&lt;/span&gt; In &lt;em&gt;2020 35th
+      &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; International Conference on Automated Software Engineering
+      (&lt;span&gt;ASE&lt;/span&gt;)&lt;/em&gt;, 42-53.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Couder2008" class="csl-entry" role="listitem"&gt;
+      Couder, Christian. 2008. &lt;span&gt;"Fighting Regressions with Git Bisect."&lt;/span&gt; &lt;em&gt;The Linux
+      Kernel Archives&lt;/em&gt; 4 (5). &lt;a href=
+      "https://www.%20kernel.%20org/pub/software/scm/git/doc%20s/git-%20bisect-lk2009.html"&gt;https://www.
+      kernel. org/pub/software/scm/git/doc s/git- bisect-lk2009.html&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-DeCastro-Cabrera2020" class="csl-entry" role="listitem"&gt;
+      De Castro-Cabrera, M. Del Carmen, Antonio García-Dominguez, and Inmaculada Medina-Bulo. 2020.
+      &lt;span&gt;"Trends in Prioritization of Test Cases: 2017-2019."&lt;/span&gt; &lt;em&gt;Proceedings of the ACM
+      Symposium on Applied Computing&lt;/em&gt;, 2005-11. &lt;a href=
+      "https://doi.org/10.1145/3341105.3374036"&gt;https://doi.org/10.1145/3341105.3374036&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-DeS.CamposJunior2017" class="csl-entry" role="listitem"&gt;
+      de S. Campos Junior, Heleno, Marco Antônio P Araújo, José Maria N David, Regina Braga,
+      Fernanda Campos, and Victor Ströele. 2017. &lt;span&gt;"Test &lt;span&gt;Case Prioritization&lt;/span&gt;:
+      &lt;span&gt;A Systematic Review&lt;/span&gt; and &lt;span&gt;Mapping&lt;/span&gt; of the
+      &lt;span&gt;Literature&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Proceedings of the 31st &lt;span&gt;Brazilian
+      Symposium&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;&lt;/em&gt;, 34-43. New York, NY, USA: ACM.
+      &lt;a href=
+      "https://doi.org/10.1145/3131151.3131170"&gt;https://doi.org/10.1145/3131151.3131170&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Elbaum2000" class="csl-entry" role="listitem"&gt;
+      Elbaum, Sebastian, Alexey G. Malishevsky, and Gregg Rothermel. 2000. &lt;span&gt;"Prioritizing Test
+      Cases for Regression Testing."&lt;/span&gt; In &lt;em&gt;Proceedings of the 2000 &lt;span&gt;ACM SIGSOFT&lt;/span&gt;
+      International Symposium on Software Testing and Analysis&lt;/em&gt;, 102-12. Issta '00. New York,
+      NY, USA: Association for Computing Machinery. &lt;a href=
+      "https://doi.org/10.1145/347324.348910"&gt;https://doi.org/10.1145/347324.348910&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Engstrom2010" class="csl-entry" role="listitem"&gt;
+      Engström, Emelie, Per Runeson, and Mats Skoglund. 2010. &lt;span&gt;"A Systematic Review on
+      Regression Test Selection Techniques."&lt;/span&gt; &lt;em&gt;Information and Software Technology&lt;/em&gt; 52
+      (1): 14-30. &lt;a href=
+      "https://doi.org/10.1016/j.infsof.2009.07.001"&gt;https://doi.org/10.1016/j.infsof.2009.07.001&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Fowler2006" class="csl-entry" role="listitem"&gt;
+      Fowler, Martin. 2006. &lt;span&gt;"Continuous &lt;span&gt;Integration&lt;/span&gt;."&lt;/span&gt; &lt;a href=
+      "https://martinfowler.com/articles/%20continuousIntegration.html"&gt;https://martinfowler.com/articles/
+      continuousIntegration.html&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Gligoric2014" class="csl-entry" role="listitem"&gt;
+      Gligoric, Milos, Rupak Majumdar, Rohan Sharma, Lamyaa Eloussi, and Darko Marinov. 2014.
+      &lt;span&gt;"Regression &lt;span&gt;Test Selection&lt;/span&gt; for &lt;span&gt;Distributed Software
+      Histories&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Computer &lt;span&gt;Aided Verification&lt;/span&gt;&lt;/em&gt;, edited by
+      David Hutchison, Takeo Kanade, Josef Kittler, Jon M. Kleinberg, Alfred Kobsa, Friedemann
+      Mattern, John C. Mitchell, et al., 8559:293-309. Cham: Springer International Publishing.
+      &lt;a href=
+      "https://doi.org/10.1007/978-3-319-08867-9_19"&gt;https://doi.org/10.1007/978-3-319-08867-9_19&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Guillame-Bert2023" class="csl-entry" role="listitem"&gt;
+      Guillame-Bert, Mathieu, Sebastian Bruch, Richard Stotz, and Jan Pfeifer. 2023.
+      &lt;span&gt;"Yggdrasil &lt;span&gt;Decision Forests&lt;/span&gt;: &lt;span&gt;A Fast&lt;/span&gt; and &lt;span&gt;Extensible
+      Decision Forests Library&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Proceedings of the 29th &lt;span&gt;ACM SIGKDD
+      Conference&lt;/span&gt; on &lt;span&gt;Knowledge Discovery&lt;/span&gt; and &lt;span&gt;Data Mining&lt;/span&gt;&lt;/em&gt;,
+      4068-77. Long Beach CA USA: ACM. &lt;a href=
+      "https://doi.org/10.1145/3580305.3599933"&gt;https://doi.org/10.1145/3580305.3599933&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Gupta2011" class="csl-entry" role="listitem"&gt;
+      Gupta, Pooja, Mark Ivey, and John Penix. 2011. &lt;span&gt;"Testing at the Speed and Scale of
+      &lt;span&gt;Google&lt;/span&gt;."&lt;/span&gt; &lt;a href=
+      "https://google-engtools.blogspot.com/2011/06/testing-at-%20speed-and-scale-of-google.html"&gt;https://google-engtools.blogspot.com/2011/06/testing-at-
+      speed-and-scale-of-google.html&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Henderson2023" class="csl-entry" role="listitem"&gt;
+      Henderson, Tim A. D., Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy. 2023.
+      &lt;span&gt;"Flake &lt;span&gt;Aware Culprit Finding&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;2023 &lt;span&gt;IEEE
+      Conference&lt;/span&gt; on &lt;span&gt;Software Testing&lt;/span&gt;, &lt;span&gt;Verification&lt;/span&gt; and
+      &lt;span&gt;Validation&lt;/span&gt; (&lt;span&gt;ICST&lt;/span&gt;)&lt;/em&gt;. IEEE. &lt;a href=
+      "https://doi.org/10.1109/ICST57152.2023.00041"&gt;https://doi.org/10.1109/ICST57152.2023.00041&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Henderson2024" class="csl-entry" role="listitem"&gt;
+      Henderson, Tim A. D., Avi Kondareddy, Sushmita Azad, and Eric Nickell. 2024.
+      &lt;span&gt;"&lt;span&gt;SafeRevert&lt;/span&gt;: &lt;span&gt;When Can Breaking Changes&lt;/span&gt; Be &lt;span&gt;Automatically
+      Reverted&lt;/span&gt;?"&lt;/span&gt; In &lt;em&gt;2024 &lt;span&gt;IEEE Conference&lt;/span&gt; on &lt;span&gt;Software
+      Testing&lt;/span&gt;, &lt;span&gt;Verification&lt;/span&gt; and &lt;span&gt;Validation&lt;/span&gt;
+      (&lt;span&gt;ICST&lt;/span&gt;)&lt;/em&gt;, 395-406. Toronto, ON, Canada: IEEE. &lt;a href=
+      "https://doi.org/10.1109/ICST60714.2024.00043"&gt;https://doi.org/10.1109/ICST60714.2024.00043&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Hoang2024" class="csl-entry" role="listitem"&gt;
+      Hoang, Minh, and Adrian Berding. 2024. &lt;span&gt;"Presubmit &lt;span&gt;Rescue&lt;/span&gt;:
+      &lt;span&gt;Automatically Ignoring FlakyTest Executions&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Proceedings of the
+      1st &lt;span&gt;International Workshop&lt;/span&gt; on &lt;span&gt;Flaky Tests&lt;/span&gt;&lt;/em&gt;, 1-2. Lisbon
+      Portugal: ACM. &lt;a href=
+      "https://doi.org/10.1145/3643656.3643896"&gt;https://doi.org/10.1145/3643656.3643896&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Hong2024" class="csl-entry" role="listitem"&gt;
+      Hong, Yang, Chakkrit Tantithamthavorn, Jirat Pasuksmit, Patanamon Thongtanunam, Arik
+      Friedman, Xing Zhao, and Anton Krasikov. 2024. &lt;span&gt;"Practitioners' &lt;span&gt;Challenges&lt;/span&gt;
+      and &lt;span&gt;Perceptions&lt;/span&gt; of &lt;span&gt;CI Build Failure Predictions&lt;/span&gt; at
+      &lt;span&gt;Atlassian&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Companion &lt;span&gt;Proceedings&lt;/span&gt; of the 32nd
+      &lt;span&gt;ACM International Conference&lt;/span&gt; on the &lt;span&gt;Foundations&lt;/span&gt; of &lt;span&gt;Software
+      Engineering&lt;/span&gt;&lt;/em&gt;, 370-81. Porto de Galinhas Brazil: ACM. &lt;a href=
+      "https://doi.org/10.1145/3663529.3663856"&gt;https://doi.org/10.1145/3663529.3663856&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Horwitz1988" class="csl-entry" role="listitem"&gt;
+      Horwitz, Susan, Jan Prins, and Thomas Reps. 1988. &lt;span&gt;"On the Adequacy of Program
+      Dependence Graphs for Representing Programs."&lt;/span&gt; &lt;em&gt;ACM SIGPLAN-SIGACT Symposium on
+      Principles of Programming Languages (POPL)&lt;/em&gt;, 146-57. &lt;a href=
+      "https://doi.org/10.1145/73560.73573"&gt;https://doi.org/10.1145/73560.73573&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Jin2024" class="csl-entry" role="listitem"&gt;
+      Jin, Xianhao, Yifei Feng, Chen Wang, Yang Liu, Yongning Hu, Yufei Gao, Kun Xia, and Luchuan
+      Guo. 2024. &lt;span&gt;"&lt;span&gt;PIPELINEASCODE&lt;/span&gt;: &lt;span&gt;A CI&lt;/span&gt;/&lt;span&gt;CD Workflow Management
+      System&lt;/span&gt; Through &lt;span&gt;Configuration Files&lt;/span&gt; at &lt;span&gt;ByteDance&lt;/span&gt;."&lt;/span&gt; In
+      &lt;em&gt;2024 &lt;span&gt;IEEE International Conference&lt;/span&gt; on &lt;span&gt;Software Analysis&lt;/span&gt;,
+      &lt;span&gt;Evolution&lt;/span&gt; and &lt;span&gt;Reengineering&lt;/span&gt; (&lt;span&gt;SANER&lt;/span&gt;)&lt;/em&gt;, 1011-22.
+      Rovaniemi, Finland: IEEE. &lt;a href=
+      "https://doi.org/10.1109/SANER60148.2024.00109"&gt;https://doi.org/10.1109/SANER60148.2024.00109&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Jin2023" class="csl-entry" role="listitem"&gt;
+      Jin, Xianhao, and Francisco Servant. 2023. &lt;span&gt;"&lt;span&gt;HybridCISave&lt;/span&gt;: &lt;span&gt;A Combined
+      Build&lt;/span&gt; and &lt;span&gt;Test Selection Approach&lt;/span&gt; in &lt;span&gt;Continuous
+      Integration&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;ACM Transactions on Software Engineering and Methodology&lt;/em&gt;
+      32 (4): 1-39. &lt;a href="https://doi.org/10.1145/3576038"&gt;https://doi.org/10.1145/3576038&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-keenan2019" class="csl-entry" role="listitem"&gt;
+      Keenan, James. 2019. &lt;span&gt;"James &lt;span&gt;E&lt;/span&gt;. &lt;span&gt;Keenan&lt;/span&gt; -
+      "&lt;span&gt;Multisection&lt;/span&gt;: &lt;span&gt;When Bisection Isn&lt;/span&gt;'t &lt;span&gt;Enough&lt;/span&gt; to
+      &lt;span&gt;Debug&lt;/span&gt; a &lt;span&gt;Problem&lt;/span&gt;"."&lt;/span&gt; &lt;a href=
+      "https://www.youtube.com/watch?v=05CwdTRt6AM"&gt;https://www.youtube.com/watch?v=05CwdTRt6AM&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Leon2003" class="csl-entry" role="listitem"&gt;
+      Leon, D., and A. Podgurski. 2003. &lt;span&gt;"A Comparison of Coverage-Based and
+      Distribution-Based Techniques for Filtering and Prioritizing Test Cases."&lt;/span&gt; In &lt;em&gt;14th
+      &lt;span&gt;International Symposium&lt;/span&gt; on &lt;span&gt;Software Reliability Engineering&lt;/span&gt;, 2003.
+      &lt;span&gt;ISSRE&lt;/span&gt; 2003.&lt;/em&gt;, 2003-Janua:442-53. IEEE. &lt;a href=
+      "https://doi.org/10.1109/ISSRE.2003.1251065"&gt;https://doi.org/10.1109/ISSRE.2003.1251065&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Leong2019" class="csl-entry" role="listitem"&gt;
+      Leong, Claire, Abhayendra Singh, Mike Papadakis, Yves Le Traon, and John Micco. 2019.
+      &lt;span&gt;"Assessing &lt;span&gt;Transition-Based Test Selection Algorithms&lt;/span&gt; at
+      &lt;span&gt;Google&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;2019 &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 41st
+      &lt;span&gt;International Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software
+      Engineering&lt;/span&gt; in &lt;span&gt;Practice&lt;/span&gt; (&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 101-10. IEEE.
+      &lt;a href=
+      "https://doi.org/10.1109/ICSE-SEIP.2019.00019"&gt;https://doi.org/10.1109/ICSE-SEIP.2019.00019&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Liu2023" class="csl-entry" role="listitem"&gt;
+      Liu, Bohan, He Zhang, Weigang Ma, Gongyuan Li, Shanshan Li, and Haifeng Shen. 2023.
+      &lt;span&gt;"The &lt;span&gt;Why&lt;/span&gt;, &lt;span&gt;When&lt;/span&gt;, &lt;span&gt;What&lt;/span&gt;, and &lt;span&gt;How About
+      Predictive Continuous Integration&lt;/span&gt;: &lt;span&gt;A Simulation-Based
+      Investigation&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;IEEE Transactions on Software Engineering&lt;/em&gt; 49 (12):
+      5223-49. &lt;a href=
+      "https://doi.org/10.1109/TSE.2023.3330510"&gt;https://doi.org/10.1109/TSE.2023.3330510&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Machalica2019" class="csl-entry" role="listitem"&gt;
+      Machalica, Mateusz, Alex Samylkin, Meredith Porth, and Satish Chandra. 2019.
+      &lt;span&gt;"Predictive &lt;span&gt;Test Selection&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;2019
+      &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 41st &lt;span&gt;International Conference&lt;/span&gt; on
+      &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software Engineering&lt;/span&gt; in &lt;span&gt;Practice&lt;/span&gt;
+      (&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 91-100. IEEE. &lt;a href=
+      "https://doi.org/10.1109/ICSE-SEIP.2019.00018"&gt;https://doi.org/10.1109/ICSE-SEIP.2019.00018&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Memon2017" class="csl-entry" role="listitem"&gt;
+      Memon, Atif, Zebao Gao, Bao Nguyen, Sanjeev Dhanda, Eric Nickell, Rob Siemborski, and John
+      Micco. 2017. &lt;span&gt;"Taming &lt;span class="nocase"&gt;Google-scale&lt;/span&gt; Continuous
+      Testing."&lt;/span&gt; In &lt;em&gt;2017 &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 39th &lt;span&gt;International
+      Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software Engineering&lt;/span&gt; in
+      &lt;span&gt;Practice Track&lt;/span&gt; (&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 233-42. Piscataway, NJ, USA: IEEE.
+      &lt;a href=
+      "https://doi.org/10.1109/ICSE-SEIP.2017.16"&gt;https://doi.org/10.1109/ICSE-SEIP.2017.16&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Micco2012" class="csl-entry" role="listitem"&gt;
+      Micco, John. 2012. &lt;span&gt;"Tools for &lt;span&gt;Continuous Integration&lt;/span&gt; at &lt;span&gt;Google
+      Scale&lt;/span&gt;."&lt;/span&gt; Tech {{Talk}}. Google NYC. &lt;a href=
+      "https://youtu.be/KH2_sB1A6lA"&gt;https://youtu.be/KH2_sB1A6lA&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Micco2013" class="csl-entry" role="listitem"&gt;
+      ---. 2013. &lt;span&gt;"Continuous &lt;span&gt;Integration&lt;/span&gt; at &lt;span&gt;Google Scale&lt;/span&gt;."&lt;/span&gt;
+      Lecture. EclipseCon 2013. &lt;a href=
+      "https://web.archive.org/web/20140705215747/https://%20www.eclipsecon.org/2013/sites/eclipsecon.org.2013/files/2013-%2003-24%20Continuous%20Integration%20at%20Google%20Scale.pdf"&gt;
+      https://web.archive.org/web/20140705215747/https://
+      www.eclipsecon.org/2013/sites/eclipsecon.org.2013/files/2013-
+      03-24%20Continuous%20Integration%20at%20Google%20Scale.pdf&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Mondal2015" class="csl-entry" role="listitem"&gt;
+      Mondal, Debajyoti, Hadi Hemmati, and Stephane Durocher. 2015. &lt;span&gt;"Exploring Test Suite
+      Diversification and Code Coverage in Multi-Objective Test Case Selection."&lt;/span&gt; &lt;em&gt;2015
+      IEEE 8th International Conference on Software Testing, Verification and Validation, ICST 2015
+      - Proceedings&lt;/em&gt;, 1-10. &lt;a href=
+      "https://doi.org/10.1109/ICST.2015.7102588"&gt;https://doi.org/10.1109/ICST.2015.7102588&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Musa2015" class="csl-entry" role="listitem"&gt;
+      Musa, Samaila, Abu Bakar Md Sultan, Abdul Azim Bin Abd-Ghani, and Salmi Baharom. 2015.
+      &lt;span&gt;"Regression &lt;span&gt;Test Cases&lt;/span&gt; Selection for &lt;span&gt;Object-Oriented Programs&lt;/span&gt;
+      Based on &lt;span&gt;Affected Statements&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;International Journal of Software
+      Engineering and Its Applications&lt;/em&gt; 9 (10): 91-108. &lt;a href=
+      "https://doi.org/10.14257/ijseia.2015.9.10.10"&gt;https://doi.org/10.14257/ijseia.2015.9.10.10&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Najafi2019a" class="csl-entry" role="listitem"&gt;
+      Najafi, Armin, Peter C. Rigby, and Weiyi Shang. 2019. &lt;span&gt;"Bisecting Commits and Modeling
+      Commit Risk During Testing."&lt;/span&gt; In &lt;em&gt;Proceedings of the 2019 27th &lt;span&gt;ACM Joint
+      Meeting&lt;/span&gt; on &lt;span&gt;European Software Engineering Conference&lt;/span&gt; and
+      &lt;span&gt;Symposium&lt;/span&gt; on the &lt;span&gt;Foundations&lt;/span&gt; of &lt;span&gt;Software
+      Engineering&lt;/span&gt;&lt;/em&gt;, 279-89. New York, NY, USA: ACM. &lt;a href=
+      "https://doi.org/10.1145/3338906.3338944"&gt;https://doi.org/10.1145/3338906.3338944&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Najafi2019" class="csl-entry" role="listitem"&gt;
+      Najafi, Armin, Weiyi Shang, and Peter C. Rigby. 2019. &lt;span&gt;"Improving &lt;span&gt;Test
+      Effectiveness Using Test Executions History&lt;/span&gt;: &lt;span&gt;An Industrial Experience
+      Report&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;2019 &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 41st
+      &lt;span&gt;International Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software
+      Engineering&lt;/span&gt; in &lt;span&gt;Practice&lt;/span&gt; (&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 213-22. IEEE.
+      &lt;a href=
+      "https://doi.org/10.1109/ICSE-SEIP.2019.00031"&gt;https://doi.org/10.1109/ICSE-SEIP.2019.00031&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Ocariza2022" class="csl-entry" role="listitem"&gt;
+      Ocariza, Frolin S. 2022. &lt;span&gt;"On the &lt;span&gt;Effectiveness&lt;/span&gt; of &lt;span&gt;Bisection&lt;/span&gt;
+      in &lt;span&gt;Performance Regression Localization&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;Empirical Software
+      Engineering&lt;/em&gt; 27 (4): 95. &lt;a href=
+      "https://doi.org/10.1007/s10664-022-10152-3"&gt;https://doi.org/10.1007/s10664-022-10152-3&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-pan2022" class="csl-entry" role="listitem"&gt;
+      Pan, Rongqi, Mojtaba Bagherzadeh, Taher A. Ghaleb, and Lionel Briand. 2022. &lt;span&gt;"Test Case
+      Selection and Prioritization Using Machine Learning: A Systematic Literature Review."&lt;/span&gt;
+      &lt;em&gt;Empirical Software Engineering&lt;/em&gt; 27 (2): 29. &lt;a href=
+      "https://doi.org/10.1007/s10664-021-10066-6"&gt;https://doi.org/10.1007/s10664-021-10066-6&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Podgurski1989" class="csl-entry" role="listitem"&gt;
+      Podgurski, A, and L Clarke. 1989. &lt;span&gt;"The &lt;span&gt;Implications&lt;/span&gt; of &lt;span&gt;Program
+      Dependencies&lt;/span&gt; for &lt;span&gt;Software Testing&lt;/span&gt;, &lt;span&gt;Debugging&lt;/span&gt;, and
+      &lt;span&gt;Maintenance&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Proceedings of the &lt;span&gt;ACM SIGSOFT&lt;/span&gt; '89
+      &lt;span&gt;Third Symposium&lt;/span&gt; on &lt;span&gt;Software Testing&lt;/span&gt;, &lt;span&gt;Analysis&lt;/span&gt;, and
+      &lt;span&gt;Verification&lt;/span&gt;&lt;/em&gt;, 168-78. New York, NY, USA: ACM. &lt;a href=
+      "https://doi.org/10.1145/75308.75328"&gt;https://doi.org/10.1145/75308.75328&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Potvin2016" class="csl-entry" role="listitem"&gt;
+      Potvin, Rachel, and Josh Levenberg. 2016. &lt;span&gt;"Why Google Stores Billions of Lines of Code
+      in a Single Repository."&lt;/span&gt; &lt;em&gt;Communications of the ACM&lt;/em&gt; 59 (7): 78-87. &lt;a href=
+      "https://doi.org/10.1145/2854146"&gt;https://doi.org/10.1145/2854146&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Rodriguez-Perez2018" class="csl-entry" role="listitem"&gt;
+      Rodríguez-Pérez, Gema, Gregorio Robles, and Jesús M. González-Barahona. 2018.
+      &lt;span&gt;"Reproducibility and Credibility in Empirical Software Engineering: &lt;span&gt;A&lt;/span&gt; Case
+      Study Based on a Systematic Literature Review of the Use of the &lt;span&gt;SZZ&lt;/span&gt;
+      Algorithm."&lt;/span&gt; &lt;em&gt;Information and Software Technology&lt;/em&gt; 99 (July): 164-76. &lt;a href=
+      "https://doi.org/10.1016/j.infsof.2018.03.009"&gt;https://doi.org/10.1016/j.infsof.2018.03.009&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Rothermel1997" class="csl-entry" role="listitem"&gt;
+      Rothermel, Gregg, and Mary Jean Harrold. 1997. &lt;span&gt;"A Safe, Efficient Regression Test
+      Selection Technique."&lt;/span&gt; &lt;em&gt;ACM Transactions on Software Engineering and
+      Methodology&lt;/em&gt; 6 (2): 173-210. &lt;a href=
+      "https://doi.org/10.1145/248233.248262"&gt;https://doi.org/10.1145/248233.248262&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Sadowski2018" class="csl-entry" role="listitem"&gt;
+      Sadowski, Caitlin, Emma Söderberg, Luke Church, Michal Sipko, and Alberto Bacchelli. 2018.
+      &lt;span&gt;"Modern Code Review: A Case Study at Google."&lt;/span&gt; In &lt;em&gt;Proceedings of the 40th
+      &lt;span&gt;International Conference&lt;/span&gt; on &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software
+      Engineering&lt;/span&gt; in &lt;span&gt;Practice&lt;/span&gt;&lt;/em&gt;, 181-90. Gothenburg Sweden: ACM. &lt;a href=
+      "https://doi.org/10.1145/3183519.3183525"&gt;https://doi.org/10.1145/3183519.3183525&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Saha2017" class="csl-entry" role="listitem"&gt;
+      Saha, Ripon, and Milos Gligoric. 2017. &lt;span&gt;"Selective &lt;span&gt;Bisection
+      Debugging&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Fundamental &lt;span&gt;Approaches&lt;/span&gt; to &lt;span&gt;Software
+      Engineering&lt;/span&gt;&lt;/em&gt;, edited by Marieke Huisman and Julia Rubin, 10202:60-77. Berlin,
+      Heidelberg: Springer Berlin Heidelberg. &lt;a href=
+      "https://doi.org/10.1007/978-3-662-54494-5_4"&gt;https://doi.org/10.1007/978-3-662-54494-5_4&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Saidani2020" class="csl-entry" role="listitem"&gt;
+      Saidani, Islem, Ali Ouni, Moataz Chouchen, and Mohamed Wiem Mkaouer. 2020. &lt;span&gt;"Predicting
+      Continuous Integration Build Failures Using Evolutionary Search."&lt;/span&gt; &lt;em&gt;Information and
+      Software Technology&lt;/em&gt; 128 (December): 106392. &lt;a href=
+      "https://doi.org/10.1016/j.infsof.2020.106392"&gt;https://doi.org/10.1016/j.infsof.2020.106392&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Saidani2022" class="csl-entry" role="listitem"&gt;
+      Saidani, Islem, Ali Ouni, and Mohamed Wiem Mkaouer. 2022a. &lt;span&gt;"Improving the Prediction of
+      Continuous Integration Build Failures Using Deep Learning."&lt;/span&gt; &lt;em&gt;Automated Software
+      Engineering&lt;/em&gt; 29 (1): 21. &lt;a href=
+      "https://doi.org/10.1007/s10515-021-00319-5"&gt;https://doi.org/10.1007/s10515-021-00319-5&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Saidani2022a" class="csl-entry" role="listitem"&gt;
+      ---. 2022b. &lt;span&gt;"Detecting &lt;span&gt;Continuous Integration Skip Commits Using Multi-Objective
+      Evolutionary Search&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;IEEE Transactions on Software Engineering&lt;/em&gt; 48
+      (12): 4873-91. &lt;a href=
+      "https://doi.org/10.1109/TSE.2021.3129165"&gt;https://doi.org/10.1109/TSE.2021.3129165&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Singh2012" class="csl-entry" role="listitem"&gt;
+      Singh, Yogesh, Arvinder Kaur, Bharti Suri, and Shweta Singhal. 2012. &lt;span&gt;"Systematic
+      Literature Review on Regression Test Prioritization Techniques."&lt;/span&gt; &lt;em&gt;Informatica
+      (Slovenia)&lt;/em&gt; 36 (4): 379-408. &lt;a href=
+      "https://doi.org/10.31449/inf.v36i4.420"&gt;https://doi.org/10.31449/inf.v36i4.420&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Sliwerski2005" class="csl-entry" role="listitem"&gt;
+      Śliwerski, Jacek, Thomas Zimmermann, and Andreas Zeller. 2005. &lt;span&gt;"When Do Changes Induce
+      Fixes?"&lt;/span&gt; &lt;em&gt;ACM SIGSOFT Software Engineering Notes&lt;/em&gt; 30 (4): 1. &lt;a href=
+      "https://doi.org/10.1145/1082983.1083147"&gt;https://doi.org/10.1145/1082983.1083147&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Sun2024" class="csl-entry" role="listitem"&gt;
+      Sun, Gengyi, Sarra Habchi, and Shane McIntosh. 2024. &lt;span&gt;"&lt;span&gt;RavenBuild&lt;/span&gt;:
+      &lt;span&gt;Context&lt;/span&gt;, &lt;span&gt;Relevance&lt;/span&gt;, and &lt;span&gt;Dependency Aware Build Outcome
+      Prediction&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;Proceedings of the ACM on Software Engineering&lt;/em&gt; 1 (FSE):
+      996-1018. &lt;a href="https://doi.org/10.1145/3643771"&gt;https://doi.org/10.1145/3643771&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Wang2024" class="csl-entry" role="listitem"&gt;
+      Wang, Guoqing, Zeyu Sun, Yizhou Chen, Yifan Zhao, Qingyuan Liang, and Dan Hao. 2024.
+      &lt;span&gt;"Commit &lt;span&gt;Artifact Preserving Build Prediction&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Proceedings
+      of the 33rd &lt;span&gt;ACM SIGSOFT International Symposium&lt;/span&gt; on &lt;span&gt;Software Testing&lt;/span&gt;
+      and &lt;span&gt;Analysis&lt;/span&gt;&lt;/em&gt;, 1236-48. Vienna Austria: ACM. &lt;a href=
+      "https://doi.org/10.1145/3650212.3680356"&gt;https://doi.org/10.1145/3650212.3680356&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Wang2021" class="csl-entry" role="listitem"&gt;
+      Wang, Kaiyuan, Daniel Rall, Greg Tener, Vijay Gullapalli, Xin Huang, and Ahmed Gad. 2021.
+      &lt;span&gt;"Smart &lt;span&gt;Build Targets Batching Service&lt;/span&gt; at &lt;span&gt;Google&lt;/span&gt;."&lt;/span&gt; In
+      &lt;em&gt;2021 &lt;span&gt;IEEE&lt;/span&gt;/&lt;span&gt;ACM&lt;/span&gt; 43rd &lt;span&gt;International Conference&lt;/span&gt; on
+      &lt;span&gt;Software Engineering&lt;/span&gt;: &lt;span&gt;Software Engineering&lt;/span&gt; in &lt;span&gt;Practice&lt;/span&gt;
+      (&lt;span&gt;ICSE-SEIP&lt;/span&gt;)&lt;/em&gt;, 160-69. Madrid, ES: IEEE. &lt;a href=
+      "https://doi.org/10.1109/ICSE-SEIP52600.2021.00025"&gt;https://doi.org/10.1109/ICSE-SEIP52600.2021.00025&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Wang2020" class="csl-entry" role="listitem"&gt;
+      Wang, Kaiyuan, Greg Tener, Vijay Gullapalli, Xin Huang, Ahmed Gad, and Daniel Rall. 2020.
+      &lt;span&gt;"Scalable Build Service System with Smart Scheduling Service."&lt;/span&gt; In
+      &lt;em&gt;Proceedings of the 29th &lt;span&gt;ACM SIGSOFT International Symposium&lt;/span&gt; on
+      &lt;span&gt;Software Testing&lt;/span&gt; and &lt;span&gt;Analysis&lt;/span&gt;&lt;/em&gt;, 452-62. Virtual Event USA: ACM.
+      &lt;a href=
+      "https://doi.org/10.1145/3395363.3397371"&gt;https://doi.org/10.1145/3395363.3397371&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Wen2019" class="csl-entry" role="listitem"&gt;
+      Wen, Ming, Rongxin Wu, Yepang Liu, Yongqiang Tian, Xuan Xie, Shing-Chi Cheung, and Zhendong
+      Su. 2019. &lt;span&gt;"Exploring and Exploiting the Correlations Between Bug-Inducing and
+      Bug-Fixing Commits."&lt;/span&gt; In &lt;em&gt;Proceedings of the 2019 27th &lt;span&gt;ACM Joint
+      Meeting&lt;/span&gt; on &lt;span&gt;European Software Engineering Conference&lt;/span&gt; and
+      &lt;span&gt;Symposium&lt;/span&gt; on the &lt;span&gt;Foundations&lt;/span&gt; of &lt;span&gt;Software
+      Engineering&lt;/span&gt;&lt;/em&gt;, 326-37. Tallinn Estonia: ACM. &lt;a href=
+      "https://doi.org/10.1145/3338906.3338962"&gt;https://doi.org/10.1145/3338906.3338962&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Zeng2024" class="csl-entry" role="listitem"&gt;
+      Zeng, Zhili, Tao Xiao, Maxime Lamothe, Hideaki Hata, and Shane Mcintosh. 2024. &lt;span&gt;"A
+      &lt;span&gt;Mutation-Guided Assessment&lt;/span&gt; of &lt;span&gt;Acceleration Approaches&lt;/span&gt; for
+      &lt;span&gt;Continuous Integration&lt;/span&gt;: &lt;span&gt;An Empirical Study&lt;/span&gt; of
+      &lt;span&gt;YourBase&lt;/span&gt;."&lt;/span&gt; In &lt;em&gt;Proceedings of the 21st &lt;span&gt;International
+      Conference&lt;/span&gt; on &lt;span&gt;Mining Software Repositories&lt;/span&gt;&lt;/em&gt;, 556-68. Lisbon Portugal:
+      ACM. &lt;a href=
+      "https://doi.org/10.1145/3643991.3644914"&gt;https://doi.org/10.1145/3643991.3644914&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Zhou2010" class="csl-entry" role="listitem"&gt;
+      Zhou, Zhi Quan. 2010. &lt;span&gt;"Using Coverage Information to Guide Test Case Selection in
+      &lt;span&gt;Adaptive Random Testing&lt;/span&gt;."&lt;/span&gt; &lt;em&gt;Proceedings - International Computer
+      Software and Applications Conference&lt;/em&gt;, 208-13. &lt;a href=
+      "https://doi.org/10.1109/COMPSACW.2010.43"&gt;https://doi.org/10.1109/COMPSACW.2010.43&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Ziftci2013a" class="csl-entry" role="listitem"&gt;
+      Ziftci, Celal, and Vivek Ramavajjala. 2013. &lt;span&gt;"Finding &lt;span&gt;Culprits
+      Automatically&lt;/span&gt; in &lt;span&gt;Failing Builds&lt;/span&gt; - i.e. &lt;span&gt;Who Broke&lt;/span&gt; the
+      &lt;span&gt;Build&lt;/span&gt;?"&lt;/span&gt; &lt;a href=
+      "https://www.youtube.com/watch?v=SZLuBYlq3OM"&gt;https://www.youtube.com/watch?v=SZLuBYlq3OM&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    &lt;div id="ref-Ziftci2017" class="csl-entry" role="listitem"&gt;
+      Ziftci, Celal, and Jim Reardon. 2017. &lt;span&gt;"Who Broke the Build? &lt;span&gt;Automatically&lt;/span&gt;
+      Identifying Changes That Induce Test Failures in Continuous Integration at Google
+      Scale."&lt;/span&gt; &lt;em&gt;Proceedings - 2017 IEEE/ACM 39th International Conference on Software
+      Engineering: Software Engineering in Practice Track, ICSE-SEIP 2017&lt;/em&gt;, 113-22. &lt;a href=
+      "https://doi.org/10.1109/ICSE-SEIP.2017.13"&gt;https://doi.org/10.1109/ICSE-SEIP.2017.13&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;/li&gt;
+  &lt;/div&gt;
+  &lt;/ul&gt;
+&lt;section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"&gt;
+    &lt;hr /&gt;
+    &lt;ol&gt;
+      &lt;li id="fn1"&gt;
+        &lt;p&gt;&lt;a href="https://bazel.build/" class="uri"&gt;https://bazel.build/&lt;/a&gt;&lt;a href="#fnref1"
+        class="footnote-back" role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li id="fn2"&gt;
+        &lt;p&gt;When a target breaks we perform culprit finding. The conclusion of the culprit finding
+        is the culprit commit. We colloquially say the target is blaming the culprit.&lt;a href=
+        "#fnref2" class="footnote-back" role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/section&gt;</content><category term="Paper"></category></entry><entry><title>SafeRevert: When Can Breaking Changes be Automatically Reverted?</title><link href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html" rel="alternate"></link><published>2024-05-27T00:00:00-04:00</published><updated>2024-05-27T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;,  Avi Kondareddy, Sushmita Azad, Eric Nickell</name></author><id>tag:hackthology.com,2024-05-27:/saferevert-when-can-breaking-changes-be-automatically-reverted.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
+&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1109/ICST60714.2024.00043"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.
-&lt;a href="http://tba"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Abstract …&lt;/h4&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
+&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1109/ICST60714.2024.00043"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;blockquote&gt;
 &lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
@@ -9248,13 +10728,13 @@ to emulate exceptions using &lt;code&gt;panic&lt;/code&gt; and &lt;code&gt;recov
 &lt;p&gt;&lt;a href="https://github.com/timtadh/data-structures/tree/master/exc"&gt;Check it out!&lt;/a&gt;.&lt;/p&gt;</content><category term="Blog"></category></entry><entry><title>First Rust Macro</title><link href="https://hackthology.com/first-rust-macro.html" rel="alternate"></link><published>2014-09-20T00:00:00-04:00</published><updated>2014-09-20T00:00:00-04:00</updated><author><name>Tim Henderson</name></author><id>tag:hackthology.com,2014-09-20:/first-rust-macro.html</id><summary type="html">&lt;p&gt;I started learning &lt;a href="http://www.rust-lang.org/"&gt;Rust&lt;/a&gt; yesterday. Today as I was
 writing input handling code I wanted to print to the standard err. The way to do
 that seems to be:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="fm"&gt;writeln!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;::&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="fm"&gt;writeln!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;That seems a bit verbose to me versus printing to the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I started learning &lt;a href="http://www.rust-lang.org/"&gt;Rust&lt;/a&gt; yesterday. Today as I was
 writing input handling code I wanted to print to the standard err. The way to do
 that seems to be:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="fm"&gt;writeln!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;::&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="fm"&gt;writeln!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;That seems a bit verbose to me versus printing to the standard out, which is:&lt;/p&gt;
@@ -9262,8 +10742,8 @@ that seems to be:&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;So I decided to fix that with the following macro:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="fm"&gt;macro_rules!&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="cp"&gt;$fmt&lt;/span&gt;:&lt;span class="nc"&gt;expr&lt;/span&gt;&lt;span class="cp"&gt;$(,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;$msg&lt;/span&gt;:&lt;span class="nc"&gt;expr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="fm"&gt;writeln!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;::&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;$fmt&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;$(,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;$msg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;log failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="fm"&gt;macro_rules!&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="cp"&gt;$fmt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nc"&gt;expr&lt;/span&gt;&lt;span class="cp"&gt;$(,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;$msg&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nc"&gt;expr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="fm"&gt;writeln!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;$fmt&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;$(,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;$msg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;log failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;})&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 

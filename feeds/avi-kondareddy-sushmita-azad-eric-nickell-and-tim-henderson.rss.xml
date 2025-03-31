@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>Hackthology - Avi Kondareddy, Sushmita Azad, Eric Nickell, and Tim Henderson</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Wed, 02 Apr 2025 00:00:00 -0400</lastBuildDate><item><title>Speculative Testing at Google with Transition Prediction</title><link>https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html</link><description>&lt;p&gt;Avi Kondareddy, Sushmita Azad, Eric Nickell, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
+&lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href=""&gt;ICST Industry Track 2025&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;Google's …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Avi Kondareddy, Sushmita Azad, Eric Nickell, and &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</dc:creator><pubDate>Wed, 02 Apr 2025 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2025-04-02:/speculative-testing-at-google-with-transition-prediction.html</guid><category>Paper</category></item></channel></rss>

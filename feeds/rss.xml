@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Hackthology</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Mon, 27 May 2024 00:00:00 -0400</lastBuildDate><item><title>SafeRevert: When Can Breaking Changes be Automatically Reverted?</title><link>https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
-&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
+<rss version="2.0"><channel><title>Hackthology</title><link>https://hackthology.com/</link><description></description><lastBuildDate>Wed, 02 Apr 2025 00:00:00 -0400</lastBuildDate><item><title>Speculative Testing at Google with Transition Prediction</title><link>https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html</link><description>&lt;p&gt;Avi Kondareddy, Sushmita Azad, Eric Nickell, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
+&lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href=""&gt;ICST Industry Track 2025&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
-&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;PDF&lt;/a&gt;.
-&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.
-&lt;a href="http://tba"&gt;Google Research Preprint&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;blockquote&gt;
 &lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
-correct you should read the …&lt;/p&gt;&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;,  Avi Kondareddy, Sushmita Azad, Eric Nickell</dc:creator><pubDate>Mon, 27 May 2024 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2024-05-27:/saferevert-when-can-breaking-changes-be-automatically-reverted.html</guid><category>Paper</category></item><item><title>Flake Aware Culprit Finding</title><link>https://hackthology.com/flake-aware-culprit-finding.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;Google's …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Avi Kondareddy, Sushmita Azad, Eric Nickell, and &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</dc:creator><pubDate>Wed, 02 Apr 2025 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2025-04-02:/speculative-testing-at-google-with-transition-prediction.html</guid><category>Paper</category></item><item><title>SafeRevert: When Can Breaking Changes be Automatically Reverted?</title><link>https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
+&lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1109/ICST60714.2024.00043"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/icst-2024.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Abstract …&lt;/h4&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;,  Avi Kondareddy, Sushmita Azad, Eric Nickell</dc:creator><pubDate>Mon, 27 May 2024 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2024-05-27:/saferevert-when-can-breaking-changes-be-automatically-reverted.html</guid><category>Paper</category></item><item><title>Flake Aware Culprit Finding</title><link>https://hackthology.com/flake-aware-culprit-finding.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
 &lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2023/icst-2023-industry/46/Flake-Aware-Culprit-Finding"&gt;ICST Industry Track 2023&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://doi.dx.org/10.1109/ICST57152.2023.00041"&gt;DOI&lt;/a&gt;.
@@ -195,7 +212,7 @@ the correct action to take. Fined grained control over the handling of errors
 using …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Thu, 19 May 2016 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2016-05-19:/exceptions-for-go-as-a-library.html</guid><category>Blog</category></item><item><title>First Rust Macro</title><link>https://hackthology.com/first-rust-macro.html</link><description>&lt;p&gt;I started learning &lt;a href="http://www.rust-lang.org/"&gt;Rust&lt;/a&gt; yesterday. Today as I was
 writing input handling code I wanted to print to the standard err. The way to do
 that seems to be:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="fm"&gt;writeln!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;::&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="fm"&gt;writeln!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stderr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;ok&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;write to stderr failed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;That seems a bit verbose to me versus printing to the …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tim Henderson</dc:creator><pubDate>Sat, 20 Sep 2014 00:00:00 -0400</pubDate><guid isPermaLink="false">tag:hackthology.com,2014-09-20:/first-rust-macro.html</guid><category>Blog</category></item><item><title>Scala Notes</title><link>https://hackthology.com/scala-notes.html</link><description>&lt;p&gt;My notes as I relearn Scala. I am reading through &lt;a href="http://www.worldcat.org/title/programming-in-scala/oclc/731510960"&gt;Programming in Scala (2nd
