@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hackthology - Tim Henderson, Sushmita Azad, et al.</title><link>https://hackthology.com/</link><description/><atom:link href="https://hackthology.com/feeds/tim-henderson-sushmita-azad-et-al.rss.xml" rel="self"/><lastBuildDate>Thu, 19 Mar 2026 00:00:00 -0400</lastBuildDate><item><title>Taming the Variants: Multi-Architecture Continuous Testing at Google</title><link>https://hackthology.com/taming-the-variants-multi-architecture-continuous-testing-at-google.html</link><description>&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Sushmita Azad, Chandrakanth Chittappa, Ali Esmaeeli, Laura Macaddino, Sam Manfreda, David Margolin, Dharma Naidu, Sabuj Pattanayek, Sachin Sable, Ruslan Sakevych, Dushyant Acharya, Adrian Berding, Kevin Crossan, Wolff Dobson, Avi Kondareddy, and Abhayendra Singh.
-&lt;em&gt;Taming the Variants: Multi-Architecture Continuous Testing at Google&lt;/em&gt;. &lt;a href="https://doi.org/10.1109/ICST62969.2025.10988976"&gt;ICST 2026&lt;/a&gt;.
+&lt;em&gt;Taming the Variants: Multi-Architecture Continuous Testing at Google&lt;/em&gt;. &lt;a href="https://conf.researchr.org/home/icst-2026"&gt;ICST 2026&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2026.pdf"&gt;PDF&lt;/a&gt;.
