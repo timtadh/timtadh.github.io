@@ -1,8 +1,1113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology - Paper</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/paper.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2025-04-02T00:00:00-04:00</updated><entry><title>Speculative Testing at Google with Transition Prediction</title><link href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html" rel="alternate"></link><published>2025-04-02T00:00:00-04:00</published><updated>2025-04-02T00:00:00-04:00</updated><author><name>Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2025-04-02:/speculative-testing-at-google-with-transition-prediction.html</id><summary type="html">&lt;p&gt;Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
-&lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2025/icst-2025-industry/17/Speculative-Testing-at-Google-with-Transition-Prediction"&gt;ICST Industry Track 2025&lt;/a&gt;.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology - Paper</title><link href="https://hackthology.com/" rel="alternate"/><link href="https://hackthology.com/feeds/paper.atom.xml" rel="self"/><id>https://hackthology.com/</id><updated>2026-03-19T00:00:00-04:00</updated><entry><title>Taming the Variants: Multi-Architecture Continuous Testing at Google</title><link href="https://hackthology.com/taming-the-variants-multi-architecture-continuous-testing-at-google.html" rel="alternate"/><published>2026-03-19T00:00:00-04:00</published><updated>2026-03-19T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Sushmita Azad, and et al.</name></author><id>tag:hackthology.com,2026-03-19:/taming-the-variants-multi-architecture-continuous-testing-at-google.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Sushmita Azad, Chandrakanth Chittappa, Ali Esmaeeli, Laura Macaddino, Sam Manfreda, David Margolin, Dharma Naidu, Sabuj Pattanayek, Sachin Sable, Ruslan Sakevych, Dushyant Acharya, Adrian Berding, Kevin Crossan, Wolff Dobson, Avi Kondareddy, and Abhayendra Singh.
+&lt;em&gt;Taming the Variants: Multi-Architecture Continuous Testing at Google&lt;/em&gt;. &lt;a href="http://tba"&gt;ICST 2026&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2026.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/taming-the-variants-multi-architecture-continuous-testing-at-google.html"&gt;WEB …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Sushmita Azad, Chandrakanth Chittappa, Ali Esmaeeli, Laura Macaddino, Sam Manfreda, David Margolin, Dharma Naidu, Sabuj Pattanayek, Sachin Sable, Ruslan Sakevych, Dushyant Acharya, Adrian Berding, Kevin Crossan, Wolff Dobson, Avi Kondareddy, and Abhayendra Singh.
+&lt;em&gt;Taming the Variants: Multi-Architecture Continuous Testing at Google&lt;/em&gt;. &lt;a href="http://tba"&gt;ICST 2026&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://hackthology.com/pdfs/icst-2026.pdf"&gt;PDF&lt;/a&gt;.
+&lt;a href="https://hackthology.com/taming-the-variants-multi-architecture-continuous-testing-at-google.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Note&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is a conversion from a latex paper I wrote. If you want all formatting
+correct you should read the
+&lt;a href="https://hackthology.com/pdfs/icst-2026.pdf"&gt;pdf version&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+
+&lt;h4&gt;Abstract&lt;/h4&gt;
+&lt;p&gt;Enterprises are increasingly adopting multiple general-purpose computer
+architectures in the data center. This leads to new testing challenges as it
+creates demand to qualify the software for the additional architectures. Naively
+double-testing all software for both architectures is costly and unnecessary.
+Further, reconfiguring CI/CD to take advantage of the new architecture can be
+non-trivial at scale. This paper introduces CI/CD &lt;em&gt;variants&lt;/em&gt; and an optimized
+testing cycle to solve these twin challenges. We empirically evaluate our
+solution's impact on human and machine expenses using 44k projects at Google on
+real production data. First, we estimate saving ~25% of machine expenses at the
+negligible cost of a few delayed breakage detections per day. Second, we
+estimate a 90+% reduction in human cost for migrating the configuration. All
+features described in this paper are now Generally Available at Google and we
+report this as an empirical case study in scaling CI/CD to new architectures.&lt;/p&gt;
+&lt;h1 id="sec:introduction"&gt;I. Introduction&lt;/h1&gt;
+
+&lt;p&gt;Over the last decade, hyperscalers have introduced multiple general-purpose
+architectures into the data center [&lt;a href="#ref-Christopher2025"&gt;1&lt;/a&gt;]. At Google, this creates challenges for our
+very large scale continuous integration and delivery platforms (CI/CD) [&lt;a href="#ref-Memon2017"&gt;2&lt;/a&gt;]. We aim
+to enable adoption by ensuring the software is appropriately built and tested.
+We face two challenges.&lt;/p&gt;
+&lt;p&gt;First, a high performance Continuous Integration [&lt;a href="#ref-Fowler2006"&gt;3&lt;/a&gt;] system identifies novel build
+and test failures the moment they are introduced to the source repository. This
+enables developers and automation to find and fix these failures as soon as
+possible. The sooner a failure is found, the cheaper it is to fix. For
+instance, a bug-introducing change can be automatically reverted without
+review, provided there haven't been further changes that would cause merge
+conflicts [&lt;a href="#ref-Henderson2023"&gt;4&lt;/a&gt;, &lt;a href="#ref-Henderson2024"&gt;5&lt;/a&gt;]. Finding failures as quickly as
+possible is in tension with running tests as cheaply as possible (achieved by
+adjusting testing frequency). Can we add the new architecture without
+constantly retesting on both platforms?&lt;/p&gt;
+&lt;p&gt;Second, when a new compute architecture is introduced, all projects need to
+determine:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Is the project's code build-compatible?&lt;/li&gt;
+&lt;li&gt;Do the project's tests pass on the new architecture?&lt;/li&gt;
+&lt;li&gt;Is the project's runtime performance acceptable?&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Answering these questions requires modifying the CI/CD configuration to
+additionally build, test, and deploy the code to the new architecture(s). This
+mechanical, unrewarding task can be a costly undertaking for an organization.
+Prior to the start of this project we estimate that it took an &lt;em&gt;expert&lt;/em&gt; from the
+central Arm migration team (whose primary job was to perform this
+qualification) hours of hands-on time just to make the required configuration
+changes to a single project. Google operates a monorepo with billions of lines
+of source code and over 100,000 binaries. Making manual changes to every
+project was impractical [&lt;a href="#ref-Christopher2025"&gt;1&lt;/a&gt;].&lt;/p&gt;
+&lt;p&gt;The two challenges are intertwined. We neither want to double test nor do we
+want our users to manually edit configuration files. Further, manual changes
+create bespoke additional CI/CD configurations requiring future maintenance.
+While guides exist, users don't always follow instructions. This means that the
+CI/CD systems would need complex logic to link functionally-equivalent x86 and
+Arm configurations.&lt;/p&gt;
+&lt;p&gt;Without reliably linking configurations, the system cannot optimize the testing
+process. We solved both problems by introducing &lt;em&gt;variants&lt;/em&gt;: automatically
+&lt;em&gt;re&lt;/em&gt;configured user projects. A variant adapts the original configuration for
+each targeted platform. This flexible infrastructure also supports variants for
+compiler optimization level, address and memory sanitization, and other build
+modifications.&lt;/p&gt;
+&lt;p&gt;Because the variants are automatically configured, they are also &lt;em&gt;structured&lt;/em&gt;.
+This allows our systems to make consistent choices on how building and testing
+should occur for each variant. Our primary CI system, the Test Automation
+Platform (TAP) [&lt;a href="#ref-Memon2017"&gt;2&lt;/a&gt;, &lt;a href="#ref-Leong2019"&gt;6&lt;/a&gt;, &lt;a href="#ref-Henderson2023"&gt;4&lt;/a&gt;, &lt;a href="#ref-Henderson2024"&gt;5&lt;/a&gt;, &lt;a href="#ref-Kondareddy2025"&gt;7&lt;/a&gt;], introduced a new testing mode: &lt;em&gt;Target Comprehensive Cycles&lt;/em&gt;,
+optimizing the cost of testing across multiple architectures. Our CD system
+also adopted Target Comprehensive cycles to realize the cost savings. However,
+to prevent bugs escaping to production, it introduced &lt;em&gt;Late Stage Testing&lt;/em&gt;. This
+phase executes the remaining tests prior to production, but at a lower
+frequency.&lt;/p&gt;
+&lt;h2 id="contributions"&gt;A. Contributions&lt;/h2&gt;
+
+&lt;p&gt;We detail our solution, &lt;em&gt;Variants&lt;/em&gt;, and empirically analyze its efficacy and
+performance. We measure the realized human migration savings from variants and
+the machine costs avoided by &lt;em&gt;Target Comprehensive&lt;/em&gt; (TC) testing. Finally,
+because optimizations involve a trade-off, we examine the productivity cost of
+delaying the detection of bugs by skipping tests.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;em&gt;Variants&lt;/em&gt; are generally available and used by 44k projects. We present a
+    large-scale empirical case study on the efficacy of our methods using
+    production data. We estimated both the human and machine savings and the
+    productivity cost of delayed breakage detection.&lt;/li&gt;
+&lt;li&gt;A new &lt;em&gt;Target Comprehensive&lt;/em&gt; (TC) scheduling mode prevents doubled testing
+    costs. We measured savings of approximately ~25% over the naive double
+    testing strategy.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Late-Stage Testing&lt;/em&gt; (LST) shifts test load into later, less frequent, parts
+    of the CI/CD pipeline. This executes test configurations skipped by TC prior
+    to user release. Late-stage testing failures occur less than 0.1% of the
+    time.&lt;/li&gt;
+&lt;li&gt;Automated configuration for building and testing for alternative
+    architectures reduces migration effort by approximately 90%.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id="sec:background"&gt;II. Background&lt;/h1&gt;
+
+&lt;p&gt;At Google, developers use multiple tools as part of their CI/CD system. Testing
+is typically handled by TAP (the Test Automation Platform), which performs
+testing both prior to code being submitted (presubmit testing) and after code
+is submitted to the mainline branch of the mono-repository. TAP only handles
+tests that fit on a single machine and are &lt;em&gt;version hermetic&lt;/em&gt; (i.e. only use
+code from a single version and do not make network calls). Some teams need
+larger integration tests that need multiple machines or need to compare
+behavior between the test environment or a production environment. These teams
+additionally use an Integration Testing platform. While our work on variants is
+also used by the Integration Testing platform, we constrain the focus of this
+paper to TAP.&lt;/p&gt;
+&lt;p&gt;TAP runs &lt;em&gt;testing cycles&lt;/em&gt;, where all projects and their &lt;em&gt;Bazel targets&lt;/em&gt; are
+batched together at the same version [&lt;a href="#ref-Henderson2023"&gt;4&lt;/a&gt;, &lt;a href="#ref-Kondareddy2025"&gt;7&lt;/a&gt;]. Once all the targets for a project have
+executed, TAP computes a &lt;em&gt;Project Status&lt;/em&gt; (ex. &lt;code&gt;PASSING&lt;/code&gt;, &lt;code&gt;FAILING&lt;/code&gt;, ...). A
+&lt;code&gt;PASSING&lt;/code&gt; status enables the next service in the CI/CD system to take over:
+Rapid.&lt;/p&gt;
+&lt;p&gt;Rapid is a generalized CI/CD workflow execution engine. It is similar in
+capability to commercial and open source systems such as GitHub Actions or
+Jenkins. It allows developers to orchestrate a complex series of processes to
+build production packages, trigger integration tests, and trigger production
+deployments. While Rapid's capabilities are very general, all Rapid "releases"
+start with a &lt;em&gt;Candidate Creation&lt;/em&gt; phase, during which testing results from TAP
+and other systems are verified before the production binary package is
+created. A developer may configure some tests to only trigger in Rapid instead
+of the more common and recommended method of using TAP.&lt;/p&gt;
+&lt;p&gt;Due to the general complexity of software development at Google, we have a
+managed platform that is built on top of all of this called &lt;em&gt;Urfin&lt;/em&gt;. It
+provides a streamlined intent-based mechanism for developers to configure their
+projects. Urfin standardizes the workflows that Rapid executes and the
+production environments. When a project is configured by Urfin (instead of
+"Rapid Native"), we are able to automatically determine what workflows modify
+production environments (versus those used for additional verification or
+validation with non-production data or users). This structural distinction is
+relevant for our Late-Stage Testing strategy and empirical evaluation,
+motivating our introduction of these terms.&lt;/p&gt;
+&lt;h2 id="glossary"&gt;A. Glossary of Google Terminology&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Piper&lt;/strong&gt; – The version control system used at Google [&lt;a href="#ref-Potvin2016"&gt;8&lt;/a&gt;].&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Changelist (CL)&lt;/strong&gt; – A commit in Piper. CLs have integer numbers and
+    submitted CLs have monotonically increasing numbers.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Bazel&lt;/strong&gt; – The build tool used at Google: &lt;a href="https://bazel.build/"&gt;https://bazel.build/&lt;/a&gt; [&lt;a href="#ref-Winters2020"&gt;9&lt;/a&gt;].&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Target&lt;/strong&gt; – The compilation unit in Bazel. TAP doesn't run individual test
+    methods or even test classes / suites. Instead, it runs Bazel test targets
+    that may contain many test methods and classes.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Forge&lt;/strong&gt; – The large remote build execution cluster used by Bazel [&lt;a href="#ref-Winters2020"&gt;9&lt;/a&gt;].&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Build System&lt;/strong&gt; – A collection of services for batching and running builds
+    in production [&lt;a href="#ref-Winters2020"&gt;9&lt;/a&gt;, &lt;a href="#ref-Wang2020"&gt;10&lt;/a&gt;, &lt;a href="#ref-Wang2021"&gt;11&lt;/a&gt;].&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TAP&lt;/strong&gt; – The primary continuous integration platform [&lt;a href="#ref-Gupta2011"&gt;12&lt;/a&gt;, &lt;a href="#ref-Bland2012"&gt;13&lt;/a&gt;, &lt;a href="#ref-Micco2012"&gt;14&lt;/a&gt;, &lt;a href="#ref-Micco2013"&gt;15&lt;/a&gt;, &lt;a href="#ref-Elbaum2014"&gt;16&lt;/a&gt;, &lt;a href="#ref-Memon2017"&gt;2&lt;/a&gt;, &lt;a href="#ref-Spragins2018"&gt;17&lt;/a&gt;, &lt;a href="#ref-Leong2019"&gt;6&lt;/a&gt;, &lt;a href="#ref-Henderson2023"&gt;4&lt;/a&gt;, &lt;a href="#ref-Henderson2024"&gt;5&lt;/a&gt;, &lt;a href="#ref-Hoang2024"&gt;18&lt;/a&gt;, &lt;a href="#ref-Kondareddy2025"&gt;7&lt;/a&gt;].&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rapid&lt;/strong&gt; – The primary workflow automation tool use to orchestrate release
+    processes [&lt;a href="#ref-Winters2020"&gt;9&lt;/a&gt;].&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Urfin&lt;/strong&gt; – A managed platform built on top of tools like TAP and Rapid that
+    dramatically simplifies configuration and usage of release automation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rapid Native&lt;/strong&gt; – Our term for release projects that don't use the managed
+    platform (Urfin). These projects have non-standard workflows and
+    configurations.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Blueprint File&lt;/strong&gt; – The common configuration file format used by TAP, Rapid,
+    and many other tools. It is defined in a bespoke configuration language
+    (NCL).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sec:background:config"&gt;B. Configuring TAP and Rapid&lt;/h2&gt;
+
+&lt;p&gt;TAP, Rapid, and other tools are configured in &lt;em&gt;Blueprint files&lt;/em&gt;. Blueprints are
+written in a bespoke, proprietary configuration language (NCL). NCL is a
+high-level functional language for describing and manipulating protocol
+buffers. It supports complex data types, functions, and libraries. The power of
+the language has led to proliferation of complex Blueprints that are difficult
+to mechanically modify for &lt;em&gt;Large Scale Changes&lt;/em&gt; [&lt;a href="#ref-Winters2020"&gt;9&lt;/a&gt;], even with the support of
+modern LLM tooling [&lt;a href="#ref-Christopher2025"&gt;1&lt;/a&gt;].&lt;/p&gt;
+&lt;p&gt;Users specify in the Blueprints what TAP should run by defining &lt;em&gt;TAP Projects&lt;/em&gt;.
+A TAP Project has &lt;em&gt;patterns&lt;/em&gt; (that match Bazel targets), Bazel flags (which
+control compilation modes such as building for Arm), a maximum execution
+frequency, and notification routing. Rapid Projects are also defined in
+Blueprints. These projects can be extremely complex. We will focus just on how
+users configure testing. A Rapid Project can be &lt;em&gt;gated&lt;/em&gt; on one or more TAP
+Projects, which must all pass. When they all pass it is called a &lt;em&gt;Shared Green&lt;/em&gt;
+or a &lt;em&gt;Golden&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Urfin, the managed platform, generates Blueprints (and other configuration)
+from a higher level "intent"-based configuration format. Urfin's configuration
+is less flexible than Blueprints and large scale changes are easier to
+mechanize.&lt;/p&gt;
+&lt;h2 id="tap-overview"&gt;C. TAP Overview&lt;/h2&gt;
+
+&lt;p&gt;The continuous integration system, TAP, has two phases: TAP Presubmit and TAP
+Postsubmit. Presubmit runs as part of the developer's "code review loop",
+executing when they send out changes for review and when they attempt to submit
+the code to the repository. Because of the massive scale of the repository, TAP
+Presubmit does not conduct exhaustive testing. Instead, it operates in a
+"best-effort" mode that attempts to prevent most breakages from escaping into
+submitted code. TAP Presubmit uses static build dependence-based test selection [&lt;a href="#ref-Gupta2011"&gt;12&lt;/a&gt;, &lt;a href="#ref-Elbaum2014"&gt;16&lt;/a&gt;],
+machine learning driven selection [&lt;a href="#ref-Spragins2018"&gt;17&lt;/a&gt;], and machine learning driven flakiness
+mitigation [&lt;a href="#ref-Hoang2024"&gt;18&lt;/a&gt;]. In this paper, we are focused on TAP Postsubmit's behavior and look
+forward to analyzing changes to Presubmit in a future manuscript.&lt;/p&gt;
+&lt;p&gt;TAP Postsubmit runs tests after changes have been submitted. While it
+originally ran the &lt;em&gt;affected&lt;/em&gt; tests (based on the build graph) at every single
+change [&lt;a href="#ref-Bland2012"&gt;13&lt;/a&gt;], this quickly proved too expensive. Today, Postsubmit runs periodically
+and avoids running if its Forge is too full. This strategy effectively batches
+many changes together, leading to a search problem when breakages occur [&lt;a href="#ref-Henderson2023"&gt;4&lt;/a&gt;, &lt;a href="#ref-Henderson2024"&gt;5&lt;/a&gt;].
+We call these "periodic runs" &lt;em&gt;Fully Comprehensive&lt;/em&gt; (FC) testing cycles since TAP
+runs all tests in all projects with all Bazel flag configurations that have
+been affected since the last cycle. Because FC cycles currently run at a
+maximum rate of once per hour, in 2025 we introduced a faster ML driven cycle
+to find breakages faster called &lt;em&gt;Speculative&lt;/em&gt; cycles [&lt;a href="#ref-Kondareddy2025"&gt;7&lt;/a&gt;]. Speculative cycles only
+run targets whose executions are likely to reveal novel breakages.&lt;/p&gt;
+&lt;h2 id="rapid-overview"&gt;D. Rapid Overview&lt;/h2&gt;
+
+&lt;p&gt;Rapid runs user-defined "workflows" that are generally triggered off of a
+schedule. The first workflow, &lt;em&gt;Candidate Creation&lt;/em&gt;, always creates a release
+"candidate", which includes verifying test results and building the binary
+packages. When Rapid is configured via Urfin, the managed platform, the
+workflows are standardized and structured such that we know which workflows can
+change production environments. Rapid's schedule for Candidate Creation
+defaults to once every 2 hours in Urfin, and production pushes happen once per
+day on business days. Many Rapid Native projects are configured at a slower
+cadence.&lt;/p&gt;
+&lt;p&gt;When verifying test results, Rapid can execute any tests not previously run.
+Because it evolved independently from TAP, Rapid has always maintained its own
+execution logic, which historically led to redundant and wasteful testing
+effort. As part of this project, Rapid now recognizes which tests TAP has
+already completed; by eliminating these redundant executions, we have also
+reduced the risk of a release being blocked by flaky test failures.&lt;/p&gt;
+&lt;h1 id="sec:configuring-architecture"&gt;III. Configuring CI/CD for the new Architecture&lt;/h1&gt;
+
+&lt;p&gt;In order for a project to take advantage of the new compute platform, it needs
+to be built and tested for the new platform. Practically, this requires
+adjusting its Blueprint (the configuration, &lt;a href="#sec:background:config"&gt;Section II-B&lt;/a&gt;) to
+additionally instruct the CI/CD systems to build and test for the new platform.&lt;/p&gt;
+&lt;p&gt;Listing 1 provides an example of the work it takes to manually create new CI/CD
+projects to build and test a binary for Arm. As shown in the listing, multiple
+sections need to be modified and these modifications cannot always be done
+atomically. Depending on the complexity of a project's configuration, it may
+require refactoring of the functions or libraries used to generate the various
+components (such as buildable units) to generate both Arm and x86 versions of
+those components. Approximately 25% of active Rapid projects have complex
+Blueprints requiring manual modifications.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Listing 1: From a developers perspective, lines of code needed to manually configure arm-based testing and release automation.&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// I need to manually create Arm Buildable Units&lt;/span&gt;
+&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;arm_buildable_unit&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;blueprint&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;BuildableUnit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;arm_ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;build_flags&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;--compilation_mode=opt&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;--cpu=arm&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;test_patterns&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//ex/pattern/...&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;-//ex/pattern/x86tests/...&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="c1"&gt;// And associate them with a new Arm TAP Project&lt;/span&gt;
+&lt;span class="n"&gt;blueprint_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;blueprint&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;BlueprintFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;continuous_tests&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;blueprint&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ContinuousTest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;buildable_unit_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;blueprint&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ContinuousTest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;arm_ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;buildable_unit_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;arm_ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;buildable_units&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;&lt;span class="n"&gt;buildable_unit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;arm_buildable_unit&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="n"&gt;continuous_tests&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;ContinuousTest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;buildable_unit_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;ContinuousTest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;buildable_unit_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex_config&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;ContinuousTest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex.arm&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;buildable_unit_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex.arm&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;ContinuousTest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex.arm&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;buildable_unit_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex_config.arm&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="c1"&gt;// which I add to my Release project&amp;#39;s Golden Info.&lt;/span&gt;
+&lt;span class="n"&gt;golden_changelist&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;GoldenInfo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tap_build&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;GoldenInfo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tap_build&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex_config&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;GoldenInfo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tap_build&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex.arm&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;GoldenInfo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tap_build&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex_config.arm&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="c1"&gt;// create duplicate release with Arm config.&lt;/span&gt;
+&lt;span class="n"&gt;ReleasableUnit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex_multiarch_release&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;buildable_unit_names&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex_config&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex.arm&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex_config.arm&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;// and I add --fat_package_cpu=k8,arm to all Release BuildableUnits&lt;/span&gt;
+&lt;span class="n"&gt;BuildableUnit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ex_package&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;mpm_patterns&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//ex/pattern/...&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;test_patterns&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//ex/pattern/...&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;-//ex/pattern/x86tests/...&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;build_flags&lt;/span&gt;&lt;span class="o"&gt;=[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;--fat_mpm_cpu=k8, arm&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Additionally, as the central team gained experience migrating our largest
+binaries to Arm they discovered a few best practices. For instance, it was
+better to already have continuous testing results before going to the product
+team with requested changes. This allowed the product team to better assess the
+changes. However, setting up a normal CI pipeline for running the Arm tests
+before notifying the product team is a recipe for friction and pushback, as
+there are likely to be real and noisy failures. Thus, the central porting team
+needed a way to run the tests in the same way the product team would.&lt;/p&gt;
+&lt;p&gt;To solve this problem, we came up with the idea of having "shadow CI projects"
+that would be duplicates of the production CI projects, but turn off
+notifications, switch the cost accounting, and add the necessary flags to run
+the project on Arm. To create these "shadow CI projects", the central team had
+to create Blueprint files in their own directory that imported and modified the
+target project's configuration. While the central team had a process that let
+them drive migrations to increase the migration rate, we needed a more
+automated solution.&lt;/p&gt;
+&lt;h2 id="variants"&gt;A. Variants&lt;/h2&gt;
+
+&lt;p&gt;The experiences of the central migration team led us to create &lt;em&gt;Variant&lt;/em&gt;
+projects. These are automatically generated CI Projects that take the
+user-supplied configuration and adjust it to use different Bazel flags. For
+example, adding the flag &lt;code&gt;--cpu=arm&lt;/code&gt; will compile and test for Arm. Variants
+are general and allow us, as the CI system owner, to dynamically define new
+variants as needed.&lt;/p&gt;
+&lt;p&gt;&lt;span id="fig:project-structure" label="fig:project-structure"&gt;
+  &lt;a href="images/icst-2026/fig1.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 1&lt;/strong&gt;&lt;/em&gt;
+  &lt;img alt="Figure 1" src="images/icst-2026/fig1.png"&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Figure 1 shows the structure of how Rapid and TAP interact with the new &lt;code&gt;~arm&lt;/code&gt;
+variant. Each TAP project has a copy made (potentially removing or adding
+targets as necessary), and Rapid utilizes the shared green between the original
+projects and the variant projects when creating release candidates. The new TAP
+projects are largely identical to the original project, but we have the ability
+to globally modify any setting in the variant projects we choose. We used this
+to implement multiple "modes" for a variant: &lt;code&gt;DISABLED&lt;/code&gt;, &lt;code&gt;SHADOW&lt;/code&gt;, and
+&lt;code&gt;RELEASE&lt;/code&gt;. We were then able to launch variants in &lt;code&gt;SHADOW&lt;/code&gt; mode globally with
+no user involvement or toil from the central migration team. This allowed
+collection of repository wide testing results to guide porting effort. When a
+project is ready to adopt Arm, a simple top-level field lets them switch to
+&lt;code&gt;RELEASE&lt;/code&gt; mode.&lt;/p&gt;
+&lt;p&gt;Variant projects were designed to be largely &lt;em&gt;identical&lt;/em&gt; to regular user
+configured projects. This meant most portions of TAP, downstream systems, and
+API clients initially worked unmodified with the variants. However, we
+eventually introduced differentiated behavior. For instance, we changed the web
+user interface to explicitly show the user the relationships between the
+projects when a variant is enabled and has valid targets.&lt;/p&gt;
+&lt;h2 id="porting-process"&gt;B. Porting Process with Variants&lt;/h2&gt;
+
+&lt;p&gt;By default, all projects run their Arm variant in shadow mode. Once a project's
+tests all pass on Arm it becomes eligible for enabling the Arm release (but not
+necessarily running in production [&lt;a href="#ref-Christopher2025"&gt;1&lt;/a&gt;]). To enable the Arm release, we added a
+single top level field to the Blueprint (plus service level opt-outs) that
+enables Arm for all CI and Release projects defined in the Blueprint. This
+field &lt;code&gt;arm_variant_mode&lt;/code&gt; is shown in Listing 2.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Listing 2: Simplified variant configuration&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;blueprint_file&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;blueprint&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;BlueprintFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;arm_variant_mode&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;devtools_blueprint&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;VariantMode&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;VARIANT_MODE_RELEASE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;continuous_tests&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;blueprint&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ContinuousTest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;example&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;buildable_unit_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;example&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;buildable_units&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;buildable_unit&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This new field drastically simplifies the porting process. It can usually be
+mechanically added (although not always). In &lt;a href="#sec:results:rq3"&gt;Section VI-E&lt;/a&gt;, we estimate the
+total savings of human labor from this simplification. With the automated
+construction of shadow projects and the ability to mechanically drive changes
+to Blueprints, we were able to fully automate portions of the porting process.&lt;/p&gt;
+&lt;h2 id="complexity-implementation"&gt;C. Complexity of Implementation&lt;/h2&gt;
+
+&lt;p&gt;In &lt;a href="#sec:results:rq3"&gt;Section VI-E&lt;/a&gt;, we analyze the Return on Investment of this project and
+find that it was positive. However, the actual implementation of variants was
+complicated for many reasons that are outside of the scope of this paper to
+fully describe. For instance, TAP manages a set of projects and their targets
+at the scale of Google's multi-billion line mono-repository. Those projects and
+targets form a bipartite graph where a project contains multiple targets but a
+target may be inside multiple projects. Adding a single variant doubles the
+size of that graph. There are technical challenges involved with optimizing the
+variant implementation for computing, storing, and serving this graph. Note, the
+graph is dynamic as it changes at practically every submitted change.&lt;/p&gt;
+&lt;p&gt;Other, more prosaic challenges emerged, such as finding the correct policy for
+detecting incompatible projects, redesigning data storage layers for project
+status, and renegotiating the contract between Rapid and TAP, among many other
+challenges. We regret that we do not provide the full saga of the development.&lt;/p&gt;
+&lt;h1 id="sec:target-comprehensive"&gt;IV. Target Comprehensive Testing&lt;/h1&gt;
+
+&lt;p&gt;One benefit of variants we have not yet discussed is their structured nature.
+When developers manually create new CI and CD projects as shown in Listing 1,
+there are no constraints on what they might change. We cannot enforce standard
+naming conventions automatically, nor can we even ensure they create them in
+the same Blueprint configuration file. Developers may add or subtract
+additional flags in non-standard ways. They may add or remove sections of their
+code from the patterns to be built and tested. Because of this, the central
+services (TAP and Rapid) would need to make conservative choices when
+qualifying releases.&lt;/p&gt;
+&lt;p&gt;However, variants have none of the above problems. Their definitions (what
+flags are added, what kind of targets are excluded, etc...) are centrally
+defined and audited. This enables direct monitoring (as shown in &lt;a href="#sec:results:rq2"&gt;Section VI-C&lt;/a&gt;)
+of behavior divergence between x86 and Arm. It also enables us to make changes
+to how we schedule tests in TAP and Rapid.&lt;/p&gt;
+&lt;p&gt;As discussed in &lt;a href="#sec:background"&gt;Section II&lt;/a&gt;, TAP has traditionally run all tests in all
+configurations. We call this testing mode &lt;em&gt;Fully Comprehensive&lt;/em&gt; (FC). In order
+to find breakages faster, we then also ran tests in a &lt;em&gt;Speculative&lt;/em&gt; mode [&lt;a href="#ref-Kondareddy2025"&gt;7&lt;/a&gt;]. Now,
+we introduce a third mode enabled by variants: &lt;em&gt;Target Comprehensive&lt;/em&gt; (TC)
+testing. Under TC, we guarantee that targets are run &lt;em&gt;at least&lt;/em&gt; once in some
+configuration (x86, arm, or other variant). Because of the automatically
+generated nature of variants and our central monitoring, results in one
+configuration are generally &lt;em&gt;substitutable&lt;/em&gt; for another configuration (see
+&lt;a href="#sec:results:rq2"&gt;Section VI-C&lt;/a&gt;).&lt;/p&gt;
+&lt;h2 id="integration-release"&gt;A. Integration with Release&lt;/h2&gt;
+
+&lt;p&gt;A TAP project is eligible for Target Comprehensive testing when all release
+projects that reference it are enabled for Arm (see Listing 2). Under TC, TAP
+only guarantees to run a target on a single architecture (but it can choose to
+run it on more). However, before a release goes to production (and potentially
+executes on an architecture different than the one TAP tested on), we want to
+qualify it in all configurations. To do so, we run the remainder of the tests
+that TAP skipped during the release process. Figure 2 visualizes how this all
+connect together.&lt;/p&gt;
+&lt;p&gt;&lt;span id="fig:system-overview" label="fig:system-overview"&gt;
+  &lt;a href="images/icst-2026/fig2.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 2&lt;/strong&gt;&lt;/em&gt;
+  &lt;img alt="Figure 2" src="images/icst-2026/fig2.png"&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In release, there are two types of projects: &lt;em&gt;Rapid Native&lt;/em&gt; (unmanaged) projects
+and &lt;em&gt;Urfin&lt;/em&gt; (managed) projects (&lt;a href="#sec:background"&gt;Section II&lt;/a&gt;). By default, Urfin projects "Create
+Candidates" every two hours and push production releases once per business day
+(excluding Fridays). Because of the structured nature of Urfin, we know
+centrally when an Urfin project pushes to production. This allows us to
+&lt;em&gt;delay&lt;/em&gt; the finalization of testing to immediately before the production push.
+We call this &lt;em&gt;Late Stage Testing&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;In Rapid Native, we do not know when in the release process a developer may be
+modifying production. Therefore, we need to continue to complete testing in the
+traditional Create Candidate phase. Luckily, many Rapid Native projects tend to
+be configured to Create Candidates once per day.&lt;/p&gt;
+&lt;h2 id="cost-savings"&gt;B. Cost Savings&lt;/h2&gt;
+
+&lt;p&gt;Target Comprehensive testing shifts the load &lt;em&gt;right&lt;/em&gt; in the Software Development
+Life Cycle (closer to the user and further away from the developer). This is
+expected to save machine cost by reducing the frequency at which tests are
+executed on both architectures. We expect significant savings, since
+production pushes usually only occur approximately once per day and TAP testing
+cycles occur once per hour. In &lt;a href="#sec:results:rq1"&gt;Section VI-A&lt;/a&gt;, we empirically evaluate our
+realized savings. While lower than the theoretical maximum for a variety of
+reasons, the results are significant and financially meaningful to us.&lt;/p&gt;
+&lt;h1 id="sec:evaluation"&gt;V. Empirical Evaluation&lt;/h1&gt;
+
+&lt;h2 id="research-questions"&gt;A. Research Questions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;RQ1&lt;/strong&gt;: How does the Target Comprehensive scheduling strategy, which
+    executes a union of test targets once across architectures ($T_{\text{x86}}
+    \cup T_{\text{Arm}}$), compare to a Fully Comprehensive baseline
+    ($T_{\text{x86}} \times T_{\text{Arm}}$) in terms of compute resource
+    consumption and project status latency?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RQ2&lt;/strong&gt;: Does the Target Comprehensive approach maintain release success
+    rate compared to Fully Comprehensive testing? Specifically, what is the
+    impact on breakage detection latency and rate of late failure detections?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RQ3&lt;/strong&gt;: How does an intent-based configuration abstraction,
+    &lt;code&gt;arm_variant_mode&lt;/code&gt;, compare to manual Blueprint configuration in terms of
+    upfront engineering cost (measured as saved migration effort)?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="statistical-testing"&gt;B. Note on Statistical Testing&lt;/h2&gt;
+
+&lt;p&gt;Throughout our analysis below, our primary method for assessing validity and
+effect size is Bootstrap resampling (with 10,000 samples) to construct
+confidence intervals at the 95% confidence level using the percentile method [&lt;a href="#ref-Hesterberg2012"&gt;19&lt;/a&gt;].
+While our sample sizes are large enough to generally "ignore" normality
+violations, the violations are at times quite severe in our datasets. To build
+confidence in the conclusions we usually apply a secondary parametric analysis
+(such as an appropriate t-test or regression model). The results of the
+parametric tests confirmed the non-parametric Bootstrap method. Finally, the
+Bootstrap method returns larger confidence intervals than the corresponding
+parametric method employed. We present these more conservative intervals in the
+text of the paper.&lt;/p&gt;
+&lt;h2 id="analyzing-machine-costs"&gt;C. Analyzing the Effect on Machine Costs&lt;/h2&gt;
+
+&lt;p&gt;The motivating reason for Target Comprehensive testing cycles was to save
+machine costs as double testing was deemed unsustainable. So, did the cost
+savings materialize? Forge provides highly-detailed &lt;em&gt;per action&lt;/em&gt; logs of
+executor cost and time. An action is a single build action that Bazel invokes.
+For instance, a compiler or linker command. Test actions (when a test is
+executed) are trivially differentiable from the build actions.&lt;/p&gt;
+&lt;p&gt;We analyzed Forge usage data from TAP Postsubmit (CI runs occurring after code
+submission) for 44,243 projects that had Arm testing enabled. We collected
+data over several weeks, joining Bazel targets with Forge actions to estimate
+the amortized build cost, and collecting the direct execution cost for each
+test action. For each testing cycle run by TAP Postsubmit, we summed the
+amortized build costs and test costs for all targets in the project to create a
+total cost per cycle. Target costs were normalized when shared by multiple
+projects in the same testing cycle.&lt;/p&gt;
+&lt;p&gt;We performed a paired comparison (by project) of the Target Comprehensive (TC)
+and Fully Comprehensive (FC) costs. We evaluated performance using two
+distinct metrics: &lt;em&gt;per-project&lt;/em&gt; savings and &lt;em&gt;global system&lt;/em&gt; savings. In both
+cases, savings are defined as $1 - \text{TC} / \text{FC}$.&lt;/p&gt;
+&lt;p&gt;To estimate the expected "per project" savings, we used the Geometric Mean (GM)
+of the ratio for all projects: $1 - \text{GM}(\text{TC} / \text{FC})$. To
+estimate the expected system (or total) savings, we estimated the ratio of the
+sum of costs across all projects in a scheduling cycle: $1 - \sum \text{TC} /
+\sum \text{FC}$.&lt;/p&gt;
+&lt;p&gt;For both estimates, we used the non-parametric method Bootstrap re-sampling [&lt;a href="#ref-Hesterberg2012"&gt;19&lt;/a&gt;],
+which does not require an assumption about normality of the data. As can be seen
+in Figure 3, the data has heavy tails and multiple peaks violating this
+assumption. Using Bootstrap, we resampled (for each estimate) 10,000 times and
+computed the expected savings (the median) and 95% confidence interval using the
+2.5th - 97.5th percentiles. Finally, we cross checked the per-project estimate
+using a paired t-test.&lt;/p&gt;
+&lt;h2 id="analyzing-project-status-latency"&gt;D. Analyzing the Effects on Project Status Latencies&lt;/h2&gt;
+
+&lt;p&gt;A project status includes the results of all targets and indicates if the
+project is passing, failing, broken, etc. &lt;em&gt;Project status latency&lt;/em&gt; is the time
+elapsed between successive calculations of project statuses at each cycle. To
+account for distribution variability, we utilize a Poisson Bootstrap method with
+10,000 resamplings to analyze latency across 2.75 million FC statuses (before
+launch) and 2.94 million TC statuses (after launch). The cohort consists of
+31,996 TAP projects that were Arm-enabled just prior to launch of TC.&lt;/p&gt;
+&lt;h2 id="analyzing-breakage-detection"&gt;E. Analyzing Breakage Detection Latency&lt;/h2&gt;
+
+&lt;p&gt;Breakage detection latency is defined as the amount of time between when a
+developer submits a bug that breaks a test and the breakage being detected
+through a CI execution. We use Bootstrap analysis to compute confidence
+intervals to compare this breakage detection latency before and after the
+launch of Target Comprehensive testing. Further parametric analysis was
+completed that agrees with the non-parametric analysis, which we omit for
+brevity.&lt;/p&gt;
+&lt;h2 id="analyzing-release-failure"&gt;F. Analyzing the Effects on Release Failure Rate&lt;/h2&gt;
+
+&lt;p&gt;Our second question, RQ2, asks whether the reduction in coverage from Target
+Comprehensive testing caused additional failures in release. As a reminder, for
+binaries that will actually be released, we run the remaining tests that were
+not run during Target Comprehensive. Thus, every test is run on both platforms
+if it runs in production. Running on both platforms happens much less
+frequently and enables the savings shown in RQ1.&lt;/p&gt;
+&lt;p&gt;We gathered data on 91,815 Release Projects, including both projects with Arm
+enabled and not enabled. Initial normality checks revealed the failure data to
+be extremely heavy-tailed and zero-inflated: the vast majority of projects
+never fail, while a small minority fail constantly. We filtered out
+approximately 130 projects that failed 100% of the time in both periods, as
+manual inspection confirmed these were abandoned and would otherwise skew
+volume-weighted metrics.&lt;/p&gt;
+&lt;p&gt;We analyzed the two project types: "Rapid Native" (flexible workflows) and
+"Urfin" (managed/structured workflows). For Urfin, we distinguish between the
+standard "Candidate Creation" phase and the additional "Late-stage" testing
+performed immediately before production push.&lt;/p&gt;
+&lt;p&gt;We compare across these 3 groups the change in test failure rates. We look at
+the comparison in two ways:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;em&gt;Paired Analysis (System Burden):&lt;/em&gt; We calculated the mean arithmetic
+    difference in failure rate for each project before and after Target
+    Comprehensive was enabled. This measures the expected change in the total
+    failure rate on the system.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Geometric Analysis (Typical Experience):&lt;/em&gt; We analyzed the change in the
+    geometric mean of project failure rates. This metric controls for volume
+    bias (projects with high execution counts) and outliers, answering the
+    question: "Did the failure rate of a typical project change?"&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Given the non-normal shape of the data, we utilized Bootstrap re-sampling (10k
+iterations) to estimate 95% confidence intervals as our primary method. We
+cross-checked the paired analysis using a Wilcoxon Signed-Rank Test to detect
+non-random drifts in rank order, and cross-checked the geometric analysis
+using a Robust Linear Model (RLM) to provide parametric validation robust to
+outliers.&lt;/p&gt;
+&lt;h2 id="estimating-engineering-savings"&gt;G. Estimating Engineering Cost Savings&lt;/h2&gt;
+
+&lt;p&gt;We want to compare the engineering costs of migrating projects using the new
+variants approach versus a more complex legacy method. We measured effort using
+the following normalized units that represent the time that a single software
+engineer spends working.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Definition 1 (SWEy).&lt;/strong&gt; &lt;em&gt;A SWE Year is a normalized unit that represents a
+software engineer working for a year.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;SWEy are treated as interchangeable regardless of which person or how many
+persons work on the migration. Note that coordination costs between multiple
+people working on a migration are also neglected. Due to confidentiality
+constraints, we are unable to report our internal SWEy numbers that we have
+computed. Instead, &lt;em&gt;total effort saved&lt;/em&gt; will be reported, which provides a
+percentage of working time avoided due to the improved configuration mechanism.&lt;/p&gt;
+&lt;p&gt;To estimate the total effort, we began by estimating the average or expected
+effort to migrate a single configuration file (i.e., Blueprint). This was
+estimated using data from the team conducting central high-priority migrations.
+This team spent approximately 80% of their total time on conducting manual
+migrations before variants were introduced. Based on their migration output
+over the course of an entire quarter, we derived a specific (but confidential)
+estimate of the average time spent per Blueprint.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Definition 2 (BPe).&lt;/strong&gt; &lt;em&gt;BPe = "Blueprint Effort", or the time spent to migrate
+a single Blueprint without variants. (Actual number is confidential).&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Note, the above estimation was computed from expert engineers who were tasked
+only with conducting migrations. This central team only migrated a small
+fraction of the total projects. Engineers who don't work on migrations every
+day are less expert in conducting the migration and they take longer. We
+estimate that the migration would take twice as long for a non-expert engineer.
+We use the range [BPe, 2 ⋅ BPe] to estimate a normal distribution of effort.&lt;/p&gt;
+&lt;p&gt;In the same way, we can estimate Ve:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Definition 3.&lt;/strong&gt; &lt;em&gt;Ve = "Variant Effort" of the time spent to migrate a single
+Blueprint using variants. (Actual number is confidential).&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Using these estimates, we can estimate total migration costs:&lt;/p&gt;
+&lt;p&gt;$$\text{baseline-total}&lt;em _text_SWEy_="\text{(SWEy)"&gt;{\text{(SWEy)}} = \text{project count} \times 2 \times \text{BPe}&lt;/em&gt;$$}&lt;/p&gt;
+&lt;p&gt;$$\text{variant-total}&lt;em _text_SWEy_="\text{(SWEy)"&gt;{\text{(SWEy)}} = \text{project count} \times \text{Ve}&lt;/em&gt;$$}&lt;/p&gt;
+&lt;p&gt;To compute return on investment, we account for realized machine savings (see
+&lt;a href="#sec:results:rq1"&gt;Section VI-A&lt;/a&gt;) and the development cost (number of SWEy spent on development).&lt;/p&gt;
+&lt;p&gt;$$\text{ROI} = 1 - \frac{\text{variant-total} + \text{development} - \text{machine savings}}{\text{baseline total}}$$&lt;/p&gt;
+&lt;p&gt;To estimate the return on investment when many of the parameters for the
+computation are estimates themselves, we used a Monte Carlo simulation
+parameterized by our ranges of values for quantities such as BPe, VPe, and the
+machine cost savings. We assumed these values could be drawn from a roughly
+normal distribution and took 100k samples of each for the MC simulation.&lt;/p&gt;
+&lt;h2 id="threats-validity"&gt;H. Threats to Validity&lt;/h2&gt;
+
+&lt;p&gt;Developer behavior and resource usage predictably varies throughout the year,
+with large observed dips during holiday periods. Our comparison accounts for
+this effect by excluding holidays. Additionally, for our most business critical
+question (machine cost savings), we were fortunate to be able to conduct a
+paired analysis by executing a combination of both cycle types after launch.
+This provided us a robust data set of FC cycles before and after launch and TC
+cycles after launch, which helps us account for any time based factor. Second,
+our return on investment computation relies on estimation of effort by experts
+and may not be perfectly reflective of actual effort. While we attempt to
+account for this effect, we acknowledge the limitation of both our attempt, and
+the Monte Carlo simulation used to provide the confidence interval. Further,
+factors outside the scope of this paper, such as any differences in actual
+machine cost or other unaccounted costs (either human or machine) could reduce
+(or strengthen) the actual return.&lt;/p&gt;
+&lt;p&gt;Finally, this is a case study of one organization conducting a single project
+to scale their environment to another machine platform. Our results may not
+generalize. We observe in our own data that the existence of platform specific
+test behavior is highly dependent on the context of the specific project. We
+expect other organizations may have a different mixture of code, and if most
+code is sensitive to the runtime platform then the savings realized here will
+be unrealizable for that organization.&lt;/p&gt;
+&lt;h1 id="sec:results"&gt;VI. Results&lt;/h1&gt;
+
+&lt;h2 id="sec:results:rq1"&gt;A. RQ1: Compute Resource Consumption&lt;/h2&gt;
+
+&lt;p&gt;&lt;span id="fig:forge-cost" label="fig:forge-cost"&gt;
+  &lt;a href="images/icst-2026/fig3.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 3&lt;/strong&gt;&lt;/em&gt;
+  &lt;img alt="Figure 3" src="images/icst-2026/fig3.png"&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Figure 3 shows a breakdown of machine costs for running projects under Target
+Comprehensive and Fully Comprehensive testing cycles. As seen in the figure,
+there is a high variance in project costs. The plots indicate that x86 Test
+costs were generally lower under Target Comprehensive (as expected), while Arm
+Test costs were generally higher (as expected). Table 1 summarizes the results
+of our statistical analysis. We observed total savings of ~25%; statistical
+analysis confirmed the trends evident in the plots, with the most savings
+derived from avoiding x86 Testing. However, we also saw a substantial 14.8%
+decrease in build costs attributable to a decrease in double compilation under
+TC testing.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Table 1: Build and test cost savings of Target Comprehensive scheduling.&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;Category&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Typical Project Savings (Geometric Mean)&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Global System Savings (Expected Total Savings)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Total&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;20.6% (20.3% - 21.0%)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;24.9% (19.6% - 29.6%)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;x86 Build&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;16.0% (15.6% - 16.3%)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;14.9% (7.7% - 21.4%)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;x86 Test&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;56.9% (56.4% - 57.5%)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;66.7% (58.0% - 72.8%)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Arm Test&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;-25.5% (-26.8% - -24.3%)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;-18.4% (-28.7% - -9.3%)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;We validated the per-project savings using a paired t-test on the per-project
+mean of log-transformed costs. The result was highly significant ($t(44242) =
+-101.3, p &amp;lt; 0.001$), and the derived confidence interval aligned closely with
+the non-parametric Bootstrap estimates reported in Table 1. This convergence
+reinforces the statistical validity of our findings. Diagnostic checks (Q-Q
+plots) confirmed that the data is left-skewed (skewness: -1.46) and
+leptokurtic (kurtosis: 19.8), exhibiting heavy tails. Despite these
+deviations from normality, the large sample size supports the use of the
+parametric t-test, while the Bootstrap analysis provides a robust,
+assumption-free confirmation.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Target Comprehensive testing has an expected system wide savings of ~25%
+versus Fully Comprehensive.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="sec:results:rq1-2"&gt;B. RQ1: Comparison of Project Status Latencies&lt;/h2&gt;
+
+&lt;p&gt;Table 2 presents the project status latencies and 95% CI for FC and TC, along
+with the percentage difference between the two periods. Significant
+architectural changes and varying project definitions occurred between the FC
+and TC periods. However, our analysis deliberately focuses on the &lt;strong&gt;holistic,
+end-to-end latency&lt;/strong&gt; to capture the net impact on system performance,
+regardless of these confounding factors.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Table 2: Project Status Latency in minutes (p50 and p90).&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;p50 [95% CI]&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;p90 [95% CI]&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;FC&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;88.50 [88.43 - 88.58] min&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;200.78 [200.43 - 201.12] min&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;TC&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;75.08 [75.03 - 75.13] min&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;176.58 [176.25 - 176.90] min&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;% Diff&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;-15.16%&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;-12.05%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Target Comprehensive testing has a median latency savings of 15% and p90
+savings of 12%.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="sec:results:rq2"&gt;C. RQ2: Breakage Detection Latency&lt;/h2&gt;
+
+&lt;p&gt;&lt;span id="fig:breakage-latency" label="fig:breakage-latency"&gt;
+  &lt;a href="images/icst-2026/fig4.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 4&lt;/strong&gt;&lt;/em&gt;
+  &lt;img alt="Figure 4" src="images/icst-2026/fig4.png"&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Figure 4 summarizes the results of our analysis. We compared the latency of
+detecting newly-introduced breakages (from submission of the culprit change to
+the first failure being detected) before and after launch of Target
+Comprehensive. While the median breakage detection latency was unchanged, the
+mean and 90th percentile showed significant changes. To understand why, we
+plotted a breakdown of the number of breakages occurring in ranges of
+latencies (ex. 17 breakages in 90 minutes - 105 minutes) before and after. We
+then used Bootstrap re-sampling to estimate the change in the number of
+breakages likely to occur in each bucket. As visualized in Figure 4, the
+results indicate that we can expect approximately 4 additional breakages per
+day that take more than 12 hours to detect. This is a regression and a cost of
+Target Comprehensive testing as implemented today. We look forward to further
+optimizations to address this in the future.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We expect 4 additional breakages per day that take more than 12 hours to
+detect.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="late-stage-defect"&gt;D. RQ2: Late-Stage Defect Detection Rates&lt;/h2&gt;
+
+&lt;p&gt;&lt;span id="fig:failure-compare" label="fig:failure-compare"&gt;
+  &lt;a href="images/icst-2026/fig5.png"&gt;&lt;em&gt;&lt;strong&gt;Figure 5&lt;/strong&gt;&lt;/em&gt;
+  &lt;img alt="Figure 5" src="images/icst-2026/fig5.png"&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Figure 5 illustrates the distribution of release-time testing failures for
+projects with Arm enabled versus disabled, distinguishing rates before and
+after the rollout of Target Comprehensive testing. In general, the Urfin
+failure rate is approximately 1/10th that of Rapid Native. Notably,
+Arm-disabled Rapid Native projects (which were unaffected by the rollout) also
+saw a regression during this period, suggesting a potential global regression
+in failure rates unrelated to the launch.&lt;/p&gt;
+&lt;p&gt;Tables 3 and 4 summarize the results of our statistical analysis. We highlight
+two key findings. First, the paired bootstrap analysis for Rapid Native
+indicates a worst-case regression of 0.27%, but the confidence interval also
+spans zero, allowing for a possible 0.1% improvement. However, the Wilcoxon
+Signed-Rank Test reports a statistically significant difference in rank order
+($p = 0.003$). Given this conflict between magnitude (CI includes 0) and rank
+drift (Significant P-value), we classify this as a &lt;em&gt;potential regression&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Second, both analytical methods confirm an unambiguous improvement in the
+failure rate for Urfin Late-Stage testing. Prior to this rollout, Urfin
+projects executed Arm tests exclusively in the Late-stage phase (a MVP
+optimization while we waited for Target Comprehensive implementation to
+complete). The introduction of Target Comprehensive testing effectively
+&lt;em&gt;shifted left&lt;/em&gt; this coverage. TC can identify Arm and x86 failures earlier in
+the TAP Postsubmit CI phase. This operational change explains the significant
+decrease in Late-Stage failures ($p &amp;lt; 0.001$). This result justifies the
+strategy of probabilistic early testing (TC) over exclusive late-stage
+verification (MVP optimization).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Table 3: Paired Analysis of Change in Test Failure Rate (Arithmetic Mean).&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;&amp;delta; Failure Rate&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Wilcoxon Pval&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Verdict&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Rapid Native&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0.09% (-0.10, 0.27)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;p=0.003&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Urfin - CC&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0.01% (-0.00, 0.03)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;p&amp;lt;0.001&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Urfin - LS&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;-0.08% (-0.11, -0.06)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;p&amp;lt;0.001&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;+++&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Verdicts: (+++) Improvement, (-) Potential Regression (CI spans 0).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Table 4: Analysis of Change in Typical Test Failure Rate (Geometric Mean).&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;&amp;delta; Failure Rate&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;RLM Pval&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Verdict&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Rapid Native&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0.008% (0.004, 0.012)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;p&amp;lt;0.001&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;--&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Urfin - CC&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;0.001% (0.000, 0.003)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;p=0.159&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;~-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left;"&gt;Urfin - LS&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;-0.003% (-0.003, -0.002)&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;p&amp;lt;0.001&lt;/td&gt;
+&lt;td style="text-align: left;"&gt;++&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Verdicts: (++) Small Improvement, (--) Small Regression, (~-) Conflict between
+Robust Linear Model (RLM) and Bootstrap, Prefer Bootstrap Prediction of Small
+Regression.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Rapid Native projects show a potential 0.1% regression in failure rates.
+Urfin projects show a clear 0.08% improvement (decrease) in late-stage
+failures.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="sec:results:rq3"&gt;E. RQ3: Engineering Savings&lt;/h2&gt;
+
+&lt;p&gt;As shown in Listings 1 and 2, the amount of code that must be added to enable a
+project to take advantage of Arm is much less with variants. Typically,
+projects need to change only a single line. We estimate that for the typical
+Blueprint, variants require only 1/10th of the lines of code to maintain
+compared to the legacy system. Not all Blueprints needed humans to migrate
+them.&lt;/p&gt;
+&lt;p&gt;Many Blueprints could be handled by tooling (either traditional tooling or
+LLMs); however, there was a large number of Blueprints that did need human
+effort. We restrict our ROI computation below to those requiring human effort.&lt;/p&gt;
+&lt;p&gt;The new configuration syntax significantly reduces the effort to change a
+complicated Blueprint that cannot be automatically changed. We quantified this
+as percent change from legacy configuration to the modern configuration. With
+the modern syntax, 55% fewer Blueprints needed to be changed by hand.&lt;/p&gt;
+&lt;p&gt;Based on the Monte Carlo simulation, we believe our return on investment is
+approximately 40% and between (10%, 56%) when all these different costs are
+accounted for. We also estimated the savings in just migration cost. The MC
+simulation estimates a migration savings of 95%, with an interval of (91%,
+98%). As more projects adopt Arm over the coming year, our realized return on
+investment for this capability will continue to grow, both in terms of saved
+migration costs and increased savings of machine costs as more projects adopt
+Target Comprehensive testing.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Our estimated ROI for this project is 40%.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id="related-work"&gt;VII. Related Work&lt;/h1&gt;
+
+&lt;p&gt;In this paper, we presented an empirical case study examining the cost and
+benefit of the Target Comprehensive (TC) testing strategy. TC runs each test on
+either Arm or x86, but not both, for high frequency CI executions. This can be
+viewed as a trivial case of Combinatorial Interaction Testing (CIT) [&lt;a href="#ref-Kuhn2013"&gt;20&lt;/a&gt;, &lt;a href="#ref-Kuhn2015"&gt;21&lt;/a&gt;] where we
+only have 1 parameter. CIT has long been a standard tool for testing the t-way
+interactions between various options in software testing. The most direct
+analogy for this paper comes from the world of mobile software testing. With
+the proliferation of devices, operating system variants, and manufacturer
+customizations, mobile application developers have long had to test their
+software across many devices. This has led to the proliferation of commercial
+services to facilitate such testing (ex. Firebase Test Lab, AWS Device Farm,
+Sauce Labs, etc...).&lt;/p&gt;
+&lt;p&gt;Vilkomir explicitly studied the number of (random) devices one should test on
+to identify all bugs [&lt;a href="#ref-Vilkomir2015"&gt;22&lt;/a&gt;, &lt;a href="#ref-Vilkomir2018"&gt;23&lt;/a&gt;]. They found that 13 devices achieved 100% coverage in
+their study and 5 devices provided 80%+ confidence that all bugs had been
+identified. They also examined if there were smarter ways to select the devices
+such that fewer devices would be required to achieve the same degree of
+confidence. In 2018, Kowalczyk &lt;em&gt;et al.&lt;/em&gt; [&lt;a href="#ref-Kowalczyk2018"&gt;24&lt;/a&gt;] also studied interactions between
+different properties of devices and test failures. Kowalczyk also found that
+the applications studied showed a variance in both failure rate and program
+coverage that depended on the configuration.&lt;/p&gt;
+&lt;p&gt;As reported by Lin &lt;em&gt;et al.&lt;/em&gt; in 2023 [&lt;a href="#ref-Lin2023"&gt;25&lt;/a&gt;], the difficulties in managing the
+extensive (and expensive) on device testing strategy led ByteDance to create a
+"virtual device farm" [&lt;a href="#ref-Lin2023"&gt;25&lt;/a&gt;]. Here, we find a direct analogy to Target Comprehensive
+testing. The Virtual Device Farm mimicked the real devices with emulators,
+though the fidelity was imperfect. To accommodate this, they would run the
+majority of their testing effort on the virtual farm. However, final
+validation tests ran on the physical farm: "Before the app's public releases,
+we conduct testing on physical devices to uncover the remaining bugs, which are
+mostly related to vendor-specific system services or drivers (§5.2). Since our
+continuous testing has captured most app-level bugs (which account for 93% of
+all bugs), tests on physical devices are much less frequently interrupted by
+test failures." [&lt;a href="#ref-Lin2023"&gt;25&lt;/a&gt;].&lt;/p&gt;
+&lt;p&gt;In addition to the work in mobile testing, there is a large body of work
+assessing the feasibility of porting x86 code bases to Arm [&lt;a href="#ref-Christopher2025"&gt;1&lt;/a&gt;, &lt;a href="#ref-Beck2023"&gt;26&lt;/a&gt;]. We do not attempt
+to assess Google's overall migration effort here (see Christopher &lt;em&gt;et al.&lt;/em&gt;
+paper [&lt;a href="#ref-Christopher2025"&gt;1&lt;/a&gt;]), but note that there are significant architectural differences between
+x86 and Arm that lead to correctness violations. These violations require
+precise changes to rectify, as they often involve synchronization between
+threads. We note that before a program is (initially) eligible to run on the
+Arm architecture it goes through additional qualification beyond its test suite [&lt;a href="#ref-Christopher2025"&gt;1&lt;/a&gt;].
+One example of research on automatic migration is Beck &lt;em&gt;et al.&lt;/em&gt;'s work [&lt;a href="#ref-Beck2023"&gt;26&lt;/a&gt;]. They
+use static analysis to automatically translate synchronization patterns to safe
+and performant Arm equivalents during compilation.&lt;/p&gt;
+&lt;p&gt;Finally, our empirical assessment on changes to Breakage Detection Latency
+relied on our past work on TAP [&lt;a href="#ref-Henderson2023"&gt;4&lt;/a&gt;, &lt;a href="#ref-Henderson2024"&gt;5&lt;/a&gt;, &lt;a href="#ref-Kondareddy2025"&gt;7&lt;/a&gt;]. In 2023, we introduced a highly accurate
+culprit finder, and more importantly, a methodology for automatically assessing
+its accuracy [&lt;a href="#ref-Henderson2023"&gt;4&lt;/a&gt;]. Culprit finding simply identifies which changes introduced a
+test breakage into the repository. This is made challenging by flaky and
+non-hermetic tests. We conduct extensive reruns (as documented in [&lt;a href="#ref-Henderson2023"&gt;4&lt;/a&gt;]) to automatically verify
+the output of the culprit finder. In Kondareddy &lt;em&gt;et al.&lt;/em&gt;'s 2025 paper, we hand
+re-verified a sample of the output and determined our verification strategy is
+99.2 &amp;plusmn; 3.3% accurate. This verified dataset provides our definitive source of
+truth (&amp;plusmn; 3%) on breakages and enables us to accurately report Breakage
+Detection Latency while accounting for flakiness to the best of our ability.&lt;/p&gt;
+&lt;h1 id="sec:conclusion"&gt;VIII. Conclusion&lt;/h1&gt;
+
+&lt;p&gt;Automated configuration, &lt;em&gt;variants&lt;/em&gt;, and &lt;em&gt;Target Comprehensive&lt;/em&gt; (TC) testing
+cycles were introduced to enable large scale adoption of the Arm architecture
+at Google. A naive approach of double testing would have been unsustainable,
+doubling compute costs and potentially increasing friction from additional
+flaky failures. Further, requiring all projects to modify their individual
+configuration files was infeasible.&lt;/p&gt;
+&lt;p&gt;Our solution enabled the adoption of Arm throughout the organization by
+controlling machine costs and minimizing human toil. We saved 90%+ human
+migration effort. We saved ~25% of the machine costs. Even though we don't
+execute all the tests all the time, the delays in breakage detection were
+marginal (4 per day) over the total number of breakages across the repository.
+Finally, our final safety net (Late Stage Testing) only detects a failure in
+fewer than 0.1% of production promotion attempts, a negligible amount and
+dwarfed by other reasons a production promotion may be aborted. Collectively,
+this work demonstrates the feasibility of large scale adoption of heterogeneous
+computing platforms without doubling the cost of testing.&lt;/p&gt;
+&lt;h4&gt;Contributions and Acknowledgments&lt;/h4&gt;
+&lt;p&gt;&lt;em&gt;Primary Author:&lt;/em&gt; Tim A. D. Henderson, &lt;em&gt;Secondary Author:&lt;/em&gt; Sushmita Azad&lt;/p&gt;
+&lt;p&gt;Additional authors, alphabetic:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Data Analysis for Empirical Evaluation:&lt;/em&gt; Chandrakanth Chittappa, Ali
+    Esmaeeli, Laura Macaddino, Sam Manfreda, David Margolin, Dharma Naidu,
+    Sabuj Pattanayek, Sachin Sable, Ruslan Sakevych&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Drafting and Editing:&lt;/em&gt; Dushyant Acharya, Adrian Berding, Kevin Crossnan,
+    Wolff Dobson, Avi Kondareddy, Abhayendra Singh&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Additionally, we would also like to thank the following people for their
+technical contributions towards the success of this effort. In alphabetic
+order: Michael Adelemoni, David Alfonso, Sterling Augustine, Mark Balch, Leeann
+Bent, Paul Bethe, Lexi Bromfield, Eric Burnett, Saahithi Chillara, Brian Chiu,
+Dan Cho, Eric Christopher, Eduardo Colaco, Nicolo Davis, Rumeet Dhindsa, Paul
+Diebold, Bobby Dorward, Pat Doyle, Ákos Frohner, Charlie Fu, Russell
+Gottfried, Mark Halberstadt, Minh Hoang, Jung Woo Hong, JaJan Hsu, Jin Huang,
+Xin Huang, Kevin Jiang, Pranav Kant, Danial Klimkin, Gregory Kwok, Leon Lee,
+Chris Lewis, Drew Lewis, Jordan Lin, Kevin Liston, Sean Luchen, David
+Michaelson, Dominic Mitchell, Morgan Mitchell, Maksym Motornyy, Katherine
+Nadell, Danny Nguyen, Denis Nikitin, John Penix, Evelyn Price, Daniel Rall,
+Emma Rapati, Ashley Richter, Alberto Rojas, Daniel Romero Sanchez, Carly
+Schaeffer, Aaron Schooley, Alexander Schrepfer, Will Schwarz, Markus Schwenk,
+Manish Shah, Santanu Sinha, Peter Spragins, Arvind Sundararajan, Xenia Tay,
+Greg Tener, Marjorie Thibodaux, Dima Tsumarau, Shanid Seerae Valappil, Sri
+Raga Velagapudi, Andrew Vorwald, Shu-Chun Weng, Michael Wexler, DJ Whang, Jeff
+Xia, Anthony Xiang, and Jun Xiang Yak.&lt;/p&gt;
+&lt;h1 id="references"&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list"&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Christopher2025" class="csl-entry" role="listitem"&gt;
+    [1] E. Christopher, K. Crossan, W. Dobson, C. Kennelly, D. Lewis, K. Lin, M. Maas, P. Ranganathan, E. Rapati, and B. Yang, "Instruction Set Migration at Warehouse Scale," Oct. 2025. [Online]. Available: &lt;a href="http://arxiv.org/abs/2510.14928"&gt;http://arxiv.org/abs/2510.14928&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Memon2017" class="csl-entry" role="listitem"&gt;
+    [2] A. Memon, Zebao Gao, Bao Nguyen, S. Dhanda, E. Nickell, R. Siemborski, and J. Micco, "Taming Google-scale continuous testing," in &lt;i&gt;2017 IEEE/ACM 39th International Conference on Software Engineering: Software Engineering in Practice Track (ICSE-SEIP)&lt;/i&gt;. Piscataway, NJ, USA: IEEE, May 2017, pp. 233-242.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Fowler2006" class="csl-entry" role="listitem"&gt;
+    [3] M. Fowler, "Continuous Integration," 2006. [Online]. Available: &lt;a href="https://martinfowler.com/articles/continuousIntegration.html"&gt;https://martinfowler.com/articles/continuousIntegration.html&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Henderson2023" class="csl-entry" role="listitem"&gt;
+    [4] T. A. D. Henderson, B. Dorward, Eric Nickell, C. Johnston, and Avi Kondareddy. "Flake Aware Culprit Finding," in &lt;i&gt;2023 IEEE Conference on Software Testing, Verification and Validation (ICST)&lt;/i&gt;. IEEE, Apr. 2023.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Henderson2024" class="csl-entry" role="listitem"&gt;
+    [5] T. A. D. Henderson, Avi Kondareddy, Sushmita Azad, and Eric Nickell. "SafeRevert: When Can Breaking Changes be Automatically Reverted?" in &lt;i&gt;2024 IEEE Conference on Software Testing, Verification and Validation (ICST)&lt;/i&gt;. Toronto, ON, Canada: IEEE, May 2024, pp. 395-406.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Leong2019" class="csl-entry" role="listitem"&gt;
+    [6] C. Leong, Abhayendra Singh, Mike Papadakis, Yves Le Traon, and J. Micco, "Assessing Transition-Based Test Selection Algorithms at Google," in &lt;i&gt;2019 IEEE/ACM 41st International Conference on Software Engineering: Software Engineering in Practice (ICSE-SEIP)&lt;/i&gt;. IEEE, May 2019, pp. 101-110.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Kondareddy2025" class="csl-entry" role="listitem"&gt;
+    [7] Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and T. A. D. Henderson, "Speculative Testing at Google with Transition Prediction," in &lt;i&gt;2025 IEEE Conference on Software Testing, Verification and Validation (ICST)&lt;/i&gt;. Napoli, Italy: IEEE, Mar. 2025, pp. 510-521.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Potvin2016" class="csl-entry" role="listitem"&gt;
+    [8] R. Potvin and J. Levenberg, "Why google stores billions of lines of code in a single repository," &lt;i&gt;Communications of the ACM&lt;/i&gt;, vol. 59, no. 7, pp. 78-87, 2016.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Winters2020" class="csl-entry" role="listitem"&gt;
+    [9] T. Winters, T. Manshreck, and H. Wright, &lt;i&gt;Software Engineering at Google: Lessons Learned from Programming over Time&lt;/i&gt;. Beijing: O'Reilly, 2020.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Wang2020" class="csl-entry" role="listitem"&gt;
+    [10] K. Wang, G. Tener, V. Gullapalli, X. Huang, Ahmed Gad, and Daniel Rall. "Scalable build service system with smart scheduling service," in &lt;i&gt;Proceedings of the 29th ACM SIGSOFT International Symposium on Software Testing and Analysis&lt;/i&gt;. Virtual Event USA: ACM, Jul. 2020, pp. 452-462.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Wang2021" class="csl-entry" role="listitem"&gt;
+    [11] K. Wang, Daniel Rall, Greg Tener, V. Gullapalli, X. Huang, and Ahmed Gad. "Smart Build Targets Batching Service at Google," in &lt;i&gt;2021 IEEE/ACM 43rd International Conference on Software Engineering: Software Engineering in Practice (ICSE-SEIP)&lt;/i&gt;. Madrid, ES: IEEE, May 2021, pp. 160-169.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Gupta2011" class="csl-entry" role="listitem"&gt;
+    [12] P. Gupta, M. Ivey, and J. Penix, "Testing at the speed and scale of Google," 2011. [Online]. Available: &lt;a href="https://google-engtools.blogspot.com/2011/06/testing-at-speed-and-scale-of-google.html"&gt;https://google-engtools.blogspot.com/2011/06/testing-at-speed-and-scale-of-google.html&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Bland2012" class="csl-entry" role="listitem"&gt;
+    [13] M. Bland, "The Chris/Jay Continuous Build," Jun. 2012. [Online]. Available: &lt;a href="https://mike-bland.com/2012/06/21/chris-jay-continuous-build.html"&gt;https://mike-bland.com/2012/06/21/chris-jay-continuous-build.html&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Micco2012" class="csl-entry" role="listitem"&gt;
+    [14] J. Micco, "Tools for Continuous Integration at Google Scale," Google NYC, Jun. 2012. [Online]. Available: &lt;a href="https://youtu.be/KH2_sB1A6lA"&gt;https://youtu.be/KH2_sB1A6lA&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Micco2013" class="csl-entry" role="listitem"&gt;
+    [15] J. Micco, "Continuous Integration at Google Scale," EclipseCon 2013, Mar. 2013. [Online]. Available: &lt;a href="https://web.archive.org/web/20140705215747/https://www.eclipsecon.org/2013/sites/eclipsecon.org.2013/files/2013-03-24%20Continuous%20Integration%20at%20Google%20Scale.pdf"&gt;https://web.archive.org/web/20140705215747/https://www.eclipsecon.org/2013/sites/eclipsecon.org.2013/files/2013-03-24%20Continuous%20Integration%20at%20Google%20Scale.pdf&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Elbaum2014" class="csl-entry" role="listitem"&gt;
+    [16] S. Elbaum, Gregg Rothermel, and J. Penix, "Techniques for improving regression testing in continuous integration development environments," in &lt;i&gt;Proceedings of the 22nd ACM SIGSOFT International Symposium on Foundations of Software Engineering - FSE 2014&lt;/i&gt;. New York, New York, USA: ACM Press, 2014, pp. 235-245.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Spragins2018" class="csl-entry" role="listitem"&gt;
+    [17] P. Spragins, "Efficacy Presubmit," Sep. 2018. [Online]. Available: &lt;a href="https://testing.googleblog.com/2018/09/efficacy-presubmit.html"&gt;https://testing.googleblog.com/2018/09/efficacy-presubmit.html&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Hoang2024" class="csl-entry" role="listitem"&gt;
+    [18] Minh Hoang and Adrian Berding, "Presubmit Rescue: Automatically Ignoring FlakyTest Executions," in &lt;i&gt;Proceedings of the 1st International Workshop on Flaky Tests&lt;/i&gt;. Lisbon Portugal: ACM, Apr. 2024, pp. 1-2.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Hesterberg2012" class="csl-entry" role="listitem"&gt;
+    [19] T. Hesterberg, David S. Moore, S. Monaghan, A. Clipson, and R. Epstein, "Bootstrap Methods and Permutation Tests," in &lt;i&gt;Introduction to the Practice of Statistics&lt;/i&gt;, 7th ed. New York: W.H. Freeman, 2012.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Kuhn2013" class="csl-entry" role="listitem"&gt;
+    [20] D. R. Kuhn, R. N. Kacker, and Y. Lei, &lt;i&gt;Introduction to Combinatorial Testing&lt;/i&gt;, ser. Chapman &amp; Hall / CRC Innovations in Software Engineering and Software Development. Boca Raton, FL: CRC Press, 2013.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Kuhn2015" class="csl-entry" role="listitem"&gt;
+    [21] D. R. Kuhn, Rick Bryce, F. Duan, L. S. Ghandehari, Y. Lei, and R. N. Kacker, "Chapter one - combinatorial testing: Theory and practice," ser. Advances in Computers, A. Memon, Ed. Elsevier, 2015, vol. 99, pp. 1-66.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Vilkomir2015" class="csl-entry" role="listitem"&gt;
+    [22] S. Vilkomir, K. Marszalkowski, C. Perry, and S. Mahendrakar, "Effectiveness of Multi-device Testing Mobile Applications," in &lt;i&gt;2015 2nd ACM International Conference on Mobile Software Engineering and Systems&lt;/i&gt;. Florence, Italy: IEEE, May 2015, pp. 44-47.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Vilkomir2018" class="csl-entry" role="listitem"&gt;
+    [23] S. Vilkomir, "Multi-device coverage testing of mobile applications," &lt;i&gt;Software Quality Journal&lt;/i&gt;, vol. 26, no. 2, pp. 197-215, Jun. 2018.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Kowalczyk2018" class="csl-entry" role="listitem"&gt;
+    [24] E. Kowalczyk, Myra B. Cohen, and Atif M. Memon, "Configurations in Android testing: They matter," in &lt;i&gt;Proceedings of the 1st International Workshop on Advances in Mobile App Analysis&lt;/i&gt;. Montpellier France: ACM, Sep. 2018, pp. 1-6.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Lin2023" class="csl-entry" role="listitem"&gt;
+    [25] Jordan Lin, J. Qiu, H. Wang, Z. Li, L. Gong, D. Gao, Y. Liu, F. Qian, Z. Zhang, P. Yang, and T. Xu, "Virtual Device Farms for Mobile App Testing at Scale: A Pursuit for Fidelity, Efficiency, and Accessibility," in &lt;i&gt;Proceedings of the 29th Annual International Conference on Mobile Computing and Networking&lt;/i&gt;. Madrid Spain: ACM, Oct. 2023, pp. 1-17.
+  &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+  &lt;div id="ref-Beck2023" class="csl-entry" role="listitem"&gt;
+    [26] Manuel Beck, K. Bhat, L. Stričević, G. Chen, D. Behrens, M. Fu, V. Vafeiadis, H. Chen, and H. Härtig, "AtoMig: Automatically Migrating Millions Lines of Code from TSO to WMM," in &lt;i&gt;Proceedings of the 28th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2&lt;/i&gt;. Vancouver BC Canada: ACM, Jan. 2023, pp. 61-73.
+  &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/div&gt;
+&lt;/ul&gt;</content><category term="Paper"/></entry><entry><title>Speculative Testing at Google with Transition Prediction</title><link href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html" rel="alternate"/><published>2025-04-02T00:00:00-04:00</published><updated>2025-04-02T00:00:00-04:00</updated><author><name>Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2025-04-02:/speculative-testing-at-google-with-transition-prediction.html</id><summary type="html">&lt;p&gt;Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
+&lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2025/icst-2025-industry/17/Speculative-Testing-at-Google-with-Transition-Prediction"&gt;ICST Industry Track 2025&lt;/a&gt;.
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1109/ICST62969.2025.10988976"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
@@ -17,7 +1122,7 @@ correct you should read the
 &lt;p&gt;Google's …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
 &lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2025/icst-2025-industry/17/Speculative-Testing-at-Google-with-Transition-Prediction"&gt;ICST Industry Track 2025&lt;/a&gt;.
 &lt;br/&gt;
-&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://doi.org/10.1109/ICST62969.2025.10988976"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
@@ -1478,7 +2583,7 @@ minutes) in the time taken to detect novel breaking targets.&lt;/p&gt;
         "#fnref2" class="footnote-back" role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
-  &lt;/section&gt;</content><category term="Paper"></category></entry><entry><title>SafeRevert: When Can Breaking Changes be Automatically Reverted?</title><link href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html" rel="alternate"></link><published>2024-05-27T00:00:00-04:00</published><updated>2024-05-27T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;,  Avi Kondareddy, Sushmita Azad, Eric Nickell</name></author><id>tag:hackthology.com,2024-05-27:/saferevert-when-can-breaking-changes-be-automatically-reverted.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
+  &lt;/section&gt;</content><category term="Paper"/></entry><entry><title>SafeRevert: When Can Breaking Changes be Automatically Reverted?</title><link href="https://hackthology.com/saferevert-when-can-breaking-changes-be-automatically-reverted.html" rel="alternate"/><published>2024-05-27T00:00:00-04:00</published><updated>2024-05-27T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;,  Avi Kondareddy, Sushmita Azad, Eric Nickell</name></author><id>tag:hackthology.com,2024-05-27:/saferevert-when-can-breaking-changes-be-automatically-reverted.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Avi Kondareddy, Sushmita Azad, and Eric Nickell.
 &lt;em&gt;SafeRevert: When Can Breaking Changes be Automatically Reverted?&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2024/icst-2024-industry/7/SafeRevert-When-Can-Breaking-Changes-be-Automatically-Reverted-"&gt;ICST Industry Track 2024&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://doi.org/10.1109/ICST60714.2024.00043"&gt;DOI&lt;/a&gt;.
@@ -3204,7 +4309,7 @@ href="https://xgboost.readthedocs.io/en/stable/index.html"
 class="uri"&gt;https://xgboost.readthedocs.io/en/stable/index.html&lt;/a&gt;&lt;a
 href="#fnref5" class="footnote-back" role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;</content><category term="Paper"></category></entry><entry><title>Flake Aware Culprit Finding</title><link href="https://hackthology.com/flake-aware-culprit-finding.html" rel="alternate"></link><published>2023-04-17T00:00:00-04:00</published><updated>2023-04-17T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</name></author><id>tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
+&lt;/section&gt;</content><category term="Paper"/></entry><entry><title>Flake Aware Culprit Finding</title><link href="https://hackthology.com/flake-aware-culprit-finding.html" rel="alternate"/><published>2023-04-17T00:00:00-04:00</published><updated>2023-04-17T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, Avi Kondareddy</name></author><id>tag:hackthology.com,2023-04-17:/flake-aware-culprit-finding.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Bobby Dorward, Eric Nickell, Collin Johnston, and Avi Kondareddy.
 &lt;em&gt;Flake Aware Culprit Finding&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2023/icst-2023-industry/46/Flake-Aware-Culprit-Finding"&gt;ICST Industry Track 2023&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://doi.dx.org/10.1109/ICST57152.2023.00041"&gt;DOI&lt;/a&gt;.
@@ -4953,7 +6058,7 @@ href="https://github.com/Ealdwulf/bbchop"
 class="uri"&gt;https://github.com/Ealdwulf/bbchop&lt;/a&gt;&lt;a href="#fnref8"
 class="footnote-back" role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;</content><category term="Paper"></category></entry><entry><title>Improving fault localization by integrating value and predicate based causal inference techniques</title><link href="https://hackthology.com/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html" rel="alternate"></link><published>2021-05-26T00:00:00-04:00</published><updated>2021-05-26T00:00:00-04:00</updated><author><name>Yiğit Küçük, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2021-05-26:/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html</id><summary type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
+&lt;/section&gt;</content><category term="Paper"/></entry><entry><title>Improving fault localization by integrating value and predicate based causal inference techniques</title><link href="https://hackthology.com/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html" rel="alternate"/><published>2021-05-26T00:00:00-04:00</published><updated>2021-05-26T00:00:00-04:00</updated><author><name>Yiğit Küçük, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2021-05-26:/improving-fault-localization-by-integrating-value-and-predicate-based-causal-inference-techniques.html</id><summary type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
 &lt;em&gt;Improving fault localization by integrating value and predicate based causal inference techniques&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icse-2021/icse-2021-papers/72/Improving-Fault-Localization-by-Integrating-Value-and-Predicate-Based-Causal-Inferenc"&gt;ICSE 2021&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://doi.org/10.1109/ICSE43902.2021.00066"&gt;DOI&lt;/a&gt;.
@@ -4985,7 +6090,7 @@ information about both predicate outcomes and variable values to more accurately
 estimate the true failure-causing effect of program statements. UniVal was
 empirically compared to several coverage-based, predicate-based, and value-based
 SFL techniques on 800 program versions with real faults.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/icse-2021.pdf"&gt;Read the paper&lt;/a&gt;&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>The Impact of Rare Failures on Statistical Fault Localization: the Case of the Defects4J Suite</title><link href="https://hackthology.com/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html" rel="alternate"></link><published>2019-10-03T00:00:00-04:00</published><updated>2019-10-03T00:00:00-04:00</updated><author><name>Yiğit Küçük, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-10-03:/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html</id><summary type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
+&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/icse-2021.pdf"&gt;Read the paper&lt;/a&gt;&lt;/p&gt;</content><category term="Paper"/></entry><entry><title>The Impact of Rare Failures on Statistical Fault Localization: the Case of the Defects4J Suite</title><link href="https://hackthology.com/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html" rel="alternate"/><published>2019-10-03T00:00:00-04:00</published><updated>2019-10-03T00:00:00-04:00</updated><author><name>Yiğit Küçük, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-10-03:/the-impact-of-rare-failures-on-statistical-fault-localization-the-case-of-the-defects4j-suite.html</id><summary type="html">&lt;p&gt;Yiğit Küçük, &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, and Andy Podgurski
 &lt;em&gt;The Impact of Rare Failures on Statistical Fault Localization: the Case of the Defects4J Suite&lt;/em&gt;.  &lt;a href="https://icsme2019.github.io/"&gt;ICSME 2019&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
@@ -5016,7 +6121,7 @@ metric containing it: low precision is associated with poor effectiveness.
 Boosting precision by adding test cases was found to improve overall SFL
 effectiveness. We present our findings and discuss their implications for the
 evaluation and use of SFL metrics.&lt;/p&gt;
-&lt;p&gt;(&lt;a href="https://hackthology.com/pdfs/icsme-2019.pdf"&gt;Read the rest of the paper as a pdf&lt;/a&gt;)&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Evaluating Automatic Fault Localization Using Markov Processes</title><link href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html" rel="alternate"></link><published>2019-09-30T00:00:00-04:00</published><updated>2019-09-30T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Yiğit Küçük, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-09-30:/evaluating-automatic-fault-localization-using-markov-processes.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
+&lt;p&gt;(&lt;a href="https://hackthology.com/pdfs/icsme-2019.pdf"&gt;Read the rest of the paper as a pdf&lt;/a&gt;)&lt;/p&gt;</content><category term="Paper"/></entry><entry><title>Evaluating Automatic Fault Localization Using Markov Processes</title><link href="https://hackthology.com/evaluating-automatic-fault-localization-using-markov-processes.html" rel="alternate"/><published>2019-09-30T00:00:00-04:00</published><updated>2019-09-30T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Yiğit Küçük, and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2019-09-30:/evaluating-automatic-fault-localization-using-markov-processes.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;, Yiğit Küçük, and Andy Podgurski
 &lt;em&gt;Evaluating Automatic Fault Localization Using Markov Processes&lt;/em&gt;.  &lt;a href="http://www.ieee-scam.org/2019/"&gt;SCAM 2019&lt;/a&gt;.
 &lt;br/&gt;
 &lt;a href="https://doi.org/10.1109/SCAM.2019.00021"&gt;DOI&lt;/a&gt;.
@@ -6133,7 +7238,7 @@ Comparison of CBSFL vs SBBFL average ranks (on log scale), under the Standard Ra
 &lt;li id="fn3"&gt;&lt;p&gt;Implementations of these two computations maybe found in &lt;span&gt;&lt;code&gt;https://github.com/timtadh/expected-hitting-times&lt;/code&gt;&lt;/span&gt;.&lt;a href="#fnref3"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;li id="fn4"&gt;&lt;p&gt;See https://hackthology.com/pdfs/scam-2019-supplement.pdf&lt;a href="#fnref4"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</content><category term="Paper"></category></entry><entry><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link href="https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html" rel="alternate"></link><published>2018-04-03T00:00:00-04:00</published><updated>2018-04-03T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2018-04-03:/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</id><summary type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
+&lt;/div&gt;</content><category term="Paper"/></entry><entry><title>Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow Subgraphs</title><link href="https://hackthology.com/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html" rel="alternate"/><published>2018-04-03T00:00:00-04:00</published><updated>2018-04-03T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2018-04-03:/behavioral-fault-localization-by-sampling-suspicious-dynamic-control-flow-subgraphs.html</id><summary type="html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"&gt;&lt;/script&gt;
 
 &lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
 &lt;em&gt;Behavioral Fault Localization by Sampling Suspicious Dynamic Control Flow
@@ -6414,7 +7519,7 @@ An example Go program to compute the Fibonacci Sequence.
 &lt;strong&gt;Listing 2.&lt;/strong&gt; 
 The program shown in Listing 1 after the instrumentation has been inserted by
 dynagrok.
-&lt;/div&gt;</content><category term="Paper"></category></entry><entry><title>Frequent Subgraph Analysis and its Software Engineering Applications</title><link href="https://hackthology.com/frequent-subgraph-analysis-and-its-software-engineering-applications.html" rel="alternate"></link><published>2017-08-18T00:00:00-04:00</published><updated>2017-08-18T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-08-18:/frequent-subgraph-analysis-and-its-software-engineering-applications.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;Frequent Subgraph Analysis and its Software Engineering Applications&lt;/em&gt;.
+&lt;/div&gt;</content><category term="Paper"/></entry><entry><title>Frequent Subgraph Analysis and its Software Engineering Applications</title><link href="https://hackthology.com/frequent-subgraph-analysis-and-its-software-engineering-applications.html" rel="alternate"/><published>2017-08-18T00:00:00-04:00</published><updated>2017-08-18T00:00:00-04:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-08-18:/frequent-subgraph-analysis-and-its-software-engineering-applications.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;. &lt;em&gt;Frequent Subgraph Analysis and its Software Engineering Applications&lt;/em&gt;.
 &lt;a href="http://case.edu/"&gt;Case Western Reserve University&lt;/a&gt;. Doctoral Dissertation. 2017.
 &lt;br/&gt;
 &lt;a href="https://hackthology.com/pdfs/dissertation.pdf"&gt;PDF&lt;/a&gt;.
@@ -6595,7 +7700,7 @@ software engineering advances are built on new frequent subgraph analysis
 algorithms. The new algorithms improve code clone detection time, fault
 localization latency and accuracy, and enable analysis of larger and more
 complex programs.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/dissertation.pdf"&gt;Read the full dissertation&lt;/a&gt;.&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Rethinking Dependence Clones</title><link href="https://hackthology.com/rethinking-dependence-clones.html" rel="alternate"></link><published>2017-02-21T00:00:00-05:00</published><updated>2017-02-21T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-02-21:/rethinking-dependence-clones.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
+&lt;p&gt;&lt;a href="https://hackthology.com/pdfs/dissertation.pdf"&gt;Read the full dissertation&lt;/a&gt;.&lt;/p&gt;</content><category term="Paper"/></entry><entry><title>Rethinking Dependence Clones</title><link href="https://hackthology.com/rethinking-dependence-clones.html" rel="alternate"/><published>2017-02-21T00:00:00-05:00</published><updated>2017-02-21T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-02-21:/rethinking-dependence-clones.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski.
 &lt;em&gt;Rethinking Dependence Clones&lt;/em&gt;.
 &lt;a href="https://iwsc2017.github.io/"&gt;IWSC 2017&lt;/a&gt;.
 &lt;br/&gt;
@@ -6687,7 +7792,7 @@ collected.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;p&gt;See the &lt;a href="https://hackthology.com/pdfs/iwsc-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. IEEE has
 the exclusive rights to publish this paper. Follow the
-&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt; for the IEEE copy.&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Frequent Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with Frequently Dysregulated Disease Pathways and Predicts Prognosis</title><link href="https://hackthology.com/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html" rel="alternate"></link><published>2017-01-03T00:00:00-05:00</published><updated>2017-01-03T00:00:00-05:00</updated><author><name>Arda Durmaz, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Doug Brubaker, and &lt;a href="http://gurkan.case.edu"&gt;Gurkan Bebek&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-01-03:/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html</id><summary type="html">&lt;p&gt;A. Durmaz*, &lt;strong&gt;T. A. D. Henderson&lt;/strong&gt;*, D.  Brubaker, and G. Bebek. &lt;em&gt;Frequent
+&lt;a href="https://doi.org/10.1109/IWSC.2017.7880512"&gt;DOI&lt;/a&gt; for the IEEE copy.&lt;/p&gt;</content><category term="Paper"/></entry><entry><title>Frequent Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with Frequently Dysregulated Disease Pathways and Predicts Prognosis</title><link href="https://hackthology.com/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html" rel="alternate"/><published>2017-01-03T00:00:00-05:00</published><updated>2017-01-03T00:00:00-05:00</updated><author><name>Arda Durmaz, &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;, Doug Brubaker, and &lt;a href="http://gurkan.case.edu"&gt;Gurkan Bebek&lt;/a&gt;</name></author><id>tag:hackthology.com,2017-01-03:/frequent-subgraph-mining-of-personalized-signaling-pathway-networks-groups-patients-with-frequently-dysregulated-disease-pathways-and-predicts-prognosis.html</id><summary type="html">&lt;p&gt;A. Durmaz*, &lt;strong&gt;T. A. D. Henderson&lt;/strong&gt;*, D.  Brubaker, and G. Bebek. &lt;em&gt;Frequent
 Subgraph Mining of Personalized Signaling Pathway Networks Groups Patients with
 Frequently Dysregulated Disease Pathways and Predicts Prognosis.&lt;/em&gt;
 &lt;a href="http://psb.stanford.edu/"&gt;PSB 2017&lt;/a&gt;.  * &lt;strong&gt;Co-First Author&lt;/strong&gt;
@@ -6742,7 +7847,7 @@ disease mechanisms differentiating samples.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
 &lt;p&gt;See the &lt;a href="https://hackthology.com/pdfs/psb-2017.pdf"&gt;PDF&lt;/a&gt; for the complete paper. Follow the
 &lt;a href="http://dx.doi.org/10.1142/9789813207813_0038"&gt;DOI&lt;/a&gt; for the authoritative
-version.&lt;/p&gt;</content><category term="Paper"></category></entry><entry><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link href="https://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html" rel="alternate"></link><published>2016-11-13T00:00:00-05:00</published><updated>2016-11-13T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2016-11-13:/sampling-code-clones-from-program-dependence-graphs-with-graple.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
+version.&lt;/p&gt;</content><category term="Paper"/></entry><entry><title>Sampling Code Clones from Program Dependence Graphs with GRAPLE</title><link href="https://hackthology.com/sampling-code-clones-from-program-dependence-graphs-with-graple.html" rel="alternate"/><published>2016-11-13T00:00:00-05:00</published><updated>2016-11-13T00:00:00-05:00</updated><author><name>&lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt; and &lt;a href="http://engineering.case.edu/profiles/hap"&gt;Andy Podgurski&lt;/a&gt;</name></author><id>tag:hackthology.com,2016-11-13:/sampling-code-clones-from-program-dependence-graphs-with-graple.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt; and Andy Podgurski. &lt;em&gt;Sampling Code Clones from Program
 Dependence Graphs with GRAPLE&lt;/em&gt;.
 &lt;a href="http://softwareanalytics.ca/swan16/Home.html"&gt;SWAN 2016&lt;/a&gt;.
 &lt;br/&gt;
@@ -6825,4 +7930,4 @@ clone sampling from tokens and ASTs.&lt;/p&gt;
 &lt;p&gt;See the &lt;a href="https://hackthology.com/pdfs/swan-2016.pdf"&gt;PDF&lt;/a&gt; for the complete paper. ACM
 has the exclusive rights to publish this paper. Tim Henderson and Andy Podgurski
 own the copyright. Follow the &lt;a href="https://dx.doi.org/10.1145/2989238.2989241"&gt;DOI&lt;/a&gt;
-for the ACM copy. This copy is posted here with the permission of ACM.&lt;/p&gt;</content><category term="Paper"></category></entry></feed>
+for the ACM copy. This copy is posted here with the permission of ACM.&lt;/p&gt;</content><category term="Paper"/></entry></feed>

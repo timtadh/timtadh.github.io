@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://hackthology.com/</loc>
-<lastmod>2025-04-02T01:37:33-00:00</lastmod>
+<lastmod>2026-03-19T20:22:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -34,6 +34,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://hackthology.com/pages/teaching.html</loc>
 <lastmod>2014-09-26T00:00:00-04:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://hackthology.com/taming-the-variants-multi-architecture-continuous-testing-at-google.html</loc>
+<lastmod>2026-03-19T00:00:00-04:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -383,7 +390,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://hackthology.com/category/paper.html</loc>
-<lastmod>2025-04-02T00:00:00-04:56</lastmod>
+<lastmod>2026-03-19T00:00:00-04:56</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -426,6 +433,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://hackthology.com/author/tim-henderson-bobby-dorward-eric-nickell-collin-johnston-avi-kondareddy.html</loc>
 <lastmod>2023-04-17T00:00:00-04:56</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://hackthology.com/author/tim-henderson-sushmita-azad-and-et-al.html</loc>
+<lastmod>2026-03-19T00:00:00-04:56</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

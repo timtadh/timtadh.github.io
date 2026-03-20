@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology - Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and Tim Henderson</title><link href="https://hackthology.com/" rel="alternate"></link><link href="https://hackthology.com/feeds/avi-kondareddy-sushmita-azad-abhayendra-singh-and-tim-henderson.atom.xml" rel="self"></link><id>https://hackthology.com/</id><updated>2025-04-02T00:00:00-04:00</updated><entry><title>Speculative Testing at Google with Transition Prediction</title><link href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html" rel="alternate"></link><published>2025-04-02T00:00:00-04:00</published><updated>2025-04-02T00:00:00-04:00</updated><author><name>Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2025-04-02:/speculative-testing-at-google-with-transition-prediction.html</id><summary type="html">&lt;p&gt;Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Hackthology - Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and Tim Henderson</title><link href="https://hackthology.com/" rel="alternate"/><link href="https://hackthology.com/feeds/avi-kondareddy-sushmita-azad-abhayendra-singh-and-tim-henderson.atom.xml" rel="self"/><id>https://hackthology.com/</id><updated>2025-04-02T00:00:00-04:00</updated><entry><title>Speculative Testing at Google with Transition Prediction</title><link href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html" rel="alternate"/><published>2025-04-02T00:00:00-04:00</published><updated>2025-04-02T00:00:00-04:00</updated><author><name>Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;a href="http://hackthology.com"&gt;Tim Henderson&lt;/a&gt;</name></author><id>tag:hackthology.com,2025-04-02:/speculative-testing-at-google-with-transition-prediction.html</id><summary type="html">&lt;p&gt;Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
 &lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2025/icst-2025-industry/17/Speculative-Testing-at-Google-with-Transition-Prediction"&gt;ICST Industry Track 2025&lt;/a&gt;.
 &lt;br/&gt;
-&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://doi.org/10.1109/ICST62969.2025.10988976"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
@@ -17,7 +17,7 @@ correct you should read the
 &lt;p&gt;Google's …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Avi Kondareddy, Sushmita Azad, Abhayendra Singh, and &lt;strong&gt;Tim A. D. Henderson&lt;/strong&gt;.
 &lt;em&gt;Speculative Testing at Google with Transition Prediction&lt;/em&gt;.  &lt;a href="https://conf.researchr.org/details/icst-2025/icst-2025-industry/17/Speculative-Testing-at-Google-with-Transition-Prediction"&gt;ICST Industry Track 2025&lt;/a&gt;.
 &lt;br/&gt;
-&lt;a href="http://tba"&gt;DOI&lt;/a&gt;.
+&lt;a href="https://doi.org/10.1109/ICST62969.2025.10988976"&gt;DOI&lt;/a&gt;.
 &lt;a href="https://hackthology.com/pdfs/icst-2025.pdf"&gt;PDF&lt;/a&gt;.
 &lt;a href="https://hackthology.com/speculative-testing-at-google-with-transition-prediction.html"&gt;WEB&lt;/a&gt;.&lt;/p&gt;
 &lt;h4&gt;Note&lt;/h4&gt;
@@ -1478,4 +1478,4 @@ minutes) in the time taken to detect novel breaking targets.&lt;/p&gt;
         "#fnref2" class="footnote-back" role="doc-backlink"&gt;↩︎&lt;/a&gt;&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
-  &lt;/section&gt;</content><category term="Paper"></category></entry></feed>
+  &lt;/section&gt;</content><category term="Paper"/></entry></feed>
